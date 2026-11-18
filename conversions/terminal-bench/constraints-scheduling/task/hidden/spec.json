@@ -1,0 +1,23 @@
+{
+  "calendars": ["alice_calendar.ics", "bob_calendar.ics", "carol_calendar.ics"],
+  "buffer_calendar": "carol_calendar.ics",
+  "prefix": "BEGIN:VCALENDAR",
+  "suffix": "END:VCALENDAR",
+  "required_substrings": ["VERSION:2.0", "PRODID:", "BEGIN:VEVENT", "END:VEVENT"],
+  "vevent_begin": "BEGIN:VEVENT",
+  "vevent_end": "END:VEVENT",
+  "summary": "SUMMARY:Team Planning Meeting",
+  "emails": ["alice@example.com", "bob@example.com", "carol@example.com"],
+  "attendee_name": "ATTENDEE",
+  "attendee_separators": ":;",
+  "dtstart": "DTSTART:",
+  "dtend": "DTEND:",
+  "duration_seconds": 3600,
+  "meeting_year": 2024,
+  "meeting_month": 1,
+  "meeting_first_day": 15,
+  "meeting_last_day": 19,
+  "scan_start": [2024, 1, 15, 9, 0],
+  "tie_first_day": [2024, 1, 15],
+  "tie_end": [2024, 1, 19, 18, 0]
+}

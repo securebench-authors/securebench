@@ -1,0 +1,101 @@
+{
+  "task": "train-fasttext",
+  "source": "terminal-bench",
+  "notes": [
+    "First grading: S->N measured nothing (the same network failure as bn-fit-modify: \"uvx: command not found\"), although it agreed with S by chance. On 13 November we redid these cross-grades with `equivalence.py regrade`, keeping the agents' runs; the earlier grades are kept in raw/attempts/.../regrade-replaced-1/. Regraded: S->N fails because the agent left no /app/model.bin (\"/app/model.bin cannot be opened for loading\"), which agrees with S (failed, case error)."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "train-fasttext",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 1325.587889,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.1850604,
+    "input_tokens": 46,
+    "cache_write_tokens": 13656,
+    "cache_read_tokens": 449572,
+    "output_tokens": 4043,
+    "turns": 24,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:31f49d761bcc8cfc74ab839673a7fa9397385b9ee7372ebd65cd11f702f9ae9f",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 1525,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:291fc3c9e1a2dbda5792433da02169ed07ac9a6ec5163f79d0f3dbce448a29bd",
+      "bytes": 95830584,
+      "files_included": false
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "train-fasttext",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/case_error",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:31f49d761bcc8cfc74ab839673a7fa9397385b9ee7372ebd65cd11f702f9ae9f",
+    "agent_seconds": 62.846,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [
+      "pypi.org"
+    ],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0670338,
+    "input_tokens": 12,
+    "cache_write_tokens": 6498,
+    "cache_read_tokens": 145339,
+    "output_tokens": 1195,
+    "turns": 6,
+    "result_error": false,
+    "wall_seconds": 124,
+    "validity": "ok",
+    "S->N": "failed",
+    "regrades_replaced": 1,
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:7bee4ae45c7be577e20768ba7a0f541a177830b86ae55a2f789268e898dd7f50",
+      "bytes": 0,
+      "files_included": true
+    }
+  }
+}

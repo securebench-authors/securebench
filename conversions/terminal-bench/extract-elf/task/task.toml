@@ -1,0 +1,49 @@
+id = "extract-elf"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/extract-elf@sha256:6932e4cb318464307eacd497ef8dc617eaf551b6a90231f815ec0b911895cfed"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The deliverable is /app/extract.js; helpers it may load from /app (for
+# example node_modules), and packages installed with pip or npm under
+# /usr/local or into /opt, are captured too.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 60000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/usr/local"
+symlinks = true
+max_entries = 30000
+max_bytes = 805306368
+
+[[scope.roots]]
+path = "/opt"
+symlinks = true
+max_entries = 10000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "extract"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 21539
+max_observation_bytes = 4194304

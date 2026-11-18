@@ -1,0 +1,56 @@
+{
+  "source": "terminal-bench",
+  "task": "gpt2-codegolf",
+  "tier": "task",
+  "seed": 1756517622,
+  "side": "native",
+  "copy_digest": "sha256:fe34a39fc0deb386a5db4f13cbdad9bb6323aa05bbae2aa9b2acb052a5283a46",
+  "verdict": "passed",
+  "agent_seconds": 58.609605,
+  "time_limit_expired": false,
+  "harness_version": "2.1.289",
+  "provider_errors": [],
+  "denied_hosts": [],
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "subagent_models": [],
+  "cost_usd": 0.2626938,
+  "input_tokens": 8,
+  "cache_write_tokens": 14820,
+  "cache_read_tokens": 72809,
+  "output_tokens": 6477,
+  "turns": 5,
+  "result_error": false,
+  "safeguard_notices": 0,
+  "refusals": 0,
+  "fallback_models": [],
+  "outcome": "out-of-scope",
+  "N->S": "passed",
+  "N->S_run": {
+    "admitted": true,
+    "status": "passed",
+    "failure_class": null,
+    "pack_digest": "sha256:39c39039c29148d7969764b7217e42e4cb49f375ee459a941b24e0175c84a5f9",
+    "framework": {
+      "commit": "0bbdd86b360822d9e56fc37b1b7b246d6d79f5d3",
+      "dirty": false,
+      "execution_contract": "1"
+    },
+    "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+    "rejudged": true
+  },
+  "N->s->N": "passed",
+  "wall_seconds": 192,
+  "classification": {
+    "outcome": "out-of-scope",
+    "evidence": "gpt2.c (2,439 bytes) never opens the checkpoint or vocabulary: it embeds four license disclaimers, finds the longest tail of the prompt in them and prints the rest, relying on the agent's memory of upstream's one fixed license prompt. The expected continuation is public and guessable (CONVERSION.md item 3), so this is a hardcoded answer, out of scope, as run 143 ruled for both tiers. Native passed 1/1, N->S passed, N->s->N passed."
+  },
+  "maintainer_review": false,
+  "candidate_export": {
+    "captured": true,
+    "candidate": "sha256:dbee11652a7efdd2be858e896ad48b37ca86f6e44a49302bd1387627267d4380",
+    "bytes": 18591,
+    "files_included": true
+  }
+}

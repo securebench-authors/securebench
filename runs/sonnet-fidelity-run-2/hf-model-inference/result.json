@@ -1,0 +1,113 @@
+{
+  "task": "hf-model-inference",
+  "source": "terminal-bench",
+  "notes": [
+    "Two mechanisms. S->N fails by design, as in every earlier round: upstream's tests call the Flask service the agent left on port 5000, and a copy has no running process (\"Connection refused\"; test_flask_api_running, test_sentiment_endpoint and test_api_error_handling fail, test_model_downloaded passes). The conversion asks for /app/start.sh and starts it, so S passes. On the native side the earlier explanation (the native agent wrote no start.sh, so N->S fails) still holds: its /app has app.py and service.log but no start.sh. But this round N->S and N->s->N failed earlier, for a new reason in the measurement tool. The native agent pip-installed PyTorch into /usr/local, so the tool's restore has to unpack 5.7 GB (root-1.tar) into /usr/local, under the task's 2 GiB memory limit. The restore was killed for memory after 75.9 s (agent ending `memory_killed`), leaving /usr/local half restored. The model-loads check runs /usr/local/bin/python3, so it fails with \"adapter exited with status 1\" (failed/case_error). The candidate captured from that broken container records 561 removals, including 38 standard-library modules such as /usr/local/lib/python3.13/types.py, so in N->s->N the native verifier's pip fails with \"ModuleNotFoundError: No module named 'types'\" and then \"pytest: command not found\". Both native cross-grades therefore say nothing about either grader. The scope difference (N passed, N->s->N failed) would have been the by-design running-service case, but here it is this broken restore."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "hf-model-inference",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 57.8961,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0478928,
+    "input_tokens": 8,
+    "cache_write_tokens": 5359,
+    "cache_read_tokens": 59754,
+    "output_tokens": 1449,
+    "turns": 5,
+    "result_error": false,
+    "N->S": "failed/case_error",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "case_error",
+      "pack_digest": "sha256:49115df7cff0f59de759ce7f61a05e74b3f166611d8efe843d6bfd57e6926b16",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 698,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:13d8ec79cd92018a496de9838fc7a9ad0352491ea25efd5929b4d8a15908934e",
+      "bytes": 270175781,
+      "files_included": false
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November (the cleanup loop removed base images only once both campaigns had finished a task, and GPT had not started); an image pull, the agent's setup or the verifier's build failed with 'no space left on device'",
+        "validity": "infrastructure",
+        "verdict": "error: RuntimeError",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": null
+      }
+    ],
+    "securebench": [
+      {
+        "kept_as": "securebench-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November; an image pull or the run's own setup failed, the unit crashed before writing a record, or the agent's writes failed with 'no space left on device'"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "hf-model-inference",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:49115df7cff0f59de759ce7f61a05e74b3f166611d8efe843d6bfd57e6926b16",
+    "agent_seconds": 59.824,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0552218,
+    "input_tokens": 8,
+    "cache_write_tokens": 5418,
+    "cache_read_tokens": 93419,
+    "output_tokens": 1485,
+    "turns": 4,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 535,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:97d7dc2adc8ad07b344820218cce5b223c136670ddbdd02bc5692ae7f1a29a07",
+      "bytes": 270583943,
+      "files_included": false
+    }
+  }
+}

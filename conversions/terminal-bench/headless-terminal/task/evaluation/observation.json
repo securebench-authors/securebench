@@ -1,0 +1,140 @@
+{
+  "type": "object",
+  "properties": {
+    "test_import": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "max_bytes": 8192
+        }
+      },
+      "optional": [
+        "error"
+      ]
+    },
+    "test_send_non_interactive_command": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "max_bytes": 8192
+        },
+        "exists": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string",
+          "max_bytes": 524288
+        }
+      },
+      "optional": [
+        "error",
+        "exists",
+        "text"
+      ]
+    },
+    "test_send_interactive_command": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "max_bytes": 8192
+        },
+        "exists": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string",
+          "max_bytes": 524288
+        }
+      },
+      "optional": [
+        "error",
+        "exists",
+        "text"
+      ]
+    },
+    "test_cancel_command": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "max_bytes": 8192
+        },
+        "exists": {
+          "type": "boolean"
+        }
+      },
+      "optional": [
+        "error",
+        "exists"
+      ]
+    },
+    "test_startup_files": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "max_bytes": 8192
+        },
+        "exists": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string",
+          "max_bytes": 524288
+        }
+      },
+      "optional": [
+        "error",
+        "exists",
+        "text"
+      ]
+    },
+    "test_shell_state_persists_between_commands": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "max_bytes": 8192
+        },
+        "exists": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string",
+          "max_bytes": 524288
+        }
+      },
+      "optional": [
+        "error",
+        "exists",
+        "text"
+      ]
+    },
+    "test_background_commands": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "max_bytes": 8192
+        },
+        "status_code": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        },
+        "text": {
+          "type": "string",
+          "max_bytes": 524288
+        }
+      },
+      "optional": [
+        "error",
+        "status_code",
+        "text"
+      ]
+    }
+  }
+}

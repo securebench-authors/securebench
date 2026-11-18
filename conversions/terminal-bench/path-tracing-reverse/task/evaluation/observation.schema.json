@@ -1,0 +1,17 @@
+{"type": "object", "properties": {
+ "original_executable": {"type": "boolean"},
+ "compile": {"type": "object", "properties": {
+  "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "signaled", "timed_out"]},
+  "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+  "stderr_tail": {"type": "string", "max_bytes": 2048}}},
+ "run": {"type": "object", "properties": {
+  "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "signaled", "timed_out"]},
+  "exit_status": {"type": "integer", "minimum": -255, "maximum": 255}}},
+ "image": {"type": "object", "properties": {
+  "mode": {"type": "string", "max_bytes": 4, "enum": ["1", "L", "I", "F", "P", "RGB", "RGBA", "CMYK"]},
+  "width": {"type": "integer", "minimum": 1, "maximum": 2000000},
+  "height": {"type": "integer", "minimum": 1, "maximum": 2000000},
+  "values": {"type": "string", "max_bytes": 4194304}}},
+ "image_problem": {"type": "string", "max_bytes": 16,
+  "enum": ["absent", "not_regular", "not_ppm", "bad_header", "too_many_values", "bad_data", "truncated"]}},
+ "optional": ["run", "image", "image_problem"]}

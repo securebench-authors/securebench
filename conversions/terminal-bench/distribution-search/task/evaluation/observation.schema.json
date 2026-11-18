@@ -1,0 +1,8 @@
+{"type": "object", "properties": {
+ "dtype": {"type": "string", "max_bytes": 64},
+ "shape": {"type": "array", "max_items": 64,
+  "items": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807}},
+ "nonfinite": {"type": "integer", "minimum": 0, "maximum": 150000},
+ "values": {"type": "array", "max_items": 150,
+  "items": {"type": "array", "max_items": 1000,
+   "items": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308}}}}}

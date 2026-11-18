@@ -1,0 +1,50 @@
+SecureBench
+Copyright 2026 The SecureBench authors
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Converted tasks
+---------------
+
+The task packs under conversions/terminal-bench/ and conversions/deep-swe/
+are modified versions of tasks from two benchmarks, both released under the
+Apache License, Version 2.0:
+
+- Terminal-Bench 2
+  https://github.com/harbor-framework/terminal-bench-2
+  commit 2fd12b88aafdd04a52c298e3940bcb189f9766d6
+
+- DeepSWE
+  https://github.com/datacurve-ai/deep-swe
+  commit e016041a6ccf8da29906afc9a3f5a8df940a1f78
+
+Each pack's CONVERSION.md states how the pack differs from its upstream task.
+
+Third-party material inside the packs and results
+-------------------------------------------------
+
+The upstream tasks contain code, tests and data from third-party projects.
+The packs carry that material over, and the stored candidates under runs/
+contain agents' changes to it. Each project keeps its own license. In
+particular:
+
+- conversions/terminal-bench/adaptive-rejection-sampler/task/evaluation/r.tar.xz
+  holds the files that Debian's r-base-core 4.3.3 package and its
+  dependencies install. R is licensed under the GNU General Public License,
+  version 2 or later. The source is available from Debian and from
+  https://www.r-project.org/.
+
+- conversions/terminal-bench/headless-terminal/task/evaluation/vim/ holds
+  Debian packages of Vim and its dependencies, unmodified. Each package
+  carries its own copyright file. The source is available from Debian.
+
+- conversions/terminal-bench/train-fasttext/task/evaluation/reviews.txt.gz
+  holds review texts taken from the test archive that the upstream task
+  distributes.
+
+Documentation copies
+--------------------
+
+adversarial/native-docs/ holds copies of public documentation of the Harbor
+task format and of the Pier README. The native adversarial campaign gave
+these files to its agents. They belong to their respective authors.

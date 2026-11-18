@@ -1,0 +1,48 @@
+id = "fix-git"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/fix-git@sha256:61e431c00c58df652287aadce5457634d9f9330cfdd153ebdf2802df0d540119"
+
+[agent]
+workdir = "/app/personal-site"
+# The reference only runs git on the local repository, so it needs no network.
+allowed_domains = []
+
+# Upstream reads two files of the working tree, so the scope is the working
+# tree of the repository. Its .git directory stays excluded (the default):
+# nothing is judged on Git history, so commits, branches and the reflog are
+# dropped from the candidate. /app/resources, which holds upstream's
+# reference copies, is outside the scope, because the agent can rewrite
+# them: the expected values are hidden/about.md and hidden/default.html.
+# The bounds are far above the baseline's 96 entries and 34 MB, so no
+# plausible solution meets them. Internal symlinks are allowed so that one
+# an agent leaves in the repository does not fail capture.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app/personal-site"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# Upstream test_about_file: the MD5 of the stripped bytes of this file equals
+# that of /app/resources/patch_files/about.md.
+[[artifact_checks]]
+id = "about"
+
+[[artifact_checks.files]]
+path = "/app/personal-site/_includes/about.md"
+parser = "text"
+max_bytes = 16777216
+
+# Upstream test_layout_file: the same for _layouts/default.html.
+[[artifact_checks]]
+id = "layout"
+
+[[artifact_checks.files]]
+path = "/app/personal-site/_layouts/default.html"
+parser = "text"
+max_bytes = 16777216

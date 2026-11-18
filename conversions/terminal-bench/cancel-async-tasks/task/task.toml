@@ -1,0 +1,67 @@
+id = "cancel-async-tasks"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/cancel-async-tasks@sha256:84c7fae6b256dcc56a350790e2a9715eefc7dad662a9d8e8a472363aa71ef18d"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 10000
+max_bytes = 268435456
+
+# The deliverable is /app/run.py. Upstream's verifier copies its own test.py over
+# /app/test.py before running it, so the candidate's copy never matters; the
+# adapter does the same. Virtual environments hold symlinks with absolute
+# targets (bin/python -> /usr/local/bin/python3), which would fail capture,
+# while upstream's tests never use them.
+[[scope.roots]]
+path = "/app"
+exclude = ["test.py", "**/.venv", "**/venv"]
+symlinks = true
+max_entries = 10000
+max_bytes = 268435456
+
+# upstream test_run_py_file_exists
+[[artifact_checks]]
+id = "run-py-exists"
+
+[[artifact_checks.files]]
+path = "/app/run.py"
+parser = "text"
+max_bytes = 1048576
+
+# upstream test_tasks_run_concurrently and test_tasks_obey_max_concurrent
+[[protocol_checks]]
+id = "run-to-completion"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "run-to-completion",
+]
+challenge_schema = "run-to-completion.challenge.json"
+observation_schema = "run-to-completion.observation.json"
+max_cases = 2
+timeout_seconds = 60
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304
+
+# upstream test_tasks_cancel_below_max_concurrent, test_tasks_cancel_at_max_concurrent
+# and test_tasks_cancel_above_max_concurrent
+[[protocol_checks]]
+id = "cancel-on-interrupt"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "cancel-on-interrupt",
+]
+challenge_schema = "cancel-on-interrupt.challenge.json"
+observation_schema = "cancel-on-interrupt.observation.json"
+max_cases = 3
+timeout_seconds = 60
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

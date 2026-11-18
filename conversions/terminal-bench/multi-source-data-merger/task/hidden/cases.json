@@ -1,0 +1,27 @@
+{
+ "merged": [
+  {
+   "challenge": {},
+   "expected": {
+    "row_count": 4,
+    "user_ids": [101, 102, 103, 104],
+    "users": [
+     {"user_id": 101, "name": "John Doe", "email": "john@a.com", "created_date": "2024-01-15"},
+     {"user_id": 104, "name": "Alice Brown", "email": "alice@c.com", "created_date": "2024-04-01"}
+    ]
+   }
+  }
+ ],
+ "conflicts": [
+  {
+   "challenge": {},
+   "expected": {
+    "min_total_conflicts": 1,
+    "user_id": 101,
+    "field": "email",
+    "source_a": "john@a.com",
+    "selected": "john@a.com"
+   }
+  }
+ ]
+}

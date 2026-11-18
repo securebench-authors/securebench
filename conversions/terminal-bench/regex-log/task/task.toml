@@ -1,0 +1,42 @@
+id = "regex-log"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/regex-log@sha256:90101b2e815323a8da20528a1439bebc407eb9761c9c68a3d557730856c878e9"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The deliverable is /app/regex.txt, and nothing else in /app is read. Capture
+# rejects some entries (absolute symlinks, special files) wherever they sit in
+# a root, and a root is a directory, so it cannot be narrowed to the one file.
+# Excluding everything below the top-level entries keeps helper trees an agent
+# may leave there, such as a virtual environment whose bin/python is an
+# absolute symlink, from failing the capture. Top-level entries are still
+# captured and checked; CONVERSION.md records this as stricter.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+[[protocol_checks]]
+id = "findall"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 65536
+max_observation_bytes = 4194304

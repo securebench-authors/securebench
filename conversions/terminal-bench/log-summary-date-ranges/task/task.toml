@@ -1,0 +1,37 @@
+id = "log-summary-date-ranges"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/log-summary-date-ranges@sha256:cbeb6ba905c2fec294f16cd5e16e3ea7f2e04d38ac2484d51a11de262aa7dc51"
+
+[agent]
+workdir = "/app"
+# The upstream solution runs `apt-get update && apt-get install -y grep coreutils`;
+# the image's apt sources point at deb.debian.org only.
+allowed_domains = ["deb.debian.org"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# Only /app/summary.csv is graded. The logs are baseline input whose counts are
+# fixed in hidden/expected.json, and virtual environments hold absolute symlinks
+# that would otherwise fail capture; dropping changes there cannot change a verdict.
+[[scope.roots]]
+path = "/app"
+exclude = ["logs", "**/.venv", "**/venv", "**/env"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[protocol_checks]]
+id = "summary"
+# The baseline's own Python 3.13, the version upstream's test runs on. It lies
+# outside the scope, so the candidate cannot replace it.
+command = ["/usr/local/bin/python3", "-I", "-B", "/.securebench/evaluation/adapter.py"]
+challenge_schema = "challenge.json"
+observation_schema = "observation.json"
+max_cases = 1
+timeout_seconds = 120
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

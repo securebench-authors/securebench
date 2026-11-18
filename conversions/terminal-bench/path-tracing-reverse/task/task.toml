@@ -1,0 +1,60 @@
+id = "path-tracing-reverse"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/path-tracing-reverse@sha256:7911e42479d8f6d8af1248bc52442a0efbc5a33e3ecf535fdc20d252a2c64142"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+# The deliverable is /app/mystery.c. Everything below the top level of /app is
+# dropped, so work trees (decompiler output, virtual environments, symlinks)
+# cannot fail capture.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "source"
+
+# 16 MiB: deflate compresses at most about 1,032 to 1, so any larger file
+# compresses to more than 2,100 bytes and fails upstream too.
+[[artifact_checks.files]]
+path = "/app/mystery.c"
+parser = "text"
+max_bytes = 16777216
+
+# Upstream renders its reference image with whatever /app/mystery holds when
+# the tests run. The Oracle requires the baseline's binary, whose image is in
+# hidden/. The binary is not text, so the Oracle reads only its SHA-256; 1 MiB
+# holds the baseline's 790,376 bytes, and a larger file is not the baseline's.
+[[artifact_checks]]
+id = "original"
+
+[[artifact_checks.files]]
+path = "/app/mystery"
+parser = "text"
+max_bytes = 1048576
+
+[[protocol_checks]]
+id = "render"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 16
+max_observation_bytes = 4194304

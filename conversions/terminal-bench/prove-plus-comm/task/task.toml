@@ -1,0 +1,58 @@
+id = "prove-plus-comm"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/prove-plus-comm@sha256:e26741d01681a9da1beeff8b7b7b65fe2b921b8b122a306a3707a81ebd051f73"
+
+[agent]
+workdir = "/workspace"
+allowed_domains = []
+
+[scope]
+max_entries = 10000
+max_bytes = 268435456
+
+# The deliverables are /workspace/plus_comm.v and /workspace/plus_comm.vo.
+# Nothing under /workspace is loaded by a test runner: the native tests live
+# in /tests, and coqc reads no configuration file from its working directory.
+[[scope.roots]]
+path = "/workspace"
+symlinks = false
+max_entries = 10000
+max_bytes = 268435456
+
+# upstream test_proof_file_exists and test_proof_contents
+[[artifact_checks]]
+id = "proof-source"
+
+[[artifact_checks.files]]
+path = "/workspace/plus_comm.v"
+parser = "text"
+max_bytes = 16777216
+
+# upstream test_compiled_proof_exists; only the file's existence matters, so
+# the parser's verdict on the binary .vo is ignored by the Oracle.
+[[artifact_checks]]
+id = "compiled-proof"
+
+[[artifact_checks.files]]
+path = "/workspace/plus_comm.vo"
+parser = "text"
+max_bytes = 16777216
+
+# upstream test_compiled_proof_content: the baseline's own coqc compiles the
+# candidate's plus_comm.v, and the adapter reports its exit status.
+[[protocol_checks]]
+id = "compile"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 1024
+max_observation_bytes = 524288

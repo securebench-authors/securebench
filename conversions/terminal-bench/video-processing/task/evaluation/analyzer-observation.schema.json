@@ -1,0 +1,106 @@
+{
+  "type": "object",
+  "properties": {
+    "video_exists": {
+      "type": "boolean"
+    },
+    "run": {
+      "type": "object",
+      "properties": {
+        "returncode": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647
+        },
+        "output_decodes": {
+          "type": "boolean"
+        },
+        "stderr_tail": {
+          "type": "string",
+          "max_bytes": 4096
+        },
+        "output_toml": {
+          "type": "string",
+          "max_bytes": 32,
+          "enum": [
+            "absent",
+            "unreadable",
+            "parsed"
+          ]
+        },
+        "detail": {
+          "type": "string",
+          "max_bytes": 1024
+        },
+        "takeoff": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 32,
+              "enum": [
+                "absent",
+                "integer",
+                "float",
+                "boolean",
+                "out_of_bounds",
+                "other"
+              ]
+            },
+            "value": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "type": {
+              "type": "string",
+              "max_bytes": 256
+            }
+          },
+          "optional": [
+            "value",
+            "type"
+          ]
+        },
+        "landing": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 32,
+              "enum": [
+                "absent",
+                "integer",
+                "float",
+                "boolean",
+                "out_of_bounds",
+                "other"
+              ]
+            },
+            "value": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "type": {
+              "type": "string",
+              "max_bytes": 256
+            }
+          },
+          "optional": [
+            "value",
+            "type"
+          ]
+        }
+      },
+      "optional": [
+        "detail",
+        "takeoff",
+        "landing"
+      ]
+    }
+  },
+  "optional": [
+    "run"
+  ]
+}

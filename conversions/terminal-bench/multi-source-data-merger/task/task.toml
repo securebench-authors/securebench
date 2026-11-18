@@ -1,0 +1,45 @@
+id = "multi-source-data-merger"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/multi-source-data-merger@sha256:8b32782078ff7383a1b4e5d3cecca8ce287e30f50bb4c0e5db009a18064e666e"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+# The two deliverables are /app/merged_users.parquet and /app/conflicts.json.
+# Nothing is excluded, so a deliverable that pyarrow writes as a directory of
+# part files is captured whole.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# Both adapters run on the baseline's own Python, pandas and pyarrow in
+# /usr/local, outside the scope. -I keeps the image's PYTHONPATH=/app, and so
+# any module a candidate leaves in /app, out of the adapter.
+[[protocol_checks]]
+id = "merged"
+command = ["/usr/local/bin/python3", "-I", "-B", "/.securebench/evaluation/adapter.py", "merged"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "merged.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 64
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "conflicts"
+command = ["/usr/local/bin/python3", "-I", "-B", "/.securebench/evaluation/adapter.py", "conflicts"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "conflicts.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 64
+max_observation_bytes = 4194304

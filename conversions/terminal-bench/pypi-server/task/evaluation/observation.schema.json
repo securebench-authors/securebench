@@ -1,0 +1,17 @@
+{"type": "object", "properties": {
+ "distributions": {"type": "array", "max_items": 64, "items": {"type": "object", "properties": {
+  "path": {"type": "string", "max_bytes": 4096},
+  "bytes": {"type": "integer", "minimum": 0, "maximum": 33554432}}}},
+ "install_exit": {"type": "integer", "minimum": -255, "maximum": 255},
+ "install_output": {"type": "string", "max_bytes": 4096},
+ "show_exit": {"type": "integer", "minimum": -255, "maximum": 255},
+ "show_name": {"type": "string", "max_bytes": 256},
+ "show_version": {"type": "string", "max_bytes": 256},
+ "imported": {"type": "boolean"},
+ "import_error": {"type": "string", "max_bytes": 512},
+ "runner": {"type": "string", "max_bytes": 32, "enum": ["complete", "timed out", "ended early", "reply too large", "malformed reply", "not started"]},
+ "results": {"type": "array", "max_items": 16, "items": {"type": "object", "properties": {
+  "raised": {"type": "string", "max_bytes": 512},
+  "type": {"type": "string", "max_bytes": 128},
+  "numeric": {"type": "boolean"},
+  "value": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308}}}}}}

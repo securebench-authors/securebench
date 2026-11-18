@@ -1,0 +1,29 @@
+{
+  "cases": [
+    {
+      "test": "test_result_file_exists",
+      "challenge": {},
+      "expected": null
+    },
+    {
+      "test": "test_G_Peak",
+      "challenge": {"peak": "G"},
+      "expected": {
+        "x0": {"value": 1580.3, "comparison": "absolute", "tolerance": 5},
+        "gamma": {"value": 9.06, "comparison": "absolute", "tolerance": 1},
+        "amplitude": {"value": 8382.69, "comparison": "relative", "tolerance": 0.05},
+        "offset": {"value": 5561.03, "comparison": "relative", "tolerance": 0.1}
+      }
+    },
+    {
+      "test": "test_2D_Peak",
+      "challenge": {"peak": "2D"},
+      "expected": {
+        "x0": {"value": 2670.08, "comparison": "relative", "tolerance": 0.05},
+        "gamma": {"value": 17.52, "comparison": "absolute", "tolerance": 1},
+        "amplitude": {"value": 12314.42, "comparison": "relative", "tolerance": 0.05},
+        "offset": {"value": 1239.09, "comparison": "relative", "tolerance": 0.1}
+      }
+    }
+  ]
+}

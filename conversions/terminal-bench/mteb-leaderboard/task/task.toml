@@ -1,0 +1,33 @@
+id = "mteb-leaderboard"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/mteb-leaderboard@sha256:968de9456bfc53728f7df0cb6c9ce33e17bd0e5563ddfe031e6ed2964965aecf"
+
+[agent]
+workdir = "/app"
+# The reference clones github.com/embeddings-benchmark/results.
+allowed_domains = ["github.com"]
+
+# Only /app/result.txt is read. Everything below the top level of /app is
+# dropped from the candidate, so that the reference's clone of the results
+# repository (/app/results, gigabytes of JSON) and any other work files there
+# can neither exceed the bounds nor fail capture.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "answer"
+
+[[artifact_checks.files]]
+path = "/app/result.txt"
+parser = "text"
+max_bytes = 1048576

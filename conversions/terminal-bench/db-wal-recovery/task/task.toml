@@ -1,0 +1,30 @@
+id = "db-wal-recovery"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/db-wal-recovery@sha256:0e33ea5ec823975d1bd6c3778395c9f94251dd88f571146057bff6adb7e4594e"
+
+[agent]
+workdir = "/app"
+# The task is solved offline with the image's sqlite3, python3 and xxd.
+allowed_domains = []
+
+# Upstream reads only /app/recovered.json, but the agent may leave scratch files
+# anywhere in /app, so the bounds are generous.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "recovered-json"
+
+[[artifact_checks.files]]
+path = "/app/recovered.json"
+parser = "json"
+max_bytes = 16777216

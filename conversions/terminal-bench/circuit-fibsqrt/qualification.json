@@ -1,0 +1,164 @@
+{
+  "source": "terminal-bench",
+  "task": "circuit-fibsqrt",
+  "upstream_commit": "2fd12b88aafdd04a52c298e3940bcb189f9766d6",
+  "securebench_commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+  "pier": "0.3.1",
+  "workers": 4,
+  "candidates": {
+    "null": {
+      "securebench": {
+        "admitted": true,
+        "status": "failed",
+        "failure_class": "oracle",
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "b7825ff92a41c947c5ae1d10f03c83c9460ff4f5",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 0.0,
+      "native_cached": false
+    },
+    "reference": {
+      "securebench": {
+        "admitted": true,
+        "status": "passed",
+        "failure_class": null,
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 1.0,
+      "native_cached": false
+    },
+    "attack-fake-sim": {
+      "securebench": {
+        "admitted": true,
+        "status": "failed",
+        "failure_class": "oracle",
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 0.0,
+      "native_cached": false
+    },
+    "attack-patched-simc": {
+      "securebench": {
+        "admitted": true,
+        "status": "failed",
+        "failure_class": "oracle",
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 0.0,
+      "native_cached": false
+    },
+    "attack-toolchain-shadow": {
+      "securebench": {
+        "admitted": true,
+        "status": "failed",
+        "failure_class": "oracle",
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 0.0,
+      "native_cached": false
+    },
+    "mutant-31-bit-output": {
+      "securebench": {
+        "admitted": true,
+        "status": "failed",
+        "failure_class": "oracle",
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 0.0,
+      "native_cached": false
+    },
+    "mutant-cr-padding": {
+      "securebench": {
+        "admitted": true,
+        "status": "failed",
+        "failure_class": "oracle",
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 0.0,
+      "native_cached": false
+    },
+    "mutant-crlf-31999": {
+      "securebench": {
+        "admitted": true,
+        "status": "passed",
+        "failure_class": null,
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 1.0,
+      "native_cached": false
+    },
+    "mutant-unterminated-32000": {
+      "securebench": {
+        "admitted": true,
+        "status": "failed",
+        "failure_class": "oracle",
+        "pack_digest": "sha256:b07deedd110b9010ac225a81bff0114b53b83fd03aaaa34f79ddd2f0e1ddd35a",
+        "framework": {
+          "commit": "460f58ad6c2bb80e6caea3c13060ef8c9a3e9525",
+          "dirty": false,
+          "execution_contract": "1"
+        },
+        "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+        "rejudged": true
+      },
+      "native": 0.0,
+      "native_cached": false
+    }
+  },
+  "problems": []
+}

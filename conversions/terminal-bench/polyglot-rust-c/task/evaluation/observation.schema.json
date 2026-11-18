@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "launch_error": {"type": "string", "max_bytes": 512},
+    "exit_status": {"type": "integer", "minimum": -1000, "maximum": 1000},
+    "stdout_bytes": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+    "stdout_error": {"type": "string", "max_bytes": 512},
+    "stdout_stripped": {"type": "string", "max_bytes": 65536}
+  },
+  "optional": ["launch_error", "exit_status", "stdout_bytes", "stdout_error", "stdout_stripped"]
+}

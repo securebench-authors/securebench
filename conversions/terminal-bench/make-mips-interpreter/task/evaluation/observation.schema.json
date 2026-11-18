@@ -1,0 +1,9 @@
+{"type": "object", "properties": {
+ "frame_appeared": {"type": "boolean"},
+ "frame": {"type": "object", "properties": {
+  "width": {"type": "integer", "minimum": 1, "maximum": 4096},
+  "height": {"type": "integer", "minimum": 1, "maximum": 4096},
+  "rgb_b64": {"type": "string", "max_bytes": 1048576}}},
+ "frame_problem": {"type": "string", "max_bytes": 16,
+  "enum": ["absent", "empty", "too_large", "undecodable"]}},
+ "optional": ["frame", "frame_problem"]}

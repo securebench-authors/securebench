@@ -1,0 +1,33 @@
+{
+  "proto-file": {
+    "substrings": [
+      "service KVStore",
+      "rpc GetVal",
+      "rpc SetVal",
+      "message GetValRequest",
+      "message SetValResponse"
+    ]
+  },
+  "server-file": {
+    "substrings": ["class Server"]
+  },
+  "grpc-server": {
+    "challenge": {
+      "host": "127.0.0.1",
+      "port": 5328,
+      "connect_timeout_seconds": 5,
+      "handshake": {"key": "handshake", "value": 999},
+      "functionality": [
+        {"rpc": "SetVal", "key": "test_key", "value": 42},
+        {"rpc": "GetVal", "key": "test_key"},
+        {"rpc": "SetVal", "key": "test_key", "value": 100},
+        {"rpc": "GetVal", "key": "test_key"}
+      ]
+    },
+    "context": {
+      "port_connect_result": 0,
+      "handshake_val": 999,
+      "functionality_vals": [42, 42, 100, 100]
+    }
+  }
+}

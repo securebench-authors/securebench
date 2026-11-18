@@ -1,0 +1,12 @@
+#!/bin/sh
+# Shared by the mutants: the reference's build steps without PyTorch. Converts
+# model.pth to weights.json with pth_to_json.py, installs gcc, and builds the C
+# source given as $1 into /app/cli_tool with the reference's command.
+set -e
+here="$(dirname "$0")"
+cd /app
+python3 "$here/pth_to_json.py" model.pth weights.json
+mv lodepng.cpp lodepng.c
+apt-get update
+apt-get install -y gcc libc6-dev
+gcc -o cli_tool "$1" cJSON.c lodepng.c -lm

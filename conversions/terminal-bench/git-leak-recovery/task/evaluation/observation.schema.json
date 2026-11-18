@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "commands": {
+      "type": "array",
+      "max_items": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "returncode": {"type": "integer", "minimum": -1024, "maximum": 1024},
+          "decoded": {"type": "boolean"},
+          "stderr_decoded": {"type": "boolean"},
+          "stdout": {"type": "string", "max_bytes": 4194304}
+        }
+      }
+    },
+    "dangling": {
+      "type": "array",
+      "max_items": 100000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "object": {"type": "string", "max_bytes": 4194304},
+          "returncode": {"type": "integer", "minimum": -1024, "maximum": 1024},
+          "decoded": {"type": "boolean"},
+          "stderr_decoded": {"type": "boolean"},
+          "stdout": {"type": "string", "max_bytes": 4194304}
+        }
+      }
+    }
+  }
+}

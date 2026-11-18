@@ -1,0 +1,19 @@
+# Upstream benchmarks of the conversion campaign (docs/conversion.md).
+# `quota` is how many tasks of each source we convert, in selection order; exclusions do not count, so a quota equal to the size of the source means every task.
+
+seed = 0
+pier = "0.3.1"
+
+[[source]]
+name = "terminal-bench"
+repository = "https://github.com/harbor-framework/terminal-bench-2"
+commit = "2fd12b88aafdd04a52c298e3940bcb189f9766d6"
+tasks = "."
+quota = 89
+
+[[source]]
+name = "deep-swe"
+repository = "https://github.com/datacurve-ai/deep-swe"
+commit = "e016041a6ccf8da29906afc9a3f5a8df940a1f78"
+tasks = "tasks"
+quota = 113

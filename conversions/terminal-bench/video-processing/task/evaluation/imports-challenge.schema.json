@@ -1,0 +1,34 @@
+{
+  "type": "object",
+  "properties": {
+    "place": {
+      "type": "array",
+      "max_items": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "to": {
+            "type": "string",
+            "max_bytes": 4096
+          }
+        }
+      }
+    },
+    "earlier_runs": {
+      "type": "array",
+      "max_items": 4,
+      "items": {
+        "type": "string",
+        "max_bytes": 4096
+      }
+    },
+    "path": {
+      "type": "string",
+      "max_bytes": 4096
+    }
+  }
+}

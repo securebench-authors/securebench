@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "n_tasks": {"type": "integer", "minimum": 0, "maximum": 1000},
+    "max_concurrent": {"type": "integer", "minimum": 1, "maximum": 1000},
+    "interrupt_after_seconds": {"type": "number", "minimum": 0, "maximum": 10},
+    "timeout_seconds": {"type": "number", "minimum": 0, "maximum": 40}
+  }
+}

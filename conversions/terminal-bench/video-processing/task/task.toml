@@ -1,0 +1,55 @@
+id = "video-processing"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/video-processing@sha256:a2c0f39e3ab04e67ac6e49cad9167bb0d987babe32511768c01aa0c6905a875f"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# /app holds the deliverable and the example video. Everything the agent leaves
+# there, output.toml included, is in place when the native tests start.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_example_video_exists and test_test_video_exists.
+[[protocol_checks]]
+id = "video-exists"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/check_exists.py"]
+challenge_schema = "exists-challenge.schema.json"
+observation_schema = "exists-observation.schema.json"
+max_cases = 2
+timeout_seconds = 60
+max_challenge_bytes = 4096
+max_observation_bytes = 1024
+
+# test_jump_analyzer_example_video and test_jump_analyzer_test_video. One native
+# verifier budget of 3,600 s covers every script run a case replays.
+[[protocol_checks]]
+id = "jump-analyzer"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/run_analyzer.py"]
+challenge_schema = "analyzer-challenge.schema.json"
+observation_schema = "analyzer-observation.schema.json"
+max_cases = 2
+timeout_seconds = 3600
+max_challenge_bytes = 4096
+max_observation_bytes = 65536
+
+# test_jump_analyzer_imports.
+[[protocol_checks]]
+id = "imports"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/check_imports.py"]
+challenge_schema = "imports-challenge.schema.json"
+observation_schema = "imports-observation.schema.json"
+max_cases = 1
+timeout_seconds = 3600
+max_challenge_bytes = 4096
+max_observation_bytes = 2097152

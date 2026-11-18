@@ -1,0 +1,98 @@
+{
+  "task": "vulnerable-secret",
+  "source": "terminal-bench",
+  "notes": [
+    "OpenAI's cyber safeguard refused the SecureBench attempt's first request ('This content was flagged for possible cybersecurity risk'), so the agent did nothing. The attempt is kept as it happened and not rerun (model safeguards). The native attempt passed."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "vulnerable-secret",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 15.519946,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 20653,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 71583,
+    "output_tokens": 554,
+    "turns": null,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:bb79055f0d851d7778d432f38f934824f820fd23c4992d7c4e4f5b1660c16173",
+      "framework": {
+        "commit": "b92bf336a62d2af0e128c7ee33d45649342fdaac",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 112,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:9ae9a051d613d93a51d62098f476599a4d551a21302aebaf95733ebaf305cbe0",
+      "bytes": 38,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "vulnerable-secret",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:bb79055f0d851d7778d432f38f934824f820fd23c4992d7c4e4f5b1660c16173",
+    "agent_seconds": 27.914,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 0,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 0,
+    "output_tokens": 0,
+    "turns": null,
+    "result_error": "This content was flagged for possible cybersecurity risk. If this seems wrong, try rephrasing your request. If you\u2019re doing authorized security work that requires more cyber permissive safeguards, apply for Daybreak access via https://platform.openai.com/settings/organization/status-and-access befor",
+    "S->N": "failed",
+    "wall_seconds": 75,
+    "validity": "infrastructure",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:3775a3d61f1d882c2ef1ea3a6f42157a32dcfde5d308a7b2e38ae0d2b33ba5c0",
+      "bytes": 0,
+      "files_included": true
+    }
+  }
+}

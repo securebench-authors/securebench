@@ -1,0 +1,39 @@
+id = "modernize-scientific-stack"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/modernize-scientific-stack@sha256:64e69cee13bf6b0b9016e735b51891bce996a60f1e2d1a005bf12c949e221d71"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The whole of /app: the two deliverables, plus the legacy files the script
+# reads, which upstream also leaves writable. Virtual environments link their
+# interpreter to /usr/local/bin/python3, an absolute target that capture
+# rejects; the native test never runs those links, so we drop them instead.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/bin/python*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[protocol_checks]]
+id = "modernized-script"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 300
+max_challenge_bytes = 4096
+max_observation_bytes = 4194304

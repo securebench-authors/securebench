@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+*.egg-info/
+# Raw run data (transcripts, harness jobs, stores) stays on the worker.
+/runs/*/raw/
+.DS_Store
+conversions/upstream/
+/overlays/
+/qualification.json
+# Adversarial copies are built from their source packs; ADVERSARIAL.md records their digests.
+/adversarial/terminal-bench/*/task/
+/adversarial/terminal-bench/*/task-white-box/
+/adversarial/deep-swe/*/task/
+/adversarial/deep-swe/*/task-white-box/
+/adversarial/terminal-bench/*/native/
+/adversarial/deep-swe/*/native/

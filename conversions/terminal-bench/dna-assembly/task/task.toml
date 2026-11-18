@@ -1,0 +1,33 @@
+id = "dna-assembly"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/dna-assembly@sha256:d1adf6835f1dd91205ba70e452c699d0aea601010038e5617f370716efb50569"
+
+[agent]
+workdir = "/app"
+# The image has no primer3 or EMBOSS; the reference installs them with apt
+# from the image's own Ubuntu sources.
+allowed_domains = ["archive.ubuntu.com", "security.ubuntu.com"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# Upstream's test reads only /app/primers.fasta. The whole of /app is in
+# scope so that every solution the instructions allow is captured; the
+# limits are the largest SecureBench accepts, so that scratch work an agent
+# leaves in /app (downloads, builds) does not fail capture.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "primers"
+
+[[artifact_checks.files]]
+path = "/app/primers.fasta"
+parser = "text"
+max_bytes = 16777216

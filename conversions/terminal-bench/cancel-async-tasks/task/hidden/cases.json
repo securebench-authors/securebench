@@ -1,0 +1,39 @@
+{
+  "run-to-completion": [
+    {
+      "upstream_test": "test_tasks_run_concurrently",
+      "challenge": {"n_tasks": 2, "max_concurrent": 2, "timeout_seconds": 5},
+      "expected": {
+        "returncode": 0,
+        "counts": [["Task started.", 2], ["Task finished.", 2], ["Cleaned up.", 2]],
+        "min_elapsed_seconds": null
+      }
+    },
+    {
+      "upstream_test": "test_tasks_obey_max_concurrent",
+      "challenge": {"n_tasks": 2, "max_concurrent": 1, "timeout_seconds": 10},
+      "expected": {
+        "returncode": 0,
+        "counts": [["Task started.", 2], ["Task finished.", 2], ["Cleaned up.", 2]],
+        "min_elapsed_seconds": 6
+      }
+    }
+  ],
+  "cancel-on-interrupt": [
+    {
+      "upstream_test": "test_tasks_cancel_below_max_concurrent",
+      "challenge": {"n_tasks": 2, "max_concurrent": 3, "interrupt_after_seconds": 0.5, "timeout_seconds": 5},
+      "expected": {"counts": [["Task started.", 2], ["Cleaned up.", 2]]}
+    },
+    {
+      "upstream_test": "test_tasks_cancel_at_max_concurrent",
+      "challenge": {"n_tasks": 2, "max_concurrent": 2, "interrupt_after_seconds": 0.5, "timeout_seconds": 5},
+      "expected": {"counts": [["Task started.", 2], ["Cleaned up.", 2]]}
+    },
+    {
+      "upstream_test": "test_tasks_cancel_above_max_concurrent",
+      "challenge": {"n_tasks": 3, "max_concurrent": 2, "interrupt_after_seconds": 0.5, "timeout_seconds": 5},
+      "expected": {"counts": [["Task started.", 2], ["Cleaned up.", 2]]}
+    }
+  ]
+}

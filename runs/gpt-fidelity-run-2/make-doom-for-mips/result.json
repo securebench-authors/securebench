@@ -1,0 +1,103 @@
+{
+  "task": "make-doom-for-mips",
+  "source": "terminal-bench",
+  "notes": [
+    "Two separate causes. Natively, as in every earlier round, the agent tested its build and left /tmp/frame.bmp behind. Upstream's test accepts the existing frame at once, stops vm.js after one second, and fails test_vm_execution (\"Expected text not found in output\", the line 'I_InitGraphics: DOOM screen size: w x h: 320 x 200'), while both frame tests pass. SecureBench never captures /tmp, so N->S passes, and so does N->s->N: this is the scope difference too, recorded in CONVERSION.md.",
+    "New this round: the SecureBench agent's own attempt failed at capture, \"symlink '/app/mips/build/toolchain/mipsel-none-elf-ar' has an absolute or malformed target\", so S->N could not run. The agent's build script, mips/build.sh, made a toolchain folder of links under /app/mips/build. Its last run of the unchanged vm.js reached 'I_InitGraphics: DOOM screen size: w x h: 320 x 200' and wrote valid frames, so the ELF itself probably works; we cannot grade it, because nothing was captured. The rule is the framework's (capture rejects every absolute link target), and CONVERSION.md records that a link leaving /app fails capture where upstream would follow it, so this is stricter by design. It fails a leftover build folder, not the deliverable, like the .venv cases."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "make-doom-for-mips",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 515.975884,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 107490,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 4429149,
+    "output_tokens": 21308,
+    "turns": null,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:f65e2e1f58150b7efa0792730d5a6335ee1f649124d9c321d3ba27247e5ce7b4",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 1577,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:1eb2b292539922b297570d142f13b83eaa85ff4cc7ed8e0074541c4df43fd3c0",
+      "bytes": 73827128,
+      "files_included": false
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "make-doom-for-mips",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/capture",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:f65e2e1f58150b7efa0792730d5a6335ee1f649124d9c321d3ba27247e5ce7b4",
+    "agent_seconds": 558.911,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [
+      "ab.chatgpt.com",
+      "api.github.com",
+      "chatgpt.com",
+      "github.com",
+      "raw.githubusercontent.com",
+      "sourceware.org"
+    ],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 101986,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 3505310,
+    "output_tokens": 17921,
+    "turns": null,
+    "result_error": false,
+    "S->N": "none: no candidate was captured (failed/capture)",
+    "wall_seconds": 1321,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": false
+    }
+  }
+}

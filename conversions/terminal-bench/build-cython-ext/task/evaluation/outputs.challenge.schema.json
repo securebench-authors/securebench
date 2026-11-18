@@ -1,0 +1,15 @@
+{"type": "object", "properties": {
+ "specs": {"type": "array", "min_items": 4, "max_items": 4, "items":
+  {"type": "string", "max_bytes": 64, "enum": ["pyknotid", "pyknotid.spacecurves.chelpers", "pyknotid.spacecurves.ccomplexity", "pyknotid.cinvariants"]}},
+ "cross": {"type": "array", "max_items": 1, "min_items": 1, "items":
+  {"type": "array", "min_items": 4, "max_items": 4, "items": {"type": "number", "minimum": -1000, "maximum": 1000}}},
+ "writhe": {"type": "array", "max_items": 1, "min_items": 1, "items": {"type": "object", "properties": {
+  "points": {"type": "array", "max_items": 4, "items":
+   {"type": "array", "min_items": 3, "max_items": 3, "items": {"type": "number", "minimum": -1000, "maximum": 1000}}},
+  "contributions": {"type": "array", "max_items": 4, "items":
+   {"type": "array", "max_items": 4, "items": {"type": "number", "minimum": -1000, "maximum": 1000}}},
+  "order": {"type": "array", "min_items": 4, "max_items": 4, "items": {"type": "integer", "minimum": 0, "maximum": 3}}}}},
+ "knots": {"type": "array", "max_items": 3, "min_items": 1, "items": {"type": "object", "properties": {
+  "knot": {"type": "string", "max_bytes": 16, "enum": ["trefoil", "figure_eight", "three_twist"]},
+  "num_points": {"type": "integer", "minimum": 50, "maximum": 100},
+  "op": {"type": "string", "max_bytes": 32, "enum": ["vassiliev_degree_3", "alexander_polynomial", "determinant"]}}}}}}

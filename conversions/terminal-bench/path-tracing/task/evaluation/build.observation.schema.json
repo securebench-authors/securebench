@@ -1,0 +1,103 @@
+{
+ "type": "object",
+ "properties": {
+  "compile": {
+   "type": "object",
+   "properties": {
+    "unlink": {
+     "type": "string",
+     "max_bytes": 16,
+     "enum": [
+      "removed",
+      "missing",
+      "failed"
+     ]
+    },
+    "ending": {
+     "type": "string",
+     "max_bytes": 16,
+     "enum": [
+      "exited",
+      "signaled",
+      "timed_out"
+     ]
+    },
+    "exit_status": {
+     "type": "integer",
+     "minimum": -255,
+     "maximum": 255
+    },
+    "stdout_utf8": {
+     "type": "boolean"
+    },
+    "stderr_utf8": {
+     "type": "boolean"
+    },
+    "stderr_start": {
+     "type": "string",
+     "max_bytes": 6144
+    }
+   },
+   "optional": [
+    "ending",
+    "exit_status",
+    "stdout_utf8",
+    "stderr_utf8",
+    "stderr_start"
+   ]
+  },
+  "headers": {
+   "type": "object",
+   "properties": {
+    "ending": {
+     "type": "string",
+     "max_bytes": 16,
+     "enum": [
+      "exited",
+      "signaled",
+      "timed_out"
+     ]
+    },
+    "exit_status": {
+     "type": "integer",
+     "minimum": -255,
+     "maximum": 255
+    },
+    "stdout": {
+     "type": "object",
+     "properties": {
+      "bytes": {
+       "type": "integer",
+       "minimum": 0,
+       "maximum": 1048577
+      },
+      "utf8": {
+       "type": "boolean"
+      },
+      "text": {
+       "type": "string",
+       "max_bytes": 3145728
+      }
+     }
+    },
+    "stderr": {
+     "type": "object",
+     "properties": {
+      "bytes": {
+       "type": "integer",
+       "minimum": 0,
+       "maximum": 1048577
+      },
+      "utf8": {
+       "type": "boolean"
+      },
+      "text": {
+       "type": "string",
+       "max_bytes": 3145728
+      }
+     }
+    }
+   }
+  }
+ }
+}

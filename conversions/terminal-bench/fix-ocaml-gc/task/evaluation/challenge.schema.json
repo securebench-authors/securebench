@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "dir": {"type": "string", "max_bytes": 4096},
+        "argv": {"type": "array", "max_items": 64, "items": {"type": "string", "max_bytes": 4096}}
+      }
+    },
+    "steps": {
+      "type": "array",
+      "max_items": 1000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "max_bytes": 256},
+          "op": {"type": "string", "max_bytes": 16, "enum": ["link", "exec", "read", "toc"]},
+          "dir": {"type": "string", "max_bytes": 4096},
+          "names": {"type": "array", "max_items": 16, "items": {"type": "string", "max_bytes": 256}},
+          "argv": {"type": "array", "max_items": 64, "items": {"type": "string", "max_bytes": 4096}},
+          "env": {"type": "string", "max_bytes": 16, "enum": ["compiler", "program"]},
+          "output": {"type": "string", "max_bytes": 4096},
+          "path": {"type": "string", "max_bytes": 4096}
+        },
+        "optional": ["dir", "names", "argv", "env", "output", "path"]
+      }
+    }
+  }
+}

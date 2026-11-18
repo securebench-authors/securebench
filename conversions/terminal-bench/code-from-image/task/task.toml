@@ -1,0 +1,32 @@
+id = "code-from-image"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/code-from-image@sha256:2be9cdb746ed18c1b2b1404032efae0b2235a1b8fc479ef17730c95409d89f76"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+# The only deliverable is /app/output.txt, but agents may leave tools, models
+# or environments under /app. The bounds are the largest allowed, and the
+# excluded directories are where installers commonly put large trees, so that
+# leftovers the native grader ignores do not fail capture here.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["**/.venv", "**/venv", "**/node_modules", "**/__pycache__"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "output"
+
+[[artifact_checks.files]]
+path = "/app/output.txt"
+parser = "text"
+max_bytes = 16777216

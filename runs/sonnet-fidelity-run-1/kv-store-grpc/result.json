@@ -1,0 +1,96 @@
+{
+  "task": "kv-store-grpc",
+  "source": "terminal-bench",
+  "notes": [
+    "The original tests test_real_grpc_server_running and test_grpc_server_functionality connect to the gRPC server the agent left running on port 5328; a copy of the files has none, so N->s->N and S->N fail by construction. The conversion starts the agent's server.py itself (CONVERSION.md)."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "kv-store-grpc",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 20.646937,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.039467,
+    "input_tokens": 6,
+    "cache_write_tokens": 4813,
+    "cache_read_tokens": 43065,
+    "output_tokens": 1159,
+    "turns": 3,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:febd01f18fcdb2255315cf8a5d2fb48f45cdcae37cbd9ad12c6e55d38e7affd9",
+      "framework": {
+        "commit": "e481309628ab604cb9a401a0ee5e8c8668c2245c",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 122,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:425a603252f8b66afcaf2ebea127b65332fdec7f36d9b2486ac3800c3a00c310",
+      "bytes": 26921704,
+      "files_included": false
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "kv-store-grpc",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:febd01f18fcdb2255315cf8a5d2fb48f45cdcae37cbd9ad12c6e55d38e7affd9",
+    "agent_seconds": 22.719,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.046583400000000004,
+    "input_tokens": 6,
+    "cache_write_tokens": 4939,
+    "cache_read_tokens": 68827,
+    "output_tokens": 1305,
+    "turns": 5,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 103,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:f8e91123dc11b066fdf26118be5e1b9d66088959f009797246b47ff46af1c389",
+      "bytes": 26921826,
+      "files_included": false
+    }
+  }
+}

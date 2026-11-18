@@ -1,0 +1,99 @@
+{
+  "task": "db-wal-recovery",
+  "source": "terminal-bench",
+  "notes": [
+    "First grading: S->N measured nothing. The native verifier ran out of disk while installing Python (\"No space left on device (os error 28)\"), at 21:17 on 11 November, during the disk-full window. On 13 November we redid these cross-grades with `equivalence.py regrade`, keeping the agents' runs; the earlier grades are kept in raw/attempts/.../regrade-replaced-1/. Regraded: S->N passes, so all five verdicts pass, as in earlier rounds."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "db-wal-recovery",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 11.927808,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.039357800000000005,
+    "input_tokens": 6,
+    "cache_write_tokens": 5584,
+    "cache_read_tokens": 43549,
+    "output_tokens": 830,
+    "turns": 3,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:a35b76b46942afbea1d33877feee5c43a54356586eac12c941bb74a567690795",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 142,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:b5f7994fdad6b85d1c27e44d9de372144d96c526eebd75a476f11d11175f08af",
+      "bytes": 8664,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "db-wal-recovery",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:a35b76b46942afbea1d33877feee5c43a54356586eac12c941bb74a567690795",
+    "agent_seconds": 14.08,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.04640820000000001,
+    "input_tokens": 8,
+    "cache_write_tokens": 5336,
+    "cache_read_tokens": 94191,
+    "output_tokens": 621,
+    "turns": 4,
+    "result_error": false,
+    "wall_seconds": 64,
+    "validity": "ok",
+    "S->N": "passed",
+    "regrades_replaced": 1,
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:b5f7994fdad6b85d1c27e44d9de372144d96c526eebd75a476f11d11175f08af",
+      "bytes": 8664,
+      "files_included": true
+    }
+  }
+}

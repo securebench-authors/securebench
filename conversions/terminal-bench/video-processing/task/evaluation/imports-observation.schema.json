@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "properties": {
+    "file": {
+      "type": "string",
+      "max_bytes": 32,
+      "enum": [
+        "absent",
+        "unparsable",
+        "parsed"
+      ]
+    },
+    "detail": {
+      "type": "string",
+      "max_bytes": 1024
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000000
+    },
+    "imports": {
+      "type": "array",
+      "max_items": 4096,
+      "items": {
+        "type": "string",
+        "max_bytes": 256
+      }
+    }
+  },
+  "optional": [
+    "detail",
+    "count",
+    "imports"
+  ]
+}

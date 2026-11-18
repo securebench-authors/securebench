@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "vim_returncode": {"type": "integer", "minimum": -128, "maximum": 255},
+    "vim_timed_out": {"type": "boolean"},
+    "input_kind": {"type": "string", "max_bytes": 16, "enum": ["read", "absent", "unreadable"]},
+    "input_sha256": {"type": "string", "max_bytes": 64},
+    "defs_written": {"type": "boolean"},
+    "defs_returncode": {"type": "integer", "minimum": -128, "maximum": 255},
+    "defs_timed_out": {"type": "boolean"},
+    "keystrokes": {
+      "type": "object",
+      "properties": {
+        "present": {"type": "boolean"},
+        "text": {"type": "string", "max_bytes": 262144},
+        "truncated": {"type": "boolean"}
+      }
+    },
+    "registers": {
+      "type": "object",
+      "properties": {
+        "present": {"type": "boolean"},
+        "text": {"type": "string", "max_bytes": 262144},
+        "truncated": {"type": "boolean"}
+      }
+    }
+  }
+}

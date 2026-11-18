@@ -1,0 +1,361 @@
+source	task	model	effort	side	validity	verdict	N->S	N->s->N	S->N	agent_seconds	time_limit_expired	cost_usd	input_tokens	cache_write_tokens	cache_read_tokens	output_tokens	turns	models	subagent_models	harness_version	provider_errors	denied_hosts	regrade_error	wall_seconds
+deep-swe	abs-stepped-slices	gpt-6.1-sol	medium	native	ok	passed	passed	passed		271.250493	False		61744		796008	16277		gpt-6.1-sol		0.160.0				570
+deep-swe	abs-stepped-slices	gpt-6.1-sol	medium	securebench	ok	passed			passed	272.837	False		65465		980078	18176		gpt-6.1-sol		0.160.0				432
+deep-swe	actionlint-action-pinning-lint	gpt-6.1-sol	medium	native	ok	passed	passed	passed		269.520468	False		67227		1060664	16874		gpt-6.1-sol		0.160.0				545
+deep-swe	actionlint-action-pinning-lint	gpt-6.1-sol	medium	securebench	ok	passed			passed	260.755	False		63535		1065460	15391		gpt-6.1-sol		0.160.0				425
+deep-swe	adaptix-name-mapping-aliases	gpt-6.1-sol	medium	native	ok	passed	failed/oracle	passed		380.768373	False		79958		1662885	15994		gpt-6.1-sol		0.160.0				612
+deep-swe	adaptix-name-mapping-aliases	gpt-6.1-sol	medium	securebench	ok	failed/oracle			passed	279.552	False		76271		1678025	16207		gpt-6.1-sol		0.160.0				403
+deep-swe	anko-default-function-arguments	gpt-6.1-sol	medium	native	ok	passed	passed	passed		337.103487	False		76681		1230363	16496		gpt-6.1-sol		0.160.0				649
+deep-swe	anko-default-function-arguments	gpt-6.1-sol	medium	securebench	ok	passed			passed	261.588	False		60417		752126	13819		gpt-6.1-sol		0.160.0				459
+deep-swe	anko-typed-variable-bindings	gpt-6.1-sol	medium	native	ok	passed	passed	passed		278.374134	False		78352		1228013	13222		gpt-6.1-sol		0.160.0				615
+deep-swe	anko-typed-variable-bindings	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	230.969	False		62680		888566	12530		gpt-6.1-sol		0.160.0				390
+deep-swe	arcane-drift-detection-baselines	gpt-6.1-sol	medium	native	ok	failed	passed	failed		879.29671	False		153678		8164096	46117		gpt-6.1-sol		0.160.0				1768
+deep-swe	arcane-drift-detection-baselines	gpt-6.1-sol	medium	securebench	ok	passed			passed	753.21	False		115013		4000711	33341		gpt-6.1-sol		0.160.0				1453
+deep-swe	bandit-incremental-cache-control	gpt-6.1-sol	medium	native	ok	passed	passed	passed		432.549416	False		88141		1562936	23210		gpt-6.1-sol		0.160.0				874
+deep-swe	bandit-incremental-cache-control	gpt-6.1-sol	medium	securebench	ok	passed			passed	369.081	False		76318		1250654	23107		gpt-6.1-sol		0.160.0				645
+deep-swe	bandit-structured-nosec-directives	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		361.679387	False		62937		1002097	18278		gpt-6.1-sol		0.160.0				584
+deep-swe	bandit-structured-nosec-directives	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	459.862	False		68870		1109839	22014		gpt-6.1-sol		0.160.0				563
+deep-swe	clack-async-autocomplete-options	gpt-6.1-sol	medium	native	ok	passed	passed	passed		395.481323	False		83865		1466838	18775		gpt-6.1-sol		0.160.0				726
+deep-swe	clack-async-autocomplete-options	gpt-6.1-sol	medium	securebench	ok	passed			passed	395.377	False		84229		1440540	21985		gpt-6.1-sol		0.160.0				543
+deep-swe	csstree-shorthand-expansion-compression	gpt-6.1-sol	medium	native	ok	passed	passed	passed		248.949453	False		52803		638731	12626		gpt-6.1-sol		0.160.0				442
+deep-swe	csstree-shorthand-expansion-compression	gpt-6.1-sol	medium	securebench	ok	passed			passed	243.422	False		58287		652802	13647		gpt-6.1-sol		0.160.0				315
+deep-swe	dasel-html-document-format	gpt-6.1-sol	medium	native	ok	passed	passed	passed		284.312789	False		69998		1019238	18542		gpt-6.1-sol		0.160.0				812
+deep-swe	dasel-html-document-format	gpt-6.1-sol	medium	securebench	ok	passed			passed	243.003	False		50459		699508	15157		gpt-6.1-sol		0.160.0				454
+deep-swe	drizzle-orm-window-function-builders	gpt-6.1-sol	medium	native	ok	passed	passed	passed		363.107799	False		76528		1479781	17927		gpt-6.1-sol		0.160.0				921
+deep-swe	drizzle-orm-window-function-builders	gpt-6.1-sol	medium	securebench	ok	passed			passed	307.407	False		68660		1002672	16330		gpt-6.1-sol		0.160.0				578
+deep-swe	dynamodb-toolbox-lazy-recursive-schemas	gpt-6.1-sol	medium	native	ok	passed	passed	passed		999.09895	False		181259		11783923	45648		gpt-6.1-sol		0.160.0				1398
+deep-swe	dynamodb-toolbox-lazy-recursive-schemas	gpt-6.1-sol	medium	securebench	ok	passed			passed	1530.344	False		187231		13349400	60403		gpt-6.1-sol		0.160.0				1898
+deep-swe	etree-xml-diff-patch	gpt-6.1-sol	medium	native	ok	passed	passed	passed		536.317042	False		63979		835056	30374		gpt-6.1-sol		0.160.0				933
+deep-swe	etree-xml-diff-patch	gpt-6.1-sol	medium	securebench	ok	passed			passed	508.364	False		72223		1035726	29852		gpt-6.1-sol		0.160.0				581
+deep-swe	fastapi-deprecation-response-headers	gpt-6.1-sol	medium	native	ok	passed	passed	passed		238.133308	False		55989		858564	15344		gpt-6.1-sol		0.160.0				589
+deep-swe	fastapi-deprecation-response-headers	gpt-6.1-sol	medium	securebench	ok	passed			passed	256.764	False		52092		962453	13655		gpt-6.1-sol		0.160.0				618
+deep-swe	fastapi-implicit-head-options	gpt-6.1-sol	medium	native	ok	passed	passed	passed		362.374537	False		62032		1143838	17865		gpt-6.1-sol		0.160.0				710
+deep-swe	fastapi-implicit-head-options	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	293.615	False		60621		1265309	16604		gpt-6.1-sol		0.160.0				450
+deep-swe	fd-deterministic-multi-key-sorting	gpt-6.1-sol	medium	native	ok	passed	passed	passed		227.215985	False		79477		1008916	14302		gpt-6.1-sol		0.160.0				486
+deep-swe	fd-deterministic-multi-key-sorting	gpt-6.1-sol	medium	securebench	ok	passed			passed	213.901	False		65807		695245	13439		gpt-6.1-sol		0.160.0				347
+deep-swe	go-genai-streamed-function-args	gpt-6.1-sol	medium	native	ok	passed	passed	passed		273.999647	False		64342		996274	16515		gpt-6.1-sol		0.160.0				569
+deep-swe	go-genai-streamed-function-args	gpt-6.1-sol	medium	securebench	ok	passed			passed	233.156	False		56803		763406	14290		gpt-6.1-sol		0.160.0				405
+deep-swe	katex-multicolumn-array-spans	gpt-6.1-sol	medium	native	ok	passed	passed	passed		327.972336	False		79055		1514617	18416		gpt-6.1-sol		0.160.0				627
+deep-swe	katex-multicolumn-array-spans	gpt-6.1-sol	medium	securebench	ok	passed			passed	396.086	False		75273		1225408	18074		gpt-6.1-sol		0.160.0				501
+deep-swe	kcp-go-multiplexed-kcp-streams	gpt-6.1-sol	medium	native	ok	passed	passed	passed		675.569211	False		64484		2046805	26141		gpt-6.1-sol		0.160.0				908
+deep-swe	kcp-go-multiplexed-kcp-streams	gpt-6.1-sol	medium	securebench	ok	passed			passed	443.52	False		69594		1418983	21238		gpt-6.1-sol		0.160.0				612
+deep-swe	kea-atomic-signal-selectors	gpt-6.1-sol	medium	native	ok	passed	passed	passed		476.721695	False		76529		1201662	20947		gpt-6.1-sol		0.160.0				730
+deep-swe	kea-atomic-signal-selectors	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	672.146	False		89976		2069680	32771		gpt-6.1-sol		0.160.0				760
+deep-swe	kgateway-consistent-hash-policy	gpt-6.1-sol	medium	native	ok	passed	passed	passed		1899.319361	False		151654		14541789	43665		gpt-6.1-sol		0.160.0				3206
+deep-swe	kgateway-consistent-hash-policy	gpt-6.1-sol	medium	securebench	ok	passed			passed	1893.461	False		183023		7969589	36774		gpt-6.1-sol		0.160.0				2732
+deep-swe	kombu-virtual-queue-dead-lettering	gpt-6.1-sol	medium	native	ok	passed	passed	passed		190.252318	False		61493		696915	14350		gpt-6.1-sol		0.160.0				467
+deep-swe	kombu-virtual-queue-dead-lettering	gpt-6.1-sol	medium	securebench	ok	passed			passed	228.643	False		56925		864383	12988		gpt-6.1-sol		0.160.0				362
+deep-swe	koota-entity-snapshot-rollback	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		320.214952	False		78856		1672215	20372		gpt-6.1-sol		0.160.0				528
+deep-swe	koota-entity-snapshot-rollback	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	380.591	False		88222		1477782	22289		gpt-6.1-sol		0.160.0				453
+deep-swe	meriyah-explicit-resource-declarations	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		233.53781	False		81948		1368212	13274		gpt-6.1-sol		0.160.0				641
+deep-swe	meriyah-explicit-resource-declarations	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	222.988	False		63614		1173273	9749		gpt-6.1-sol		0.160.0				389
+deep-swe	mobly-grouped-test-barriers	gpt-6.1-sol	medium	native	ok	passed	passed	passed		333.712647	False		74445		890779	22353		gpt-6.1-sol		0.160.0				479
+deep-swe	mobly-grouped-test-barriers	gpt-6.1-sol	medium	securebench	ok	passed			passed	230.203	False		60162		739475	14142		gpt-6.1-sol		0.160.0				314
+deep-swe	narwhals-rolling-window-suite	gpt-6.1-sol	medium	native	ok	passed	passed	passed		312.363817	False		114940		2623998	21005		gpt-6.1-sol		0.160.0				785
+deep-swe	narwhals-rolling-window-suite	gpt-6.1-sol	medium	securebench	ok	passed			passed	317.882	False		95662		1823604	19375		gpt-6.1-sol		0.160.0				586
+deep-swe	obsidian-linter-link-format-conversion	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		261.693057	False		82840		1549526	14540		gpt-6.1-sol		0.160.0				551
+deep-swe	obsidian-linter-link-format-conversion	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	310.534	False		74854		1523223	15343		gpt-6.1-sol		0.160.0				425
+deep-swe	onedump-dump-encryption-pipeline	gpt-6.1-sol	medium	native	ok	failed	passed	failed		370.349556	False		83179		1642258	21670		gpt-6.1-sol		0.160.0				798
+deep-swe	onedump-dump-encryption-pipeline	gpt-6.1-sol	medium	securebench	ok	passed			failed	377.424	False		75238		1387485	18843		gpt-6.1-sol		0.160.0				647
+deep-swe	opa-rego-rule-profiling	gpt-6.1-sol	medium	native	ok	failed	passed	passed		805.03948	False		79860		3402287	27581		gpt-6.1-sol		0.160.0				1281
+deep-swe	opa-rego-rule-profiling	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	546.29	False		67425		1369444	19925		gpt-6.1-sol		0.160.0				719
+deep-swe	opa-template-string-reconstruction	gpt-6.1-sol	medium	native	ok	failed	passed	passed		877.294944	False		122009		5746555	39884		gpt-6.1-sol		0.160.0				1426
+deep-swe	opa-template-string-reconstruction	gpt-6.1-sol	medium	securebench	ok	passed			passed	625.446	False		87096		2905847	25911		gpt-6.1-sol		0.160.0				1001
+deep-swe	optique-conditional-option-dependencies	gpt-6.1-sol	medium	native	ok	passed	passed	passed		1375.700251	False		162367		9042961	60967		gpt-6.1-sol		0.160.0				1579
+deep-swe	optique-conditional-option-dependencies	gpt-6.1-sol	medium	securebench	ok	passed			passed	744.829	False		120355		5083489	35258		gpt-6.1-sol		0.160.0				839
+deep-swe	participle-grammar-conflict-analysis	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		258.715225	False		58613		909586	16646		gpt-6.1-sol		0.160.0				520
+deep-swe	participle-grammar-conflict-analysis	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	481.885	False		68846		1176531	26662		gpt-6.1-sol		0.160.0				615
+deep-swe	prometheus-transactional-reload-status	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		800.676633	False		110754		6397348	31260		gpt-6.1-sol		0.160.0				1747
+deep-swe	prometheus-transactional-reload-status	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	819.996	False		108080		3772301	28716		gpt-6.1-sol		0.160.0				1378
+deep-swe	psd-tools-blend-range-api	gpt-6.1-sol	medium	native	ok	passed	passed	passed		324.910052	False		75956		1368291	24177		gpt-6.1-sol		0.160.0				545
+deep-swe	psd-tools-blend-range-api	gpt-6.1-sol	medium	securebench	ok	passed			passed	236.405	False		61900		1013829	14804		gpt-6.1-sol		0.160.0				340
+deep-swe	pwntools-tube-multiplexing	gpt-6.1-sol	medium	native	ok	passed	passed	passed		355.438485	False		72839		1057353	23184		gpt-6.1-sol		0.160.0				535
+deep-swe	pwntools-tube-multiplexing	gpt-6.1-sol	medium	securebench	ok	passed			passed	314.257	False		66109		773260	20623		gpt-6.1-sol		0.160.0				430
+deep-swe	python-statemachine-state-data-scoping	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		431.908344	False		119492		4511379	26930		gpt-6.1-sol		0.160.0				619
+deep-swe	python-statemachine-state-data-scoping	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	58.282	False		53925		236084	1783		gpt-6.1-sol		0.160.0				134
+deep-swe	returns-validated-error-accumulation	gpt-6.1-sol	medium	native	ok	passed	passed	passed		363.755266	False		88097		2375672	22026		gpt-6.1-sol		0.160.0				522
+deep-swe	returns-validated-error-accumulation	gpt-6.1-sol	medium	securebench	ok	passed			passed	344.843	False		83024		1708851	20176		gpt-6.1-sol		0.160.0				405
+deep-swe	scc-bounded-memory-spilling	gpt-6.1-sol	medium	native	ok	passed	passed	passed		678.261796	False		104206		3078197	35253		gpt-6.1-sol		0.160.0				979
+deep-swe	scc-bounded-memory-spilling	gpt-6.1-sol	medium	securebench	ok	passed			passed	372.441	False		81524		1665286	20643		gpt-6.1-sol		0.160.0				546
+deep-swe	sqlfmt-create-table-ddl-formatting	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		463.457034	False		92883		2296727	27885		gpt-6.1-sol		0.160.0				652
+deep-swe	sqlfmt-create-table-ddl-formatting	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	436.595	False		80550		1696982	22890		gpt-6.1-sol		0.160.0				525
+deep-swe	superjson-error-stack-serialization	gpt-6.1-sol	medium	native	ok	passed	passed	passed		275.758181	False		59916		928548	21053		gpt-6.1-sol		0.160.0				528
+deep-swe	superjson-error-stack-serialization	gpt-6.1-sol	medium	securebench	ok	passed			passed	273.569	False		51296		573997	18178		gpt-6.1-sol		0.160.0				357
+deep-swe	tengo-callable-instance-isolation	gpt-6.1-sol	medium	native	ok	passed	passed	passed		329.373702	False		71422		1374215	21348		gpt-6.1-sol		0.160.0				572
+deep-swe	tengo-callable-instance-isolation	gpt-6.1-sol	medium	securebench	ok	passed			passed	343.556	False		61099		1017358	18618		gpt-6.1-sol		0.160.0				462
+deep-swe	tengo-destructuring-bindings	gpt-6.1-sol	medium	native	ok	passed	passed	passed		269.409562	False		86457		1618398	18345		gpt-6.1-sol		0.160.0				440
+deep-swe	tengo-destructuring-bindings	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	326.82	False		89590		1475415	18190		gpt-6.1-sol		0.160.0				466
+deep-swe	termenv-preserve-ansi-resets	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		284.222238	False		53624		735514	21857		gpt-6.1-sol		0.160.0				501
+deep-swe	termenv-preserve-ansi-resets	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	206.849	False		39389		338912	14041		gpt-6.1-sol		0.160.0				280
+deep-swe	updo-policy-alerting	gpt-6.1-sol	medium	native	ok	passed	passed	passed		383.3475	False		99307		2541112	23758		gpt-6.1-sol		0.160.0				848
+deep-swe	updo-policy-alerting	gpt-6.1-sol	medium	securebench	ok	passed			passed	321.639	False		88352		1417941	20409		gpt-6.1-sol		0.160.0				597
+deep-swe	valibot-recursive-schema-composition	gpt-6.1-sol	medium	native	ok	passed	passed	passed		589.506562	False		106361		3791792	24310		gpt-6.1-sol		0.160.0				973
+deep-swe	valibot-recursive-schema-composition	gpt-6.1-sol	medium	securebench	ok	passed			passed	699.077	False		111993		4913228	31876		gpt-6.1-sol		0.160.0				870
+deep-swe	vitest-duration-sharding	gpt-6.1-sol	medium	native	ok	passed	passed	passed		450.600574	False		97242		4605227	27662		gpt-6.1-sol		0.160.0				1061
+deep-swe	vitest-duration-sharding	gpt-6.1-sol	medium	securebench	ok	passed			passed	370.544	False		85288		2335518	21622		gpt-6.1-sol		0.160.0				602
+deep-swe	wazero-multi-module-snapshots	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		342.619731	False		47668		1087817	16685		gpt-6.1-sol		0.160.0				571
+deep-swe	wazero-multi-module-snapshots	gpt-6.1-sol	medium	securebench	ok	failed/setup			failed	390.675	False		0		0	0		gpt-6.1-sol		0.160.0				502
+deep-swe	yjs-map-conflict-detection	gpt-6.1-sol	medium	native	ok	passed	passed	passed		326.156757	False		66449		992487	18997		gpt-6.1-sol		0.160.0				547
+deep-swe	yjs-map-conflict-detection	gpt-6.1-sol	medium	securebench	ok	passed			passed	417.924	False		69940		1151045	21948		gpt-6.1-sol		0.160.0				495
+deep-swe	ytt-jsonpath-query-api	gpt-6.1-sol	medium	native	ok	passed	passed	passed		191.250786	False		55834		644324	14081		gpt-6.1-sol		0.160.0				409
+deep-swe	ytt-jsonpath-query-api	gpt-6.1-sol	medium	securebench	ok	passed			passed	263.176	False		59323		864011	17790		gpt-6.1-sol		0.160.0				359
+terminal-bench	adaptive-rejection-sampler	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		245.428053	False		42337		332592	13136		gpt-6.1-sol		0.160.0				469
+terminal-bench	adaptive-rejection-sampler	gpt-6.1-sol	medium	securebench	ok	passed			failed	261.955	False		33292		372470	14324		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		413
+terminal-bench	bn-fit-modify	gpt-6.1-sol	medium	native	ok	passed	passed	passed		97.510124	False		19152		111667	3467		gpt-6.1-sol		0.160.0				274
+terminal-bench	bn-fit-modify	gpt-6.1-sol	medium	securebench	ok	passed			passed	53.318	False		15341		54764	3062		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		137
+terminal-bench	build-cython-ext	gpt-6.1-sol	medium	native	ok	passed	passed	passed		189.079166	False		61888		1090612	6167		gpt-6.1-sol		0.160.0				486
+terminal-bench	build-cython-ext	gpt-6.1-sol	medium	securebench	ok	passed			passed	219.617	False		60289		1317302	7310		gpt-6.1-sol		0.160.0		ab.chatgpt.com,chatgpt.com		518
+terminal-bench	cancel-async-tasks	gpt-6.1-sol	medium	native	ok	passed	passed	passed		38.563171	False		14711		39106	2021		gpt-6.1-sol		0.160.0				189
+terminal-bench	cancel-async-tasks	gpt-6.1-sol	medium	securebench	ok	passed			passed	36.374	False		11995		31443	1714		gpt-6.1-sol		0.160.0				123
+terminal-bench	chess-best-move	gpt-6.1-sol	medium	native	ok	passed	passed	passed		56.394869	False		18620		156456	1245		gpt-6.1-sol		0.160.0				241
+terminal-bench	chess-best-move	gpt-6.1-sol	medium	securebench	ok	passed			passed	67.876	False		15243		178471	1415		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com,security.ubuntu.com		142
+terminal-bench	circuit-fibsqrt	gpt-6.1-sol	medium	native	ok	passed	passed	passed		174.014057	False		22207		313745	5354		gpt-6.1-sol		0.160.0				354
+terminal-bench	circuit-fibsqrt	gpt-6.1-sol	medium	securebench	ok	passed			passed	187.358	False		20228		302608	5837		gpt-6.1-sol		0.160.0				234
+terminal-bench	cobol-modernization	gpt-6.1-sol	medium	native	ok	passed	passed	passed		119.293882	False		29266		274043	5648		gpt-6.1-sol		0.160.0				260
+terminal-bench	cobol-modernization	gpt-6.1-sol	medium	securebench	ok	passed			passed	130.501	False		22748		193119	6445		gpt-6.1-sol		0.160.0				176
+terminal-bench	code-from-image	gpt-6.1-sol	medium	native	ok	passed	passed	passed		9.026476	False		14031		26263	255		gpt-6.1-sol		0.160.0				114
+terminal-bench	code-from-image	gpt-6.1-sol	medium	securebench	ok	passed			passed	24.386	False		11579		21350	259		gpt-6.1-sol		0.160.0				68
+terminal-bench	constraints-scheduling	gpt-6.1-sol	medium	native	ok	passed	passed	passed		36.802071	False		17156		57988	2675		gpt-6.1-sol		0.160.0				161
+terminal-bench	constraints-scheduling	gpt-6.1-sol	medium	securebench	ok	passed			passed	35.582	False		14646		35852	2530		gpt-6.1-sol		0.160.0				103
+terminal-bench	count-dataset-tokens	gpt-6.1-sol	medium	native	ok	passed	passed	passed		59.677834	False		19486		199422	1898		gpt-6.1-sol		0.160.0				213
+terminal-bench	count-dataset-tokens	gpt-6.1-sol	medium	securebench	ok	passed			passed	81.261	False		16266		149598	1790		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		133
+terminal-bench	custom-memory-heap-crash	gpt-6.1-sol	medium	native	ok	passed	passed	passed		45.869735	False		26327		130863	1533		gpt-6.1-sol		0.160.0				409
+terminal-bench	custom-memory-heap-crash	gpt-6.1-sol	medium	securebench	ok	passed			passed	83.687	False		31489		180213	2499		gpt-6.1-sol		0.160.0				354
+terminal-bench	db-wal-recovery	gpt-6.1-sol	medium	native	ok	passed	passed	passed		29.531013	False		15873		67740	1476		gpt-6.1-sol		0.160.0				180
+terminal-bench	db-wal-recovery	gpt-6.1-sol	medium	securebench	ok	passed			passed	50.057	False		13672		56141	1943		gpt-6.1-sol		0.160.0				102
+terminal-bench	distribution-search	gpt-6.1-sol	medium	native	ok	passed	passed	passed		28.039382	False		14394		38776	1545		gpt-6.1-sol		0.160.0				159
+terminal-bench	distribution-search	gpt-6.1-sol	medium	securebench	ok	passed			passed	47.136	False		12057		31436	1655		gpt-6.1-sol		0.160.0				116
+terminal-bench	dna-assembly	gpt-6.1-sol	medium	native	ok	passed	passed	passed		136.186066	False		33153		234808	5303		gpt-6.1-sol		0.160.0				330
+terminal-bench	dna-assembly	gpt-6.1-sol	medium	securebench	ok	passed			passed	159.202	False		31033		330997	5468		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com,international.neb.com,www.neb.com		236
+terminal-bench	dna-insert	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		57.305061	False		25524		184141	2894		gpt-6.1-sol		0.160.0				214
+terminal-bench	dna-insert	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	129.417	False		25785		235939	4380		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		190
+terminal-bench	extract-elf	gpt-6.1-sol	medium	native	ok	passed	passed	passed		35.767818	False		20237		60759	2359		gpt-6.1-sol		0.160.0				147
+terminal-bench	extract-elf	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	80.854	False		24211		102255	4137		gpt-6.1-sol		0.160.0				165
+terminal-bench	extract-moves-from-video	gpt-6.1-sol	medium	native	ok	passed	passed	passed		612.195668	False		77178		2571537	18621		gpt-6.1-sol		0.160.0				747
+terminal-bench	extract-moves-from-video	gpt-6.1-sol	medium	securebench	ok	failed/case_error			failed	51.202	False		14382		77636	637		gpt-6.1-sol		0.160.0				166
+terminal-bench	feal-linear-cryptanalysis	gpt-6.1-sol	medium	native	ok	passed	passed	passed		90.334962	False		21301		48316	5446		gpt-6.1-sol		0.160.0				268
+terminal-bench	feal-linear-cryptanalysis	gpt-6.1-sol	medium	securebench	ok	passed			passed	94.984	False		19670		70563	6106		gpt-6.1-sol		0.160.0				189
+terminal-bench	filter-js-from-html	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		360.83272	False		38088		425161	16642		gpt-6.1-sol		0.160.0				1146
+terminal-bench	filter-js-from-html	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	230.102	False		21763		162368	10098		gpt-6.1-sol		0.160.0				671
+terminal-bench	financial-document-processor	gpt-6.1-sol	medium	native	ok	passed	passed	passed		137.842992	False		48064		599293	3070		gpt-6.1-sol		0.160.0				387
+terminal-bench	financial-document-processor	gpt-6.1-sol	medium	securebench	ok	passed			passed	112.415	False		79406		575990	2441		gpt-6.1-sol		0.160.0		ab.chatgpt.com,chatgpt.com		226
+terminal-bench	fix-code-vulnerability	gpt-6.1-sol	medium	native	ok	passed	passed	passed		26.303042	False		42136		169652	1313		gpt-6.1-sol		0.160.0				196
+terminal-bench	fix-code-vulnerability	gpt-6.1-sol	medium	securebench	ok	passed			passed	29.267	False		34893		132261	1018		gpt-6.1-sol		0.160.0				61
+terminal-bench	fix-git	gpt-6.1-sol	medium	native	ok	passed	passed	passed		31.842326	False		19329		127985	1594		gpt-6.1-sol		0.160.0				165
+terminal-bench	fix-git	gpt-6.1-sol	medium	securebench	ok	passed			passed	24.578	False		14616		61806	864		gpt-6.1-sol		0.160.0				73
+terminal-bench	fix-ocaml-gc	gpt-6.1-sol	medium	native	ok	passed	passed	passed		771.369066	False		64691		2448005	8005		gpt-6.1-sol		0.160.0				3040
+terminal-bench	fix-ocaml-gc	gpt-6.1-sol	medium	securebench	ok	passed			passed	795.888	False		61809		2823215	8560		gpt-6.1-sol		0.160.0				2483
+terminal-bench	gcode-to-text	gpt-6.1-sol	medium	native	ok	passed	passed	passed		75.104965	False		22530		198563	1997		gpt-6.1-sol		0.160.0				220
+terminal-bench	gcode-to-text	gpt-6.1-sol	medium	securebench	ok	passed			passed	65.792	False		19736		176016	2213		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		151
+terminal-bench	git-leak-recovery	gpt-6.1-sol	medium	native	ok	passed	passed	passed		40.037438	False		16979		85907	2521		gpt-6.1-sol		0.160.0				367
+terminal-bench	git-leak-recovery	gpt-6.1-sol	medium	securebench	ok	passed			passed	87.914	False		16389		74188	3599		gpt-6.1-sol		0.160.0				223
+terminal-bench	gpt2-codegolf	gpt-6.1-sol	medium	native	ok	passed	passed	passed		365.477521	False		55429		865397	18121		gpt-6.1-sol		0.160.0				543
+terminal-bench	gpt2-codegolf	gpt-6.1-sol	medium	securebench	ok	passed			passed	474.921	False		42030		671966	20488		gpt-6.1-sol		0.160.0				524
+terminal-bench	hf-model-inference	gpt-6.1-sol	medium	native	ok	passed	failed/oracle	failed		86.344004	False		21937		184297	2559		gpt-6.1-sol		0.160.0				856
+terminal-bench	hf-model-inference	gpt-6.1-sol	medium	securebench	ok	passed			failed	62.653	False		15684		126247	3263		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		431
+terminal-bench	kv-store-grpc	gpt-6.1-sol	medium	native	ok	passed	passed	failed		43.430191	False		16063		71123	2019		gpt-6.1-sol		0.160.0				397
+terminal-bench	kv-store-grpc	gpt-6.1-sol	medium	securebench	ok	passed			failed	84.965	False		14578		146778	2546		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		237
+terminal-bench	llm-inference-batching-scheduler	gpt-6.1-sol	medium	native	ok	passed	passed	passed		137.335214	False		24891		221488	5200		gpt-6.1-sol		0.160.0				343
+terminal-bench	llm-inference-batching-scheduler	gpt-6.1-sol	medium	securebench	ok	passed			passed	91.591	False		22139		154775	4802		gpt-6.1-sol		0.160.0				148
+terminal-bench	log-summary-date-ranges	gpt-6.1-sol	medium	native	ok	passed	passed	passed		18.686112	False		16045		43006	724		gpt-6.1-sol		0.160.0				243
+terminal-bench	log-summary-date-ranges	gpt-6.1-sol	medium	securebench	ok	passed			passed	26.894	False		14555		49663	1354		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		94
+terminal-bench	make-doom-for-mips	gpt-6.1-sol	medium	native	ok	failed	passed	passed		407.05821	False		98444		2908820	16508		gpt-6.1-sol		0.160.0				610
+terminal-bench	make-doom-for-mips	gpt-6.1-sol	medium	securebench	ok	passed			passed	757.925	False		124705		6318744	26355		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com,github.com,raw.githubusercontent.com		1011
+terminal-bench	make-mips-interpreter	gpt-6.1-sol	medium	native	ok	passed	passed	passed		185.22399	False		50289		469813	10296		gpt-6.1-sol		0.160.0				542
+terminal-bench	make-mips-interpreter	gpt-6.1-sol	medium	securebench	ok	passed			passed	273.039	False		57563		838199	14901		gpt-6.1-sol		0.160.0				433
+terminal-bench	mcmc-sampling-stan	gpt-6.1-sol	medium	native	ok	passed	failed/capture	none: no candidate was captured (failed/capture)		448.717826	False		42980		1537566	7582		gpt-6.1-sol		0.160.0				1769
+terminal-bench	mcmc-sampling-stan	gpt-6.1-sol	medium	securebench	ok	passed			passed	368.066	False		34639		905963	5984		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com,cran.r-project.org		1754
+terminal-bench	merge-diff-arc-agi-task	gpt-6.1-sol	medium	native	ok	failed	failed/case_error	failed		59.00596	False		22828		179141	2244		gpt-6.1-sol		0.160.0				293
+terminal-bench	merge-diff-arc-agi-task	gpt-6.1-sol	medium	securebench	ok	passed			passed	105.448	False		23692		251546	1671		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		250
+terminal-bench	model-extraction-relu-logits	gpt-6.1-sol	medium	native	ok	passed	passed	passed		76.501932	False		18324		56279	3555		gpt-6.1-sol		0.160.0				206
+terminal-bench	model-extraction-relu-logits	gpt-6.1-sol	medium	securebench	ok	passed			passed	83.291	False		15948		46597	3714		gpt-6.1-sol		0.160.0				118
+terminal-bench	modernize-scientific-stack	gpt-6.1-sol	medium	native	ok	passed	passed	passed		13.803032	False		15028		40264	710		gpt-6.1-sol		0.160.0				184
+terminal-bench	modernize-scientific-stack	gpt-6.1-sol	medium	securebench	ok	passed			passed	19.483	False		14443		34719	747		gpt-6.1-sol		0.160.0				79
+terminal-bench	mteb-leaderboard	gpt-6.1-sol	medium	native	ok	passed	passed	passed		141.150215	False		32813		411907	3202		gpt-6.1-sol		0.160.0				501
+terminal-bench	mteb-leaderboard	gpt-6.1-sol	medium	securebench	ok	passed			passed	175.447	False		71775		1266962	6348		gpt-6.1-sol		0.160.0		ab.chatgpt.com,chatgpt.com,duckduckgo.com,hf.co,huggingface.co,kennethenevoldsen.github.io,mteb-leaderboard.hf.space,raw.githubusercontent.com,www.bing.com,www.google.com		227
+terminal-bench	mteb-retrieve	gpt-6.1-sol	medium	native	ok	passed	passed	passed		46.372972	False		17165		120660	945		gpt-6.1-sol		0.160.0				579
+terminal-bench	mteb-retrieve	gpt-6.1-sol	medium	securebench	ok	passed			passed	129.731	False		14574		162301	1223		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		257
+terminal-bench	multi-source-data-merger	gpt-6.1-sol	medium	native	ok	passed	passed	passed		30.326199	False		16198		40151	2269		gpt-6.1-sol		0.160.0				216
+terminal-bench	multi-source-data-merger	gpt-6.1-sol	medium	securebench	ok	passed			passed	38.225	False		13364		32600	2196		gpt-6.1-sol		0.160.0				101
+terminal-bench	openssl-selfsigned-cert	gpt-6.1-sol	medium	native	ok	passed	passed	failed		29.688949	False		15270		25677	1889		gpt-6.1-sol		0.160.0				123
+terminal-bench	openssl-selfsigned-cert	gpt-6.1-sol	medium	securebench	ok	passed			failed	32.275	False		12342		20764	1697		gpt-6.1-sol		0.160.0				84
+terminal-bench	overfull-hbox	gpt-6.1-sol	medium	native	ok	passed	passed	passed		68.789609	False		23561		239598	3258		gpt-6.1-sol		0.160.0				245
+terminal-bench	overfull-hbox	gpt-6.1-sol	medium	securebench	ok	passed			passed	130.898	False		22087		249916	4294		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		231
+terminal-bench	path-tracing	gpt-6.1-sol	medium	native	ok	passed	passed	passed		232.721862	False		30304		407307	8856		gpt-6.1-sol		0.160.0				490
+terminal-bench	path-tracing	gpt-6.1-sol	medium	securebench	ok	passed			passed	175.472	False		31783		295334	7064		gpt-6.1-sol		0.160.0				245
+terminal-bench	path-tracing-reverse	gpt-6.1-sol	medium	native	ok	passed	passed	passed		47.902005	False		57661		245140	2581		gpt-6.1-sol		0.160.0				170
+terminal-bench	path-tracing-reverse	gpt-6.1-sol	medium	securebench	ok	passed			passed	52.149	False		39831		160736	2138		gpt-6.1-sol		0.160.0				127
+terminal-bench	polyglot-c-py	gpt-6.1-sol	medium	native	ok	passed	passed	passed		83.806548	False		20582		138518	3591		gpt-6.1-sol		0.160.0				266
+terminal-bench	polyglot-c-py	gpt-6.1-sol	medium	securebench	ok	passed			passed	92.408	False		19019		157125	4232		gpt-6.1-sol		0.160.0				197
+terminal-bench	polyglot-rust-c	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		53.839263	False		16094		84833	3102		gpt-6.1-sol		0.160.0				272
+terminal-bench	polyglot-rust-c	gpt-6.1-sol	medium	securebench	ok	passed			passed	65.262	False		14169		83470	3450		gpt-6.1-sol		0.160.0				177
+terminal-bench	prove-plus-comm	gpt-6.1-sol	medium	native	ok	passed	passed	passed		13.561401	False		13376		38107	566		gpt-6.1-sol		0.160.0				195
+terminal-bench	prove-plus-comm	gpt-6.1-sol	medium	securebench	ok	passed			passed	22.223	False		10852		30833	471		gpt-6.1-sol		0.160.0				131
+terminal-bench	pypi-server	gpt-6.1-sol	medium	native	ok	passed	passed	failed		44.560292	False		18600		105955	2263		gpt-6.1-sol		0.160.0				239
+terminal-bench	pypi-server	gpt-6.1-sol	medium	securebench	ok	passed			failed	93.475	False		18206		205323	2959		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		219
+terminal-bench	pytorch-model-cli	gpt-6.1-sol	medium	native	ok	passed	passed	passed		68.32617	False		28298		150463	4427		gpt-6.1-sol		0.160.0				705
+terminal-bench	pytorch-model-cli	gpt-6.1-sol	medium	securebench	ok	passed			passed	199.896	False		29533		451886	7164		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		523
+terminal-bench	pytorch-model-recovery	gpt-6.1-sol	medium	native	ok	passed	passed	passed		40.618566	False		17404		42253	2411		gpt-6.1-sol		0.160.0				644
+terminal-bench	pytorch-model-recovery	gpt-6.1-sol	medium	securebench	ok	passed			passed	49.592	False		15112		35139	2517		gpt-6.1-sol		0.160.0				388
+terminal-bench	raman-fitting	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		66.649154	False		18868		163790	2799		gpt-6.1-sol		0.160.0				507
+terminal-bench	raman-fitting	gpt-6.1-sol	medium	securebench	ok	passed			passed	162.896	False		19604		205281	2905		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		239
+terminal-bench	regex-chess	gpt-6.1-sol	medium	native	ok	passed	passed	passed		219.428471	False		27587		196268	9263		gpt-6.1-sol		0.160.0				479
+terminal-bench	regex-chess	gpt-6.1-sol	medium	securebench	ok	passed			passed	279.944	False		28081		292890	11321		gpt-6.1-sol		0.160.0				417
+terminal-bench	regex-log	gpt-6.1-sol	medium	native	ok	passed	passed	passed		51.516606	False		17515		71468	3590		gpt-6.1-sol		0.160.0				202
+terminal-bench	regex-log	gpt-6.1-sol	medium	securebench	ok	passed			passed	87.661	False		14972		70097	3470		gpt-6.1-sol		0.160.0				168
+terminal-bench	rstan-to-pystan	gpt-6.1-sol	medium	native	ok	passed	passed	passed		606.047863	False		51382		1646335	9565		gpt-6.1-sol		0.160.0				865
+terminal-bench	rstan-to-pystan	gpt-6.1-sol	medium	securebench	ok	passed			passed	507.301	False		49784		1679778	10523		gpt-6.1-sol		0.160.0		ab.chatgpt.com,chatgpt.com		617
+terminal-bench	sanitize-git-repo	gpt-6.1-sol	medium	native	ok	passed	passed	passed		87.210043	False		35015		304654	4624		gpt-6.1-sol		0.160.0				276
+terminal-bench	sanitize-git-repo	gpt-6.1-sol	medium	securebench	ok	passed			passed	175.221	False		29972		368316	6290		gpt-6.1-sol		0.160.0				269
+terminal-bench	schemelike-metacircular-eval	gpt-6.1-sol	medium	native	ok	passed	passed	passed		514.33458	False		50072		917170	17194		gpt-6.1-sol		0.160.0				846
+terminal-bench	schemelike-metacircular-eval	gpt-6.1-sol	medium	securebench	ok	passed			passed	455.26	False		46558		739040	17521		gpt-6.1-sol		0.160.0				789
+terminal-bench	sparql-university	gpt-6.1-sol	medium	native	ok	passed	passed	passed		157.477209	False		30245		664385	3037		gpt-6.1-sol		0.160.0				363
+terminal-bench	sparql-university	gpt-6.1-sol	medium	securebench	ok	passed			passed	31.882	False		16633		69501	1319		gpt-6.1-sol		0.160.0				73
+terminal-bench	sqlite-db-truncate	gpt-6.1-sol	medium	native	ok	passed	passed	passed		22.276642	False		15103		39128	1455		gpt-6.1-sol		0.160.0				145
+terminal-bench	sqlite-db-truncate	gpt-6.1-sol	medium	securebench	ok	passed			passed	27.823	False		27012		45603	1292		gpt-6.1-sol		0.160.0				99
+terminal-bench	train-fasttext	gpt-6.1-sol	medium	native	ok	passed	passed	passed		1133.240622	False		67632		3326655	18652		gpt-6.1-sol		0.160.0				1380
+terminal-bench	train-fasttext	gpt-6.1-sol	medium	securebench	ok	passed			passed	993.17	False		36641		1761384	13904		gpt-6.1-sol		0.160.0		ab.chatgpt.com,chatgpt.com,files.pythonhosted.org,pypi.org,pypi.python.org		1101
+terminal-bench	video-processing	gpt-6.1-sol	medium	native	ok	passed	passed	passed		205.515833	False		39533		312469	7952		gpt-6.1-sol		0.160.0				385
+terminal-bench	video-processing	gpt-6.1-sol	medium	securebench	ok	passed			passed	235.362	False		30840		276679	9243		gpt-6.1-sol		0.160.0				358
+terminal-bench	winning-avg-corewars	gpt-6.1-sol	medium	native	ok	passed	passed	passed		79.671902	False		21048		177260	2464		gpt-6.1-sol		0.160.0				257
+terminal-bench	winning-avg-corewars	gpt-6.1-sol	medium	securebench	ok	passed			passed	49.586	False		34259		121687	1634		gpt-6.1-sol		0.160.0				109
+terminal-bench	write-compressor	gpt-6.1-sol	medium	native	ok	passed	passed	passed		40.527955	False		19015		128022	2388		gpt-6.1-sol		0.160.0				212
+terminal-bench	write-compressor	gpt-6.1-sol	medium	securebench	ok	passed			passed	55.041	False		16612		92588	2677		gpt-6.1-sol		0.160.0				176
+deep-swe	abs-module-cache-flags	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		266.083109	False		55331		874328	14879		gpt-6.1-sol		0.160.0				619
+deep-swe	abs-module-cache-flags	gpt-6.1-sol	medium	securebench	ok	passed			passed	298.668	False		53382		844198	14062		gpt-6.1-sol		0.160.0				409
+deep-swe	aiomonitor-task-snapshots-diff	gpt-6.1-sol	medium	native	ok	passed	passed	passed		276.519663	False		70574		986561	18127		gpt-6.1-sol		0.160.0				626
+deep-swe	aiomonitor-task-snapshots-diff	gpt-6.1-sol	medium	securebench	ok	passed			passed	296.007	False		71560		1003697	18210		gpt-6.1-sol		0.160.0				491
+deep-swe	arktype-json-schema-refs-dependencies	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		543.406503	False		114920		3717360	27853		gpt-6.1-sol		0.160.0				940
+deep-swe	arktype-json-schema-refs-dependencies	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	326.391	False		72671		1336461	15748		gpt-6.1-sol		0.160.0				435
+deep-swe	awilix-async-container-initialization	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		413.075888	False		70901		1257017	20062		gpt-6.1-sol		0.160.0				617
+deep-swe	awilix-async-container-initialization	gpt-6.1-sol	medium	securebench	ok	passed			passed	341.754	False		59162		737059	16782		gpt-6.1-sol		0.160.0				434
+deep-swe	bandit-interprocedural-taint-checks	gpt-6.1-sol	medium	native	ok	passed	passed	passed		289.777765	False		66960		881507	16569		gpt-6.1-sol		0.160.0				476
+deep-swe	bandit-interprocedural-taint-checks	gpt-6.1-sol	medium	securebench	ok	passed			passed	555.372	False		71144		1418240	22646		gpt-6.1-sol		0.160.0				622
+deep-swe	boa-hierarchical-evaluation-cancellation	gpt-6.1-sol	medium	native	ok	passed	passed	passed		511.944916	False		98679		2853540	25375		gpt-6.1-sol		0.160.0				1487
+deep-swe	boa-hierarchical-evaluation-cancellation	gpt-6.1-sol	medium	securebench	ok	passed			passed	475.752	False		97594		2555177	25191		gpt-6.1-sol		0.160.0				1051
+deep-swe	cattrs-partial-structuring-recovery	gpt-6.1-sol	medium	native	ok	passed	failed/capture	none: no candidate was captured (failed/capture)		299.946695	False		57466		881449	14816		gpt-6.1-sol		0.160.0				373
+deep-swe	cattrs-partial-structuring-recovery	gpt-6.1-sol	medium	securebench	ok	failed/capture			none: no candidate was captured (failed/capture)	346.677	False		67013		1212052	19212		gpt-6.1-sol		0.160.0				359
+deep-swe	claude-code-by-agents-recursive-delegation	gpt-6.1-sol	medium	native	ok	passed	failed/oracle	passed		184.258502	False		63004		673308	12998		gpt-6.1-sol		0.160.0				446
+deep-swe	claude-code-by-agents-recursive-delegation	gpt-6.1-sol	medium	securebench	ok	failed/oracle			passed	153.27	False		66024		628751	9180		gpt-6.1-sol		0.160.0				288
+deep-swe	cliffy-config-file-parsing	gpt-6.1-sol	medium	native	ok	passed	passed	passed		392.342208	False		78417		1526480	20162		gpt-6.1-sol		0.160.0				616
+deep-swe	cliffy-config-file-parsing	gpt-6.1-sol	medium	securebench	ok	passed			passed	336.734	False		63640		1086431	15298		gpt-6.1-sol		0.160.0				460
+deep-swe	dateutil-rfc5545-timezone-interop	gpt-6.1-sol	medium	native	ok	passed	passed	passed		387.494077	False		77913		1145384	22059		gpt-6.1-sol		0.160.0				608
+deep-swe	dateutil-rfc5545-timezone-interop	gpt-6.1-sol	medium	securebench	ok	passed			passed	490.454	False		81473		1381626	24163		gpt-6.1-sol		0.160.0				559
+deep-swe	dynamodb-toolbox-conditional-attribute-requirements	gpt-6.1-sol	medium	native	ok	passed	passed	passed		917.141284	False		151365		8596458	40149		gpt-6.1-sol		0.160.0				1406
+deep-swe	dynamodb-toolbox-conditional-attribute-requirements	gpt-6.1-sol	medium	securebench	ok	passed			passed	619.133	False		125780		5888515	29813		gpt-6.1-sol		0.160.0				888
+deep-swe	effect-sse-httpapi-streaming	gpt-6.1-sol	medium	native	ok	passed	passed	passed		2042.966419	False		183982		16661632	62147		gpt-6.1-sol		0.160.0				3387
+deep-swe	effect-sse-httpapi-streaming	gpt-6.1-sol	medium	securebench	ok	passed			passed	2030.148	False		145681		11644969	41890		gpt-6.1-sol		0.160.0				2853
+deep-swe	expr-try-catch-errors	gpt-6.1-sol	medium	native	ok	passed	passed	passed		500.116996	False		94476		2292477	23606		gpt-6.1-sol		0.160.0				909
+deep-swe	expr-try-catch-errors	gpt-6.1-sol	medium	securebench	ok	passed			passed	454.111	False		95334		2316643	24741		gpt-6.1-sol		0.160.0				658
+deep-swe	geo-shapeindex-serialization	gpt-6.1-sol	medium	native	ok	passed	passed	passed		393.175241	False		80419		1804489	23683		gpt-6.1-sol		0.160.0				636
+deep-swe	geo-shapeindex-serialization	gpt-6.1-sol	medium	securebench	ok	passed			passed	453.629	False		86370		1765989	22049		gpt-6.1-sol		0.160.0				547
+deep-swe	go-critic-doc-link-checker	gpt-6.1-sol	medium	native	ok	passed	passed	passed		376.043028	False		72678		1365227	18519		gpt-6.1-sol		0.160.0				612
+deep-swe	go-critic-doc-link-checker	gpt-6.1-sol	medium	securebench	ok	passed			passed	276.322	False		52714		832442	11148		gpt-6.1-sol		0.160.0				418
+deep-swe	go-git-worktree-merge-conflicts	gpt-6.1-sol	medium	native	ok	passed	passed	passed		364.716975	False		81457		1517669	22645		gpt-6.1-sol		0.160.0				695
+deep-swe	go-git-worktree-merge-conflicts	gpt-6.1-sol	medium	securebench	ok	passed			passed	404.104	False		78932		1704824	20665		gpt-6.1-sol		0.160.0				638
+deep-swe	goreleaser-retry-publish-auditing	gpt-6.1-sol	medium	native	ok	passed	passed	passed		551.159306	False		100426		2735029	26520		gpt-6.1-sol		0.160.0				1037
+deep-swe	goreleaser-retry-publish-auditing	gpt-6.1-sol	medium	securebench	ok	passed			passed	611.622	False		99673		3322990	28521		gpt-6.1-sol		0.160.0				1025
+deep-swe	gql-incremental-graphql-delivery	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		331.853641	False		87978		1552185	21023		gpt-6.1-sol		0.160.0				498
+deep-swe	gql-incremental-graphql-delivery	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	453.174	False		92140		1932582	28159		gpt-6.1-sol		0.160.0				530
+deep-swe	happy-dom-abort-pending-body-reads	gpt-6.1-sol	medium	native	ok	passed	passed	passed		586.936961	False		116696		4082470	23900		gpt-6.1-sol		0.160.0				986
+deep-swe	happy-dom-abort-pending-body-reads	gpt-6.1-sol	medium	securebench	ok	passed			passed	452.053	False		92291		2479572	18010		gpt-6.1-sol		0.160.0				641
+deep-swe	happy-dom-deterministic-intersectionobserver	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		272.610047	False		66234		895586	14862		gpt-6.1-sol		0.160.0				557
+deep-swe	happy-dom-deterministic-intersectionobserver	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	453.288	False		66734		1249857	19506		gpt-6.1-sol		0.160.0				515
+deep-swe	helm-array-merge-strategies	gpt-6.1-sol	medium	native	ok	failed	failed/case_error	failed		1173.394739	False		129255		6167634	50597		gpt-6.1-sol		0.160.0				2147
+deep-swe	helm-array-merge-strategies	gpt-6.1-sol	medium	securebench	ok	failed/case_error			failed	760.858	False		95754		3820261	30496		gpt-6.1-sol		0.160.0				1521
+deep-swe	helm-unified-manifest-stream	gpt-6.1-sol	medium	native	ok	passed	passed	passed		577.422753	False		88614		2693320	27147		gpt-6.1-sol		0.160.0				1285
+deep-swe	helm-unified-manifest-stream	gpt-6.1-sol	medium	securebench	ok	passed			passed	508.917	False		80650		2219491	19260		gpt-6.1-sol		0.160.0				999
+deep-swe	httpx-deterministic-cookie-store	gpt-6.1-sol	medium	native	ok	passed	passed	passed		288.543122	False		69780		1147937	16471		gpt-6.1-sol		0.160.0				457
+deep-swe	httpx-deterministic-cookie-store	gpt-6.1-sol	medium	securebench	ok	passed			passed	338.349	False		66856		1087798	17942		gpt-6.1-sol		0.160.0				427
+deep-swe	httpx-multipart-response-parsing	gpt-6.1-sol	medium	native	ok	passed	passed	passed		320.407921	False		77609		1725834	17075		gpt-6.1-sol		0.160.0				462
+deep-swe	httpx-multipart-response-parsing	gpt-6.1-sol	medium	securebench	ok	passed			passed	375.781	False		74347		1653556	16898		gpt-6.1-sol		0.160.0				469
+deep-swe	httpx-streaming-json-iteration	gpt-6.1-sol	medium	native	ok	passed	passed	passed		339.818833	False		63551		1297406	17205		gpt-6.1-sol		0.160.0				532
+deep-swe	httpx-streaming-json-iteration	gpt-6.1-sol	medium	securebench	ok	passed			passed	275.156	False		58621		1057074	13068		gpt-6.1-sol		0.160.0				385
+deep-swe	igel-persist-feature-schema	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		177.074553	False		57835		757442	12150		gpt-6.1-sol		0.160.0				398
+deep-swe	igel-persist-feature-schema	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	250.453	False		56652		828603	12995		gpt-6.1-sol		0.160.0				368
+deep-swe	ink-grid-box-layout	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		497.565904	False		85466		2314521	21269		gpt-6.1-sol		0.160.0				755
+deep-swe	ink-grid-box-layout	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	470.01	False		78348		2032871	19573		gpt-6.1-sol		0.160.0				547
+deep-swe	ipython-session-bundle-replay	gpt-6.1-sol	medium	native	ok	passed	passed	passed		485.352365	False		80240		1402655	27220		gpt-6.1-sol		0.160.0				688
+deep-swe	ipython-session-bundle-replay	gpt-6.1-sol	medium	securebench	ok	passed			passed	430.442	False		66093		1181275	21800		gpt-6.1-sol		0.160.0				484
+deep-swe	kombu-single-active-consumer-priority	gpt-6.1-sol	medium	native	ok	passed	passed	passed		277.424535	False		55737		828629	15195		gpt-6.1-sol		0.160.0				607
+deep-swe	kombu-single-active-consumer-priority	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	292.37	False		56151		807641	16335		gpt-6.1-sol		0.160.0				398
+deep-swe	koota-composite-trait-aspects	gpt-6.1-sol	medium	native	ok	passed	passed	passed		638.947377	False		128688		3139682	30701		gpt-6.1-sol		0.160.0				876
+deep-swe	koota-composite-trait-aspects	gpt-6.1-sol	medium	securebench	ok	passed			passed	766.462	False		130084		2985277	32595		gpt-6.1-sol		0.160.0				845
+deep-swe	koota-deferred-mutation-buffer	gpt-6.1-sol	medium	native	ok	passed	passed	passed		623.295012	False		104958		2150026	32212		gpt-6.1-sol		0.160.0				801
+deep-swe	koota-deferred-mutation-buffer	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	530.946	False		101849		1939522	27055		gpt-6.1-sol		0.160.0				578
+deep-swe	koota-pair-relation-tracking	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		507.601841	False		111860		2740660	27000		gpt-6.1-sol		0.160.0				661
+deep-swe	koota-pair-relation-tracking	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	497.433	False		103342		2772118	24675		gpt-6.1-sol		0.160.0				565
+deep-swe	koota-query-predicates	gpt-6.1-sol	medium	native	ok	passed	passed	passed		483.394899	False		105410		1885777	23162		gpt-6.1-sol		0.160.0				655
+deep-swe	koota-query-predicates	gpt-6.1-sol	medium	securebench	ok	passed			passed	520.106	False		107261		1785725	25781		gpt-6.1-sol		0.160.0				602
+deep-swe	kysely-window-grouping-helpers	gpt-6.1-sol	medium	native	ok	passed	passed	passed		278.833527	False		71324		1128604	18018		gpt-6.1-sol		0.160.0				781
+deep-swe	kysely-window-grouping-helpers	gpt-6.1-sol	medium	securebench	ok	passed			passed	386.003	False		75070		1787997	22064		gpt-6.1-sol		0.160.0				610
+deep-swe	langchain-request-coalescing	gpt-6.1-sol	medium	native	ok	failed	failed/capture	none: no candidate was captured (failed/capture)		688.459593	False		108613		2588688	43507		gpt-6.1-sol		0.160.0				835
+deep-swe	langchain-request-coalescing	gpt-6.1-sol	medium	securebench	ok	failed/capture			none: no candidate was captured (failed/capture)	637.301	False		93663		2205734	37882		gpt-6.1-sol		0.160.0				649
+deep-swe	mashumaro-flattened-dataclass-fields	gpt-6.1-sol	medium	native	ok	passed	failed/oracle	failed		446.113102	False		80128		2075313	23961		gpt-6.1-sol		0.160.0				788
+deep-swe	mashumaro-flattened-dataclass-fields	gpt-6.1-sol	medium	securebench	ok	passed			passed	344.598	False		81845		1371075	20334		gpt-6.1-sol		0.160.0				543
+deep-swe	mnamer-daemon-watch-lifecycle	gpt-6.1-sol	medium	native	ok	passed	passed	passed		273.784412	False		57872		734277	18188		gpt-6.1-sol		0.160.0				469
+deep-swe	mnamer-daemon-watch-lifecycle	gpt-6.1-sol	medium	securebench	ok	passed			passed	314.419	False		63881		864577	20111		gpt-6.1-sol		0.160.0				428
+deep-swe	numba-stencil-boundary-modes	gpt-6.1-sol	medium	native	ok	passed	passed	passed		667.145716	False		108829		4027495	33299		gpt-6.1-sol		0.160.0				1677
+deep-swe	numba-stencil-boundary-modes	gpt-6.1-sol	medium	securebench	ok	passed			passed	373.566	False		78815		1805137	20047		gpt-6.1-sol		0.160.0				1007
+deep-swe	obsidian-linter-auto-table-of-contents	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		272.690982	False		83728		1751579	14853		gpt-6.1-sol		0.160.0				602
+deep-swe	obsidian-linter-auto-table-of-contents	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	258.539	False		83139		1319626	14273		gpt-6.1-sol		0.160.0				332
+deep-swe	obsidian-linter-scoped-ignore-markers	gpt-6.1-sol	medium	native	ok	passed	passed	passed		418.6848	False		87661		1710866	20130		gpt-6.1-sol		0.160.0				631
+deep-swe	obsidian-linter-scoped-ignore-markers	gpt-6.1-sol	medium	securebench	ok	passed			passed	375.205	False		81514		1493076	19389		gpt-6.1-sol		0.160.0				510
+deep-swe	ofetch-per-origin-circuit-breaker	gpt-6.1-sol	medium	native	ok	passed	passed	passed		216.443552	False		53904		673520	13796		gpt-6.1-sol		0.160.0				395
+deep-swe	ofetch-per-origin-circuit-breaker	gpt-6.1-sol	medium	securebench	ok	passed			passed	203.323	False		44875		363319	12730		gpt-6.1-sol		0.160.0				256
+deep-swe	oxvg-structural-selector-preservation	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		716.457474	False		111002		3963348	28302		gpt-6.1-sol		0.160.0				1749
+deep-swe	oxvg-structural-selector-preservation	gpt-6.1-sol	medium	securebench	ok	passed			passed	547.129	False		104980		2788534	21415		gpt-6.1-sol		0.160.0				1188
+deep-swe	pebble-durability-wait-apis	gpt-6.1-sol	medium	native	ok	passed	passed	passed		503.308843	False		87704		1802692	24460		gpt-6.1-sol		0.160.0				1273
+deep-swe	pebble-durability-wait-apis	gpt-6.1-sol	medium	securebench	ok	passed			passed	630.572	False		90141		2583278	30280		gpt-6.1-sol		0.160.0				1066
+deep-swe	pest-character-class-coalescing	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		283.349367	False		82631		1549132	15428		gpt-6.1-sol		0.160.0				621
+deep-swe	pest-character-class-coalescing	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	407.388	False		86647		1988660	20349		gpt-6.1-sol		0.160.0				541
+deep-swe	prometheus-typed-label-sorting	gpt-6.1-sol	medium	native	ok	passed	passed	passed		541.693805	False		78303		2074923	26279		gpt-6.1-sol		0.160.0				1153
+deep-swe	prometheus-typed-label-sorting	gpt-6.1-sol	medium	securebench	ok	passed			passed	266.356	False		44606		680742	11845		gpt-6.1-sol		0.160.0				515
+deep-swe	query-persist-restored-query-state	gpt-6.1-sol	medium	native	ok	passed	failed/oracle	failed		548.305713	False		113680		2971466	27938		gpt-6.1-sol		0.160.0				1214
+deep-swe	query-persist-restored-query-state	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	413.378	False		97408		2180023	20388		gpt-6.1-sol		0.160.0				608
+deep-swe	quill-shared-toolbar-focus	gpt-6.1-sol	medium	native	ok	passed	passed	passed		680.461973	False		103320		3220503	30597		gpt-6.1-sol		0.160.0				1010
+deep-swe	quill-shared-toolbar-focus	gpt-6.1-sol	medium	securebench	ok	passed			passed	327.213	False		68370		1065714	15583		gpt-6.1-sol		0.160.0				385
+deep-swe	scriggo-method-declarations	gpt-6.1-sol	medium	native	ok	passed	passed	passed		799.438131	False		148562		5242496	35875		gpt-6.1-sol		0.160.0				1083
+deep-swe	scriggo-method-declarations	gpt-6.1-sol	medium	securebench	ok	passed			passed	556.662	False		121434		4461875	25205		gpt-6.1-sol		0.160.0				699
+deep-swe	skrub-duration-encoding	gpt-6.1-sol	medium	native	ok	passed	passed	passed		219.557075	False		73991		1601683	15269		gpt-6.1-sol		0.160.0				1582
+deep-swe	skrub-duration-encoding	gpt-6.1-sol	medium	securebench	ok	passed			passed	234.44	False		80323		1330697	15771		gpt-6.1-sol		0.160.0				1087
+deep-swe	sql-formatter-bigquery-pipe-formatting	gpt-6.1-sol	medium	native	ok	passed	passed	passed		180.630556	False		56066		783526	8266		gpt-6.1-sol		0.160.0				448
+deep-swe	sql-formatter-bigquery-pipe-formatting	gpt-6.1-sol	medium	securebench	ok	passed			passed	149.455	False		60699		744626	7710		gpt-6.1-sol		0.160.0				222
+deep-swe	sqlite-utils-safe-import-checkpoints	gpt-6.1-sol	medium	native	ok	passed	passed	passed		369.31697	False		82566		1586477	23024		gpt-6.1-sol		0.160.0				658
+deep-swe	sqlite-utils-safe-import-checkpoints	gpt-6.1-sol	medium	securebench	ok	passed			passed	438.587	False		78311		1383193	26412		gpt-6.1-sol		0.160.0				608
+deep-swe	task-task-graph-export	gpt-6.1-sol	medium	native	ok	passed	passed	passed		306.973617	False		80303		1712501	15276		gpt-6.1-sol		0.160.0				837
+deep-swe	task-task-graph-export	gpt-6.1-sol	medium	securebench	ok	passed			passed	316.662	False		67457		1214497	14087		gpt-6.1-sol		0.160.0				759
+deep-swe	testem-bail-on-test-failure	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		209.450625	False		77400		1531403	13614		gpt-6.1-sol		0.160.0				404
+deep-swe	testem-bail-on-test-failure	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	258.272	False		85614		1530364	16637		gpt-6.1-sol		0.160.0				315
+deep-swe	testem-per-launcher-reports	gpt-6.1-sol	medium	native	ok	passed	passed	passed		248.087925	False		75884		1352034	16158		gpt-6.1-sol		0.160.0				496
+deep-swe	testem-per-launcher-reports	gpt-6.1-sol	medium	securebench	ok	passed			passed	233.309	False		68776		1273388	14051		gpt-6.1-sol		0.160.0				327
+deep-swe	textual-kitty-key-phases	gpt-6.1-sol	medium	native	ok	passed	passed	passed		236.965777	False		68773		1024823	14085		gpt-6.1-sol		0.160.0				458
+deep-swe	textual-kitty-key-phases	gpt-6.1-sol	medium	securebench	ok	passed			passed	253.774	False		63715		956053	14508		gpt-6.1-sol		0.160.0				407
+deep-swe	textual-richlog-follow-state	gpt-6.1-sol	medium	native	ok	passed	passed	passed		300.734399	False		73360		1334139	16838		gpt-6.1-sol		0.160.0				484
+deep-swe	textual-richlog-follow-state	gpt-6.1-sol	medium	securebench	ok	passed			passed	288.149	False		63882		1097057	17021		gpt-6.1-sol		0.160.0				347
+deep-swe	tomlkit-toml-table-converters	gpt-6.1-sol	medium	native	ok	passed	passed	passed		380.65653	False		65536		1148207	21699		gpt-6.1-sol		0.160.0				531
+deep-swe	tomlkit-toml-table-converters	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	391.221	False		68976		1358705	23113		gpt-6.1-sol		0.160.0				445
+deep-swe	true-myth-iterable-collection-combinators	gpt-6.1-sol	medium	native	ok	passed	passed	passed		236.180583	False		77017		1214534	15700		gpt-6.1-sol		0.160.0				505
+deep-swe	true-myth-iterable-collection-combinators	gpt-6.1-sol	medium	securebench	ok	passed			passed	191.58	False		57872		674357	11901		gpt-6.1-sol		0.160.0				303
+deep-swe	ts-pattern-match-each	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		246.459393	False		51803		813809	13023		gpt-6.1-sol		0.160.0				435
+deep-swe	ts-pattern-match-each	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	217.272	False		56082		797068	13341		gpt-6.1-sol		0.160.0				284
+deep-swe	vulture-persistent-analysis-cache	gpt-6.1-sol	medium	native	ok	failed	failed/oracle	failed		308.560103	False		67778		1012357	19639		gpt-6.1-sol		0.160.0				461
+deep-swe	vulture-persistent-analysis-cache	gpt-6.1-sol	medium	securebench	ok	failed/oracle			failed	349.096	False		69392		1092573	21582		gpt-6.1-sol		0.160.0				417
+deep-swe	wasmi-trap-coredumps	gpt-6.1-sol	medium	native	ok	passed	passed	passed		484.480739	False		129004		3700865	28509		gpt-6.1-sol		0.160.0				756
+deep-swe	wasmi-trap-coredumps	gpt-6.1-sol	medium	securebench	ok	passed			passed	537.283	False		126507		3682759	31024		gpt-6.1-sol		0.160.0				691
+deep-swe	yaegi-go-embed-directives	gpt-6.1-sol	medium	native	ok	passed	passed	passed		609.092685	False		91089		2895040	23711		gpt-6.1-sol		0.160.0				939
+deep-swe	yaegi-go-embed-directives	gpt-6.1-sol	medium	securebench	ok	passed			passed	1045.506	False		90676		4616316	30766		gpt-6.1-sol		0.160.0				1209
+terminal-bench	build-pmars	gpt-6.1-sol	medium	native	ok	passed	failed/case_error	error: RewardFileNotFoundError		64.450174	False		34271		282831	2576		gpt-6.1-sol		0.160.0				206
+terminal-bench	build-pmars	gpt-6.1-sol	medium	securebench	ok	passed			error: RewardFileNotFoundError	157.964	False		41393		652149	3709		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com		252
+terminal-bench	crack-7z-hash	gpt-6.1-sol	medium	native	ok	passed	passed	passed		283.043733	False		19142		400682	2139		gpt-6.1-sol		0.160.0				577
+terminal-bench	crack-7z-hash	gpt-6.1-sol	medium	securebench	ok	passed			passed	292.078	False		20234		686764	3486		gpt-6.1-sol		0.160.0		ab.chatgpt.com,api.github.com,chatgpt.com,github.com		332
+terminal-bench	feal-differential-cryptanalysis	gpt-6.1-sol	medium	native	ok	passed	passed	passed		50.967766	False		15993		53006	2404		gpt-6.1-sol		0.160.0				307
+terminal-bench	feal-differential-cryptanalysis	gpt-6.1-sol	medium	securebench	ok	passed			passed	74.808	False		14003		72474	2478		gpt-6.1-sol		0.160.0				186
+terminal-bench	headless-terminal	gpt-6.1-sol	medium	native	ok	passed	passed	passed		71.336407	False		17141		67827	4307		gpt-6.1-sol		0.160.0				279
+terminal-bench	headless-terminal	gpt-6.1-sol	medium	securebench	ok	passed			passed	104.889	False		28060		74971	5796		gpt-6.1-sol		0.160.0				195
+terminal-bench	large-scale-text-editing	gpt-6.1-sol	medium	native	ok	passed	passed	passed		101.164204	False		16784		228950	2362		gpt-6.1-sol		0.160.0				310
+terminal-bench	large-scale-text-editing	gpt-6.1-sol	medium	securebench	ok	passed			passed	110.824	False		13869		162017	2091		gpt-6.1-sol		0.160.0				229
+terminal-bench	password-recovery	gpt-6.1-sol	medium	native	ok	passed	passed	passed		33.301351	False		20273		143400	1811		gpt-6.1-sol		0.160.0				150
+terminal-bench	password-recovery	gpt-6.1-sol	medium	securebench	ok	passed			passed	44.538	False		18726		118880	1465		gpt-6.1-sol		0.160.0				79
+terminal-bench	vulnerable-secret	gpt-6.1-sol	medium	native	ok	passed	passed	passed		15.519946	False		20653		71583	554		gpt-6.1-sol		0.160.0				112
+terminal-bench	vulnerable-secret	gpt-6.1-sol	medium	securebench	infrastructure	failed/oracle			failed	27.914	False		0		0	0		gpt-6.1-sol		0.160.0				75

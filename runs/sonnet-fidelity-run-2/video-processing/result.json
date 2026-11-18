@@ -1,0 +1,108 @@
+{
+  "task": "video-processing",
+  "source": "terminal-bench",
+  "notes": [
+    "The first native attempt's own verdict measured nothing: its verifier failed to download uv at 17:28 on 11 November (\"Failed to connect to releases.astral.sh port 443\", \"uvx: command not found\"), so no test ran and N was 0, while N->S and N->s->N passed the same files. We moved it aside as native-verifier-network and ran the native side again on 13 November. The new attempt passes on all three verdicts, as does the SecureBench attempt."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "video-processing",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 41.184814,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.1257902,
+    "input_tokens": 16,
+    "cache_write_tokens": 14012,
+    "cache_read_tokens": 147101,
+    "output_tokens": 4029,
+    "turns": 10,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:7e7b100d27b7604aa1d03722d8a261b6b7b7d1e2c1049293c14cb1af67b2564a",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 182,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:5495f63f750923aaffdd0e23bd9ee1f69593ea61dfb5729e1325168b64f386e1",
+      "bytes": 5103,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-verifier-network",
+        "why": "infrastructure: the native agent's own verdict measured nothing. Its verifier failed to download uv at 17:28 on 11 November ('Failed to connect to releases.astral.sh port 443', 'uvx: command not found'), so no test ran, while N->S and N->s->N passed the same files. The worker's network failed intermittently from 17:16 to 17:31.",
+        "validity": "ok",
+        "verdict": "failed",
+        "N->S": "passed",
+        "N->s->N": "passed",
+        "S->N": null
+      }
+    ],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "video-processing",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:7e7b100d27b7604aa1d03722d8a261b6b7b7d1e2c1049293c14cb1af67b2564a",
+    "agent_seconds": 38.667,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.07637940000000001,
+    "input_tokens": 10,
+    "cache_write_tokens": 6868,
+    "cache_read_tokens": 120437,
+    "output_tokens": 2480,
+    "turns": 5,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 97,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:77b4a651003919ecbc51d25244ce855777a8e70f5759d614d73d75733262cf22",
+      "bytes": 1480,
+      "files_included": true
+    }
+  }
+}

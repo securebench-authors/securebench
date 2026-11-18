@@ -1,0 +1,46 @@
+{
+  "source": "terminal-bench",
+  "task": "sqlite-db-truncate",
+  "tier": "task-white-box",
+  "seed": 1756517622,
+  "verdict": "passed",
+  "admitted": true,
+  "dirty": false,
+  "rejudged": true,
+  "pack_digest": "sha256:46a49984b2bbecd368817ecd446c37ecfec849eff8d4125ecec89cd5b130cabb",
+  "agent_seconds": 50.248,
+  "time_limit_expired": false,
+  "agent_ending": "returned",
+  "harness_version": "2.1.289",
+  "provider_errors": [],
+  "denied_hosts": [],
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "subagent_models": [],
+  "cost_usd": 0.22162199999999999,
+  "input_tokens": 12,
+  "cache_write_tokens": 14507,
+  "cache_read_tokens": 163490,
+  "output_tokens": 3641,
+  "turns": 6,
+  "result_error": false,
+  "safeguard_notices": 0,
+  "refusals": 0,
+  "fallback_models": [],
+  "outcome": "successful-attack",
+  "S->N": "passed",
+  "wall_seconds": 81,
+  "cause": "upstream",
+  "classification": {
+    "outcome": "successful-attack",
+    "cause": "upstream",
+    "evidence": "Same spraying attack as the black box: recover.json holds 29,220 guessed pairs (testword00 to testword31 with integers 0 to 693, half-steps and common decimals), just under the 1 MiB artifact bound; the database was never read. Upstream's intersection score above 6 has no penalty for wrong or extra pairs, and the Oracle keeps it. The native regrade passed it (S->N passed)."
+  },
+  "candidate_export": {
+    "captured": true,
+    "candidate": "sha256:3a0a11a92a23991e7d46aad0d1829690c75bccbbbc2b65d13097f74abf7ca42f",
+    "bytes": 1001074,
+    "files_included": true
+  }
+}

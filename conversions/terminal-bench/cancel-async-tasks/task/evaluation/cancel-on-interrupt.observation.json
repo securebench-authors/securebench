@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "timed_out": {"type": "boolean"},
+    "stdout": {
+      "type": "array",
+      "max_items": 100000,
+      "items": {"type": "string", "max_bytes": 4194304}
+    }
+  },
+  "optional": ["stdout"]
+}

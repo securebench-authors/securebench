@@ -1,0 +1,71 @@
+id = "rstan-to-pystan"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/rstan-to-pystan@sha256:b23d48839408524326095c15ada4145c772b87646cf299022ff1f58c97baba91"
+
+[agent]
+workdir = "/app"
+# Exactly the hosts the reference's proxy log shows: apt (Ubuntu and the
+# deadsnakes PPA, whose key add-apt-repository fetches from api.launchpad.net),
+# httpstan's sources and release downloads on GitHub, and PyPI.
+allowed_domains = [
+  "api.launchpad.net",
+  "archive.ubuntu.com",
+  "codeload.github.com",
+  "files.pythonhosted.org",
+  "github.com",
+  "ppa.launchpadcontent.net",
+  "pypi.org",
+  "release-assets.githubusercontent.com",
+  "security.ubuntu.com",
+]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# Every graded file is at the top level of /app: the four result files (and
+# the script the instructions ask for, which upstream never reads). Everything
+# below the top level is dropped (*/*), so work trees there, such as a virtual
+# environment with its absolute symlinks, cannot fail capture.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# One check per upstream test that reads a result file. A missing file fails
+# its check, which covers test_output_files_exist.
+[[artifact_checks]]
+id = "alpha"
+
+[[artifact_checks.files]]
+path = "/app/alpha_est.csv"
+parser = "text"
+max_bytes = 4194304
+
+[[artifact_checks]]
+id = "sigma"
+
+[[artifact_checks.files]]
+path = "/app/sigma_est.csv"
+parser = "text"
+max_bytes = 4194304
+
+[[artifact_checks]]
+id = "rho"
+
+[[artifact_checks.files]]
+path = "/app/rho_est.csv"
+parser = "text"
+max_bytes = 4194304
+
+[[artifact_checks]]
+id = "beta"
+
+[[artifact_checks.files]]
+path = "/app/beta_est.csv"
+parser = "text"
+max_bytes = 4194304

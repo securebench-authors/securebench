@@ -1,0 +1,56 @@
+id = "headless-terminal"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/headless-terminal@sha256:eb7e209672bf6cef2785fafd9e13509b10626c327bcc2b37f5bf40ca83eaf3aa"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 60000
+max_bytes = 1342177280
+
+# The deliverable is /app/headless_terminal.py; the instructions also ask for
+# its dependencies to be installed into the system Python, which lives under
+# /usr/local (interpreter, site-packages and console scripts).
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 10000
+max_bytes = 268435456
+
+[[scope.roots]]
+path = "/usr/local"
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[protocol_checks]]
+id = "tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.json"
+observation_schema = "observation.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 5120
+max_observation_bytes = 4194304
+# Upstream's test.sh runs `apt-get install -y vim` before pytest. The
+# Evaluation has no network, so the same packages apt resolves for that
+# command are installed from evaluation/vim/ (see CONVERSION.md).
+setup_command = [
+  "/usr/bin/dpkg", "-i",
+  "/.securebench/evaluation/vim/libgpm2_1.20.7-10+b1_amd64.deb",
+  "/.securebench/evaluation/vim/libsodium23_1.0.18-1+deb12u1_amd64.deb",
+  "/.securebench/evaluation/vim/vim-common_9.0.1378-2+deb12u2_all.deb",
+  "/.securebench/evaluation/vim/vim-runtime_9.0.1378-2+deb12u2_all.deb",
+  "/.securebench/evaluation/vim/vim_9.0.1378-2+deb12u2_amd64.deb",
+  "/.securebench/evaluation/vim/xxd_9.0.1378-2+deb12u2_amd64.deb",
+]
+setup_timeout_seconds = 600

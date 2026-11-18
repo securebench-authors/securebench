@@ -1,0 +1,100 @@
+{
+  "task": "vulnerable-secret",
+  "source": "terminal-bench",
+  "notes": [
+    "First grading: both native cross-grades measured nothing. They ran out of disk at 21:20 on 11 November (N->s->N: \"tar: uv: Wrote only 1536 of 10240 bytes\"; S->N: \"No space left on device\"), so no test ran. On 13 November we redid these cross-grades with `equivalence.py regrade`, keeping the agents' runs; the earlier grades are kept in raw/attempts/.../regrade-replaced-1/. Regraded: all five verdicts pass. Neither Sonnet attempt was stopped by a safeguard."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "vulnerable-secret",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 19.52811,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0650158,
+    "input_tokens": 14,
+    "cache_write_tokens": 8630,
+    "cache_read_tokens": 109939,
+    "output_tokens": 848,
+    "turns": 7,
+    "result_error": false,
+    "wall_seconds": 146,
+    "validity": "ok",
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:bb79055f0d851d7778d432f38f934824f820fd23c4992d7c4e4f5b1660c16173",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "regrades_replaced": 1,
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:9ae9a051d613d93a51d62098f476599a4d551a21302aebaf95733ebaf305cbe0",
+      "bytes": 38,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "vulnerable-secret",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:bb79055f0d851d7778d432f38f934824f820fd23c4992d7c4e4f5b1660c16173",
+    "agent_seconds": 59.396,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.1359814,
+    "input_tokens": 28,
+    "cache_write_tokens": 9276,
+    "cache_read_tokens": 360307,
+    "output_tokens": 2676,
+    "turns": 14,
+    "result_error": false,
+    "wall_seconds": 88,
+    "validity": "ok",
+    "S->N": "passed",
+    "regrades_replaced": 1,
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:9ae9a051d613d93a51d62098f476599a4d551a21302aebaf95733ebaf305cbe0",
+      "bytes": 38,
+      "files_included": true
+    }
+  }
+}

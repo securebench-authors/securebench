@@ -1,0 +1,43 @@
+{
+  "cases": [
+    {
+      "challenge": {
+        "tests": [
+          "test_import",
+          "test_send_non_interactive_command",
+          "test_send_interactive_command",
+          "test_cancel_command",
+          "test_startup_files",
+          "test_shell_state_persists_between_commands",
+          "test_background_commands"
+        ]
+      },
+      "expected": {
+        "test_import": {},
+        "test_send_non_interactive_command": {
+          "exists": true,
+          "text": "Hello, world!"
+        },
+        "test_send_interactive_command": {
+          "exists": true,
+          "text": "Hello, world!"
+        },
+        "test_cancel_command": {
+          "exists": false
+        },
+        "test_startup_files": {
+          "exists": true,
+          "text": "Hello, world!"
+        },
+        "test_shell_state_persists_between_commands": {
+          "exists": true,
+          "text": "Hello, world!"
+        },
+        "test_background_commands": {
+          "status_code": 200,
+          "text": "Hello, world!"
+        }
+      }
+    }
+  ]
+}

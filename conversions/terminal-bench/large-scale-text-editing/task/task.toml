@@ -1,0 +1,49 @@
+id = "large-scale-text-editing"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/large-scale-text-editing@sha256:719adca3f1388220546ce6a155eee56eff3c4fe318183100320606a210f6b59c"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+# /app holds the deliverable, apply_macros.vim, beside the two public 50 MB and 38 MB
+# CSV files the agent edits while testing. The bounds are the largest the framework
+# allows, so that copies and chunks of those files left behind still fit.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+symlinks = false
+max_entries = 100000
+max_bytes = 2147483648
+
+# upstream test_apply_macros_exists and test_apply_macros_well_formed, on the
+# script as the agent left it, before any Vim run.
+[[artifact_checks]]
+id = "script"
+
+[[artifact_checks.files]]
+path = "/app/apply_macros.vim"
+parser = "text"
+max_bytes = 1048576
+
+# upstream test_apply_macros_runs, test_input_equiv_expected and
+# test_macros_nonempty_and_efficient, in that order, in one case.
+[[protocol_checks]]
+id = "run"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 1200
+max_challenge_bytes = 1024
+max_observation_bytes = 1048576

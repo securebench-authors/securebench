@@ -1,0 +1,35 @@
+id = "count-dataset-tokens"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/count-dataset-tokens@sha256:9c513c4ba342bd95be501f6f5eadd4806a2b18749c87c251615825100130232d"
+
+[agent]
+workdir = "/app"
+# The packages the reference installs, and the dataset and tokenizer it
+# downloads: huggingface.co redirects file downloads to hosts under hf.co.
+allowed_domains = ["pypi.org", "files.pythonhosted.org", "huggingface.co", "hf.co"]
+
+# Only /app/answer.txt is read. Everything below the top level of /app is
+# dropped from the candidate, so that work files there (a virtual environment,
+# caches, links into /root) can neither exceed the bounds nor fail capture.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "answer"
+
+# Upstream reads the file at any size; 16 MiB is the largest bound the format
+# allows.
+[[artifact_checks.files]]
+path = "/app/answer.txt"
+parser = "text"
+max_bytes = 16777216

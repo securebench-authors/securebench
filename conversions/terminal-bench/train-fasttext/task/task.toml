@@ -1,0 +1,35 @@
+id = "train-fasttext"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/train-fasttext@sha256:3c77da9617e7fa577de04aef73fb1ac3114be32d7ffef72609c83929d842b157"
+
+[agent]
+workdir = "/app"
+allowed_domains = ["deb.debian.org", "github.com"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+# Only /app/model.bin is evaluated. These exclude bulk that solutions commonly leave
+# in /app and that nothing reads, so it cannot exhaust the capture bound.
+exclude = [
+  "data", "fastText", "**/*.vec", "**/*.txt", "**/*.ftz", "**/*.parquet", "**/*.csv",
+  "**/*.npy", "*/**/*.bin", "**/site-packages", "**/.cache",
+]
+symlinks = false
+max_entries = 100000
+max_bytes = 2147483648
+
+[[protocol_checks]]
+id = "accuracy"
+command = ["/usr/local/bin/python3", "-I", "-B", "/.securebench/evaluation/adapter.py"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 3600
+max_challenge_bytes = 64
+max_observation_bytes = 4194304

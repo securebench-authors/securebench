@@ -1,0 +1,17 @@
+{
+  "artifacts": {
+    "proof-source": {
+      "must_contain": ["n + m = m + n", "Proof.", "Qed."],
+      "must_not_contain": ["admit"]
+    },
+    "compiled-proof": {}
+  },
+  "cases": {
+    "compile": [
+      {
+        "challenge": {"source": "plus_comm.v"},
+        "context": {"exit_status": 0, "output_utf8": true}
+      }
+    ]
+  }
+}

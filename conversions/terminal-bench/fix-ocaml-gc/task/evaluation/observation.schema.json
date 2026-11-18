@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "returncode": {"type": "integer", "minimum": -1000, "maximum": 1000},
+        "timed_out": {"type": "boolean"},
+        "stdout": {
+          "type": "object",
+          "properties": {
+            "size": {"type": "integer", "minimum": 0, "maximum": 65537},
+            "content_b64": {"type": "string", "max_bytes": 87384}
+          }
+        }
+      },
+      "optional": ["returncode"]
+    },
+    "results": {
+      "type": "array",
+      "max_items": 1000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "max_bytes": 256},
+          "returncode": {"type": "integer", "minimum": -1000, "maximum": 1000},
+          "timed_out": {"type": "boolean"},
+          "file": {
+            "type": "object",
+            "properties": {
+              "size": {"type": "integer", "minimum": 0, "maximum": 10241},
+              "content_b64": {"type": "string", "max_bytes": 13656}
+            }
+          },
+          "toc": {
+            "type": "object",
+            "properties": {
+              "magic_hex": {"type": "string", "max_bytes": 24},
+              "sections": {
+                "type": "array",
+                "max_items": 64,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name_hex": {"type": "string", "max_bytes": 8},
+                    "length": {"type": "integer", "minimum": 0, "maximum": 1073741824},
+                    "sha256": {"type": "string", "max_bytes": 64}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "optional": ["returncode", "timed_out", "file", "toc"]
+      }
+    }
+  }
+}

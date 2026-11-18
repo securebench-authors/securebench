@@ -1,0 +1,113 @@
+{
+  "task": "build-pmars",
+  "source": "terminal-bench",
+  "notes": [
+    "Two things. First, the cross-grades: the same measurement-tool limit as every earlier round. The pack's scope includes /usr/lib/x86_64-linux-gnu, which holds the C library; the tool's restore script empties each scope root before unpacking it, so tar cannot load: \"/.securebench/harness/restore.sh: 9: tar: not found\" (exit 127). N->S then reports failed/case_error (\"adapter exited with status 1\"), and N->s->N and S->N end in RewardFileNotFoundError. N passed; N->S says nothing about SecureBench and should be counted as not run. Second, S failed/oracle on its own, where earlier rounds passed: \"no debian directory\" in pmars-0.9.4. The SecureBench agent found dpkg-source missing, untarred pmars_0.9.4.orig.tar.xz and pmars_0.9.4-1.debian.tar.xz by hand in /app, and applied the Debian patches. The Debian tarball unpacks to /app/debian, not /app/pmars-0.9.4/debian (its candidate holds app/debian/changelog, app/debian/rules and so on). Upstream's test_debian_source_used checks `source_dirs[0] / \"debian\"` under /app/pmars-*, so the native grader would fail this too. SecureBench's verdict is correct; S->N could not confirm it because of the same tar limit."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "build-pmars",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 71.743065,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.057880600000000004,
+    "input_tokens": 14,
+    "cache_write_tokens": 5874,
+    "cache_read_tokens": 109083,
+    "output_tokens": 1254,
+    "turns": 7,
+    "result_error": false,
+    "N->S": "failed/case_error",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "case_error",
+      "pack_digest": "sha256:3372990655ea59fcbb5c9fd4ae043af35a3613e52e63c992c86142707ba9091c",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "error: RewardFileNotFoundError",
+    "wall_seconds": 223,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:ad34a85daf972b259805d61976961f4a5cb3d0ce73f6c047e7dcd164388ffeab",
+      "bytes": 1563185,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November (the cleanup loop removed base images only once both campaigns had finished a task, and GPT had not started); an image pull, the agent's setup or the verifier's build failed with 'no space left on device'",
+        "validity": "infrastructure",
+        "verdict": "error: RuntimeError",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": null
+      }
+    ],
+    "securebench": [
+      {
+        "kept_as": "securebench-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November; an image pull or the run's own setup failed, the unit crashed before writing a record, or the agent's writes failed with 'no space left on device'"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "build-pmars",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:3372990655ea59fcbb5c9fd4ae043af35a3613e52e63c992c86142707ba9091c",
+    "agent_seconds": 70.225,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.09217619999999999,
+    "input_tokens": 20,
+    "cache_write_tokens": 6643,
+    "cache_read_tokens": 245321,
+    "output_tokens": 1650,
+    "turns": 10,
+    "result_error": false,
+    "S->N": "error: RewardFileNotFoundError",
+    "wall_seconds": 182,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:f089ba3df4a4efbdf1d1eacf7089973ecf1d71ef04aef730089daf374c619612",
+      "bytes": 67367653,
+      "files_included": false
+    }
+  }
+}

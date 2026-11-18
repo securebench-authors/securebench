@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "timed_out"]},
+    "log_present": {"type": "boolean"},
+    "log_bytes": {"type": "integer", "minimum": 0, "maximum": 9007199254740992},
+    "log_utf8": {"type": "boolean"},
+    "log": {"type": "string", "max_bytes": 524288}
+  }
+}

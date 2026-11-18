@@ -1,0 +1,48 @@
+id = "gpt2-codegolf"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/gpt2-codegolf@sha256:537e7bd26b02db5c761230515fa09dc05f89403c6737fbdae4b5793ebc2c7066"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The deliverable is /app/gpt2.c, but the program may legitimately read other
+# files the agent leaves in /app (upstream's test does not forbid it), so the
+# whole directory is captured. The checkpoint and vocabulary are the user's
+# inputs, which upstream's test runs the program on; they are excluded so a
+# candidate cannot rewrite the test inputs (see CONVERSION.md).
+[[scope.roots]]
+path = "/app"
+exclude = ["gpt2-124M.ckpt", "vocab.bpe"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "source"
+
+[[artifact_checks.files]]
+path = "/app/gpt2.c"
+parser = "text"
+max_bytes = 65536
+
+[[protocol_checks]]
+id = "generate"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 4096
+max_observation_bytes = 4194304

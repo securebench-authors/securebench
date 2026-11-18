@@ -1,0 +1,37 @@
+id = "distribution-search"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/distribution-search@sha256:1448f7aa1c6080488251d00350e8e90477858989b1bec0accc866d7b3220738a"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The only deliverable is /app/dist.npy. The script that writes it is not
+# graded upstream, wherever it lives. Everything below the top level of /app is
+# dropped (*/*), so work trees there, such as a virtual environment with its
+# absolute symlinks, cannot fail capture.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# One case: the file is fixed, so there is nothing to vary. The adapter runs on
+# the baseline's own Python and numpy, in /usr/local outside the scope, so the
+# file loads as upstream's np.load loads it.
+[[protocol_checks]]
+id = "distribution"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 300
+max_challenge_bytes = 64
+max_observation_bytes = 4194304

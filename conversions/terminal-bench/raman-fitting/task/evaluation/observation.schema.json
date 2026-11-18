@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "properties": {
+    "exists": {"type": "boolean"},
+    "loaded": {"type": "boolean"},
+    "fields": {
+      "type": "object",
+      "properties": {
+        "x0": {
+          "type": "object",
+          "properties": {
+            "kind": {"type": "string", "max_bytes": 8, "enum": ["missing", "int", "float", "bool", "str", "list", "dict", "null"]},
+            "value": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308}
+          },
+          "optional": ["value"]
+        },
+        "gamma": {
+          "type": "object",
+          "properties": {
+            "kind": {"type": "string", "max_bytes": 8, "enum": ["missing", "int", "float", "bool", "str", "list", "dict", "null"]},
+            "value": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308}
+          },
+          "optional": ["value"]
+        },
+        "amplitude": {
+          "type": "object",
+          "properties": {
+            "kind": {"type": "string", "max_bytes": 8, "enum": ["missing", "int", "float", "bool", "str", "list", "dict", "null"]},
+            "value": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308}
+          },
+          "optional": ["value"]
+        },
+        "offset": {
+          "type": "object",
+          "properties": {
+            "kind": {"type": "string", "max_bytes": 8, "enum": ["missing", "int", "float", "bool", "str", "list", "dict", "null"]},
+            "value": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308}
+          },
+          "optional": ["value"]
+        }
+      }
+    }
+  },
+  "optional": ["loaded", "fields"]
+}

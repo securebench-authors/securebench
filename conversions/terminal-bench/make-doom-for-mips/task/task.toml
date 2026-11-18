@@ -1,0 +1,35 @@
+id = "make-doom-for-mips"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/make-doom-for-mips@sha256:80a9459f1b94b692ea8346f68e6b864f6c4d984fbdf6ffd68ad332308300c2ec"
+
+[agent]
+workdir = "/app"
+allowed_domains = ["deb.debian.org"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["vm.js"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[protocol_checks]]
+id = "doom"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 120
+max_challenge_bytes = 64
+max_observation_bytes = 4194304

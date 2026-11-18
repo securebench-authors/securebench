@@ -1,0 +1,106 @@
+{
+  "task": "fix-ocaml-gc",
+  "source": "terminal-bench",
+  "notes": [],
+  "native": {
+    "source": "terminal-bench",
+    "task": "fix-ocaml-gc",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 650.005541,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.1549246,
+    "input_tokens": 24,
+    "cache_write_tokens": 19060,
+    "cache_read_tokens": 267233,
+    "output_tokens": 2519,
+    "turns": 12,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:9d73860705a989406e85c8142e6e985f3213d6f8330f4ad0625ffef0172f7116",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 3143,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:7896f944c50c5325443b1127bd3ee541243e5b14d5bbe25e965cccf5c8ee530e",
+      "bytes": 714039754,
+      "files_included": false
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": [
+      {
+        "kept_as": "securebench-relay-dns",
+        "why": "infrastructure: the worker's DNS (1.1.1.1 had come back as a resolver and failed about 2 lookups in 3) made the relay answer 502 OSError on at least one model request, which the relay counts as a provider error; 17:19 to 18:18 on 11 November, before the resolver was set to 8.8.8.8",
+        "validity": "infrastructure",
+        "verdict": "passed",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "fix-ocaml-gc",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:9d73860705a989406e85c8142e6e985f3213d6f8330f4ad0625ffef0172f7116",
+    "agent_seconds": 704.35,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.2696676,
+    "input_tokens": 22,
+    "cache_write_tokens": 43562,
+    "cache_read_tokens": 331628,
+    "output_tokens": 2905,
+    "turns": 13,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 2691,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:e7ccc48d91249370b63980698f064c6be042cfef88584928836397d9a28d1013",
+      "bytes": 714039724,
+      "files_included": false
+    }
+  }
+}

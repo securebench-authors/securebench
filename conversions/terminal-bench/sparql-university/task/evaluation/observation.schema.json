@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "variables": {
+      "type": "array",
+      "max_items": 2,
+      "items": {"type": "string", "max_bytes": 64, "enum": ["professorName", "countries"]}
+    },
+    "rows": {
+      "type": "array",
+      "max_items": 10000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "professorName": {"type": "string", "max_bytes": 1048576},
+          "countries": {"type": "string", "max_bytes": 1048576}
+        },
+        "optional": ["professorName", "countries"]
+      }
+    }
+  }
+}

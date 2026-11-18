@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "properties": {
+    "path_exists": {
+      "type": "boolean"
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "is_none": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string",
+          "max_bytes": 2048
+        }
+      },
+      "optional": [
+        "is_none",
+        "error"
+      ]
+    },
+    "tokenizer": {
+      "type": "object",
+      "properties": {
+        "is_none": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string",
+          "max_bytes": 2048
+        }
+      },
+      "optional": [
+        "is_none",
+        "error"
+      ]
+    }
+  },
+  "optional": [
+    "model",
+    "tokenizer"
+  ]
+}

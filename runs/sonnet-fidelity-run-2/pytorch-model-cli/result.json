@@ -1,0 +1,95 @@
+{
+  "task": "pytorch-model-cli",
+  "source": "terminal-bench",
+  "notes": [
+    "New. The native agent ran `pip download torch` from /app to inspect the package and left the downloaded wheels there: torch (539 MB), nvidia_cudnn_cu13 (519 MB), nvidia_cublas (405 MB), triton (286 MB) and other CUDA wheels, about 3.0 GB in all next to its deliverables (cli_tool, weights.json, prediction.txt). Natively the leftovers do no harm and N passes. The pack's scope bounds /app at 2 GiB (max_bytes = 2147483648), so capture refused the whole candidate: N->S failed/capture, \"utility rejected the filesystem: scope root /app holds more bytes than its bound\", and there is no candidate for N->s->N. The bound is a deliberate setting of the pack, but CONVERSION.md's scope bullet lists the stricter cases (absolute links, a prediction.txt link, files outside /app, a process left running) without this one. It is stricter by design but not recorded, so it is a gap in the conversion's record. The SecureBench agent left no such files and passed on both graders."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "pytorch-model-cli",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 270.866019,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.099971,
+    "input_tokens": 18,
+    "cache_write_tokens": 9115,
+    "cache_read_tokens": 150625,
+    "output_tokens": 3335,
+    "turns": 9,
+    "result_error": false,
+    "N->S": "failed/capture",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "capture",
+      "pack_digest": "sha256:58d92266c80b8fdc6cf89a147f3c23b8db363f71c5f60413d0ca5b700f2b7434",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "none: no candidate was captured (failed/capture)",
+    "wall_seconds": 651,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": false
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "pytorch-model-cli",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:58d92266c80b8fdc6cf89a147f3c23b8db363f71c5f60413d0ca5b700f2b7434",
+    "agent_seconds": 157.141,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.1265978,
+    "input_tokens": 18,
+    "cache_write_tokens": 11627,
+    "cache_read_tokens": 243169,
+    "output_tokens": 3142,
+    "turns": 9,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 311,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:ff9d066bddb0386894bc2b89778b95293434822e447c64d3e6f30b22b8e24a3b",
+      "bytes": 483582,
+      "files_included": true
+    }
+  }
+}

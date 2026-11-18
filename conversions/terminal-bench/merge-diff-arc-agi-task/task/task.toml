@@ -1,0 +1,53 @@
+id = "merge-diff-arc-agi-task"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/merge-diff-arc-agi-task@sha256:bfc2a235f2ceea64ffb1ffc5529c2acebf570bff61f3668f0e5669ef570c17d4"
+
+[agent]
+workdir = "/app"
+allowed_domains = ["archive.ubuntu.com", "security.ubuntu.com"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# /app holds the deliverable repository. Its .git is captured because the
+# repository tests read it; /app/.git too, because `git branch -a` run in
+# /app/repo falls back to a repository in /app when /app/repo has none.
+[[scope.roots]]
+path = "/app"
+git_directories = ["repo/.git", ".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[protocol_checks]]
+id = "repository"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/repository_adapter.py",
+]
+challenge_schema = "repository_challenge.schema.json"
+observation_schema = "repository_observation.schema.json"
+max_cases = 1
+timeout_seconds = 300
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "algo"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/algo_adapter.py",
+]
+challenge_schema = "algo_challenge.schema.json"
+observation_schema = "algo_observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 65536
+max_observation_bytes = 4194304

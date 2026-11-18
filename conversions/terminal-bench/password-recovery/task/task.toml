@@ -1,0 +1,29 @@
+id = "password-recovery"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/password-recovery@sha256:15fcd84bf3b06270ee148211cc6da6599b13ec2f41ac1d0894cf75c2225872ee"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+# The deliverable is one file in /app, but agents work in /app too (carved
+# files, windows of the disk image), so the bounds are the largest allowed.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "recovered-passwords"
+
+[[artifact_checks.files]]
+path = "/app/recovered_passwords.txt"
+parser = "text"
+max_bytes = 16777216

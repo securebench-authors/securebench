@@ -1,0 +1,9 @@
+{"type": "object", "properties": {
+ "stdout_hex": {"type": "string", "max_bytes": 1048576},
+ "frame_appeared": {"type": "boolean"},
+ "frame": {"type": "object", "properties": {
+  "width": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+  "height": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+  "rows": {"type": "array", "items": {"type": "string", "max_bytes": 24576}, "max_items": 4096}}},
+ "frame_problem": {"type": "string", "max_bytes": 16, "enum": ["absent", "empty", "unreadable"]}},
+ "optional": ["frame", "frame_problem"]}

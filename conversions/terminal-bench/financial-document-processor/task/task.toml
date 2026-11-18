@@ -1,0 +1,101 @@
+id = "financial-document-processor"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/financial-document-processor@sha256:ef6c9cfaaf14cdd200163008a188d5baa9f626f3bfb8d3e7d6f30c08518e6251"
+
+[agent]
+workdir = "/app"
+# What the reference downloads: Tesseract from Ubuntu's mirrors, the managed
+# Python 3.13 that `uv run` fetches from GitHub releases, and its script's
+# dependencies from PyPI.
+allowed_domains = [
+  "archive.ubuntu.com",
+  "files.pythonhosted.org",
+  "github.com",
+  "pypi.org",
+  "release-assets.githubusercontent.com",
+  "security.ubuntu.com",
+]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# Every graded file is directly in /app/invoices, /app/other or
+# /app/documents, two levels below /app. Everything deeper is dropped (*/*/*),
+# so work trees in /app, such as a virtual environment with its absolute
+# symlinks, cannot fail capture.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# Every check lists the three folders, so the Oracle can follow symlinks and
+# `..` between them as upstream's filesystem calls do.
+[[artifact_checks]]
+id = "invoices"
+
+[[artifact_checks.listings]]
+path = "/app/invoices"
+max_entries = 10000
+
+[[artifact_checks.listings]]
+path = "/app/other"
+max_entries = 10000
+
+[[artifact_checks.listings]]
+path = "/app/documents"
+max_entries = 10000
+
+[[artifact_checks]]
+id = "other"
+
+[[artifact_checks.listings]]
+path = "/app/invoices"
+max_entries = 10000
+
+[[artifact_checks.listings]]
+path = "/app/other"
+max_entries = 10000
+
+[[artifact_checks.listings]]
+path = "/app/documents"
+max_entries = 10000
+
+[[artifact_checks]]
+id = "summary"
+
+[[artifact_checks.files]]
+path = "/app/invoices/summary.csv"
+parser = "text"
+max_bytes = 1048576
+
+[[artifact_checks.listings]]
+path = "/app/invoices"
+max_entries = 10000
+
+[[artifact_checks.listings]]
+path = "/app/other"
+max_entries = 10000
+
+[[artifact_checks.listings]]
+path = "/app/documents"
+max_entries = 10000
+
+[[artifact_checks]]
+id = "documents"
+
+[[artifact_checks.listings]]
+path = "/app/invoices"
+max_entries = 10000
+
+[[artifact_checks.listings]]
+path = "/app/other"
+max_entries = 10000
+
+[[artifact_checks.listings]]
+path = "/app/documents"
+max_entries = 10000

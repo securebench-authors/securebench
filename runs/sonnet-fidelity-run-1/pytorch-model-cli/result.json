@@ -1,0 +1,94 @@
+{
+  "task": "pytorch-model-cli",
+  "source": "terminal-bench",
+  "notes": [],
+  "native": {
+    "source": "terminal-bench",
+    "task": "pytorch-model-cli",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 499.71805,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.089457,
+    "input_tokens": 18,
+    "cache_write_tokens": 8055,
+    "cache_read_tokens": 147355,
+    "output_tokens": 2773,
+    "turns": 9,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:58d92266c80b8fdc6cf89a147f3c23b8db363f71c5f60413d0ca5b700f2b7434",
+      "framework": {
+        "commit": "ee4c9a8978ffc512f4faddf36161f1853c1b3893",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 982,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:082a667d4bbea03c05600f72296996ffd2ed03668124525fbce1a2aeb90b6a0d",
+      "bytes": 3141546,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "pytorch-model-cli",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:58d92266c80b8fdc6cf89a147f3c23b8db363f71c5f60413d0ca5b700f2b7434",
+    "agent_seconds": 564.331,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.146204,
+    "input_tokens": 24,
+    "cache_write_tokens": 11932,
+    "cache_read_tokens": 319490,
+    "output_tokens": 3453,
+    "turns": 13,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 862,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:1e4e433d6f7c052a93937a01f2b50939409fcc37def882511138b1484b447412",
+      "bytes": 4689351,
+      "files_included": true
+    }
+  }
+}

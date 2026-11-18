@@ -1,0 +1,50 @@
+id = "regex-chess"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/regex-chess@sha256:e3b6d61d2d3930fbbdc5f7bf091a7f8b7f6125e1951ef8a7dbe165b1ef62942c"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_not_long, first assertion: fewer than 10e6 characters.
+[[artifact_checks]]
+id = "not-long-characters"
+
+[[artifact_checks.files]]
+path = "/app/re.json"
+parser = "text"
+max_bytes = 16777216
+
+# test_not_long, second assertion: fewer than 1e5 pairs.
+[[artifact_checks]]
+id = "not-long-pairs"
+
+# Read as text: the Oracle counts the top-level elements as Python's json
+# would, since the strict JSON parser rejects files Python's json loads.
+[[artifact_checks.files]]
+path = "/app/re.json"
+parser = "text"
+max_bytes = 16777216
+
+# test_immortal_game, test_game_of_century and test_naroditsky_ivanchuk, one case each.
+[[protocol_checks]]
+id = "legal-moves"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 3
+timeout_seconds = 3600
+max_challenge_bytes = 16384
+max_observation_bytes = 4194304

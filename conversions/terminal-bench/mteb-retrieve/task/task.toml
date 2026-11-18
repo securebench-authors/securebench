@@ -1,0 +1,33 @@
+id = "mteb-retrieve"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/mteb-retrieve@sha256:99dd676a21fd3124b7b8164cd93e8f0c51f1fdab2f84a831c61049eff78d063d"
+
+[agent]
+workdir = "/app"
+# The reference downloads the bge-small-zh-v1.5 weights from the Hugging Face
+# Hub; with hf-xet installed, the file content comes from *.hf.co hosts.
+allowed_domains = ["huggingface.co", "hf.co"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The deliverable is the single file /app/result.txt. Everything below a
+# subdirectory of /app is excluded so that a virtual environment (absolute
+# symlinks) or a downloaded model copy there cannot fail capture.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "result"
+
+[[artifact_checks.files]]
+path = "/app/result.txt"
+parser = "text"
+max_bytes = 16777216

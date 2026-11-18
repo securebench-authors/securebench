@@ -1,0 +1,35 @@
+id = "gcode-to-text"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/gcode-to-text@sha256:0979ef40c6a3e8c4e7ab5b6c2524c74625a84799e15cd45dd98dcf83b11efd4d"
+
+[agent]
+workdir = "/app"
+# The packages the reference installs: Tesseract and OpenCV from Debian, the
+# Python packages from PyPI.
+allowed_domains = ["deb.debian.org", "pypi.org", "files.pythonhosted.org"]
+
+# Only /app/out.txt is read. Everything below the top level of /app is dropped
+# from the candidate, so that the contents of work directories there (a
+# virtual environment, caches, links out of /app) count against no bound. The
+# names directly inside each top-level directory are still checked, because
+# capture checks a name before it applies the excludes.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "answer"
+
+[[artifact_checks.files]]
+path = "/app/out.txt"
+parser = "text"
+max_bytes = 1048576

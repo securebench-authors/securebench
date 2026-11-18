@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "exists": {"type": "array", "max_items": 4, "items": {"type": "string", "max_bytes": 256}},
+    "commands": {"type": "array", "max_items": 4, "items": {"type": "string", "max_bytes": 256}},
+    "source_globs": {
+      "type": "array",
+      "max_items": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "directory": {"type": "string", "max_bytes": 256},
+          "pattern": {"type": "string", "max_bytes": 64},
+          "exists": {"type": "array", "max_items": 4, "items": {"type": "string", "max_bytes": 64}},
+          "globs": {
+            "type": "array",
+            "max_items": 4,
+            "items": {
+              "type": "object",
+              "properties": {
+                "directory": {"type": "string", "max_bytes": 64},
+                "pattern": {"type": "string", "max_bytes": 64}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

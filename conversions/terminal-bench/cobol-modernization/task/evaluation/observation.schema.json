@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "existed": {
+      "type": "object",
+      "properties": {
+        "program_py": {"type": "boolean"},
+        "accounts_dat": {"type": "boolean"},
+        "books_dat": {"type": "boolean"},
+        "transactions_dat": {"type": "boolean"},
+        "input_dat": {"type": "boolean"}
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "returncode": {"type": "integer", "minimum": -255, "maximum": 255},
+          "stdout_utf8": {"type": "boolean"},
+          "stderr_utf8": {"type": "boolean"}
+        }
+      },
+      "max_items": 16
+    }
+  }
+}

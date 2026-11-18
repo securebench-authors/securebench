@@ -1,0 +1,97 @@
+id = "custom-memory-heap-crash"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/custom-memory-heap-crash@sha256:1895d7d6240d5fb2ec774d6bfdd1057d170f8d199c15c582e4585d3c63802557"
+
+[agent]
+workdir = "/app"
+# The reference only compiles and runs the program, so it needs no network.
+allowed_domains = []
+
+# The instructions allow changes to /app/user.cpp only, and every check reads
+# or builds from /app, so the scope is /app. The baseline holds main.cpp,
+# user.cpp and user.h there and no test files: upstream copies its tests in
+# at grading time, and no test runner runs here. Changes outside /app (the
+# custom libstdc++ builds, g++, Valgrind, ~/.valgrindrc) are not captured,
+# which is what the instructions require. The bounds are far above what the
+# reference leaves (3 executables of about 7 to 10 MB each). Internal symlinks
+# are allowed so that one an agent leaves in /app does not fail capture.
+# Precompiled headers are excluded: GCC loads /app/user.h.gch (a file, or a
+# directory of variants) in place of user.h when it compiles main.cpp, so a
+# planted one changes what the unchanged main.cpp compiles to.
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/app"
+exclude = ["**/*.gch"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Upstream test_protected_files_not_modified: the MD5 of each file equals
+# upstream's constant.
+[[artifact_checks]]
+id = "protected-files"
+
+[[artifact_checks.files]]
+path = "/app/main.cpp"
+parser = "text"
+max_bytes = 65536
+
+[[artifact_checks.files]]
+path = "/app/user.h"
+parser = "text"
+max_bytes = 65536
+
+# One check per upstream run test, each in its own Evaluation environment, so
+# that the program under test is compiled from the replayed sources and no
+# candidate code has run before it. Upstream also compiles afresh before each
+# run; but its tests share one container, so a debug build that rewrites
+# main.cpp after the checksum test changes what the release tests compile.
+[[protocol_checks]]
+id = "debug"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "debug",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 64
+max_observation_bytes = 16384
+
+[[protocol_checks]]
+id = "release"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "release",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 64
+max_observation_bytes = 16384
+
+[[protocol_checks]]
+id = "valgrind"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "valgrind",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 64
+max_observation_bytes = 16384

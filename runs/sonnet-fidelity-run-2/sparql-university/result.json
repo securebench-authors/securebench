@@ -1,0 +1,106 @@
+{
+  "task": "sparql-university",
+  "source": "terminal-bench",
+  "notes": [],
+  "native": {
+    "source": "terminal-bench",
+    "task": "sparql-university",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 22.686946,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.07800599999999999,
+    "input_tokens": 8,
+    "cache_write_tokens": 11265,
+    "cache_read_tokens": 66050,
+    "output_tokens": 1972,
+    "turns": 4,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:3e30b0aafd959556baa89fb166e67520ceb464b18c7e951720e600857cd7fc2f",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 233,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:508fa9bbab4a048e38d7aa04b1972cba3e32f381aebd43b73b32c81ad700d568",
+      "bytes": 1261,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November (the cleanup loop removed base images only once both campaigns had finished a task, and GPT had not started); an image pull, the agent's setup or the verifier's build failed with 'no space left on device'",
+        "validity": "infrastructure",
+        "verdict": "error: RuntimeError",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": null
+      }
+    ],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "sparql-university",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:3e30b0aafd959556baa89fb166e67520ceb464b18c7e951720e600857cd7fc2f",
+    "agent_seconds": 22.161,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.08849059999999999,
+    "input_tokens": 8,
+    "cache_write_tokens": 11207,
+    "cache_read_tokens": 99183,
+    "output_tokens": 2381,
+    "turns": 4,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 82,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:9021b9ddbdfc5f085f47a29dea44a98625fd1e1974aa4ff25115e589b0699648",
+      "bytes": 1304,
+      "files_included": true
+    }
+  }
+}

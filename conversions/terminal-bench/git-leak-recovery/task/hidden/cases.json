@@ -1,0 +1,49 @@
+{
+  "flag-file": {
+    "test": "test_flag_file_exists_and_correct",
+    "expected": "secret[lost_and_found_in_git]"
+  },
+  "repository-contents": {
+    "test": "test_repository_contents_checksum",
+    "root": "/app/repo",
+    "expected_sha256": "2c3d6389133b6f9fffae5d3428ec1250c3b1cab5573c716d580dc1d4fa2f4adb"
+  },
+  "git-history": [
+    {
+      "challenge": {
+        "commands": [
+          ["log", "--all", "--grep", "secret\\[", "--regexp-ignore-case"],
+          ["log", "--all", "-p", "-S", "secret["]
+        ],
+        "inspect_dangling": false
+      },
+      "context": {"test": "test_no_secrets_in_commits", "rule": "all_empty"}
+    },
+    {
+      "challenge": {
+        "commands": [
+          ["log", "--oneline", "--all"]
+        ],
+        "inspect_dangling": false
+      },
+      "context": {
+        "test": "test_good_commits_preserved",
+        "rule": "contains",
+        "needle": "chore: init e665d1a2-04a7-4e61-b523-e897e231d9cc"
+      }
+    },
+    {
+      "challenge": {
+        "commands": [
+          ["fsck", "--lost-found"]
+        ],
+        "inspect_dangling": true
+      },
+      "context": {
+        "test": "test_no_secrets_in_unreachable_objects",
+        "rule": "dangling_clean",
+        "needle": "secret["
+      }
+    }
+  ]
+}

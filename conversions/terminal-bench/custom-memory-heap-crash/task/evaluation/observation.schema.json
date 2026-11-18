@@ -1,0 +1,11 @@
+{"type": "object", "properties": {
+ "compile_exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+ "compile_timed_out": {"type": "boolean"},
+ "compile_utf8": {"type": "boolean"},
+ "compile_output": {"type": "string", "max_bytes": 4096},
+ "executable": {"type": "boolean"},
+ "ran": {"type": "boolean"},
+ "timed_out": {"type": "boolean"},
+ "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+ "utf8": {"type": "boolean"},
+ "run_output": {"type": "string", "max_bytes": 4096}}}

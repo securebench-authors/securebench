@@ -1,0 +1,27 @@
+{
+  "model-loads": {
+    "challenge": {"model_path": "/app/model_cache/sentiment_model"},
+    "context": {}
+  },
+  "api": {
+    "challenge": {
+      "texts": [
+        "I really enjoyed this movie, it was amazing!",
+        "The service at this restaurant was terrible and the food was cold.",
+        "This movie was not good at all; in fact, it was quite boring.",
+        "I am not happy with the customer service I received.",
+        "The journey was not bad; I actually had a good time.",
+        "The view from the top of the mountain was horribly beautiful."
+      ],
+      "invalid_request": {"invalid_field": "This should cause an error"},
+      "error_member": "error"
+    },
+    "context": {
+      "ok_status": 200,
+      "error_status": 400,
+      "positive_label": "positive",
+      "negative_label": "negative",
+      "expected_positive": [true, false, false, false, true, true]
+    }
+  }
+}

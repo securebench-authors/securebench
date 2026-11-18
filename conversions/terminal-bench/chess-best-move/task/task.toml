@@ -1,0 +1,34 @@
+id = "chess-best-move"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/chess-best-move@sha256:bb447f94d9e2a8ed879f85c85a514b213b7418f9fe11fd7b2428a0b0e436e647"
+
+[agent]
+workdir = "/app"
+# The hosts the reference reaches: archive.ubuntu.com for Stockfish (it runs no
+# apt update, so security.ubuntu.com is never asked), PyPI for numpy and
+# python-chess.
+allowed_domains = ["archive.ubuntu.com", "pypi.org", "files.pythonhosted.org"]
+
+# Only /app/move.txt is read. Everything below the top level of /app is
+# dropped from the candidate, so that work files there (a virtual environment,
+# caches, links out of /app) can neither exceed the bounds nor fail capture.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "moves"
+
+[[artifact_checks.files]]
+path = "/app/move.txt"
+parser = "text"
+max_bytes = 1048576

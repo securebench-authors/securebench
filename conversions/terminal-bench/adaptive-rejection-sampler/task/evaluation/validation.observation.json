@@ -1,0 +1,78 @@
+{
+ "type": "object",
+ "properties": {
+  "run": {
+   "type": "object",
+   "properties": {
+    "ending": {
+     "type": "string",
+     "max_bytes": 16,
+     "enum": [
+      "exited",
+      "timed_out"
+     ]
+    },
+    "exit_status": {
+     "type": "integer",
+     "minimum": -255,
+     "maximum": 255
+    },
+    "stdout": {
+     "type": "object",
+     "properties": {
+      "bytes": {
+       "type": "integer",
+       "minimum": 0,
+       "maximum": 4611686018427387904
+      },
+      "utf8": {
+       "type": "boolean"
+      },
+      "head": {
+       "type": "string",
+       "max_bytes": 49152
+      },
+      "tail": {
+       "type": "string",
+       "max_bytes": 49152
+      }
+     }
+    },
+    "stderr": {
+     "type": "object",
+     "properties": {
+      "bytes": {
+       "type": "integer",
+       "minimum": 0,
+       "maximum": 4611686018427387904
+      },
+      "utf8": {
+       "type": "boolean"
+      },
+      "head": {
+       "type": "string",
+       "max_bytes": 49152
+      },
+      "tail": {
+       "type": "string",
+       "max_bytes": 49152
+      }
+     }
+    }
+   }
+  },
+  "outcomes": {
+   "type": "array",
+   "max_items": 2,
+   "items": {
+    "type": "string",
+    "max_bytes": 16,
+    "enum": [
+     "returned",
+     "error",
+     "unrecognised"
+    ]
+   }
+  }
+ }
+}

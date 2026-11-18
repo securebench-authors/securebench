@@ -1,0 +1,97 @@
+{
+  "task": "adaptive-rejection-sampler",
+  "source": "terminal-bench",
+  "notes": [
+    "The original test needs R, which the agent installs system-wide outside the scope; SecureBench restores R itself, a native regrade has none, so N->s->N and S->N fail on the R tests by construction.",
+    "The SecureBench agent's ars() signature makes upstream's call bind the domain to `lower`, so both graders fail it."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "adaptive-rejection-sampler",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 224.49125,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.257767,
+    "input_tokens": 14,
+    "cache_write_tokens": 20376,
+    "cache_read_tokens": 152725,
+    "output_tokens": 14569,
+    "turns": 10,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:d1dee9301c9afadb5138af5af92f4ebaaaa54e776a31cebd8f88c680f18ec8b6",
+      "framework": {
+        "commit": "ee4c9a8978ffc512f4faddf36161f1853c1b3893",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 416,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:08e20fbef2fd2b61860c13b8541592e9fb1a9845c91b2453af6266f645c58b66",
+      "bytes": 180384,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "adaptive-rejection-sampler",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:d1dee9301c9afadb5138af5af92f4ebaaaa54e776a31cebd8f88c680f18ec8b6",
+    "agent_seconds": 414.466,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.2003186,
+    "input_tokens": 8,
+    "cache_write_tokens": 16249,
+    "cache_read_tokens": 93633,
+    "output_tokens": 11658,
+    "turns": 4,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 572,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:f08e246a23c996017ab231c2575c824885b0754455455a2f6f3d639fc20b3537",
+      "bytes": 113964,
+      "files_included": true
+    }
+  }
+}

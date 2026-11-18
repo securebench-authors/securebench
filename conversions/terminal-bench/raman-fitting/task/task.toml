@@ -1,0 +1,37 @@
+id = "raman-fitting"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/raman-fitting@sha256:401fa95d5d491f44a473eda9d2c52930f9565cc889c796eabcb6e20fec26852e"
+
+[agent]
+workdir = "/app"
+# The reference installs scipy and numpy with pip.
+allowed_domains = ["pypi.org", "files.pythonhosted.org"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The only deliverable is /app/results.json. Everything below a subdirectory
+# of /app (virtual environments, caches, downloads) is irrelevant to grading
+# and is excluded so that it cannot push the capture past its bounds.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# One case per upstream test. The adapter reads /app/results.json with the
+# baseline's own Python 3.13 json module, as upstream's test does, and reports
+# the values; the Oracle applies upstream's tolerances.
+[[protocol_checks]]
+id = "results"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 3
+timeout_seconds = 120
+max_challenge_bytes = 256
+max_observation_bytes = 4096

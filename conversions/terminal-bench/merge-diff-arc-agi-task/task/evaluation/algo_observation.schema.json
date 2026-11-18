@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "outputs": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "is_list": {"type": "boolean"},
+          "length": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+          "rows": {
+            "type": "array",
+            "max_items": 4096,
+            "items": {
+              "type": "object",
+              "properties": {
+                "is_list": {"type": "boolean"},
+                "length": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807},
+                "cells": {
+                  "type": "array",
+                  "max_items": 4096,
+                  "items": {"type": "number", "minimum": -4611686018427387904, "maximum": 4611686018427387904}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "task": "modernize-scientific-stack",
+  "source": "terminal-bench",
+  "notes": [],
+  "native": {
+    "source": "terminal-bench",
+    "task": "modernize-scientific-stack",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 17.446727,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.04318480000000001,
+    "input_tokens": 6,
+    "cache_write_tokens": 6307,
+    "cache_read_tokens": 44624,
+    "output_tokens": 902,
+    "turns": 3,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:0a17a0c4f1832092d7ee64e6a7951a89c287a391ad8bdd08c75ab524d724011b",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 221,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:7588299c3182a555fd9f7446b776797b39c91156ac236a8311641a68959ca98b",
+      "bytes": 937,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November (the cleanup loop removed base images only once both campaigns had finished a task, and GPT had not started); an image pull, the agent's setup or the verifier's build failed with 'no space left on device'",
+        "validity": "infrastructure",
+        "verdict": "error: RuntimeError",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": null
+      }
+    ],
+    "securebench": [
+      {
+        "kept_as": "securebench-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November; an image pull or the run's own setup failed, the unit crashed before writing a record, or the agent's writes failed with 'no space left on device'"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "modernize-scientific-stack",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:0a17a0c4f1832092d7ee64e6a7951a89c287a391ad8bdd08c75ab524d724011b",
+    "agent_seconds": 17.483,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0480342,
+    "input_tokens": 6,
+    "cache_write_tokens": 6146,
+    "cache_read_tokens": 69891,
+    "output_tokens": 946,
+    "turns": 3,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 74,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:11274b470d27cabb69eb192130d466176c575845f64e78d70fbd895532a7dba9",
+      "bytes": 938,
+      "files_included": true
+    }
+  }
+}

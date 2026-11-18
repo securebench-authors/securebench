@@ -1,0 +1,96 @@
+{
+  "task": "openssl-selfsigned-cert",
+  "source": "terminal-bench",
+  "notes": [
+    "A candidate keeps only the executable bit, so the private key comes back as 0644 and the original test (0600 or tighter) fails N->s->N and S->N by construction. SecureBench cannot check the exact mode (recorded, more lenient)."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "openssl-selfsigned-cert",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 10.783853,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0383268,
+    "input_tokens": 4,
+    "cache_write_tokens": 5188,
+    "cache_read_tokens": 27284,
+    "output_tokens": 1211,
+    "turns": 2,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:c61250b4cba8d2507e46005755b00ba9fcbf5631a6bea5c386f0089a4ccc3178",
+      "framework": {
+        "commit": "ee4c9a8978ffc512f4faddf36161f1853c1b3893",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 159,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:fdd6134fc3b9235ec4ae9585d682234e690c857e08a4a942e47a56dbe339c22d",
+      "bytes": 7411,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "openssl-selfsigned-cert",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:c61250b4cba8d2507e46005755b00ba9fcbf5631a6bea5c386f0089a4ccc3178",
+    "agent_seconds": 25.085,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.042917,
+    "input_tokens": 4,
+    "cache_write_tokens": 5083,
+    "cache_read_tokens": 44185,
+    "output_tokens": 1374,
+    "turns": 2,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 99,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:ab0ba6fc2177680ec6ce417fc6290afb2a7bc5c89c0470abe0bda436b016a456",
+      "bytes": 7171,
+      "files_included": true
+    }
+  }
+}

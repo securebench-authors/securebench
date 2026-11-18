@@ -1,0 +1,96 @@
+{
+  "task": "extract-moves-from-video",
+  "source": "terminal-bench",
+  "notes": [
+    "The pack allows no domains (recorded as stricter in CONVERSION.md), so the SecureBench agent could not download the YouTube video or install tools, refused to write moves from memory and stopped after 28 s (failed/case_error). Natively the agent downloaded the video and ran OCR, and hit the 1,800 s time limit before writing /app/solution.txt. Both fail; the graders agree on both attempts' files."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "extract-moves-from-video",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 1800.00142,
+    "time_limit_expired": true,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": null,
+    "cache_write_tokens": null,
+    "cache_read_tokens": null,
+    "output_tokens": null,
+    "turns": null,
+    "result_error": "no result",
+    "N->S": "failed/case_error",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "case_error",
+      "pack_digest": "sha256:468b012131e3f63303091c7589253420f004b22a8d2d8da8b98909f97b9d353a",
+      "framework": {
+        "commit": "e481309628ab604cb9a401a0ee5e8c8668c2245c",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 2341,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:8cca4d4320beaa4fd08c92405a4e135c4a60420808a7b335065fe726d1eca0c5",
+      "bytes": 2617,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "extract-moves-from-video",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/case_error",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:468b012131e3f63303091c7589253420f004b22a8d2d8da8b98909f97b9d353a",
+    "agent_seconds": 28.169,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0538194,
+    "input_tokens": 14,
+    "cache_write_tokens": 4772,
+    "cache_read_tokens": 116267,
+    "output_tokens": 1145,
+    "turns": 5,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 85,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:2361c20a9aec60867d2d94462d0ae3727b717bd2fbad77f14a7c7fb510be7db8",
+      "bytes": 0,
+      "files_included": true
+    }
+  }
+}

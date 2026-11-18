@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "initial": {
+      "type": "object",
+      "properties": {
+        "accounts": {"type": "string", "max_bytes": 1024},
+        "books": {"type": "string", "max_bytes": 1024},
+        "transactions": {"type": "string", "max_bytes": 1024}
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "items": {"type": "string", "max_bytes": 64},
+      "max_items": 16
+    }
+  }
+}

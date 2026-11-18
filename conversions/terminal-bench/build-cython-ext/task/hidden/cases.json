@@ -1,0 +1,57 @@
+{
+  "outputs": {
+    "challenge": {
+      "specs": ["pyknotid", "pyknotid.spacecurves.chelpers", "pyknotid.spacecurves.ccomplexity", "pyknotid.cinvariants"],
+      "cross_after_random": [[0.0, 0.0, 1.0]],
+      "writhe": [
+        {
+          "points": [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
+          "contributions": [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]],
+          "order": [0, 1, 2, 3]
+        }
+      ],
+      "knots": [
+        {"knot": "trefoil", "num_points": 50, "op": "vassiliev_degree_3"},
+        {"knot": "three_twist", "num_points": 100, "op": "alexander_polynomial"},
+        {"knot": "figure_eight", "num_points": 100, "op": "determinant"}
+      ]
+    },
+    "expected": {
+      "numpy_version": "2.3.0",
+      "loaders": [
+        "_frozen_importlib_external.SourceFileLoader",
+        "_frozen_importlib_external.ExtensionFileLoader",
+        "_frozen_importlib_external.ExtensionFileLoader",
+        "_frozen_importlib_external.ExtensionFileLoader"
+      ],
+      "cross_tolerance": 1e-10,
+      "writhe": [0.0],
+      "writhe_tolerance": 1e-6,
+      "knots": [
+        {"op": "vassiliev_degree_3"},
+        {"op": "alexander_polynomial", "expected": 7, "tolerance": 1e-6},
+        {"op": "determinant", "expected": 5}
+      ]
+    }
+  },
+  "repository": {
+    "test_invariants": {"shape": [3, 3, 0, 1], "numbers": [3, 1, -1], "series": [3, 2, 1], "texts": ["list"]},
+    "test_identify": {"shape": [0, 0, 0, 0]},
+    "test_init": {"shape": [0, 0, 0, 0]},
+    "test_copy": {"shape": [0, 0, 2, 0], "flags": [true, true]},
+    "test_points": {"shape": [0, 0, 1, 0], "flags": [true]},
+    "test_translate": {"shape": [0, 3, 0, 0], "series": [10.0, 20.0, 30.0]},
+    "test_zero_centroid": {"series_below": 0.00001},
+    "test_rotate": {"shape": [0, 0, 0, 0]},
+    "test_planar_writhe": {"shape": [1, 0, 0, 0], "numbers": [3]},
+    "test_writhe": {"shape": [1, 0, 0, 0], "between": [-3.6, -3.4]},
+    "test_gauss_code": {"shape": [0, 0, 0, 1], "texts": ["1+a,2-a,3+a,1-a,2+a,3-a"]},
+    "test_reconstructed_space_curve": {"shape": [2, 0, 0, 0], "numbers_equal": true},
+    "test_write_load": {"shape": [2, 0, 0, 0], "numbers_equal": true},
+    "test_octree_simplify": {"shape": [0, 0, 0, 0]},
+    "test_arclength": {"shape": [1, 0, 0, 0], "close": 31.8512, "atol": 0.01},
+    "test_rog": {"shape": [1, 0, 0, 0], "close": 2.244798, "atol": 0.01},
+    "test_smooth": {"shape": [0, 0, 0, 0]},
+    "test_compiled_vs_python_find_crossings": {"shape": [0, 0, 1, 2], "flags": [true], "texts_equal": true, "or_skipped": true}
+  }
+}

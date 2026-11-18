@@ -1,0 +1,95 @@
+id = "mcmc-sampling-stan"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/mcmc-sampling-stan@sha256:073fc36a3347b4f6b43bd6e98339542c41ed531c771af8bee40ba10f00cfabaf"
+
+[agent]
+workdir = "/app"
+allowed_domains = ["archive.ubuntu.com", "cloud.r-project.org", "security.ubuntu.com"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The deliverables in /app, and every place R packages and R's own settings can
+# go: /usr/local/lib/R/site-library (where install.packages puts them as root),
+# /usr/lib/R (site-library for apt's r-cran-* packages, and R's etc), /etc/R
+# (where /usr/lib/R/etc's settings files link) and /opt.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/usr/local"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/usr/lib/R"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/etc/R"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/opt"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# One check per upstream test that runs R, each in a fresh Evaluation:
+# test_rstan_package_installed, test_hierarchical_model_implemented, and the
+# two runs of analysis.R behind the other four tests.
+[[protocol_checks]]
+id = "rstan"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "rstan",
+]
+challenge_schema = "empty.schema.json"
+observation_schema = "run.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 64
+max_observation_bytes = 16384
+
+[[protocol_checks]]
+id = "model"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "model",
+]
+challenge_schema = "empty.schema.json"
+observation_schema = "model.schema.json"
+max_cases = 1
+timeout_seconds = 1500
+max_challenge_bytes = 64
+max_observation_bytes = 16384
+
+[[protocol_checks]]
+id = "analysis"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "analysis",
+]
+challenge_schema = "empty.schema.json"
+observation_schema = "analysis.schema.json"
+max_cases = 1
+timeout_seconds = 3600
+max_challenge_bytes = 64
+max_observation_bytes = 4194304

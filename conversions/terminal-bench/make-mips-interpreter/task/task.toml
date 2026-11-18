@@ -1,0 +1,47 @@
+id = "make-mips-interpreter"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/make-mips-interpreter@sha256:082fc8821b317f30fdfbf8d08d528874ce331c03e8083aef0406d48cdd7132a2"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# /app holds vm.js and anything it loads. Edits to the provided MIPS program and
+# the WAD it reads are dropped, so a vm.js that loads /app/doomgeneric_mips and
+# /app/doom.wad when it runs gets the baseline's files. A vm.js that snapshots a
+# program into another file when the candidate is built runs that snapshot.
+[[scope.roots]]
+path = "/app"
+exclude = ["doomgeneric_mips", "doom.wad"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[protocol_checks]]
+id = "doom"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 180
+max_challenge_bytes = 2048
+max_observation_bytes = 4194304
+
+# vm.js's merged stdout and stderr, written by the adapter: the first 12 MiB,
+# base64-encoded, so that a verbose interpreter's I_InitGraphics line is still
+# seen. Upstream reads the whole output.
+[[protocol_checks.output_artifacts]]
+path = "/srv/vm-output.json"
+parser = "json"
+max_bytes = 16777216

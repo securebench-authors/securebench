@@ -1,0 +1,106 @@
+{
+  "task": "merge-diff-arc-agi-task",
+  "source": "terminal-bench",
+  "notes": [
+    "As git-leak-recovery: the first native attempt failed on the owner change; rerun passed."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "merge-diff-arc-agi-task",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 104.934979,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.08717620000000001,
+    "input_tokens": 18,
+    "cache_write_tokens": 8431,
+    "cache_read_tokens": 149781,
+    "output_tokens": 2346,
+    "turns": 9,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:332d80e338f05eee33bc22f3e56a803979678e1c0d540501a5454306aa6823c5",
+      "framework": {
+        "commit": "7fd854f8d70541a2f5e042d57ef5838a203ca113",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 190,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:553e4ed8eb2aa9b55efda132d3621942aa63469c317652d5850c2f913adb057f",
+      "bytes": 41859,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-before-chown-fix",
+        "why": "superseded: our copy changed /app's owner before the native tests (fixed in e950db9)",
+        "validity": "ok",
+        "verdict": "failed",
+        "N->S": "passed",
+        "N->s->N": "passed",
+        "S->N": null
+      }
+    ],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "merge-diff-arc-agi-task",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:332d80e338f05eee33bc22f3e56a803979678e1c0d540501a5454306aa6823c5",
+    "agent_seconds": 70.552,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0926202,
+    "input_tokens": 18,
+    "cache_write_tokens": 7139,
+    "cache_read_tokens": 224691,
+    "output_tokens": 1909,
+    "turns": 9,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 162,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:fe4e9ee85e2d4f1c1a7fe711f21c199c5c0c3ae78e1c3cdd9462418f6f6c19ab",
+      "bytes": 40306,
+      "files_included": true
+    }
+  }
+}

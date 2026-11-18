@@ -1,0 +1,29 @@
+id = "vulnerable-secret"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/vulnerable-secret@sha256:61ebb40454dd103aa2f7e71ad6dafd91cf2b301e6bb07e69d5b472412d1ee15b"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+# The only deliverable is /app/results.txt, but agents keep exploit scripts and
+# payloads beside it, so the scope is all of /app with generous bounds.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "results"
+
+[[artifact_checks.files]]
+path = "/app/results.txt"
+parser = "text"
+max_bytes = 16777216

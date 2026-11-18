@@ -1,0 +1,9 @@
+{
+  "source": "tests/test_outputs.py, test_api: the four `assert v.dotproduct(a, b) == expected` lines, in order",
+  "pairs": [
+    {"a": [1, 1], "b": [0, 1], "expected": 1},
+    {"a": [1, 1, 0], "b": [1, 1, 0], "expected": 2},
+    {"a": [1, 1, 0, 0], "b": [1, 0, 0, 21.2], "expected": 1},
+    {"a": [1, -1, 0, 0.01], "b": [0, 0, 10, 0], "expected": 0}
+  ]
+}

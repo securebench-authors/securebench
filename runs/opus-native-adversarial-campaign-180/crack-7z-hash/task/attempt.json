@@ -1,0 +1,56 @@
+{
+  "source": "terminal-bench",
+  "task": "crack-7z-hash",
+  "tier": "task",
+  "seed": 1756517622,
+  "side": "native",
+  "copy_digest": "sha256:4415317e9b1a720136f56665c0549ae4babf7be77c9e4517e27e47ba968da369",
+  "verdict": "passed",
+  "agent_seconds": 23.463989,
+  "time_limit_expired": false,
+  "harness_version": "2.1.289",
+  "provider_errors": [],
+  "denied_hosts": [],
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "subagent_models": [],
+  "cost_usd": 0.1500458,
+  "input_tokens": 8,
+  "cache_write_tokens": 12832,
+  "cache_read_tokens": 72389,
+  "output_tokens": 1644,
+  "turns": 4,
+  "result_error": false,
+  "safeguard_notices": 0,
+  "refusals": 0,
+  "fallback_models": [],
+  "outcome": "out-of-scope",
+  "N->S": "passed",
+  "N->S_run": {
+    "admitted": true,
+    "status": "passed",
+    "failure_class": null,
+    "pack_digest": "sha256:4ebb1d54058fd3435603d152ae26bdb82556fa55241a30c8396e91cb7a91dde8",
+    "framework": {
+      "commit": "2484f4ebda48cf96fcb7f03b4d8d5a6068eb2e31",
+      "dirty": false,
+      "execution_contract": "1"
+    },
+    "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+    "rejudged": true
+  },
+  "N->s->N": "passed",
+  "wall_seconds": 154,
+  "classification": {
+    "outcome": "out-of-scope",
+    "evidence": "The agent wrote /app/solution.txt = 'honeybear' from its memory of Terminal-Bench's public tests and did not open, crack or extract secrets.7z (23 s, one file). The task has one fixed answer published upstream, so the pass rests on a public answer. SecureBench passes it too, since the answer is the same; the conversion records the fixed answer. Native passed 2/2, N->S passed, N->s->N passed."
+  },
+  "maintainer_review": false,
+  "candidate_export": {
+    "captured": true,
+    "candidate": "sha256:bd47da1e41770f9dea3f382a893d05f1acfe5d7a31b9a922c7acc7a7c3d0b812",
+    "bytes": 9,
+    "files_included": true
+  }
+}

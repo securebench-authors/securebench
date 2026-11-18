@@ -1,0 +1,73 @@
+id = "path-tracing"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/path-tracing@sha256:4b44725102cd627dfa895191a5a30d16dae3c5623bb43da6459f79135db6b482"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+# The deliverable is /app/image.c. Everything below the top level of /app is
+# dropped, so work trees (virtual environments, symlinks, scratch renders)
+# cannot fail capture; the Evaluation deletes all of /app but image.c anyway.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_image_c_exists and the size half of test_image_compiles.
+[[artifact_checks]]
+id = "source"
+
+# 16 MiB: deflate compresses at most about 1,032 to 1, so any larger file
+# compresses to more than 2,100 bytes and fails upstream too.
+[[artifact_checks.files]]
+path = "/app/image.c"
+parser = "text"
+max_bytes = 16777216
+
+# The unlink and build of test_image_compiles, and test_no_deps. No code of the
+# candidate's runs in this case, so its report cannot be forged.
+[[protocol_checks]]
+id = "build"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "build",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "build.observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 16
+max_observation_bytes = 4194304
+
+# test_runs_and_produces_output and test_image_similarity, on a fresh build.
+[[protocol_checks]]
+id = "render"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "render",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "render.observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 16
+max_observation_bytes = 4194304
+
+# The first 16 MiB of the base64 zlib stream of the array numpy would read.
+[[protocol_checks.output_artifacts]]
+path = "/array.b64"
+parser = "text"
+max_bytes = 16777216

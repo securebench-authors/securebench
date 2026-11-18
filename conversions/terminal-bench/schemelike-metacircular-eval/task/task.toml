@@ -1,0 +1,56 @@
+id = "schemelike-metacircular-eval"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/schemelike-metacircular-eval@sha256:b485be38bf80d56c1a4cd9da95bbf7ec129dc03f6786b86c0525518a96f6d1db"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 10000
+max_bytes = 268435456
+
+# The deliverable is /app/eval.scm; helper files elsewhere in /app are kept.
+# interp.py is what the expected outputs come from, and the test programs are
+# the specification: changes to both are dropped, and the Evaluation runs
+# upstream's interp.py and gets each program in its challenge.
+[[scope.roots]]
+path = "/app"
+exclude = ["interp.py", "test"]
+symlinks = false
+max_entries = 10000
+max_bytes = 268435456
+
+# One case per run through eval.scm, each in a fresh Evaluation, so that no run
+# can leave state behind for another, as runs inside one upstream container can.
+[[protocol_checks]]
+id = "once"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "once",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 63
+timeout_seconds = 120
+max_challenge_bytes = 32768
+max_observation_bytes = 131072
+
+[[protocol_checks]]
+id = "twice"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "twice",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 5
+timeout_seconds = 120
+max_challenge_bytes = 32768
+max_observation_bytes = 131072

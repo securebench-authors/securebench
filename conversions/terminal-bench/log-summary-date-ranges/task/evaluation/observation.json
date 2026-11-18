@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "rows": {
+      "type": "array",
+      "max_items": 1000,
+      "items": {
+        "type": "array",
+        "max_items": 64,
+        "items": {"type": "string", "max_bytes": 4096}
+      }
+    }
+  }
+}

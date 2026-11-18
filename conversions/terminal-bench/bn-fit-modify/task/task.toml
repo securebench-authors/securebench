@@ -1,0 +1,49 @@
+id = "bn-fit-modify"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/bn-fit-modify@sha256:5aeb11ca6e802b83816c9a31f055ac9d028309a853509400c2e3139ac2d8380d"
+
+[agent]
+workdir = "/app"
+# The reference installs bnlearn from CRAN; the image's R points at this mirror.
+allowed_domains = ["cloud.r-project.org"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The three deliverables sit directly in /app. Everything below a subdirectory
+# of /app (a virtual environment, an R library, a source checkout) is never
+# read by the checks, and is excluded so that its absolute symlinks or size
+# cannot fail the capture.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "learned-dag"
+
+[[artifact_checks.files]]
+path = "/app/learned_dag.csv"
+parser = "text"
+max_bytes = 1048576
+
+[[artifact_checks]]
+id = "intervened-dag"
+
+[[artifact_checks.files]]
+path = "/app/intervened_dag.csv"
+parser = "text"
+max_bytes = 1048576
+
+[[artifact_checks]]
+id = "bn-sample"
+
+[[artifact_checks.files]]
+path = "/app/final_bn_sample.csv"
+parser = "text"
+max_bytes = 16777216

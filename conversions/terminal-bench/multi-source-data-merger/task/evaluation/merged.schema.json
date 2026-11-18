@@ -1,0 +1,183 @@
+{
+ "type": "object",
+ "properties": {
+  "column_count": {
+   "type": "integer",
+   "minimum": 0,
+   "maximum": 9223372036854775807
+  },
+  "columns": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "kind": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "absent",
+       "null",
+       "bool",
+       "int",
+       "float",
+       "decimal",
+       "str",
+       "object",
+       "list",
+       "other"
+      ]
+     },
+     "text": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "exact": {
+      "type": "boolean"
+     }
+    }
+   },
+   "max_items": 256
+  },
+  "row_count": {
+   "type": "integer",
+   "minimum": 0,
+   "maximum": 9223372036854775807
+  },
+  "rows": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "user_id": {
+      "type": "object",
+      "properties": {
+       "kind": {
+        "type": "string",
+        "max_bytes": 8,
+        "enum": [
+         "absent",
+         "null",
+         "bool",
+         "int",
+         "float",
+         "decimal",
+         "str",
+         "object",
+         "list",
+         "other"
+        ]
+       },
+       "text": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "exact": {
+        "type": "boolean"
+       }
+      }
+     },
+     "name": {
+      "type": "object",
+      "properties": {
+       "kind": {
+        "type": "string",
+        "max_bytes": 8,
+        "enum": [
+         "absent",
+         "null",
+         "bool",
+         "int",
+         "float",
+         "decimal",
+         "str",
+         "object",
+         "list",
+         "other"
+        ]
+       },
+       "text": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "exact": {
+        "type": "boolean"
+       },
+       "wrapping": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 16
+       }
+      }
+     },
+     "email": {
+      "type": "object",
+      "properties": {
+       "kind": {
+        "type": "string",
+        "max_bytes": 8,
+        "enum": [
+         "absent",
+         "null",
+         "bool",
+         "int",
+         "float",
+         "decimal",
+         "str",
+         "object",
+         "list",
+         "other"
+        ]
+       },
+       "text": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "exact": {
+        "type": "boolean"
+       },
+       "wrapping": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 16
+       }
+      }
+     },
+     "created_date": {
+      "type": "object",
+      "properties": {
+       "kind": {
+        "type": "string",
+        "max_bytes": 8,
+        "enum": [
+         "absent",
+         "null",
+         "bool",
+         "int",
+         "float",
+         "decimal",
+         "str",
+         "object",
+         "list",
+         "other"
+        ]
+       },
+       "text": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "exact": {
+        "type": "boolean"
+       },
+       "wrapping": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 16
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

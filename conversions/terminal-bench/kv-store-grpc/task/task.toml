@@ -1,0 +1,81 @@
+id = "kv-store-grpc"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/kv-store-grpc@sha256:3399400800dcb207634daa42bc1b052e831e285cc9d221eea66c47bc0fc79791"
+
+[agent]
+workdir = "/app"
+# pip downloads grpcio and grpcio-tools from the Python Package Index.
+allowed_domains = ["files.pythonhosted.org", "pypi.org"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The deliverables: the proto file, the generated modules and server.py.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/__pycache__"]
+symlinks = true
+max_entries = 40000
+max_bytes = 1073741824
+
+# "System-wide" installs of the baseline's Python (/usr/local/bin/python3.13)
+# land in /usr/local/lib/python3.13/site-packages, and console scripts in /usr/local/bin.
+[[scope.roots]]
+path = "/usr/local"
+exclude = ["**/__pycache__"]
+symlinks = true
+max_entries = 60000
+max_bytes = 1073741824
+
+# test_proto_file_creation
+[[artifact_checks]]
+id = "proto-file"
+
+[[artifact_checks.files]]
+path = "/app/kv-store.proto"
+parser = "text"
+max_bytes = 1048576
+
+# test_protobuf_generation: both files only need to exist.
+[[artifact_checks]]
+id = "generated-files"
+
+[[artifact_checks.files]]
+path = "/app/kv_store_pb2.py"
+parser = "text"
+max_bytes = 1048576
+
+[[artifact_checks.files]]
+path = "/app/kv_store_pb2_grpc.py"
+parser = "text"
+max_bytes = 1048576
+
+# test_server_file_creation
+[[artifact_checks]]
+id = "server-file"
+
+[[artifact_checks.files]]
+path = "/app/server.py"
+parser = "text"
+max_bytes = 1048576
+
+# test_grpc_tools_installation, test_real_grpc_server_running,
+# test_grpc_protocol_handshake and test_grpc_server_functionality, in one
+# process against one server, as upstream's pytest session runs them.
+[[protocol_checks]]
+id = "grpc-server"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 600
+max_challenge_bytes = 4096
+max_observation_bytes = 65536

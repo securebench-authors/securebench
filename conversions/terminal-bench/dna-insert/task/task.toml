@@ -1,0 +1,32 @@
+id = "dna-insert"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/dna-insert@sha256:4dd8760694e355de85ecf03605cb487ccdb33322f6afad513d2920829baa33b2"
+
+[agent]
+workdir = "/app"
+# The reference installs emboss and primer3 with apt-get from Ubuntu's archive.
+allowed_domains = ["archive.ubuntu.com", "security.ubuntu.com"]
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# Only /app/primers.fasta is graded. Contents of subdirectories of /app are
+# excluded so that tool scratch there (a virtualenv's absolute symlinks, a
+# source checkout) cannot fail capture; top-level files stay captured.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+[[artifact_checks]]
+id = "primers"
+
+[[artifact_checks.files]]
+path = "/app/primers.fasta"
+parser = "text"
+max_bytes = 16777216

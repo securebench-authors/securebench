@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "plans": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 2,
+      "items": {
+        "type": "array",
+        "max_items": 5000,
+        "items": {
+          "type": "object",
+          "properties": {
+            "request_id": {"type": "string", "max_bytes": 256},
+            "batch_text": {"type": "string", "max_bytes": 512},
+            "batch_number": {"type": "number", "minimum": -1.7976931348623157e308, "maximum": 1.7976931348623157e308},
+            "seq_align": {"type": "integer", "minimum": -9007199254740992, "maximum": 9007199254740992},
+            "heads_align": {"type": "integer", "minimum": -9007199254740992, "maximum": 9007199254740992},
+            "hidden_align": {"type": "integer", "minimum": -9007199254740992, "maximum": 9007199254740992},
+            "shape_extra": {"type": "string", "max_bytes": 512}
+          },
+          "optional": ["batch_text", "batch_number"]
+        }
+      }
+    }
+  }
+}

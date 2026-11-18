@@ -1,0 +1,65 @@
+id = "constraints-scheduling"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/constraints-scheduling@sha256:567ce5a189f8d11ac461790876e934cc7af38391baf89a78f95f4dafc1fec3b0"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# Only files directly in /app are graded. Everything inside subdirectories of
+# /app (scratch scripts, virtual environments with absolute symlinks) is
+# dropped, so that it can neither fail capture nor reach the Oracle.
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+[[artifact_checks]]
+id = "inputs-unchanged"
+
+[[artifact_checks.files]]
+path = "/app/alice_calendar.ics"
+parser = "text"
+max_bytes = 65536
+
+[[artifact_checks.files]]
+path = "/app/bob_calendar.ics"
+parser = "text"
+max_bytes = 65536
+
+[[artifact_checks.files]]
+path = "/app/carol_calendar.ics"
+parser = "text"
+max_bytes = 65536
+
+[[artifact_checks]]
+id = "structure"
+
+[[artifact_checks.files]]
+path = "/app/meeting_scheduled.ics"
+parser = "text"
+max_bytes = 16777216
+
+[[artifact_checks]]
+id = "constraints"
+
+[[artifact_checks.files]]
+path = "/app/meeting_scheduled.ics"
+parser = "text"
+max_bytes = 16777216
+
+[[artifact_checks]]
+id = "earliest"
+
+[[artifact_checks.files]]
+path = "/app/meeting_scheduled.ics"
+parser = "text"
+max_bytes = 16777216

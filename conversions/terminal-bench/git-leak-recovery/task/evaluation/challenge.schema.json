@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "commands": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 4,
+      "items": {
+        "type": "array",
+        "min_items": 1,
+        "max_items": 16,
+        "items": {"type": "string", "max_bytes": 256}
+      }
+    },
+    "inspect_dangling": {"type": "boolean"}
+  }
+}

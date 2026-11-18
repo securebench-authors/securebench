@@ -1,0 +1,64 @@
+id = "git-leak-recovery"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/git-leak-recovery@sha256:62160e522a4238b8bcd522411ea97b5b200f811e5899d34947e66809bef7e586"
+
+[baseline.repository]
+path = "/app/repo"
+commit = "c6d99979c3ef74db39532137fb89516c2d707785"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# /app holds both deliverables: /app/secret.txt and the cleaned repository.
+# The repository's .git directory is the deliverable of steps 2 and 3, so it
+# is captured as plain files.
+[[scope.roots]]
+path = "/app"
+git_directories = ["repo/.git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# test_flag_file_exists_and_correct
+[[artifact_checks]]
+id = "flag-file"
+
+[[artifact_checks.files]]
+path = "/app/secret.txt"
+parser = "text"
+max_bytes = 16777216
+
+# test_repository_contents_checksum: the Oracle recomputes upstream's
+# `find -type f -not -path '*/\.*' | sha256sum | sort | sha256sum` from the
+# listing, whose file hashes SecureBench computes itself.
+[[artifact_checks]]
+id = "repository-contents"
+
+[[artifact_checks.listings]]
+path = "/app/repo"
+max_entries = 100000
+
+# test_no_secrets_in_commits, test_good_commits_preserved and
+# test_no_secrets_in_unreachable_objects: one case each, running upstream's
+# git commands on the replayed repository.
+[[protocol_checks]]
+id = "git-history"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 3
+timeout_seconds = 600
+max_challenge_bytes = 4096
+max_observation_bytes = 4194304

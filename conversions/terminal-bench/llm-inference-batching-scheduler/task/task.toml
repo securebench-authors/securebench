@@ -1,0 +1,54 @@
+id = "llm-inference-batching-scheduler"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/llm-inference-batching-scheduler@sha256:19e79aa49be4e55dccca1dde966515ebe6852314b6010bcb9230afb48b996774"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+[[scope.roots]]
+path = "/app"
+# Only the plan and request files are graded. A virtual environment made under
+# /app links to the system interpreter by absolute path, which capture would
+# reject, so its changes are dropped instead.
+exclude = ["**/.venv", "**/venv"]
+symlinks = true
+max_entries = 100000
+max_bytes = 1073741824
+
+# The two request files the instructions say to keep unchanged (upstream's
+# test_input_data_integrity compares their SHA-256).
+[[artifact_checks]]
+id = "input-integrity"
+
+[[artifact_checks.files]]
+path = "/app/task_file/input_data/requests_bucket_1.jsonl"
+parser = "text"
+max_bytes = 1048576
+
+[[artifact_checks.files]]
+path = "/app/task_file/input_data/requests_bucket_2.jsonl"
+parser = "text"
+max_bytes = 1048576
+
+# The two plans, parsed from JSON Lines by the adapter and judged by the Oracle.
+[[protocol_checks]]
+id = "plans"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 300
+max_challenge_bytes = 4096
+max_observation_bytes = 4194304

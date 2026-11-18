@@ -1,0 +1,40 @@
+{
+  "sanitized_files": {
+    "files": [
+      {
+        "path": "/app/dclm/ray_processing/ray_cluster.yaml",
+        "expected": "expected/ray_cluster.yaml"
+      },
+      {
+        "path": "/app/dclm/ray_processing/process.py",
+        "expected": "expected/process.py"
+      },
+      {
+        "path": "/app/dclm/exp_data/datasets/tokenized/rw_v2_fasttext_openhermes_vs_rw_v2_bigram_0.1_arcade100k.json",
+        "expected": "expected/rw_v2_fasttext_openhermes_vs_rw_v2_bigram_0.1_arcade100k.json"
+      }
+    ],
+    "secrets": [
+      "AKIA1234567890123456",
+      "D4w8z9wKN1aVeT3BpQj6kIuN7wH8X0M9KfV5OqzF",
+      "ghp_aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789",
+      "hf_abcdefghijklmnopqrstuvwxyz123456",
+      "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"
+    ]
+  },
+  "other_files_unchanged": {
+    "listing": "/app/dclm",
+    "manifest": "manifest.json"
+  },
+  "git_diff": {
+    "challenge": {
+      "repository": "/app/dclm",
+      "commit": "d6987af002b122fef54bc0be402062c76488a4d9"
+    },
+    "allowed_b_paths": [
+      "ray_processing/ray_cluster.yaml",
+      "ray_processing/process.py",
+      "exp_data/datasets/tokenized/rw_v2_fasttext_openhermes_vs_rw_v2_bigram_0.1_arcade100k.json"
+    ]
+  }
+}

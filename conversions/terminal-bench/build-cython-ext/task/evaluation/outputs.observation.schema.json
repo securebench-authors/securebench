@@ -1,0 +1,21 @@
+{"type": "object", "optional": ["result"], "properties": {
+ "ending": {"type": "string", "max_bytes": 16, "enum": ["exited", "timed_out"]},
+ "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+ "result": {"type": "object", "properties": {
+  "numpy_version": {"type": "object", "properties": {
+   "error": {"type": "string", "max_bytes": 1024},
+   "text": {"type": "string", "max_bytes": 16384}}},
+  "specs": {"type": "array", "max_items": 4, "items": {"type": "object", "properties": {
+   "module": {"type": "string", "max_bytes": 64, "enum": ["pyknotid", "pyknotid.spacecurves.chelpers", "pyknotid.spacecurves.ccomplexity", "pyknotid.cinvariants"]},
+   "error": {"type": "string", "max_bytes": 1024},
+   "found": {"type": "boolean"},
+   "loader": {"type": "array", "max_items": 64, "items": {"type": "string", "max_bytes": 1024}}}}},
+  "cross": {"type": "array", "max_items": 1, "items": {"type": "object", "properties": {
+   "error": {"type": "string", "max_bytes": 1024},
+   "value": {"type": "number", "minimum": -1e300, "maximum": 1e300}}}},
+  "writhe": {"type": "array", "max_items": 1, "items": {"type": "object", "properties": {
+   "error": {"type": "string", "max_bytes": 1024},
+   "value": {"type": "number", "minimum": -1e300, "maximum": 1e300}}}},
+  "knots": {"type": "array", "max_items": 3, "items": {"type": "object", "properties": {
+   "error": {"type": "string", "max_bytes": 1024},
+   "values": {"type": "array", "max_items": 2, "items": {"type": "number", "minimum": -1e300, "maximum": 1e300}}}}}}}}}

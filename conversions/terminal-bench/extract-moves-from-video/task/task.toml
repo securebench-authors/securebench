@@ -1,0 +1,63 @@
+id = "extract-moves-from-video"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/extract-moves-from-video@sha256:14a9dcca7d08ce53c5a0ed9fbd663a996ef28f207c199ed69d9ccf6064f8b184"
+
+[agent]
+workdir = "/app"
+# The reference writes its transcript from a fixed list and needs no network.
+allowed_domains = []
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# The upstream test reads only /app/solution.txt. Nothing else under /app can
+# change the native verdict, so the excludes drop the clutter an agent leaves
+# while downloading and processing the video (subdirectories such as frame dumps
+# or virtual environments, and media files at the top level). None of them
+# matches solution.txt.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "*/*",
+  "*.mp4",
+  "*.webm",
+  "*.mkv",
+  "*.m4a",
+  "*.mp3",
+  "*.wav",
+  "*.part",
+  "*.ytdl",
+  "*.png",
+  "*.jpg",
+  "*.jpeg",
+  "*.bmp",
+  "*.ppm",
+  "*.pgm",
+]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# A protocol check rather than an artifact check, so that the file is decoded
+# as upstream's open() decodes it: the text parser rejects a leading byte
+# order mark, which open() keeps as a character. Nothing of the candidate's
+# runs; the adapter only reads /app/solution.txt.
+[[protocol_checks]]
+id = "solution"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.json"
+observation_schema = "observation.json"
+max_cases = 1
+timeout_seconds = 120
+max_challenge_bytes = 64
+# The adapter reads at most 64 KiB and writes ASCII JSON; escaping takes at
+# most six bytes per input byte.
+max_observation_bytes = 524288

@@ -1,0 +1,96 @@
+{
+  "task": "rstan-to-pystan",
+  "source": "terminal-bench",
+  "notes": [
+    "Natively the agent backgrounded its sampling run and ended its session (Pier's background-task setting), so no output was written. The SecureBench agent hit its 1,800 s limit."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "rstan-to-pystan",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "failed",
+    "agent_seconds": 107.017482,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.11491900000000001,
+    "input_tokens": 16,
+    "cache_write_tokens": 12395,
+    "cache_read_tokens": 154185,
+    "output_tokens": 3447,
+    "turns": 8,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:fd287e7c97285160f43bbe2b4d3bb433caf47a3e9a0e6da9b9cceeeff6c4eef8",
+      "framework": {
+        "commit": "ee4c9a8978ffc512f4faddf36161f1853c1b3893",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 220,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:6f70bc5a17c29c4c2a465541f67a8f2e402be7d982e98a14b97c2a240d62c517",
+      "bytes": 4050,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "rstan-to-pystan",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:fd287e7c97285160f43bbe2b4d3bb433caf47a3e9a0e6da9b9cceeeff6c4eef8",
+    "agent_seconds": 1800.155,
+    "time_limit_expired": true,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": null,
+    "cache_write_tokens": null,
+    "cache_read_tokens": null,
+    "output_tokens": null,
+    "turns": null,
+    "result_error": "no result",
+    "S->N": "failed",
+    "wall_seconds": 1938,
+    "validity": "ok",
+    "agent_ending": "timed_out",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:b6c435f9dd51305befccf08ae501445f8ec6b7c88831306e3a25b780408a37b8",
+      "bytes": 3960,
+      "files_included": true
+    }
+  }
+}

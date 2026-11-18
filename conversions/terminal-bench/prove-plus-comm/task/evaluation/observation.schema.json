@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "exit_status": {"type": "integer", "minimum": -255, "maximum": 255},
+    "output_utf8": {"type": "boolean"},
+    "output_tail": {
+      "type": "array",
+      "max_items": 64,
+      "items": {"type": "string", "max_bytes": 1024}
+    }
+  }
+}

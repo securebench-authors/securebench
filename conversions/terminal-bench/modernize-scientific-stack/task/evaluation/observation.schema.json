@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "script_exists": {"type": "boolean"},
+    "csv_exists": {"type": "boolean"},
+    "run": {
+      "type": "object",
+      "properties": {
+        "timed_out": {"type": "boolean"},
+        "returncode": {"type": "integer", "minimum": -1000, "maximum": 1000},
+        "stdout_lines": {
+          "type": "array",
+          "max_items": 100000,
+          "items": {"type": "string", "max_bytes": 4194304}
+        },
+        "stderr_decodable": {"type": "boolean"}
+      },
+      "optional": ["stdout_lines"]
+    },
+    "dependency_files": {
+      "type": "array",
+      "max_items": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {"type": "string", "max_bytes": 256},
+          "exists": {"type": "boolean"}
+        }
+      }
+    }
+  },
+  "optional": ["run"]
+}

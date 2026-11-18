@@ -1,0 +1,45 @@
+{
+  "video-exists": [
+    {
+      "test": "test_example_video_exists",
+      "challenge": {"path": "/app/example_video.mp4"}
+    },
+    {
+      "test": "test_test_video_exists",
+      "challenge": {"path": "/.securebench/evaluation/test_video.mp4"}
+    }
+  ],
+  "jump-analyzer": [
+    {
+      "test": "test_jump_analyzer_example_video",
+      "challenge": {
+        "place": [{"from": "/.securebench/evaluation/test_video.mp4", "to": "/tests/test_video.mp4"}],
+        "earlier_runs": [],
+        "video": "/app/example_video.mp4"
+      },
+      "takeoff_range": [50, 54],
+      "landing_range": [62, 64]
+    },
+    {
+      "test": "test_jump_analyzer_test_video",
+      "challenge": {
+        "place": [{"from": "/.securebench/evaluation/test_video.mp4", "to": "/tests/test_video.mp4"}],
+        "earlier_runs": ["/app/example_video.mp4"],
+        "video": "/tests/test_video.mp4"
+      },
+      "takeoff_range": [219, 223],
+      "landing_range": [231, 234]
+    }
+  ],
+  "imports": [
+    {
+      "test": "test_jump_analyzer_imports",
+      "challenge": {
+        "place": [{"from": "/.securebench/evaluation/test_video.mp4", "to": "/tests/test_video.mp4"}],
+        "earlier_runs": ["/app/example_video.mp4", "/tests/test_video.mp4"],
+        "path": "/app/jump_analyzer.py"
+      },
+      "allowed_third_party": ["cv2", "numpy", "toml"]
+    }
+  ]
+}

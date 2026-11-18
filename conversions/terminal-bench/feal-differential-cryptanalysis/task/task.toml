@@ -1,0 +1,34 @@
+id = "feal-differential-cryptanalysis"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/feal-differential-cryptanalysis@sha256:bea93bafe9eab601ca58729f5735a13f8339f52055322d1cf840e3742b54a287"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 20000
+max_bytes = 536870912
+
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 20000
+max_bytes = 536870912
+
+[[protocol_checks]]
+id = "attack"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 4096
+max_observation_bytes = 4096

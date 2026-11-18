@@ -1,0 +1,69 @@
+id = "overfull-hbox"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/overfull-hbox@sha256:67fe0ccc0ff2305d6fcb3652977d377b901bb7bd96904b6765835935574992e1"
+
+[agent]
+workdir = "/app"
+# The reference runs `apt update` and `apt install python3-pip`, which reach the
+# image's two Ubuntu archives and nothing else.
+allowed_domains = ["archive.ubuntu.com", "security.ubuntu.com"]
+
+# The deliverable is /app/input.tex; /app/main.tex and /app/synonyms.txt must
+# stay as they are. All three sit at the top level of /app, so the root excludes
+# */* and everything below the top level is dropped from the candidate. An agent
+# can keep work directories there (a build tree, a copy of TeX files) without
+# failing capture on their size or contents, and neither upstream's compile nor
+# its tests read below the top level of /app.
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+[[scope.roots]]
+path = "/app"
+exclude = ["*/*"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_main_synonyms_not_modified.
+[[artifact_checks]]
+id = "unmodified"
+
+[[artifact_checks.files]]
+path = "/app/main.tex"
+parser = "text"
+max_bytes = 1048576
+
+[[artifact_checks.files]]
+path = "/app/synonyms.txt"
+parser = "text"
+max_bytes = 1048576
+
+# test_input_file_matches.
+[[artifact_checks]]
+id = "substitutions"
+
+[[artifact_checks.files]]
+path = "/app/input.tex"
+parser = "text"
+max_bytes = 4194304
+
+# test_compilation_successful and test_no_overfull_hboxes. The adapter compiles
+# the pristine main.tex with the candidate's input.tex, as upstream's fixture
+# does, and reports the log. Upstream's verifier timeout is 360 s.
+[[protocol_checks]]
+id = "compile"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py",
+]
+challenge_schema = "challenge.schema.json"
+observation_schema = "observation.schema.json"
+max_cases = 1
+timeout_seconds = 360
+max_challenge_bytes = 64
+max_observation_bytes = 4194304

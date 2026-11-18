@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "texts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "max_bytes": 4096
+      },
+      "max_items": 64
+    },
+    "invalid_request": {
+      "type": "object",
+      "properties": {
+        "invalid_field": {
+          "type": "string",
+          "max_bytes": 4096
+        }
+      }
+    },
+    "error_member": {
+      "type": "string",
+      "max_bytes": 256
+    }
+  }
+}

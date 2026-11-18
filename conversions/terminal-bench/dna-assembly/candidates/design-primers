@@ -1,0 +1,36 @@
+#!/bin/sh
+# Shared by the mutants and attacks: writes a primers.fasta to standard output
+# in exactly the layout of upstream's solve.sh, but with the annealing ranges
+# given as arguments instead of solve.sh's fixed ones.
+#
+# usage: sh design-primers SEQUENCES IF IR EF ER FF FR SF SR
+# Each range is "first-last" (1-based, inclusive, as for `cut -c`) on the
+# template line of SEQUENCES: input fwd, input rev, egfp fwd, egfp rev, flag
+# fwd, flag rev, snap fwd, snap rev. Reverse primers anneal to the reverse
+# complement of their range. solve.sh's own ranges are
+#   688-708 184-213 4-21 694-714 4-21 68-87 4-26 529-546
+set -eu
+seqs=$1
+shift
+rc() { tr 'atcg' 'tagc' | rev; }
+template() { sed -n "$1p" "$seqs"; }
+INPUT_FWD_ANNEAL=$(template 2 | cut -c "$1")
+INPUT_REV_ANNEAL=$(template 2 | cut -c "$2" | rc)
+EGFP_FWD_ANNEAL=$(template 4 | cut -c "$3")
+EGFP_REV_ANNEAL=$(template 4 | cut -c "$4" | rc)
+FLAG_FWD_ANNEAL=$(template 6 | cut -c "$5")
+FLAG_REV_ANNEAL=$(template 6 | cut -c "$6" | rc)
+SNAP_FWD_ANNEAL=$(template 8 | cut -c "$7")
+SNAP_REV_ANNEAL=$(template 8 | cut -c "$8" | rc)
+head_rc() { printf '%s\n' "$1" | cut -c "1-$2" | rc; }
+INPUT_FWD_OVERHANG=$(head_rc "$SNAP_REV_ANNEAL" 4)
+INPUT_REV_OVERHANG=$(head_rc "$EGFP_FWD_ANNEAL" 1)
+EGFP_FWD_OVERHANG=$(head_rc "$INPUT_REV_ANNEAL" 3)
+EGFP_REV_OVERHANG=$(head_rc "$FLAG_FWD_ANNEAL" 1)
+FLAG_FWD_OVERHANG=$(head_rc "$EGFP_REV_ANNEAL" 3)
+FLAG_REV_OVERHANG=$(head_rc "$SNAP_FWD_ANNEAL" 4)
+p=ggctacggtctca
+printf '>input_fwd\n%s\n>input_rev\n%s\n' "$p$INPUT_FWD_OVERHANG$INPUT_FWD_ANNEAL" "$p$INPUT_REV_OVERHANG$INPUT_REV_ANNEAL"
+printf '>egfp_fwd\n%s\n>egfp_rev\n%s\n' "$p$EGFP_FWD_OVERHANG$EGFP_FWD_ANNEAL" "$p$EGFP_REV_OVERHANG$EGFP_REV_ANNEAL"
+printf '>flag_fwd\n%s\n>flag_rev\n%s\n' "$p$FLAG_FWD_OVERHANG$FLAG_FWD_ANNEAL" "$p$FLAG_REV_OVERHANG$FLAG_REV_ANNEAL"
+printf '>snap_fwd\n%s\n>snap_rev\n%s\n' "$p$SNAP_FWD_ANNEAL" "$p$SNAP_REV_ANNEAL"

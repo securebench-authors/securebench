@@ -1,0 +1,269 @@
+{
+  "type": "object",
+  "properties": {
+    "root": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        },
+        "error": {
+          "type": "string",
+          "max_bytes": 1024
+        }
+      },
+      "optional": [
+        "status",
+        "error"
+      ]
+    },
+    "sentiment": {
+      "type": "array",
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 999
+          },
+          "error": {
+            "type": "string",
+            "max_bytes": 1024
+          },
+          "json": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "invalid",
+              "bool",
+              "float",
+              "int",
+              "str",
+              "null",
+              "list",
+              "dict"
+            ]
+          },
+          "sentiment": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "max_bytes": 16,
+                "enum": [
+                  "absent",
+                  "bool",
+                  "float",
+                  "int",
+                  "str",
+                  "null",
+                  "list",
+                  "dict"
+                ]
+              },
+              "string": {
+                "type": "string",
+                "max_bytes": 1024
+              },
+              "number": {
+                "type": "number",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              "nonfinite": {
+                "type": "string",
+                "max_bytes": 8,
+                "enum": [
+                  "inf",
+                  "-inf",
+                  "nan"
+                ]
+              }
+            },
+            "optional": [
+              "string",
+              "number",
+              "nonfinite"
+            ]
+          },
+          "confidence": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "max_bytes": 16,
+                "enum": [
+                  "absent",
+                  "bool",
+                  "float",
+                  "int",
+                  "str",
+                  "null",
+                  "list",
+                  "dict"
+                ]
+              },
+              "string": {
+                "type": "string",
+                "max_bytes": 1024
+              },
+              "number": {
+                "type": "number",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              "nonfinite": {
+                "type": "string",
+                "max_bytes": 8,
+                "enum": [
+                  "inf",
+                  "-inf",
+                  "nan"
+                ]
+              }
+            },
+            "optional": [
+              "string",
+              "number",
+              "nonfinite"
+            ]
+          },
+          "positive": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "max_bytes": 16,
+                "enum": [
+                  "absent",
+                  "bool",
+                  "float",
+                  "int",
+                  "str",
+                  "null",
+                  "list",
+                  "dict"
+                ]
+              },
+              "string": {
+                "type": "string",
+                "max_bytes": 1024
+              },
+              "number": {
+                "type": "number",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              "nonfinite": {
+                "type": "string",
+                "max_bytes": 8,
+                "enum": [
+                  "inf",
+                  "-inf",
+                  "nan"
+                ]
+              }
+            },
+            "optional": [
+              "string",
+              "number",
+              "nonfinite"
+            ]
+          },
+          "negative": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "max_bytes": 16,
+                "enum": [
+                  "absent",
+                  "bool",
+                  "float",
+                  "int",
+                  "str",
+                  "null",
+                  "list",
+                  "dict"
+                ]
+              },
+              "string": {
+                "type": "string",
+                "max_bytes": 1024
+              },
+              "number": {
+                "type": "number",
+                "minimum": -1.7976931348623157e+308,
+                "maximum": 1.7976931348623157e+308
+              },
+              "nonfinite": {
+                "type": "string",
+                "max_bytes": 8,
+                "enum": [
+                  "inf",
+                  "-inf",
+                  "nan"
+                ]
+              }
+            },
+            "optional": [
+              "string",
+              "number",
+              "nonfinite"
+            ]
+          }
+        },
+        "optional": [
+          "status",
+          "error",
+          "json",
+          "sentiment",
+          "confidence",
+          "positive",
+          "negative"
+        ]
+      }
+    },
+    "invalid_request": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999
+        },
+        "error": {
+          "type": "string",
+          "max_bytes": 1024
+        },
+        "json": {
+          "type": "string",
+          "max_bytes": 16,
+          "enum": [
+            "invalid",
+            "bool",
+            "float",
+            "int",
+            "str",
+            "null",
+            "list",
+            "dict"
+          ]
+        },
+        "has_member": {
+          "type": "boolean"
+        }
+      },
+      "optional": [
+        "status",
+        "error",
+        "json",
+        "has_member"
+      ]
+    }
+  }
+}

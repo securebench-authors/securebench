@@ -1,0 +1,27 @@
+id = "feal-linear-cryptanalysis"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/feal-linear-cryptanalysis@sha256:ea78749a8422c6228d26c8753f45906a6a2df089906764b7e3c3e27e8f718ee7"
+
+[agent]
+workdir = "/app"
+allowed_domains = []
+
+[scope]
+max_entries = 10000
+max_bytes = 268435456
+
+[[scope.roots]]
+path = "/app"
+symlinks = true
+max_entries = 10000
+max_bytes = 268435456
+
+[[artifact_checks]]
+id = "plaintexts"
+
+[[artifact_checks.files]]
+path = "/app/plaintexts.txt"
+parser = "text"
+max_bytes = 1048576

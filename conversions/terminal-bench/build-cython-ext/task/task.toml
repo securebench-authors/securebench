@@ -1,0 +1,78 @@
+id = "build-cython-ext"
+source_benchmark = "terminal-bench"
+
+[baseline]
+image = "alexgshaw/build-cython-ext@sha256:3612a38fadb89a96f74a1a951fb0b0af734198fd160571eeaba6401593234594"
+
+[agent]
+workdir = "/app"
+# github.com for the clone the instructions prescribe; PyPI for Cython,
+# setuptools and pyknotid's dependencies.
+allowed_domains = ["files.pythonhosted.org", "github.com", "pypi.org"]
+
+[scope]
+max_entries = 100000
+max_bytes = 2147483648
+
+# /app holds the clone and its in-place build. Its tests/ folder is dropped:
+# upstream grades with a fresh copy of the repository tests, and here the
+# driver reproduces them, so nothing in the candidate's copy is read.
+[[scope.roots]]
+path = "/app"
+exclude = ["**/__pycache__", "pyknotid/tests"]
+git_directories = ["pyknotid/.git"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# The system interpreter's prefix: site-packages, where pip installs pyknotid
+# (or its editable finder), Cython, setuptools and the dependencies, and every
+# other directory on that interpreter's sys.path.
+[[scope.roots]]
+path = "/usr/local"
+exclude = ["**/__pycache__"]
+symlinks = true
+max_entries = 100000
+max_bytes = 2147483648
+
+# test_repo_cloned.
+[[artifact_checks]]
+id = "clone"
+
+[[artifact_checks.listings]]
+path = "/app/pyknotid/.git"
+# Only existence counts; a larger .git shows as too_many, which also exists.
+max_entries = 256
+
+# tests/test_outputs.py except the repository tests: one case, upstream's inputs.
+[[protocol_checks]]
+id = "outputs"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "outputs",
+]
+challenge_schema = "outputs.challenge.schema.json"
+observation_schema = "outputs.observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 4096
+max_observation_bytes = 262144
+
+# test_pyknotid_repository_tests: pyknotid 0.5.3's tests/test_knot.py and
+# tests/test_spacecurve.py, run from /app/pyknotid.
+[[protocol_checks]]
+id = "repository"
+command = [
+  "/.securebench/python/lib64/ld-linux-x86-64.so.2",
+  "--library-path",
+  "/.securebench/python/usr/local/lib:/.securebench/python/lib/x86_64-linux-gnu:/.securebench/python/usr/lib/x86_64-linux-gnu",
+  "/.securebench/python/usr/local/bin/python3", "-I", "/.securebench/evaluation/adapter.py", "repository",
+]
+challenge_schema = "repository.challenge.schema.json"
+observation_schema = "repository.observation.schema.json"
+max_cases = 1
+timeout_seconds = 900
+max_challenge_bytes = 64
+max_observation_bytes = 262144

